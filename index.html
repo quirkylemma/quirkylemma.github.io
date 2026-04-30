@@ -102,17 +102,17 @@ function whimper(){
 var ICONS=['🧲','🎲','🗝️','🐠','🍄','🧀','🦋','🫙','🎪','🎭','🦞','🫧','🪝','🫖','🦩','🦈','🦤','🔑','🧷','🧸','🔭','🔮','🪐','🐙','🧊','🪴','🧭','🪓','🎄','🛍️','🌮','🔩','🪆'];
 var MASKS='&#127917;';
 var MSGS=[
-  {at:5,   t:'I see you are enjoying the icons.'},
-  {at:9,   t:'Ok. You can stop now.'},
-  {at:17,  t:'You do know that there are better things to do?'},
-  {at:32,  t:'I know of no theorem that explains your behaviour.'},
-  {at:60,  t:'I admire your commitment.'},
-  {at:110, t:'Are you aware that this is your 110th?'},
-  {at:210, t:'I have begun to question my own decisions.'},
-  {at:390, t:'Kolmogorov did not anticipate this.'},
-  {at:700, t:'The probability of stopping now appears to be approaching zero.'},
-  {at:850, t:'I have nothing further to add.'},
-  {at:950, t:'I have run out of observations. I will now simply watch.'},
+  {at:5,t:'I see you are enjoying the icons.'},
+  {at:9,t:'Alright. You can stop now.'},
+  {at:17,t:'You do know that there are better things to do?'},
+  {at:32,t:'I know of no theorem that explains your behaviour.'},
+  {at:60,t:'I admire your commitment.'},
+  {at:110,t:'Are you aware that this is your 110th?'},
+  {at:210,t:'This is really getting obsessive now.'},
+  {at:390,t:'Even Kolmogorov did not anticipate this.'},
+  {at:700,t:'The probability of stopping now appears to be approaching zero.'},
+  {at:850,t:'That\'s it. I have nothing further to add.'},
+  {at:950,t:'I have run out of things to say. I will now simply watch.'}
 ];
 var DODGE_START=1000, DODGE_MAX=15;
 var el=document.getElementById('icon'),haEl=document.getElementById('ha'),msgEl=document.getElementById('msg');
@@ -149,12 +149,20 @@ function startDodge(){
 
 function dodge(){
   if(!dodging)startDodge();
-  var sz=el.getBoundingClientRect().width||44;
-  var pad=sz*1.8,vw=innerWidth,vh=innerHeight;
+  var sz=60;
+  var vw=innerWidth,vh=innerHeight;
+  var pad=sz*2;
+  var maxX=vw-pad*2;
+  var maxY=vh*0.78-pad;
   var nx,ny,att=0;
-  do{nx=pad+Math.random()*(vw-pad*2);ny=pad+Math.random()*(vh*0.82-pad);att++;}
-  while(att<10&&Math.abs(nx-px)<vw*0.15&&Math.abs(ny-py)<vh*0.12);
-  px=nx;py=ny;
+  do{
+    nx=pad+Math.random()*maxX;
+    ny=pad+Math.random()*maxY;
+    att++;
+  }while(att<10&&Math.abs(nx-px)<vw*0.15&&Math.abs(ny-py)<vh*0.1);
+  // Hard clamp — never let it escape
+  px=Math.max(pad,Math.min(vw-pad,nx));
+  py=Math.max(pad,Math.min(vh*0.78,ny));
   el.style.transition='transform .28s cubic-bezier(.1,1.6,.4,1)';
   el.style.transform='translate('+px+'px,'+py+'px)';
   showHa();
@@ -179,6 +187,23 @@ function smash(){
   },80);
 }
 
+var iconFired=false;
+function iconTap(){
+  if(iconFired)return;iconFired=true;
+  setTimeout(function(){iconFired=false;},300);
+  if(broken)return;
+  taps++;
+  if(taps<DODGE_START){
+    el.innerHTML=ICONS[Math.floor(Math.random()*ICONS.length)];
+    for(var i=0;i<MSGS.length;i++){if(taps===MSGS[i].at){showMsg(MSGS[i].t,false);break;}}
+    return;
+  }
+  dcount++;
+  if(dcount===1)el.innerHTML=MASKS;
+  dodge();
+  if(dcount>=DODGE_MAX)setTimeout(smash,300);
+}
+el.addEventListener('touchend',function(e){e.preventDefault();iconTap();},{passive:false});
 el.addEventListener('click',function(){
   if(broken)return;
   taps++;
