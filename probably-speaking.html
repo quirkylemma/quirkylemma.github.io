@@ -16,19 +16,26 @@ html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',mo
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
   padding:5% 14%;
-  overflow-y:auto;
+  overflow:hidden;
 }
 
+#aubrey{
+  font-size:clamp(10px,.82vw,13px);
+  color:rgba(212,168,67,.38);
+  letter-spacing:.14em;
+  margin-bottom:8vh;
+  text-align:center;
+}
 #back{
-  font-size:clamp(9px,.8vw,12px);
-  color:rgba(212,168,67,.28);
-  letter-spacing:.18em;
+  font-size:clamp(11px,1vw,15px);
+  color:rgba(212,168,67,.55);
+  letter-spacing:.1em;
   text-decoration:none;
   margin-bottom:6vh;
-  transition:color .15s;
+  transition:color .18s;
   align-self:flex-start;
 }
-#back:hover{color:rgba(212,168,67,.65)}
+#back:hover{color:rgba(212,168,67,.92)}
 
 #brand{
   font-size:clamp(18px,2.4vw,34px);
@@ -41,16 +48,23 @@ html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',mo
   font-size:clamp(12px,1.2vw,18px);
   color:rgba(238,225,196,.45);
   letter-spacing:.1em;
-  margin-bottom:8vh;
+  margin-bottom:1.8vh;
 }
 
+#ep-scroll{
+  width:100%;max-width:540px;
+  max-height:38vh;
+  overflow-y:auto;
+  scrollbar-width:none;
+}
+#ep-scroll::-webkit-scrollbar{display:none}
 .ep{
   display:flex;align-items:baseline;gap:20px;
   padding:18px 0;
   border-bottom:1px solid rgba(212,168,67,.08);
   text-decoration:none;
   transition:all .18s;
-  width:100%;max-width:540px;
+  width:100%;
 }
 .ep:first-of-type{border-top:1px solid rgba(212,168,67,.08)}
 .ep-num{font-size:clamp(9px,.78vw,11px);color:rgba(212,168,67,.32);letter-spacing:.18em;flex-shrink:0;width:56px}
@@ -65,7 +79,7 @@ html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',mo
 .ep.coming .ep-title{color:rgba(238,225,196,.2)}
 .ep.coming .ep-num{color:rgba(212,168,67,.12)}
 
-#foot{margin-top:8vh;font-size:clamp(9px,.72vw,11px);color:rgba(212,168,67,.15);letter-spacing:.16em}
+#foot{margin-top:8vh;font-size:clamp(10px,.82vw,13px);color:rgba(212,168,67,.38);letter-spacing:.14em}
 </style>
 </head>
 <body>
@@ -75,12 +89,14 @@ html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',mo
   <a id="back" href="index.html">&#8592; Quirky Lemma</a>
   <div id="brand">Probably Speaking</div>
   <div id="sub">Probability theory. Rigorously.</div>
+  <div id="aubrey">Aubrey Squeakwell, PhD</div>
 
+  <div id="ep-scroll">
   <a class="ep" href="episode1.html">
     <div class="ep-num">EP. 01</div>
     <div class="ep-info">
       <div class="ep-title">Probability Foundations</div>
-      <div class="ep-sub">Sample spaces &nbsp;&middot;&nbsp; Events &nbsp;&middot;&nbsp; The three axioms</div>
+      <div class="ep-sub">Sample spaces &nbsp;&middot;&nbsp; Events &nbsp;&middot;&nbsp; Axioms</div>
     </div>
     <div class="ep-dur">~10 min</div>
   </a>
@@ -103,7 +119,8 @@ html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',mo
     <div class="ep-dur"></div>
   </div>
 
-  <div id="foot">Aubrey Squeakwell, PhD &nbsp;&middot;&nbsp; Wine and Cheese</div>
+  </div>
+
 </div>
 
 <script>
