@@ -6,56 +6,75 @@
 <title>Probably Speaking — Quirky Lemma</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;min-height:100%;background:#06050A;font-family:'Courier New',monospace}
-#grain{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
-#vig{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 50% 40%,transparent 40%,rgba(0,0,0,.6) 100%)}
-#wrap{position:relative;z-index:1;max-width:780px;margin:0 auto;padding:14vh 32px 10vh}
+html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',monospace;overflow:hidden}
 
-#brand{font-size:clamp(18px,2.2vw,32px);letter-spacing:.2em;color:rgba(212,168,67,.88);margin-bottom:1.8vh;font-weight:400}
-#sub{font-size:clamp(13px,1.4vw,20px);color:rgba(238,225,196,.58);letter-spacing:.1em;margin-bottom:9vh}
+#grain{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.45}
+#vig{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 50% 50%,transparent 38%,rgba(0,0,0,.65) 100%)}
 
-.series{
-  display:block;text-decoration:none;
-  padding:22px 0;border-bottom:1px solid rgba(212,168,67,.08);
-  transition:all .2s;
+#wrap{
+  position:fixed;inset:0;z-index:1;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:5% 14%;
+  overflow-y:auto;
 }
-.series:first-of-type{border-top:1px solid rgba(212,168,67,.08)}
-.series-title{font-size:clamp(15px,1.6vw,23px);color:rgba(238,225,196,.88);letter-spacing:.05em;margin-bottom:5px;transition:color .18s;font-weight:500}
-.series-sub{font-size:clamp(11px,.95vw,14px);color:rgba(212,168,67,.45);letter-spacing:.1em}
-.series:hover .series-title{color:rgba(212,168,67,.9)}
-.series:hover .series-sub{color:rgba(212,168,67,.45)}
-.series.coming{cursor:default;pointer-events:none}
-.series.coming .series-title{color:rgba(238,225,196,.2)}
-.series.coming .series-sub{color:rgba(212,168,67,.12)}
 
-/* Series-page specific */
-#back{display:inline-block;font-size:clamp(9px,.8vw,12px);color:rgba(212,168,67,.32);letter-spacing:.18em;text-decoration:none;margin-bottom:6vh;transition:color .15s}
+#back{
+  font-size:clamp(9px,.8vw,12px);
+  color:rgba(212,168,67,.28);
+  letter-spacing:.18em;
+  text-decoration:none;
+  margin-bottom:6vh;
+  transition:color .15s;
+  align-self:flex-start;
+}
 #back:hover{color:rgba(212,168,67,.65)}
-#series{font-size:clamp(18px,2.2vw,32px);letter-spacing:.2em;color:rgba(212,168,67,.88);margin-bottom:1.8vh;font-weight:400}
-#tagline{font-size:clamp(13px,1.4vw,20px);color:rgba(238,225,196,.58);letter-spacing:.1em;margin-bottom:8vh}
-.ep{display:flex;align-items:baseline;gap:20px;padding:18px 0;border-bottom:1px solid rgba(212,168,67,.08);text-decoration:none;transition:all .18s}
+
+#brand{
+  font-size:clamp(18px,2.4vw,34px);
+  letter-spacing:.15em;
+  color:rgba(212,168,67,.88);
+  margin-bottom:1.5vh;
+  font-weight:400;
+}
+#sub{
+  font-size:clamp(12px,1.2vw,18px);
+  color:rgba(238,225,196,.45);
+  letter-spacing:.1em;
+  margin-bottom:8vh;
+}
+
+.ep{
+  display:flex;align-items:baseline;gap:20px;
+  padding:18px 0;
+  border-bottom:1px solid rgba(212,168,67,.08);
+  text-decoration:none;
+  transition:all .18s;
+  width:100%;max-width:540px;
+}
 .ep:first-of-type{border-top:1px solid rgba(212,168,67,.08)}
 .ep-num{font-size:clamp(9px,.78vw,11px);color:rgba(212,168,67,.32);letter-spacing:.18em;flex-shrink:0;width:56px}
 .ep-info{flex:1}
-.ep-title{font-size:clamp(15px,1.6vw,23px);color:rgba(238,225,196,.88);letter-spacing:.05em;margin-bottom:4px;transition:color .18s;font-weight:500}
-.ep-sub{font-size:clamp(11px,.95vw,14px);color:rgba(212,168,67,.45);letter-spacing:.1em}
-.ep-dur{font-size:clamp(9px,.78vw,11px);color:rgba(212,168,67,.28);letter-spacing:.1em;flex-shrink:0}
+.ep-title{font-size:clamp(15px,1.6vw,23px);color:rgba(238,225,196,.82);letter-spacing:.05em;margin-bottom:4px;transition:color .18s;font-weight:400}
+.ep-sub{font-size:clamp(11px,.95vw,14px);color:rgba(212,168,67,.38);letter-spacing:.1em}
+.ep-dur{font-size:clamp(9px,.78vw,11px);color:rgba(212,168,67,.22);letter-spacing:.1em;flex-shrink:0}
 .ep:hover .ep-title{color:rgba(212,168,67,.92)}
 .ep:hover .ep-num{color:rgba(212,168,67,.58)}
 .ep:hover .ep-dur{color:rgba(212,168,67,.45)}
 .ep.coming{cursor:default;pointer-events:none}
 .ep.coming .ep-title{color:rgba(238,225,196,.2)}
 .ep.coming .ep-num{color:rgba(212,168,67,.12)}
-#foot{margin-top:10vh;font-size:clamp(9px,.72vw,11px);color:rgba(212,168,67,.18);letter-spacing:.16em}
+
+#foot{margin-top:8vh;font-size:clamp(9px,.72vw,11px);color:rgba(212,168,67,.15);letter-spacing:.16em}
 </style>
 </head>
 <body>
 <canvas id="grain"></canvas>
 <div id="vig"></div>
 <div id="wrap">
-  <a id="back" href="index.html">&#8592; QuirkyLemma</a>
+  <a id="back" href="index.html">&#8592; Quirky Lemma</a>
   <div id="brand">Probably Speaking</div>
-  <div id="sub">Probability theory.<br>Rigorously.</div>
+  <div id="sub">Probability theory. Rigorously.</div>
 
   <a class="ep" href="episode1.html">
     <div class="ep-num">EP. 01</div>
@@ -86,6 +105,7 @@ html,body{width:100%;min-height:100%;background:#06050A;font-family:'Courier New
 
   <div id="foot">Aubrey Squeakwell, PhD &nbsp;&middot;&nbsp; Wine and Cheese</div>
 </div>
+
 <script>
 const cv=document.getElementById('grain'),gx=cv.getContext('2d');
 function rsz(){cv.width=innerWidth;cv.height=innerHeight;}rsz();
@@ -98,40 +118,24 @@ function grain(){
 }
 grain();addEventListener('resize',rsz);
 
-// Random glitch on title
-const brand = document.getElementById('brand');
+const brand=document.getElementById('brand');
 function glitch(){
-  const n = Math.floor(1 + Math.random()*3);
-  let i = 0;
+  const n=Math.floor(1+Math.random()*3);let i=0;
   function step(){
     if(i>=n*2){brand.style.opacity='1';brand.style.transform='';return;}
-    if(i%2===0){
-      brand.style.opacity=(0.4+Math.random()*0.5).toFixed(2);
-      brand.style.transform=`translateX(${(Math.random()-.5)*4}px)`;
-    } else {
-      brand.style.opacity='1';
-      brand.style.transform='';
-    }
-    i++;
-    setTimeout(step, 40+Math.random()*60);
+    if(i%2===0){brand.style.opacity=(0.4+Math.random()*0.5).toFixed(2);brand.style.transform='translateX('+(Math.random()-.5)*4+'px)';}
+    else{brand.style.opacity='1';brand.style.transform='';}
+    i++;setTimeout(step,40+Math.random()*60);
   }
-  step();
-  setTimeout(glitch, 3000+Math.random()*9000);
+  step();setTimeout(glitch,3000+Math.random()*9000);
 }
-setTimeout(glitch, 2000+Math.random()*4000);
+setTimeout(glitch,2000+Math.random()*4000);
 
-// Full page dim — projector lamp fluctuation
 function pageDim(){
-  const el=document.getElementById('wrap');
-  const b=(0.55+Math.random()*0.3).toFixed(2);
-  document.body.style.filter='brightness('+b+')';
-  setTimeout(()=>{
-    document.body.style.filter='';
-    setTimeout(pageDim, 15000+Math.random()*12000);
-  },80+Math.random()*120);
+  document.body.style.filter='brightness('+(0.55+Math.random()*0.3).toFixed(2)+')';
+  setTimeout(()=>{document.body.style.filter='';setTimeout(pageDim,15000+Math.random()*12000);},80+Math.random()*120);
 }
-setTimeout(pageDim, 4000+Math.random()*8000);
-
+setTimeout(pageDim,4000+Math.random()*8000);
 </script>
 </body>
 </html>
