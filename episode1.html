@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
 <title>Probably Speaking — Episode 1</title>
 <style>
 
@@ -108,7 +108,7 @@ body.light #io{background:rgba(44,26,8,.3)}
 .ir.now .il2{color:var(--bh)}.ir.now .it2{color:var(--it)}
 
 /* START */
-#st{position:fixed;top:0;left:0;right:0;bottom:0;z-index:20;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;padding:5% 14%;transition:background .4s;-webkit-tap-highlight-color:transparent}
+#st{position:fixed;top:0;left:0;right:0;bottom:0;z-index:20;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;padding:5% 14%;transition:background .4s;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 .sh{font-size:clamp(13px,1.3vw,18px);color:var(--hd);letter-spacing:.24em;text-transform:uppercase;text-align:center;margin-bottom:3.5vh}
 .ss{font-size:clamp(16px,2.1vw,30px);color:var(--tx);letter-spacing:.05em;text-align:center;margin-bottom:3.8vh}
 .sg{font-size:clamp(16px,2.1vw,30px);color:var(--tr);letter-spacing:.05em;text-align:center;animation:pulse 2.4s ease-in-out infinite}
@@ -486,7 +486,10 @@ function initAudio(){
   sPad();sMel();sTick();
 }
 // Resume on any touch if suspended
-document.addEventListener('touchstart',function(){if(AC&&AC.state==='suspended')AC.resume();},{passive:true});
+document.addEventListener('touchstart',function(){
+  if(AC){if(AC.state==='suspended')AC.resume();}
+  else if(running){initAudio();}
+},{passive:true});
 
 function tone(f,t,d,v){var o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.35);g.gain.linearRampToValueAtTime(v*.8,t+d-.6);g.gain.linearRampToValueAtTime(0,t+d);o.connect(g);g.connect(mg);o.start(t);o.stop(t+d+.1);}
 function sPad(){if(!AC)return;CHORDS[padI%4].forEach(function(f){tone(f,AC.currentTime,12,.018);});padI++;setTimeout(sPad,10400);}
@@ -626,6 +629,7 @@ function closeIdx(){
 
 // PLAYER
 function play(i){
+  try{
   if(i>=F.length){document.getElementById('pf').style.width='100%';ptD=0;return;}
   cur=i;startPT(F.slice(0,i).reduce(function(s,f){return s+f.d;},0),F[i].d);
   var f=F[i];
@@ -635,13 +639,16 @@ function play(i){
   if(f.t==='coin'){runCoin(function(){play(i+1);});return;}
   showText(f);
   timer=setTimeout(function(){if(!paused)hideText(function(){play(i+1);});},W(f.d));
+  }catch(e){console.warn('play error:',e,i);}
 }
 
 // CONTROLS
 function begin(){
   document.getElementById('st').style.display='none';
   document.body.classList.remove('not-started');
-  running=true;initAudio();buildChapters();play(0);
+  running=true;
+  try{initAudio();}catch(e){console.warn('Audio init failed:',e);}
+  buildChapters();play(0);
 }
 function togglePause(){
   if(!running)return;paused=!paused;
@@ -679,8 +686,8 @@ document.getElementById('ctrl').addEventListener('mouseleave',function(){hideT=s
 // START SCREEN — touch + click, no double fire
 (function(){
   var fired=false;
-  function go(e){if(fired)return;fired=true;e.preventDefault();begin();}
-  document.getElementById('st').addEventListener('touchend',go,{passive:false});
+  function go(){if(fired)return;fired=true;begin();}
+  document.getElementById('st').addEventListener('touchend',go);
   document.getElementById('st').addEventListener('click',go);
 })();
 
