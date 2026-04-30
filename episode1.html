@@ -95,6 +95,27 @@ body.light #txt{font-weight:500;letter-spacing:.04em}
 .s-go{font-size:clamp(15px,2.1vw,30px);color:var(--tr);letter-spacing:.05em;text-align:center;animation:pulse 2.4s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.52}50%{opacity:1}}
 
+#back-link{
+  position:fixed;top:10px;left:14px;z-index:41;
+  font-family:'Courier New',monospace;
+  font-size:clamp(11px,1vw,15px);
+  color:rgba(212,168,67,.55);
+  letter-spacing:.1em;
+  text-decoration:none;
+  transition:color .18s;
+  pointer-events:auto;
+}
+#back-link:hover{color:rgba(212,168,67,.92)}
+body.rec #back-link{
+  position:fixed;top:10px;left:14px;z-index:41;
+  font-family:'Courier New',monospace;
+  font-size:clamp(11px,1vw,15px);
+  color:rgba(212,168,67,.55);
+  letter-spacing:.1em;
+  text-decoration:none;
+  transition:color .18s;
+  pointer-events:auto;
+}
 body.rec #controls{display:none}
 body.rec #prog-bar{display:none}
 body.rec #pind{display:none}
@@ -127,6 +148,7 @@ body.not-started #controls{opacity:1 !important;transform:translateY(0) !importa
   </div>
 </div>
 
+<a id="back-link" href="probably-speaking.html">&#8592; Reconsidering life choices?</a>
 <div id="prog-bar"><div id="prog-fill"></div></div>
 <div id="pind">&#9646;&#9646; paused</div>
 
