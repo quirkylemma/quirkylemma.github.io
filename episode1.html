@@ -82,7 +82,7 @@ body.rec #ctrl{display:none}
 .spd:hover{color:var(--sa)}.spd.active{color:var(--sa)}
 
 #br{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:4vw;padding:5px 0 15px;pointer-events:auto;width:100%}
-#br button{background:none;border:none;padding:0;cursor:pointer;color:var(--bh);font-size:clamp(24px,2.4vw,36px);line-height:1;transition:color .18s,transform .14s,opacity .18s;width:clamp(42px,4vw,58px);height:clamp(42px,4vw,58px);display:flex;align-items:center;justify-content:center;opacity:.65}
+#br button{background:none;border:none;padding:0;cursor:pointer;color:var(--bh);font-family:inherit;font-size:clamp(24px,2.4vw,36px);line-height:1;transition:color .18s,transform .14s,opacity .18s;width:clamp(42px,4vw,58px);height:clamp(42px,4vw,58px);display:flex;align-items:center;justify-content:center;opacity:.65}
 #br button:hover{opacity:1;transform:scale(1.16)}
 body:not(.light) #br button:hover{filter:drop-shadow(0 0 10px rgba(212,168,67,.52))}
 body.light #br button:hover{filter:drop-shadow(0 0 8px rgba(100,65,10,.38))}
@@ -158,13 +158,13 @@ body.rec #bl{display:none}
     <button class="spd" onclick="setSpeed(1.5)">1.5&times;</button>
   </div>
   <div id="br">
-    <button id="sk" onclick="toggleSkin()">&#9728;</button>
-    <button id="mu" onclick="toggleMusic()">&#9835;</button>
-    <button onclick="prevChap()">&#9198;</button>
+    <button id="sk" onclick="toggleSkin()">&#9728;&#xFE0E;</button>
+    <button id="mu" onclick="toggleMusic()">&#9835;&#xFE0E;</button>
+    <button onclick="prevChap()">&#9198;&#xFE0E;</button>
     <button id="pb2" onclick="togglePause()">&#9646;&#9646;</button>
-    <button onclick="nextChap()">&#9197;</button>
-    <button onclick="openIdx()">&#9776;</button>
-    <button onclick="resetEp()">&#8634;</button>
+    <button onclick="nextChap()">&#9197;&#xFE0E;</button>
+    <button onclick="openIdx()">&#9776;&#xFE0E;</button>
+    <button onclick="resetEp()">&#8634;&#xFE0E;</button>
   </div>
 </div>
 
