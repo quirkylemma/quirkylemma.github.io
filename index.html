@@ -103,18 +103,19 @@ var ICONS=['🧲','🎲','🗝️','🐠','🍄','🧀','🦋','🫙','🎪','�
 var MASKS='&#127917;';
 var MSGS=[
   {at:5,t:'I see you are enjoying the icons.'},
-  {at:9,t:'Alright. You can stop now.'},
-  {at:17,t:'You do know that there are better things to do?'},
-  {at:32,t:'I know of no theorem that explains your behaviour.'},
+  {at:10,t:'Alright. You can stop now.'},
+  {at:17,t:'The same icons will keep reappearing.'},
+  {at:32,t:'You do know that there are better things to do?'},
   {at:60,t:'I admire your commitment.'},
   {at:110,t:'Are you aware that this is your 110th?'},
   {at:210,t:'This is really getting obsessive now.'},
-  {at:390,t:'Even Kolmogorov did not anticipate this.'},
+  {at:390,t:'Even Kolmogorov did not anticipate this!'},
+  {at:600,t:'There exists no theorem to explain your behaviour. I looked.'},
   {at:700,t:'The probability of stopping now appears to be approaching zero.'},
   {at:850,t:'That\'s it. I have nothing further to add.'},
-  {at:950,t:'I have run out of things to say. I will now simply watch.'}
+  {at:950,t:'I have truly run out of things to say. I will now simply watch.'}
 ];
-var DODGE_START=1000, DODGE_MAX=15;
+var DODGE_START=2, DODGE_MAX=7;
 var el=document.getElementById('icon'),haEl=document.getElementById('ha'),msgEl=document.getElementById('msg');
 var taps=0,dcount=0,broken=false,msgTmr=null;
 var px=0,py=0,dodging=false;
@@ -137,35 +138,14 @@ function showHa(){
   setTimeout(function(){haEl.style.transition='opacity .3s';haEl.style.opacity='0';},420);
 }
 
-function startDodge(){
-  // Switch from CSS bottom to JS absolute coords
-  var r=el.getBoundingClientRect();
-  px=r.left; py=r.top;
-  el.style.bottom='';el.style.right='';el.style.textAlign='';
-  el.style.left='0';el.style.top='0';
-  el.style.transform='translate('+px+'px,'+py+'px)';
-  dodging=true;
-}
-
-function dodge(){
-  if(!dodging)startDodge();
-  var sz=60;
-  var vw=innerWidth,vh=innerHeight;
-  var pad=sz*2;
-  var maxX=vw-pad*2;
-  var maxY=vh*0.78-pad;
-  var nx,ny,att=0;
-  do{
-    nx=pad+Math.random()*maxX;
-    ny=pad+Math.random()*maxY;
-    att++;
-  }while(att<10&&Math.abs(nx-px)<vw*0.15&&Math.abs(ny-py)<vh*0.1);
-  // Hard clamp — never let it escape
-  px=Math.max(pad,Math.min(vw-pad,nx));
-  py=Math.max(pad,Math.min(vh*0.78,ny));
-  el.style.transition='transform .28s cubic-bezier(.1,1.6,.4,1)';
-  el.style.transform='translate('+px+'px,'+py+'px)';
-  showHa();
+function wobble(){
+  var w=0, wint=setInterval(function(){
+    w++;
+    var s=(w%2?1:-1)*10;
+    el.style.transition='transform .08s ease-in-out';
+    el.style.transform='scale('+(1+Math.abs(s)*0.008)+')';
+    if(w>=6){clearInterval(wint);el.style.transform='scale(1)';}
+  },80);
 }
 
 function smash(){
@@ -200,7 +180,7 @@ function iconTap(){
   }
   dcount++;
   if(dcount===1)el.innerHTML=MASKS;
-  dodge();
+  wobble();
   if(dcount>=DODGE_MAX)setTimeout(smash,300);
 }
 el.addEventListener('touchend',function(e){e.preventDefault();iconTap();},{passive:false});
@@ -214,7 +194,7 @@ el.addEventListener('click',function(){
   }
   dcount++;
   if(dcount===1)el.innerHTML=MASKS;
-  dodge();
+  wobble();
   if(dcount>=DODGE_MAX)setTimeout(smash,300);
 });
 </script>
