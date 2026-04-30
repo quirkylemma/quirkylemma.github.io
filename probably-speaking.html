@@ -88,129 +88,7 @@ html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',mo
   <a class="ep" href="episode1.html">
     <div class="ep-num">EP. 01</div>
     <div class="ep-info">
-      <div class="ep-title">Probability Foundations</div>
-      <div class="ep-sub">Sample spaces &nbsp;&middot;&nbsp; Events &nbsp;&middot;&nbsp; The three axioms</div>
-    </div>
-    <div class="ep-dur">~10 min</div>
-  </a>
-
-  <div class="ep coming">
-    <div class="ep-num">EP. 02</div>
-    <div class="ep-info">
-      <div class="ep-title">Random Variables</div>
-      <div class="ep-sub">Coming soon</div>
-    </div>
-    <div class="ep-dur"></div>
-  </div>
-
-  <div class="ep coming">
-    <div class="ep-num">EP. 03</div>
-    <div class="ep-info">
-      <div class="ep-title">Expectation</div>
-      <div class="ep-sub">Coming soon</div>
-    </div>
-    <div class="ep-dur"></div>
-  </div>
-
-  </div>
-
-</div>
-<div id="foot">Aubrey Squeakwell, PhD</div>
-
-<script>
-const cv=document.getElementById('grain'),gx=cv.getContext('2d');
-function rsz(){cv.width=innerWidth;cv.height=innerHeight;}rsz();
-function grain(){
-  const w=cv.width,h=cv.height,id=gx.createImageData(w,h),d=id.data;
-  for(let i=0;i<d.length;i+=4){const v=Math.random()*20;d[i]=d[i+1]=d[i+2]=v;d[i+3]=Math.random()*13;}
-  gx.putImageData(id,0,0);
-  if(Math.random()<.01){gx.fillStyle='rgba(212,168,67,'+(Math.random()*.09+.02)+')';gx.fillRect(0,Math.random()*h,w*(.2+Math.random()*.5),1);}
-  requestAnimationFrame(grain);
-}
-grain();addEventListener('resize',rsz);
-
-const brand=document.getElementById('brand');
-function glitch(){
-  const n=Math.floor(1+Math.random()*3);let i=0;
-  function step(){
-    if(i>=n*2){brand.style.opacity='1';brand.style.transform='';return;}
-    if(i%2===0){brand.style.opacity=(0.4+Math.random()*0.5).toFixed(2);brand.style.transform='translateX('+(Math.random()-.5)*4+'px)';}
-    else{brand.style.opacity='1';brand.style.transform='';}
-    i++;setTimeout(step,40+Math.random()*60);
-  }
-  step();setTimeout(glitch,3000+Math.random()*9000);
-}
-setTimeout(glitch,2000+Math.random()*4000);
-
-function pageDim(){
-  document.body.style.filter='brightness('+(0.55+Math.random()*0.3).toFixed(2)+')';
-  setTimeout(()=>{document.body.style.filter='';setTimeout(pageDim,15000+Math.random()*12000);},80+Math.random()*120);
-}
-setTimeout(pageDim,4000+Math.random()*8000);
-</script>
-</body>
-</html>}
-#back:hover{color:rgba(212,168,67,.92)}
-
-#brand{
-  font-size:clamp(18px,2.4vw,34px);
-  letter-spacing:.15em;
-  color:rgba(212,168,67,.88);
-  margin-bottom:1.5vh;
-  font-weight:400;
-}
-#sub{
-  font-size:clamp(12px,1.2vw,18px);
-  color:rgba(238,225,196,.45);
-  letter-spacing:.1em;
-  margin-bottom:1.8vh;
-}
-
-#ep-scroll{
-  width:100%;max-width:540px;
-  max-height:38vh;
-  overflow-y:auto;
-  scrollbar-width:none;
-}
-#ep-scroll::-webkit-scrollbar{display:none}
-.ep{
-  display:flex;align-items:baseline;gap:20px;
-  padding:18px 0;
-  border-bottom:1px solid rgba(212,168,67,.08);
-  text-decoration:none;
-  transition:all .18s;
-  width:100%;
-}
-.ep:first-of-type{border-top:1px solid rgba(212,168,67,.08)}
-.ep-num{font-size:clamp(9px,.78vw,11px);color:rgba(212,168,67,.32);letter-spacing:.18em;flex-shrink:0;width:56px}
-.ep-info{flex:1}
-.ep-title{font-size:clamp(15px,1.6vw,23px);color:rgba(238,225,196,.82);letter-spacing:.05em;margin-bottom:4px;transition:color .18s;font-weight:400}
-.ep-sub{font-size:clamp(11px,.95vw,14px);color:rgba(212,168,67,.38);letter-spacing:.1em}
-.ep-dur{font-size:clamp(9px,.78vw,11px);color:rgba(212,168,67,.22);letter-spacing:.1em;flex-shrink:0}
-.ep:hover .ep-title{color:rgba(212,168,67,.92)}
-.ep:hover .ep-num{color:rgba(212,168,67,.58)}
-.ep:hover .ep-dur{color:rgba(212,168,67,.45)}
-.ep.coming{cursor:default;pointer-events:none}
-.ep.coming .ep-title{color:rgba(238,225,196,.2)}
-.ep.coming .ep-num{color:rgba(212,168,67,.12)}
-
-#foot{margin-top:8vh;font-size:clamp(10px,.82vw,13px);color:rgba(212,168,67,.38);letter-spacing:.14em}
-</style>
-</head>
-<body>
-<canvas id="grain"></canvas>
-<div id="vig"></div>
-<div id="wrap">
-  <a id="back" href="index.html">&#8592; Quirky Lemma</a>
-  <div id="brand">Probably Speaking</div>
-  <div id="sub">Probability theory. Rigorously.</div>
-  <div id="aubrey">Aubrey Squeakwell, PhD</div>
-
-  <div id="ep-scroll">
-  <a class="ep" href="episode1.html">
-    <div class="ep-num">EP. 01</div>
-    <div class="ep-info">
-      <div class="ep-title">Probability Foundations</div>
+      <div class="ep-title">Briefly a Beginner</div>
       <div class="ep-sub">Sample spaces &nbsp;&middot;&nbsp; Events &nbsp;&middot;&nbsp; Axioms</div>
     </div>
     <div class="ep-dur">~10 min</div>
@@ -237,6 +115,7 @@ setTimeout(pageDim,4000+Math.random()*8000);
   </div>
 
 </div>
+<div id="foot">Aubrey Squeakwell, PhD</div>
 
 <script>
 const cv=document.getElementById('grain'),gx=cv.getContext('2d');
