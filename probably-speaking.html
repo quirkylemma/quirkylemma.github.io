@@ -1,5 +1,40 @@
-Ran a command, read a fileThis series stars Aubrey Squeakwell, PhD.
-He is fictional. His ambitions are not.  font-size:clamp(14px,1.4vw,20px);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>Probably Speaking — Quirky Lemma</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',monospace;overflow:hidden}
+#grain{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.45}
+#vig{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 50% 50%,transparent 38%,rgba(0,0,0,.65) 100%)}
+#wrap{
+  position:fixed;inset:0;z-index:1;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:flex-start;
+  padding:12vh 8% 14vh;
+  overflow:hidden;
+}
+#back{
+  font-size:clamp(13px,1.1vw,17px);
+  color:rgba(212,168,67,.52);
+  letter-spacing:.12em;
+  text-decoration:none;
+  margin-bottom:4vh;
+  transition:color .18s;
+  align-self:flex-start;
+}
+#back:hover{color:rgba(212,168,67,.88)}
+#brand{
+  font-size:clamp(22px,2.8vw,40px);
+  letter-spacing:.15em;
+  color:rgba(212,168,67,.88);
+  margin-bottom:1.8vh;
+  font-weight:400;
+}
+#sub{
+  font-size:clamp(14px,1.4vw,20px);
   color:rgba(238,225,196,.52);
   letter-spacing:.1em;
   margin-bottom:6vh;
@@ -61,6 +96,11 @@ He is fictional. His ambitions are not.  font-size:clamp(14px,1.4vw,20px);
   line-height:2;
   pointer-events:none;
 }
+
+  8%{opacity:1}
+  85%{opacity:.8}
+  100%{transform:translateY(110vh) rotate(25deg);opacity:0}
+}
 </style>
 </head>
 <body>
@@ -97,7 +137,7 @@ He is fictional. His ambitions are not.  font-size:clamp(14px,1.4vw,20px);
     </div>
   </div>
 </div>
-<div id="foot">Aubrey Squeakwell, PhD</div>
+<div id="foot">This series is brought to you by Aubrey Squeakwell, PhD.<br>He wants to get rich playing Blackjack.<br>He is also a figment of one's imagination.</div>
 <script>
 const cv=document.getElementById('grain'),gx=cv.getContext('2d');
 function rsz(){cv.width=innerWidth;cv.height=innerHeight;}rsz();
@@ -109,6 +149,8 @@ function grain(){
   requestAnimationFrame(grain);
 }
 grain();addEventListener('resize',rsz);
+
+
 const brand=document.getElementById('brand');
 function glitch(){
   const n=Math.floor(1+Math.random()*3);let i=0;
