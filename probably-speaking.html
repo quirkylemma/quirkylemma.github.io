@@ -2,52 +2,46 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
 <title>Probably Speaking — Quirky Lemma</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',monospace;overflow:hidden}
-
 #grain{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.45}
 #vig{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 50% 50%,transparent 38%,rgba(0,0,0,.65) 100%)}
-
 #wrap{
   position:fixed;inset:0;z-index:1;
   display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:5% 14%;
+  align-items:center;justify-content:flex-start;
+  padding:10vh 8% 14vh;
   overflow:hidden;
 }
-
-#foot{position:fixed;bottom:3vh;left:0;right:0;z-index:2;font-size:clamp(10px,.85vw,13px);color:rgba(212,168,67,.48);letter-spacing:.1em;text-align:center;line-height:1.85;pointer-events:none}
 #back{
-  font-size:clamp(11px,1vw,15px);
-  color:rgba(212,168,67,.55);
-  letter-spacing:.1em;
+  font-size:clamp(13px,1.1vw,17px);
+  color:rgba(212,168,67,.52);
+  letter-spacing:.12em;
   text-decoration:none;
-  margin-bottom:6vh;
+  margin-bottom:5vh;
   transition:color .18s;
   align-self:flex-start;
 }
-#back:hover{color:rgba(212,168,67,.92)}
-
+#back:hover{color:rgba(212,168,67,.88)}
 #brand{
-  font-size:clamp(18px,2.4vw,34px);
+  font-size:clamp(22px,2.8vw,40px);
   letter-spacing:.15em;
   color:rgba(212,168,67,.88);
-  margin-bottom:1.5vh;
+  margin-bottom:1.8vh;
   font-weight:400;
 }
 #sub{
-  font-size:clamp(12px,1.2vw,18px);
-  color:rgba(238,225,196,.45);
+  font-size:clamp(14px,1.4vw,20px);
+  color:rgba(238,225,196,.52);
   letter-spacing:.1em;
-  margin-bottom:8vh;
+  margin-bottom:6vh;
 }
-
 #ep-scroll{
-  width:100%;max-width:540px;
-  max-height:38vh;
+  width:100%;max-width:580px;
+  max-height:46vh;
   overflow-y:auto;
   scrollbar-width:none;
 }
@@ -55,25 +49,53 @@ html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',mo
 .ep{
   display:flex;align-items:baseline;gap:20px;
   padding:18px 0;
-  border-bottom:1px solid rgba(212,168,67,.08);
+  border-bottom:1px solid rgba(212,168,67,.1);
   text-decoration:none;
   transition:all .18s;
   width:100%;
 }
-.ep:first-of-type{border-top:1px solid rgba(212,168,67,.08)}
-.ep-num{font-size:clamp(9px,.78vw,11px);color:rgba(212,168,67,.32);letter-spacing:.18em;flex-shrink:0;width:56px}
+.ep:first-of-type{border-top:1px solid rgba(212,168,67,.1)}
+.ep-num{
+  font-size:clamp(13px,.9vw,16px);
+  color:rgba(212,168,67,.42);
+  letter-spacing:.16em;
+  flex-shrink:0;width:60px;
+}
 .ep-info{flex:1}
-.ep-title{font-size:clamp(15px,1.6vw,23px);color:rgba(238,225,196,.82);letter-spacing:.05em;margin-bottom:4px;transition:color .18s;font-weight:400}
-.ep-sub{font-size:clamp(11px,.95vw,14px);color:rgba(212,168,67,.52);letter-spacing:.1em}
-.ep-dur{font-size:clamp(9px,.78vw,11px);color:rgba(212,168,67,.38);letter-spacing:.1em;flex-shrink:0}
+.ep-title{
+  font-size:clamp(16px,1.8vw,26px);
+  color:rgba(238,225,196,.85);
+  letter-spacing:.05em;
+  margin-bottom:5px;
+  transition:color .18s;
+  font-weight:400;
+}
+.ep-sub{
+  font-size:clamp(13px,1.1vw,17px);
+  color:rgba(212,168,67,.55);
+  letter-spacing:.08em;
+}
+.ep-dur{
+  font-size:clamp(12px,.95vw,15px);
+  color:rgba(212,168,67,.42);
+  letter-spacing:.08em;
+  flex-shrink:0;
+}
 .ep:hover .ep-title{color:rgba(212,168,67,.92)}
-.ep:hover .ep-num{color:rgba(212,168,67,.58)}
-.ep:hover .ep-dur{color:rgba(212,168,67,.45)}
+.ep:hover .ep-num{color:rgba(212,168,67,.65)}
+.ep:hover .ep-dur{color:rgba(212,168,67,.65)}
 .ep.coming{cursor:default;pointer-events:none}
-.ep.coming .ep-title{color:rgba(238,225,196,.2)}
-.ep.coming .ep-num{color:rgba(212,168,67,.12)}
-
-#foot{margin-top:8vh;font-size:clamp(10px,.82vw,13px);color:rgba(212,168,67,.38);letter-spacing:.14em}
+.ep.coming .ep-title{color:rgba(238,225,196,.22)}
+.ep.coming .ep-num{color:rgba(212,168,67,.15)}
+#foot{
+  position:fixed;bottom:4vh;left:0;right:0;z-index:2;
+  font-size:clamp(13px,.9vw,16px);
+  color:rgba(212,168,67,.5);
+  letter-spacing:.08em;
+  text-align:center;
+  line-height:2;
+  pointer-events:none;
+}
 </style>
 </head>
 <body>
@@ -83,40 +105,34 @@ html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',mo
   <a id="back" href="index.html">&#8592; Quirky Lemma</a>
   <div id="brand">Probably Speaking</div>
   <div id="sub">Probability theory. Rigorously.</div>
-
   <div id="ep-scroll">
-  <a class="ep" href="episode1.html">
-    <div class="ep-num">EP. 01</div>
-    <div class="ep-info">
-      <div class="ep-title">Briefly a Beginner</div>
-      <div class="ep-sub">Sample spaces &nbsp;&middot;&nbsp; Events &nbsp;&middot;&nbsp; Axioms</div>
+    <a class="ep" href="episode1.html">
+      <div class="ep-num">EP. 01</div>
+      <div class="ep-info">
+        <div class="ep-title">Briefly a Beginner</div>
+        <div class="ep-sub">Sample spaces &nbsp;&middot;&nbsp; Events &nbsp;&middot;&nbsp; Axioms</div>
+      </div>
+      <div class="ep-dur">~10 min</div>
+    </a>
+    <div class="ep coming">
+      <div class="ep-num">EP. 02</div>
+      <div class="ep-info">
+        <div class="ep-title">Random Variables</div>
+        <div class="ep-sub">Coming soon</div>
+      </div>
+      <div class="ep-dur"></div>
     </div>
-    <div class="ep-dur">~10 min</div>
-  </a>
-
-  <div class="ep coming">
-    <div class="ep-num">EP. 02</div>
-    <div class="ep-info">
-      <div class="ep-title">Random Variables</div>
-      <div class="ep-sub">Coming soon</div>
+    <div class="ep coming">
+      <div class="ep-num">EP. 03</div>
+      <div class="ep-info">
+        <div class="ep-title">Expectation</div>
+        <div class="ep-sub">Coming soon</div>
+      </div>
+      <div class="ep-dur"></div>
     </div>
-    <div class="ep-dur"></div>
   </div>
-
-  <div class="ep coming">
-    <div class="ep-num">EP. 03</div>
-    <div class="ep-info">
-      <div class="ep-title">Expectation</div>
-      <div class="ep-sub">Coming soon</div>
-    </div>
-    <div class="ep-dur"></div>
-  </div>
-
-  </div>
-
 </div>
 <div id="foot">Aubrey Squeakwell, PhD</div>
-
 <script>
 const cv=document.getElementById('grain'),gx=cv.getContext('2d');
 function rsz(){cv.width=innerWidth;cv.height=innerHeight;}rsz();
@@ -128,7 +144,6 @@ function grain(){
   requestAnimationFrame(grain);
 }
 grain();addEventListener('resize',rsz);
-
 const brand=document.getElementById('brand');
 function glitch(){
   const n=Math.floor(1+Math.random()*3);let i=0;
@@ -141,7 +156,6 @@ function glitch(){
   step();setTimeout(glitch,3000+Math.random()*9000);
 }
 setTimeout(glitch,2000+Math.random()*4000);
-
 function pageDim(){
   document.body.style.filter='brightness('+(0.55+Math.random()*0.3).toFixed(2)+')';
   setTimeout(()=>{document.body.style.filter='';setTimeout(pageDim,15000+Math.random()*12000);},80+Math.random()*120);
