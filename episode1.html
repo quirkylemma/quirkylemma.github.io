@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
 <title>Probably Speaking — Episode 1</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -40,7 +41,7 @@ body{background:var(--bg);transition:background .4s}
 #txt-layer{position:absolute;top:0;left:0;right:0;bottom:96px;z-index:5;display:flex;align-items:center;justify-content:center;padding:5% 13%}
 #txt{font-size:clamp(15px,2.1vw,30px);text-align:center;line-height:1.8;letter-spacing:.05em;opacity:0;max-width:840px}
 .tx{color:var(--tx)}.tr{color:var(--tr)}.te{color:var(--eq);font-size:clamp(20px,3vw,44px);letter-spacing:.1em}
-.th{color:var(--hd);font-size:clamp(11px,1.3vw,18px);letter-spacing:.24em;text-transform:uppercase}
+.th{color:var(--hd);font-size:clamp(14px,1.3vw,18px);letter-spacing:.24em;text-transform:uppercase}
 .ta{color:var(--am)}
 @keyframes arrive{0%{opacity:0;filter:blur(3px)}30%{opacity:.85;filter:blur(.5px)}55%{opacity:1;filter:none}100%{opacity:1;filter:none}}
 @keyframes depart{0%{opacity:1}100%{opacity:0}}
@@ -54,22 +55,22 @@ body{background:var(--bg);transition:background .4s}
 #prog-bar{position:fixed;top:0;left:0;right:0;height:3px;z-index:30;cursor:pointer}
 #prog-fill{position:absolute;top:0;left:0;height:100%;width:0%;background:var(--prog);transition:background .4s;pointer-events:none}
 
-#pind{position:fixed;top:10px;right:16px;font-size:clamp(9px,.85vw,12px);color:var(--btn-h);letter-spacing:.2em;z-index:29;opacity:0;transition:opacity .25s;pointer-events:none}
+#pind{position:fixed;top:10px;right:16px;font-size:clamp(13px,.85vw,14px);color:var(--btn-h);letter-spacing:.2em;z-index:29;opacity:0;transition:opacity .25s;pointer-events:none}
 #pind.on{opacity:1}
 
 #controls{position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;flex-direction:column;align-items:center;background:linear-gradient(var(--ctrl-fade),var(--ctrl-bg));pointer-events:none;transition:background .4s,opacity .35s,transform .35s;opacity:0;transform:translateY(100%)}
 #controls.visible{opacity:1;transform:translateY(0)}
 #speed-row{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:2.2vw;padding:8px 0 4px;pointer-events:auto}
-.spd{background:none;border:none;cursor:pointer;font-family:'Courier New',monospace;font-size:clamp(10px,.88vw,13px);letter-spacing:.1em;color:var(--spd);transition:color .15s;padding:3px 6px;opacity:.8}
+.spd{background:none;border:none;cursor:pointer;font-family:'Courier New',monospace;font-size:clamp(13px,1vw,16px);letter-spacing:.1em;color:var(--spd);transition:color .15s;padding:3px 6px;opacity:.8}
 .spd:hover{color:var(--spd-a);opacity:1}
 .spd.active{color:var(--spd-a);opacity:1}
 #btn-row{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:4vw;padding:5px 0 15px;pointer-events:auto;width:100%}
-#btn-row button{background:none;border:none;padding:0;cursor:pointer;color:var(--btn-h);font-size:clamp(20px,2.2vw,32px);line-height:1;transition:color .18s,transform .14s,opacity .18s;width:clamp(38px,3.8vw,56px);height:clamp(38px,3.8vw,56px);display:flex;align-items:center;justify-content:center;opacity:.65}
+#btn-row button{background:none;border:none;padding:0;cursor:pointer;color:var(--btn-h);font-size:clamp(24px,2.4vw,36px);line-height:1;transition:color .18s,transform .14s,opacity .18s;width:clamp(38px,3.8vw,56px);height:clamp(38px,3.8vw,56px);display:flex;align-items:center;justify-content:center;opacity:.65}
 #btn-row button:hover{opacity:1;transform:scale(1.18)}
 body:not(.light) #btn-row button:hover{filter:drop-shadow(0 0 10px rgba(212,168,67,.52))}
 body.light #btn-row button:hover{filter:drop-shadow(0 0 8px rgba(100,65,10,.38))}
 #btn-row button:active{transform:scale(.93)}
-#pause-btn{font-size:clamp(24px,2.7vw,38px)!important;width:clamp(46px,4.4vw,64px)!important;height:clamp(46px,4.4vw,64px)!important;opacity:.8!important}
+#pause-btn{font-size:clamp(28px,3vw,42px)!important;width:clamp(46px,4.4vw,64px)!important;height:clamp(46px,4.4vw,64px)!important;opacity:.8!important}
 #pause-btn:hover{opacity:1!important}
 
 #idx-overlay{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;cursor:pointer}
@@ -79,18 +80,18 @@ body.light #txt{font-weight:500;letter-spacing:.04em}
 #idx-panel{background:var(--idx-bg);border:1px solid var(--idx-bd);padding:22px 26px;min-width:260px;max-width:400px;width:88%;max-height:68vh;overflow-y:auto;cursor:default;scrollbar-width:thin;scrollbar-color:var(--idx-bd) transparent;transition:background .4s,border-color .4s}
 #idx-panel::-webkit-scrollbar{width:3px}
 #idx-panel::-webkit-scrollbar-thumb{background:var(--idx-bd)}
-#idx-head{font-size:clamp(8px,.72vw,11px);color:var(--idx-tm);letter-spacing:.22em;text-transform:uppercase;margin-bottom:14px}
+#idx-head{font-size:clamp(12px,.72vw,13px);color:var(--idx-tm);letter-spacing:.22em;text-transform:uppercase;margin-bottom:14px}
 .idx-row{display:flex;align-items:baseline;gap:10px;padding:7px 0;border-bottom:1px solid var(--idx-lbl);cursor:pointer}
 .idx-row:last-child{border-bottom:none}
 .idx-row:hover .idx-lbl{color:var(--btn-h)}
 .idx-row:hover .idx-tm2{color:var(--idx-tx)}
-.idx-tm2{font-size:clamp(9px,.75vw,11px);color:var(--idx-tm);letter-spacing:.06em;flex-shrink:0;width:38px}
-.idx-lbl{font-size:clamp(11px,.92vw,14px);color:var(--idx-tx);letter-spacing:.05em}
+.idx-tm2{font-size:clamp(12px,.75vw,13px);color:var(--idx-tm);letter-spacing:.06em;flex-shrink:0;width:38px}
+.idx-lbl{font-size:clamp(13px,.92vw,16px);color:var(--idx-tx);letter-spacing:.05em}
 .idx-row.now .idx-lbl{color:var(--btn-h)}
 .idx-row.now .idx-tm2{color:var(--idx-tx)}
 
 #start{position:fixed;top:0;left:0;right:0;bottom:0;z-index:20;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;padding:5% 14%;transition:background .4s}
-.s-head{font-size:clamp(11px,1.3vw,18px);color:var(--hd);letter-spacing:.24em;text-transform:uppercase;text-align:center;margin-bottom:3.5vh}
+.s-head{font-size:clamp(14px,1.3vw,18px);color:var(--hd);letter-spacing:.24em;text-transform:uppercase;text-align:center;margin-bottom:3.5vh}
 .s-sub{font-size:clamp(15px,2.1vw,30px);color:var(--tx);letter-spacing:.05em;text-align:center;margin-bottom:3.8vh}
 .s-go{font-size:clamp(15px,2.1vw,30px);color:var(--tr);letter-spacing:.05em;text-align:center;animation:pulse 2.4s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.52}50%{opacity:1}}
@@ -98,18 +99,18 @@ body.light #txt{font-weight:500;letter-spacing:.04em}
 #back-link{
   position:fixed;top:10px;left:14px;z-index:41;
   font-family:'Courier New',monospace;
-  font-size:clamp(11px,1vw,15px);
-  color:rgba(212,168,67,.55);
+  font-size:clamp(14px,1.1vw,18px);
+  color:rgba(212,168,67,.62);
   letter-spacing:.1em;
   text-decoration:none;
   transition:color .18s;
   pointer-events:auto;
 }
-#back-link:hover{color:rgba(212,168,67,.92)}
+#back-link:hover{color:rgba(212,168,67,.95)}
 body.rec #back-link{
   position:fixed;top:10px;left:14px;z-index:41;
   font-family:'Courier New',monospace;
-  font-size:clamp(11px,1vw,15px);
+  font-size:clamp(14px,1vw,17px);
   color:rgba(212,168,67,.55);
   letter-spacing:.1em;
   text-decoration:none;
@@ -148,7 +149,7 @@ body.not-started #controls{opacity:1 !important;transform:translateY(0) !importa
   </div>
 </div>
 
-<a id="back-link" href="probably-speaking.html">&#8592; Exit, if you wish.</a>
+<a id="back-link" href="probably-speaking.html">&#8592; Exit, if you wish</a>
 <div id="prog-bar"><div id="prog-fill"></div></div>
 <div id="pind">&#9646;&#9646; paused</div>
 
@@ -487,7 +488,7 @@ let AC,mg,padI=0;
 const CHORDS=[[196,246.9,329.6],[164.8,220,293.7],[185,246.9,311.1],[196,261.6,329.6]];
 function initAudio(){
   if(AC)return;
-  AC=new(window.AudioContext||window.webkitAudioContext)();
+  AC=new(window.AudioContext||window.webkitAudioContext)();AC.resume();
   const co=AC.createDynamicsCompressor();co.threshold.value=-20;co.ratio.value=4;co.connect(AC.destination);
   mg=AC.createGain();mg.gain.value=0.24;mg.connect(co);
   sPad();sMel();sTick();
@@ -679,9 +680,8 @@ function showControls(){
   document.getElementById('controls').classList.add('visible');
   clearTimeout(hideTimer);
   hideTimer=setTimeout(()=>{
-    // Only hide if mouse not near bottom
     document.getElementById('controls').classList.remove('visible');
-  },2200);
+  },3500);
 }
 document.addEventListener('mousemove',e=>{
   const fromBottom=window.innerHeight-e.clientY;
@@ -702,6 +702,13 @@ function syncControlsVis(){
   }
 }
 // Show briefly on keyboard use — merged into main handler
+
+// iOS AudioContext unlock
+document.addEventListener('touchstart', function iosUnlock(){
+  if(AC){AC.resume();}
+  document.removeEventListener('touchstart', iosUnlock);
+}, {once:true});
+
 document.addEventListener('keydown',e=>{
   showControls();
   if(e.shiftKey&&e.key==='R'){e.preventDefault();if(!running)beginRec();else document.body.classList.toggle('rec');}
