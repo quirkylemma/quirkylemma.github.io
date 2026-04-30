@@ -33,7 +33,7 @@ html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',mo
   margin-bottom:9vh;
 }
 
-#foot{margin-top:8vh;font-size:clamp(10px,.82vw,13px);color:rgba(212,168,67,.38);letter-spacing:.14em;text-align:center;line-height:1.9}
+#foot{position:fixed;bottom:3vh;left:0;right:0;z-index:2;font-size:clamp(9px,.78vw,12px);color:rgba(212,168,67,.32);letter-spacing:.1em;text-align:center;line-height:1.85;pointer-events:none}
 #series-scroll{
   width:100%;max-width:540px;
   max-height:40vh;
@@ -74,7 +74,7 @@ html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',mo
 <div id="vig"></div>
 <div id="wrap">
   <div id="brand">Welcome to Quirky Lemma</div>
-  <div id="sub">Econometrics. Character Supplied.</div>
+  <div id="sub">Econometrics. With Character.</div>
 
   <div id="series-scroll">
   <a class="series" href="probably-speaking.html">
@@ -86,9 +86,9 @@ html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',mo
     <div class="series-title">More soon.</div>
     <div class="series-sub"></div>
   </div>
-  <div id="foot">This website was created by Ragvir Sabharwal, PhD.<br>He is aware of what he has done.</div>
   </div>
 </div>
+<div id="foot">Quirky Lemma was created by Ragvir Sabharwal, PhD, a man, not a mouse.<br>All characters are fictional. One is also a mouse.<br>Ragvir is aware of what he has done.</div>
 
 <script>
 const cv=document.getElementById('grain'),gx=cv.getContext('2d');
