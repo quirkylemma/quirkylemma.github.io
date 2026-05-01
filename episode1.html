@@ -1,40 +1,673 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
-<title>Probably Speaking — Episode 1</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;height:100%;overflow:hidden;font-family:'Courier New',monospace}
-:root{
-  --bg:#000;--tx:rgba(238,225,196,.92);--tr:rgba(210,198,172,.80);
-  --eq:#D4A843;--hd:rgba(212,168,67,.68);--am:#D4A843;
-  --cb:rgba(0,0,0,.92);--cf:rgba(0,0,0,0);
-  --bh:rgba(212,168,67,.92);--bd:rgba(212,168,67,.45);
-  --sd:rgba(212,168,67,.28);--sa:rgba(212,168,67,.85);
-  --pg:rgba(212,168,67,.5);
-  --ib:rgba(6,4,2,.96);--id:rgba(212,168,67,.22);
-  --it:rgba(212,168,67,.62);--im:rgba(212,168,67,.34);--il:rgba(212,168,67,.1);
-  --vg:rgba(0,0,0,.65);--gr:.5;
+% ═══════════════════════════════════════════════════════════════════
+% ECONOMETRICS DISCOVERED — EPISODE AUTHORING TEMPLATE
+% ───────────────────────────────────────────────────────────────────
+% Write your episode here. Claude reads this file and builds the
+% interactive HTML product from it. Every command below maps to a
+% specific display behaviour in the product.
+%
+% HOW TO USE
+%   1. Fill in the metadata block below.
+%   2. Write your episode using the semantic commands.
+%   3. Send the .tex file to Claude — it will build the HTML.
+%
+% COMPILE?  You can compile this with pdflatex for a readable
+%           script PDF. The custom commands render as styled text.
+% ═══════════════════════════════════════════════════════════════════
+
+\documentclass[12pt, a4paper]{article}
+
+% ── PACKAGES ────────────────────────────────────────────────────────
+\usepackage[margin=2.8cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{parskip}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{titlesec}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{soul}   % for \hl highlighting
+
+\setstretch{1.4}
+\setlength{\parskip}{7pt}
+
+% ── COLOUR PALETTE ──────────────────────────────────────────────────
+\definecolor{aubreygold}  {RGB}{120, 80, 15}     % Aubrey voice
+\definecolor{textblue}    {RGB}{20,  40, 90}      % screen text
+\definecolor{mathgreen}   {RGB}{10,  70, 35}      % equations
+\definecolor{popupcol}    {RGB}{80,  20, 80}      % popup panels
+\definecolor{pausered}    {RGB}{160, 20, 20}      % stage directions
+\definecolor{headgold}    {RGB}{160,110, 20}      % section headers
+\definecolor{notegrey}    {RGB}{90,  90, 90}      % production notes
+\definecolor{rulegold}    {RGB}{196,152, 56}      % rule lines
+\definecolor{bgparchment} {RGB}{252,248,238}      % parchment bg
+
+% ── SECTION STYLE ───────────────────────────────────────────────────
+\titleformat{\section}[block]
+  {\large\bfseries\color{headgold}}
+  {}{0pt}{}
+  [{\color{rulegold}\vspace{2pt}\hrule height 0.8pt}\vspace{4pt}]
+
+\titleformat{\subsection}[block]
+  {\normalsize\bfseries\color{notegrey}}{}{0pt}{}
+
+% ═══════════════════════════════════════════════════════════════════
+%  SEMANTIC COMMANDS — these are what you write in your episode
+% ═══════════════════════════════════════════════════════════════════
+
+% ── 1. AUBREY SPEAKING ──────────────────────────────────────────────
+% Aubrey's voice-over. Warm, dry, precise.
+% Maps to → character voice-over in product (amber text on screen)
+%
+\newcommand{\aubrey}[1]{%
+  \vspace{5pt}%
+  \noindent\textbf{\color{aubreygold}AUBREY\,:}\\[2pt]
+  \noindent{\color{aubreygold}\itshape #1}%
+  \vspace{5pt}%
 }
-body.light{
-  --bg:#F5EDD6;--tx:rgba(30,16,2,.96);--tr:rgba(60,35,8,.85);
-  --eq:#6B4210;--hd:rgba(80,50,8,.82);--am:#6B4210;
-  --cb:rgba(240,230,210,.96);--cf:rgba(240,230,210,0);
-  --bh:rgba(100,65,10,.9);--bd:rgba(100,65,10,.45);
-  --sd:rgba(100,65,10,.32);--sa:rgba(100,65,10,.85);
-  --pg:rgba(139,94,26,.55);
-  --ib:rgba(248,242,225,.98);--id:rgba(139,94,26,.25);
-  --it:rgba(80,50,15,.72);--im:rgba(100,65,10,.38);--il:rgba(100,65,10,.1);
-  --vg:rgba(240,230,210,.15);--gr:.06;
+
+% ── 2. SCREEN TEXT ──────────────────────────────────────────────────
+% Plain written text that appears on screen. No voice-over.
+% Maps to → text card in product (appears, fades, waits)
+%
+\newcommand{\stext}[1]{%
+  \vspace{5pt}%
+  \noindent\textbf{\color{textblue}TEXT\,:}\\[2pt]
+  \noindent{\color{textblue} #1}%
+  \vspace{5pt}%
 }
-body{background:var(--bg);transition:background .4s}
-#stage{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);transition:background .4s}
-#grain{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;pointer-events:none;z-index:2;opacity:var(--gr);transition:opacity .4s}
-#vig{position:absolute;top:0;left:0;right:0;bottom:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,transparent 36%,var(--vg) 100%)}
+
+% ── 3. POPUP EQUATION PANEL ─────────────────────────────────────────
+% A full mathematical derivation displayed ONE LINE AT A TIME.
+% Each line waits for a click before the next appears.
+% Use \pline{} for each successive line inside \popup{}.
+% Maps to → parchment popup panel with click-through lines
+%
+\newenvironment{popup}[1]{% #1 = panel title
+  \vspace{8pt}%
+  \begin{mdframed}[
+    backgroundcolor=bgparchment,
+    linecolor=rulegold, linewidth=1pt,
+    leftmargin=0pt, rightmargin=0pt,
+    innerleftmargin=16pt, innerrightmargin=16pt,
+    innertopmargin=10pt, innerbottommargin=10pt
+  ]%
+  \noindent{\color{popupcol}\bfseries POPUP PANEL\quad\textbar\quad}%
+  {\color{headgold}\bfseries #1}\\[4pt]
+  {\color{popupcol}\small\itshape(Each \texttt{\textbackslash pline} appears on click)}%
+  \vspace{6pt}\\%
+}{%
+  \end{mdframed}%
+  \vspace{8pt}%
+}
+
+% One line inside a popup panel (click to reveal)
+\newcommand{\pline}[1]{%
+  \noindent{\color{mathgreen}$\triangleright$\quad}%
+  {\color{mathgreen} #1}\\[6pt]%
+}
+
+% ── 4. INLINE FORMAL EXPLANATION ────────────────────────────────────
+% A formal prose explanation block. Can contain inline math.
+% Renders on a light background. No click-through — all visible.
+% Maps to → math-block prose in the panel (Basic/Intermediate tab)
+%
+\newenvironment{formal}{%
+  \vspace{6pt}%
+  \begin{mdframed}[
+    backgroundcolor=bgparchment,
+    linecolor=rulegold, linewidth=0.6pt,
+    leftline=true, rightline=false, topline=false, bottomline=false,
+    linewidth=2pt,
+    innerleftmargin=14pt, innerrightmargin=10pt,
+    innertopmargin=8pt, innerbottommargin=8pt
+  ]%
+  \noindent{\color{headgold}\small\bfseries FORMAL\,:}\\[4pt]%
+  \color{textblue}%
+}{%
+  \end{mdframed}%
+  \vspace{6pt}%
+}
+
+% ── 5. DISPLAY EQUATION (FULL SCREEN) ───────────────────────────────
+% A single equation displayed large, centred, on its own card.
+% Maps to → full-panel equation display (waits for click)
+%
+\newcommand{\seqn}[2][]{%
+  % #1 = optional label/title, #2 = LaTeX math
+  \vspace{8pt}%
+  \begin{mdframed}[
+    backgroundcolor=bgparchment,
+    linecolor=rulegold, linewidth=1pt,
+    innerleftmargin=18pt, innerrightmargin=18pt,
+    innertopmargin=10pt, innerbottommargin=10pt
+  ]%
+  \ifx\relax#1\relax\else
+    {\color{headgold}\small\bfseries #1}\\[4pt]%
+  \fi
+  \noindent{\color{mathgreen}}%
+  \[ #2 \]%
+  \end{mdframed}%
+  \vspace{8pt}%
+}
+
+% ── 6. SECTION HEADER CARD ──────────────────────────────────────────
+% A topic header displayed on screen between sections.
+% Maps to → full-width section title card
+%
+\newcommand{\shead}[1]{%
+  \vspace{10pt}%
+  \begin{mdframed}[
+    backgroundcolor=bgparchment,
+    linecolor=rulegold, linewidth=1.2pt,
+    innerleftmargin=14pt, innerrightmargin=14pt,
+    innertopmargin=8pt, innerbottommargin=8pt
+  ]%
+  {\color{headgold}\large\bfseries #1}%
+  \end{mdframed}%
+  \vspace{6pt}%
+}
+
+% ── 7. PAUSE / STAGE DIRECTION ──────────────────────────────────────
+% A timing note or stage direction. Not displayed in product.
+% Maps to → pause or timing instruction for animation
+%
+\newcommand{\pause}{%
+  \vspace{5pt}%
+  \noindent{\color{pausered}\itshape [PAUSE]}%
+  \vspace{5pt}%
+}
+
+\newcommand{\stage}[1]{%
+  \vspace{4pt}%
+  \noindent{\color{pausered}\itshape [#1]}%
+  \vspace{4pt}%
+}
+
+% ── 8. PRODUCTION NOTE ──────────────────────────────────────────────
+% Notes to Claude or to production — not rendered in product.
+%
+\newcommand{\note}[1]{%
+  \vspace{3pt}%
+  \noindent{\color{notegrey}\small\textbf{Note: }#1}%
+  \vspace{3pt}%
+}
+
+% ── 9. RAGVIR'S NARRATIVE ───────────────────────────────────────────
+% The deeper personal reflection, accessed via Ragvir's Narrative
+% button at the bottom of the panel. First-person, warmer register.
+% Maps to → narrative tab content in panel
+%
+\newenvironment{narrative}{%
+  \vspace{6pt}%
+  \begin{mdframed}[
+    backgroundcolor=bgparchment,
+    linecolor=aubreygold, linewidth=1pt,
+    innerleftmargin=14pt, innerrightmargin=14pt,
+    innertopmargin=8pt, innerbottommargin=8pt
+  ]%
+  \noindent{\color{aubreygold}\small\bfseries RAGVIR'S NARRATIVE\,:}\\[4pt]%
+  \color{textblue}%
+}{%
+  \end{mdframed}%
+  \vspace{6pt}%
+}
+
+% ── 10. WORKED EXAMPLE ──────────────────────────────────────────────
+% A concrete example block shown in the Basic tab.
+% Maps to → worked example section in panel
+%
+\newenvironment{example}[1][Worked Example]{%
+  \vspace{6pt}%
+  \begin{mdframed}[
+    backgroundcolor=bgparchment,
+    linecolor=mathgreen, linewidth=0.6pt,
+    leftline=true, rightline=false, topline=false, bottomline=false,
+    linewidth=2pt,
+    innerleftmargin=14pt, innerrightmargin=10pt,
+    innertopmargin=8pt, innerbottommargin=8pt
+  ]%
+  \noindent{\color{mathgreen}\small\bfseries #1\,:}\\[4pt]%
+  \color{textblue}%
+}{%
+  \end{mdframed}%
+  \vspace{6pt}%
+}
+
+% ── COMMAND QUICK-REFERENCE ─────────────────────────────────────────
+% \aubrey{text}               Aubrey speaking (voice-over)
+% \stext{text}                Screen text (no voice, fades in)
+% \seqn[title]{math}         Full-screen equation card
+% \shead{text}                Section header card
+% \begin{popup}{title}        Click-through math derivation panel
+%   \pline{math or text}      One line per click inside popup
+% \end{popup}
+% \begin{formal}              Formal prose with inline math
+% \end{formal}
+% \begin{example}[label]      Worked example block
+% \end{example}
+% \begin{narrative}           Ragvir's deeper narrative (panel footer)
+% \end{narrative}
+% \pause                      Timing pause [PAUSE]
+% \stage{text}                Stage direction [text]
+% \note{text}                 Production note (not in product)
+% ════════════════════════════════════════════════════════════════════
+
+\begin{document}
+
+% ── METADATA ────────────────────────────────────────────────────────
+\begin{center}
+  {\LARGE\bfseries\color{headgold} Probably Speaking}\\[6pt]
+  {\large\color{notegrey} Episode 1}\\[4pt]
+  {\large\bfseries Sample Space, Events, and the Axioms of Probability}\\[8pt]
+  {\color{rulegold}\hrule height 1pt}\\[6pt]
+  {\normalsize\color{notegrey}
+    Series: Probably Speaking \quad
+    Topic: Probability theory \quad
+    Character: Aubrey Squeakwell PhD\\[2pt]
+    Target runtime: 10--12 minutes \quad
+    Version: 2
+  }\\[6pt]
+  {\color{rulegold}\hrule height 0.5pt}
+\end{center}
+
+\vspace{12pt}
+
+% ════════════════════════════════════════════════════════════════════
+\section*{Opening}
+% ════════════════════════════════════════════════════════════════════
+
+\aubrey{Allow me to introduce myself.}
+
+\aubrey{I'm Aubrey Squeakwell, PhD.}
+
+\aubrey{The PhD is in Wine and Cheese.}
+
+\aubrey{I am a mouse.}
+
+\aubrey{These facts are not unrelated.}
+
+\pause
+
+\aubrey{I have a plan.}
+\aubrey{It has two elements.}
+
+\aubrey{A casino.}
+\aubrey{A winning strategy.}
+
+\aubrey{The plan is foolproof.}
+
+\pause
+
+\aubrey{For I am no fool.}
+
+\aubrey{And I will study all proofs.}
+
+\pause
+
+\aubrey{I have one week.}
+\pause
+
+\aubrey{The Gambler's Ruin. Friday. Nine o'clock.}
+
+\pause
+
+\aubrey{I have booked the observatory for one week.}
+
+\aubrey{I am, by any reasonable measure, prepared.}
+
+
+% ════════════════════════════════════════════════════════════════════
+\section*{Where to Begin?}
+% ════════════════════════════════════════════════════════════════════
+
+\shead{Where to Begin?}
+
+\stext{We begin at the beginning.}
+
+\stext{Before we assign probabilities to anything,
+we need to know what can happen.}
+
+\stext{This sounds obvious.}
+
+\aubrey{It is not always obvious.}
+
+\aubrey{I speak from experience.}
+
+
+% ════════════════════════════════════════════════════════════════════
+\section*{Experiment}
+% ════════════════════════════════════════════════════════════════════
+
+\shead{Experiment}
+
+\begin{formal}
+An \textbf{experiment} is any action or phenomenon inherently
+characterised by uncertainty. Tossing a coin is an experiment.
+Rolling a die is an experiment. Playing Blackjack is an experiment.
+\end{formal}
+
+\aubrey{An experiment is not, as I originally understood it,
+something you do in a laboratory wearing a coat.}
+
+\aubrey{Although I do own a coat.}
+
+\stext{A sample outcome, $\omega$, is any possible result
+of performing the experiment.}
+
+\stext{The collection of all sample outcomes is called the
+\textbf{sample space}, denoted $\Omega$.}
+
+\seqn[Coin toss example]{\Omega = \{H,\, T\}}
+
+\stext{The sample space must be \textbf{exhaustive}.
+Every possible outcome must appear. No outcome may be omitted.}
+
+\aubrey{My initial thought was that the Blackjack $\Omega$
+contained one outcome.}
+
+\aubrey{$\Omega = \{ \text{Win}\}$.}
+
+\aubrey{Proof by wishful thinking.}
+
+\aubrey{I have since been informed that this is not how probability works.}
+
+
+% ════════════════════════════════════════════════════════════════════
+\section*{Event}
+% ════════════════════════════════════════════════════════════════════
+
+\shead{Event}
+
+\begin{formal}
+An \textbf{event} is any subset of the sample space.
+Any subset counts — including the empty set $\emptyset$
+and $\Omega$ itself.
+\end{formal}
+
+\begin{example}[Die roll events]
+If $\Omega = \{1,2,3,4,5,6\}$, then:
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item $A = \{2,4,6\}$ — rolling an even number — is an event.
+  \item $B = \{5,6\}$ — rolling five or six — is also an event.
+\end{itemize}
+\end{example}
+
+\aubrey{The event ``something happens'' is $\Omega$ itself.}
+
+\aubrey{The event ``I make a fortune in Blackjack'' is also an event.}
+
+\aubrey{Its probability remains, for now, to be determined.}
+
+
+% ════════════════════════════════════════════════════════════════════
+\section*{Mutual Exclusivity}
+% ════════════════════════════════════════════════════════════════════
+
+\shead{Mutual Exclusivity}
+
+\begin{formal}
+Two events are \textbf{mutually exclusive} (disjoint) if they
+cannot both occur on the same trial:
+\[A \cap B = \emptyset\]
+Rolling an even number and rolling five: mutually exclusive.
+Rolling an even number and rolling greater than four: not
+mutually exclusive — six belongs to both.
+\end{formal}
+
+\aubrey{``My plan succeeds'' and ``My plan fails'' are mutually exclusive.}
+
+\aubrey{``My plan succeeds'' and ``The dealer realises I am a mouse''
+are, I have been advised, not mutually exclusive.}
+
+\aubrey{This is a complication I have not yet modelled.}
+
+\stext{Mutual exclusivity is not independence.
+Independence is a concept we will meet later.}
+
+\aubrey{Hopefully before Friday.}
+
+
+% ════════════════════════════════════════════════════════════════════
+\section*{Probability — Definition}
+% ════════════════════════════════════════════════════════════════════
+
+\shead{Probability}
+
+\stext{Next, we define what a probability actually is.
+Not informally. Formally.}
+
+\begin{formal}
+Let $\Omega$ be a sample space. A \textbf{probability function}
+$P$ assigns to each event $A$ a real number $P(A)$,
+defined by three axioms.
+\end{formal}
+
+\aubrey{Three axioms. Three defining features.}
+
+\aubrey{Not twelve. Not a paragraph of conditions. Three.}
+
+\aubrey{Kolmogorov published them in 1933
+and they have not required revision.}
+
+\aubrey{I find this reassuring.}
+
+
+% ════════════════════════════════════════════════════════════════════
+\section*{Axiom 1 — Non-negativity}
+% ════════════════════════════════════════════════════════════════════
+
+\shead{Axiom 1 --- Non-negativity}
+
+\seqn{P(A) \geq 0}
+
+\stext{Probabilities cannot be negative.
+Zero means impossible. Below zero is nonsensical.}
+
+\aubrey{I assigned a negative probability
+to the event ``bust on the first draw''
+in my preliminary calculations.}
+
+\pause
+
+\aubrey{The value was $-0.3$.}
+
+\pause
+
+\aubrey{I have corrected this.}
+
+\aubrey{We shall not discuss it further.}
+
+
+% ════════════════════════════════════════════════════════════════════
+\section*{Axiom 2 — Normalisation}
+% ════════════════════════════════════════════════════════════════════
+
+\shead{Axiom 2 --- Normalisation}
+
+\seqn{P(\Omega) = 1}
+
+\stext{The probability of the entire sample space is one.
+Something must happen. Every outcome in $\Omega$ occurs with
+total probability exactly one.}
+
+\aubrey{When I summed my preliminary probability assignments,
+the total was $0.94$.}
+
+\aubrey{I had apparently lost six percent of reality.}
+
+\aubrey{A basic error. I was briefly a beginner.}
+
+
+% ════════════════════════════════════════════════════════════════════
+\section*{Axiom 3 — Countable Additivity}
+% ════════════════════════════════════════════════════════════════════
+
+\shead{Axiom 3 --- Countable Additivity}
+
+% This is a click-through popup panel — each \pline waits for click
+\begin{popup}{Building up Axiom 3}
+  \pline{Start with two mutually exclusive events $A$ and $B$.}
+  \pline{They cannot both occur: $A \cap B = \emptyset$.}
+  \pline{Their probabilities must simply add:}
+  \pline{P(A \cup B) = P(A) + P(B)}
+  \pline{More generally, for any countable mutually exclusive sequence:}
+  \pline{P\!\left(A_1 \cup A_2 \cup \cdots\right) = P(A_1) + P(A_2) + \cdots}
+  \pline{No double counting. No adjustment. Just addition.}
+\end{popup}
+
+\aubrey{This is the axiom that does the most work.}
+
+\aubrey{It is also the axiom most frequently misunderstood
+by people who are confident they already understand probability.}
+
+\aubrey{I was one of those people. I am no longer.}
+
+\stext{Every property of a probability function follows
+from these three axioms. Every property. Including $P(A) \leq 1$.}
+
+
+% ════════════════════════════════════════════════════════════════════
+\section*{Properties}
+% ════════════════════════════════════════════════════════════════════
+
+\shead{Property 1}
+
+\seqn{P(\emptyset) = 0}
+
+\aubrey{It will not always be this easy.}
+
+% ─────────────────────────────────────────────
+
+\shead{Property 2 --- Complement}
+
+\begin{popup}{Proving the complement rule}
+  \pline{\text{We know } P(\Omega) = 1 \text{ (Axiom 2).}}
+  \pline{\text{Write } \Omega = A \cup A^c, \text{ and these are disjoint.}}
+  \pline{\text{By Axiom 3: } P(A \cup A^c) = P(A) + P(A^c).}
+  \pline{\text{Therefore: } 1 = P(A) + P(A^c).}
+  \pline{P(A^c) = 1 - P(A) \qquad \square}
+\end{popup}
+
+\aubrey{$P(\text{I do not embarrass myself at Blackjack})
+= 1 - P(\text{I do embarrass myself})$.}
+
+\aubrey{I am working on the right-hand side.}
+
+% ─────────────────────────────────────────────
+
+\shead{Property 3 --- Inclusion-Exclusion}
+
+\seqn[When events overlap]{P(A \cup B) = P(A) + P(B) - P(A \cap B)}
+
+\begin{formal}
+If $A$ and $B$ share outcomes, simple addition counts those
+outcomes twice. We subtract the intersection once.
+This is the \textbf{inclusion-exclusion principle}.
+\end{formal}
+
+\aubrey{Several of my early calculations omitted this correction.}
+
+\aubrey{They were wrong in ways that were difficult to detect
+until the sum of probabilities exceeded 1.}
+
+\aubrey{At which point they became easy to detect.}
+
+
+% ════════════════════════════════════════════════════════════════════
+\section*{Closing}
+% ════════════════════════════════════════════════════════════════════
+
+\stext{Three axioms.\\
+Non-negativity. Normalisation. Countable Additivity.\\
+Every theorem in probability theory follows from these three statements.}
+
+\aubrey{I have a complete framework. An axiomatic framework.}
+
+\aubrey{What I do not yet have is a winning strategy.}
+
+\aubrey{I will need to study random variables.}
+
+\aubrey{I have booked the observatory for one week.
+Day one is complete. I am on schedule.}
+
+\pause
+
+\aubrey{I am going to be fine.}
+
+\pause
+
+\stext{He was not, as yet, fine.\\
+But he had a complete axiomatic framework.\\
+This is more than most people have.}
+
+\stext{\textit{Episode 2: Random Variables.}}
+
+
+% ════════════════════════════════════════════════════════════════════
+% RAGVIR'S NARRATIVE — appears in panel footer, not in main screen flow
+% ════════════════════════════════════════════════════════════════════
+
+\begin{narrative}
+I remember the first time the definition of a sample space really
+landed for me. I was a PhD student trying to model something
+genuinely uncertain, and I kept collapsing outcomes together that
+should have been kept apart. The sample space isn't just a
+formality — it's the thing that forces you to think clearly about
+what can actually happen before you start assigning numbers to it.
+
+Aubrey's mistake — a sample space with one element, ``win'' — is not
+a joke. I have seen that exact error in undergraduate work, and
+occasionally in published papers dressed up in more sophisticated
+language. The discipline of writing down $\Omega$ carefully is where
+probability thinking actually begins.
+\end{narrative}
+
+
+% ════════════════════════════════════════════════════════════════════
+\newpage
+\section*{Production Notes}
+% ════════════════════════════════════════════════════════════════════
+
+\note{The \texttt{\textbackslash pause} markers are critical for the $-0.3$
+scene. Hold after ``in my preliminary calculations'' (full beat), hold
+again after ``The value was $-0.3$'' (let the audience wince), then
+deliver the correction.}
+
+\note{The Axiom 3 popup and Complement proof popup are both
+click-through parchment panels. Each \texttt{\textbackslash pline}
+reveals on tap/click.}
+
+\note{Ragvir's Narrative block maps to the footer button in the panel
+— it does not appear in the main screen animation flow.}
+
+\subsection*{Equations summary}
+\begin{itemize}[leftmargin=1.5em, itemsep=3pt]
+  \item $\Omega = \{H,\,T\}$
+  \item $A = \{2,4,6\},\quad B = \{5,6\}$
+  \item $A \cap B = \emptyset$
+  \item $P(A) \geq 0$
+  \item $P(\Omega) = 1$
+  \item $P(A \cup B) = P(A) + P(B)$
+  \item $P(A_1 \cup A_2 \cup \cdots) = P(A_1) + P(A_2) + \cdots$
+  \item $P(\emptyset) = 0$
+  \item $P(A^c) = 1 - P(A)$
+  \item $P(A \cup B) = P(A) + P(B) - P(A \cap B)$
+\end{itemize}
+
+\vspace{14pt}
+{\color{rulegold}\hrule height 0.6pt}
+\vspace{6pt}
+{\small\color{notegrey}
+  Probably Speaking $\cdot$ Episode 1 $\cdot$
+  Ragvir Sabharwal, PhD $\cdot$
+  Copyright \copyright\ 2026 Quirky Lemma. All rights reserved.
+}
+
+\end{document}#vig{position:absolute;top:0;left:0;right:0;bottom:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,transparent 36%,var(--vg) 100%)}
 #rl{position:absolute;top:0;left:0;right:0;bottom:0;z-index:4;opacity:0;pointer-events:none;background:var(--bg);padding:4% 6%}
 #rl img{width:100%;height:100%;object-fit:contain;object-position:center;background:var(--bg)}
 #tl{position:absolute;top:0;left:0;right:0;bottom:96px;z-index:5;display:flex;align-items:center;justify-content:center;padding:5% 13%}
