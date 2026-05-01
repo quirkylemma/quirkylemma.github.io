@@ -4,17 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
 <title>Probably Speaking — Episode 1</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
 <style>
-
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;height:100%;overflow:hidden;font-family:'Courier New',monospace}
-
 :root{
   --bg:#000;--tx:rgba(238,225,196,.92);--tr:rgba(210,198,172,.80);
   --eq:#D4A843;--hd:rgba(212,168,67,.68);--am:#D4A843;
-  --cb:rgba(0,0,0,.9);--cf:rgba(0,0,0,0);
+  --cb:rgba(0,0,0,.92);--cf:rgba(0,0,0,0);
   --bh:rgba(212,168,67,.92);--bd:rgba(212,168,67,.45);
-  --sd:rgba(212,168,67,.3);--sa:rgba(212,168,67,.85);
+  --sd:rgba(212,168,67,.28);--sa:rgba(212,168,67,.85);
   --pg:rgba(212,168,67,.5);
   --ib:rgba(6,4,2,.96);--id:rgba(212,168,67,.22);
   --it:rgba(212,168,67,.62);--im:rgba(212,168,67,.34);--il:rgba(212,168,67,.1);
@@ -32,99 +32,126 @@ body.light{
   --vg:rgba(240,230,210,.15);--gr:.06;
 }
 body{background:var(--bg);transition:background .4s}
-
-/* STAGE */
-#stage{position:fixed;inset:0;background:var(--bg);transition:background .4s}
-#grain{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;opacity:var(--gr);transition:opacity .4s}
-#vig{position:absolute;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,transparent 36%,var(--vg) 100%)}
+#stage{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);transition:background .4s}
+#grain{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;pointer-events:none;z-index:2;opacity:var(--gr);transition:opacity .4s}
+#vig{position:absolute;top:0;left:0;right:0;bottom:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,transparent 36%,var(--vg) 100%)}
 #rl{position:absolute;top:0;left:0;right:0;bottom:0;z-index:4;opacity:0;pointer-events:none;background:var(--bg);padding:4% 6%}
 #rl img{width:100%;height:100%;object-fit:contain;object-position:center;background:var(--bg)}
-
-/* TEXT */
 #tl{position:absolute;top:0;left:0;right:0;bottom:96px;z-index:5;display:flex;align-items:center;justify-content:center;padding:5% 13%}
-#tx{font-size:clamp(15px,2.1vw,30px);text-align:center;line-height:1.8;letter-spacing:.05em;opacity:0;max-width:840px}
+#tx{font-size:clamp(15px,2.1vw,30px);text-align:center;line-height:1.9;letter-spacing:.04em;opacity:0;max-width:860px}
 .tx{color:var(--tx)}.tr{color:var(--tr)}
-.te{color:var(--eq);font-size:clamp(20px,3vw,44px);letter-spacing:.1em}
-.th{color:var(--hd);font-size:clamp(14px,1.3vw,18px);letter-spacing:.24em;text-transform:uppercase}
+.te{color:var(--eq);font-size:clamp(20px,3vw,44px);letter-spacing:.06em}
+.th{color:var(--hd);font-size:clamp(14px,1.3vw,18px);letter-spacing:.22em;text-transform:uppercase}
 .ta{color:var(--am)}
-body.light #tx{font-weight:500}
+body.light #tx{font-weight:600}
+body.light #bl{font-weight:600;color:rgba(100,62,8,.7)}
+body.light #bl:hover{color:rgba(60,30,2,.95)}
+body.light .spd{font-weight:600}
+body.light .spd.active{font-weight:700}
+body.light #br button{font-weight:700}
+body.light #pi{font-weight:600}
+body.light .sh,.sg,.ss{font-weight:600}
+body.light #ip,body.light .il2,body.light .it2{font-weight:600}
+body.light #parch-title{font-weight:700}
+body.light .pl{font-weight:600}
+body.light #pcont{font-weight:600}
+#tx .katex{font-size:1em}
+#tx .katex-display{margin:.3em 0}
+.te .katex{font-size:1.1em}
 @keyframes arrive{0%{opacity:0;filter:blur(3px)}35%{opacity:.85;filter:blur(.5px)}55%{opacity:1;filter:none}100%{opacity:1;filter:none}}
 @keyframes depart{0%{opacity:1}100%{opacity:0}}
 .arriving{animation:arrive .65s ease-out forwards}
 .departing{animation:depart .2s ease-out forwards}
-
-/* COIN */
 #cl{position:absolute;top:0;left:0;right:0;bottom:96px;z-index:5;display:none;flex-direction:column;align-items:center;justify-content:center;gap:3vh}
 #cc{display:block}
 #ct{font-size:clamp(13px,1.6vw,22px);color:var(--tx);text-align:center;line-height:2;opacity:0;transition:opacity .3s;min-height:3em;max-width:680px}
-
-/* PROGRESS */
+#ct .katex{font-size:1em}
 #pb{position:fixed;top:0;left:0;right:0;height:3px;z-index:30;cursor:pointer}
 #pf{position:absolute;top:0;left:0;height:100%;width:0%;background:var(--pg);transition:background .4s;pointer-events:none}
-
-/* PAUSED */
 #pi{position:fixed;top:12px;right:16px;font-size:clamp(12px,.85vw,14px);color:var(--bh);letter-spacing:.2em;z-index:29;opacity:0;transition:opacity .25s;pointer-events:none}
 #pi.on{opacity:1}
-
-/* BACK LINK */
-#bl{position:fixed;top:12px;left:14px;z-index:41;font-size:clamp(14px,1.1vw,18px);color:rgba(212,168,67,.62);letter-spacing:.1em;text-decoration:none;transition:color .18s;pointer-events:auto}
+#bl{position:fixed;top:12px;left:14px;z-index:41;font-size:clamp(14px,1.1vw,18px);color:rgba(212,168,67,.62);letter-spacing:.1em;text-decoration:none;transition:color .18s}
 #bl:hover{color:rgba(212,168,67,.95)}
 body.rec #bl{display:none}
-
-/* CONTROLS */
-#ctrl{position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;flex-direction:column;align-items:center;background:linear-gradient(var(--cf),var(--cb));pointer-events:none;transition:background .4s,opacity .32s,transform .32s;opacity:0;transform:translateY(100%)}
-#ctrl.vis{opacity:1;transform:translateY(0)}
-body.not-started #ctrl{opacity:1!important;transform:translateY(0)!important}
-body.rec #ctrl{display:none}
-
-#sr{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:2.2vw;padding:8px 0 4px;pointer-events:auto}
-.spd{background:none;border:none;cursor:pointer;font-family:'Courier New',monospace;font-size:clamp(13px,1vw,16px);letter-spacing:.1em;color:var(--sd);transition:color .15s;padding:3px 6px}
-.spd:hover{color:var(--sa)}.spd.active{color:var(--sa)}
-
-#br{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:4vw;padding:5px 0 15px;pointer-events:auto;width:100%}
-#br button{background:none;border:none;padding:0;cursor:pointer;color:var(--bh);font-family:inherit;font-size:clamp(24px,2.4vw,36px);line-height:1;transition:color .18s,transform .14s,opacity .18s;width:clamp(42px,4vw,58px);height:clamp(42px,4vw,58px);display:flex;align-items:center;justify-content:center;opacity:.65}
-#br button:hover{opacity:1;transform:scale(1.16)}
-body:not(.light) #br button:hover{filter:drop-shadow(0 0 10px rgba(212,168,67,.52))}
-body.light #br button:hover{filter:drop-shadow(0 0 8px rgba(100,65,10,.38))}
-#br button:active{transform:scale(.93)}
-#pb2{font-size:clamp(28px,2.8vw,40px)!important;width:clamp(48px,4.5vw,64px)!important;height:clamp(48px,4.5vw,64px)!important;opacity:.8!important}
-#pb2:hover{opacity:1!important}
-body.not-started #br button:not(#sk):not(#mu){opacity:.18!important;pointer-events:none}
-body.not-started #sr{opacity:.18;pointer-events:none}
-
-/* INDEX PANEL */
-#io{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;cursor:pointer}
+#io{position:fixed;top:0;left:0;right:0;bottom:0;z-index:50;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;cursor:pointer}
 body.light #io{background:rgba(44,26,8,.3)}
 #io.open{display:flex}
 #ip{background:var(--ib);border:1px solid var(--id);padding:24px 28px;min-width:260px;max-width:420px;width:88%;max-height:68vh;overflow-y:auto;cursor:default;scrollbar-width:thin;scrollbar-color:var(--id) transparent;transition:background .4s,border-color .4s}
-#ip::-webkit-scrollbar{width:3px}
-#ip::-webkit-scrollbar-thumb{background:var(--id)}
 #ih{font-size:clamp(11px,.72vw,13px);color:var(--im);letter-spacing:.22em;text-transform:uppercase;margin-bottom:14px}
 .ir{display:flex;align-items:baseline;gap:10px;padding:8px 0;border-bottom:1px solid var(--il);cursor:pointer}
 .ir:last-child{border-bottom:none}
 .ir:hover .il2{color:var(--bh)}.ir:hover .it2{color:var(--it)}
 .it2{font-size:clamp(11px,.75vw,13px);color:var(--im);letter-spacing:.06em;flex-shrink:0;width:38px}
 .il2{font-size:clamp(13px,.92vw,15px);color:var(--it);letter-spacing:.05em}
-.ir.now .il2{color:var(--bh)}.ir.now .it2{color:var(--it)}
-
-/* START */
-#st{position:fixed;top:0;left:0;right:0;bottom:0;z-index:20;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;padding:5% 14%;transition:background .4s;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.ir.now .il2{color:var(--bh)}
+#ctrl{position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;flex-direction:column;align-items:center;background:linear-gradient(var(--cf),var(--cb));pointer-events:none;transition:background .4s,opacity .32s,transform .32s;opacity:0;transform:translateY(100%)}
+#ctrl.vis{opacity:1;transform:translateY(0)}
+body.not-started #ctrl{opacity:1!important;transform:translateY(0)!important}
+body.rec #ctrl{display:none}
+#sr{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:2.2vw;padding:8px 0 4px;pointer-events:auto}
+.spd{background:none;border:none;cursor:pointer;font-family:'Courier New',monospace;font-size:clamp(13px,1vw,16px);letter-spacing:.1em;color:var(--sd);transition:color .15s;padding:3px 6px}
+.spd:hover{color:var(--sa)}.spd.active{color:var(--sa)}
+#br{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:4vw;padding:5px 0 15px;pointer-events:auto;width:100%}
+#br button{background:none;border:none;padding:0;cursor:pointer;color:var(--bh);font-family:inherit;font-size:clamp(22px,2.2vw,34px);line-height:1;transition:color .18s,transform .14s,opacity .18s;width:clamp(40px,4vw,56px);height:clamp(40px,4vw,56px);display:flex;align-items:center;justify-content:center;opacity:.65}
+#br button:hover{opacity:1;transform:scale(1.16)}
+#br button:active{transform:scale(.93)}
+#pb2{font-size:clamp(28px,2.8vw,40px)!important;width:clamp(48px,4.5vw,64px)!important;height:clamp(48px,4.5vw,64px)!important;opacity:.8!important}
+#pb2:hover{opacity:1!important}
+body.not-started #br button:not(#sk):not(#mu){opacity:.18!important;pointer-events:none}
+body.not-started #sr{opacity:.18;pointer-events:none}
+#st{position:fixed;top:0;left:0;right:0;bottom:0;z-index:20;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;padding:5% 14%;transition:background .4s;-webkit-tap-highlight-color:transparent;user-select:none}
 .sh{font-size:clamp(13px,1.3vw,18px);color:var(--hd);letter-spacing:.24em;text-transform:uppercase;text-align:center;margin-bottom:3.5vh}
 .ss{font-size:clamp(16px,2.1vw,30px);color:var(--tx);letter-spacing:.05em;text-align:center;margin-bottom:3.8vh}
 .sg{font-size:clamp(16px,2.1vw,30px);color:var(--tr);letter-spacing:.05em;text-align:center;animation:pulse 2.4s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.52}50%{opacity:1}}
+body.rec #ctrl,body.rec #pb,body.rec #pi,body.rec #bl{display:none}
 
-/* RECORDING */
-body.rec #ctrl{display:none}
-body.rec #pb{display:none}
-body.rec #pi{display:none}
-body.rec #bl{display:none}
-
+/* PARCHMENT */
+#parch-overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:45;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center}
+#parch-overlay.open{display:flex}
+#parch-box{
+  background:linear-gradient(160deg,#F7EDD0 0%,#F0E2B6 50%,#E8D4A0 100%);
+  border:1px solid rgba(139,94,26,.3);
+  box-shadow:0 8px 48px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.55);
+  padding:clamp(22px,3vh,38px) clamp(28px,4vw,52px);
+  max-width:720px;width:90%;max-height:84vh;
+  display:flex;flex-direction:column;
+}
+#parch-title{
+  font-family:'Courier New',monospace;
+  font-size:clamp(10px,.85vw,13px);
+  letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(100,62,8,.5);
+  padding-bottom:10px;margin-bottom:16px;
+  border-bottom:1px solid rgba(139,94,26,.18);
+}
+#parch-lines{flex:1;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-start;gap:2px}
+.pl{
+  font-family:'Courier New',monospace;
+  font-size:clamp(14px,1.35vw,20px);
+  color:rgba(28,14,2,.88);
+  line-height:1.85;
+  opacity:0;
+  transition:opacity .55s ease-in;
+}
+.pl.vis{opacity:1}
+.pl .katex{color:rgba(20,8,0,.9)}
+.pl .katex-display{margin:.35em 0;text-align:center}
+#parch-foot{
+  display:flex;align-items:center;justify-content:flex-end;
+  border-top:1px solid rgba(139,94,26,.18);
+  padding-top:12px;margin-top:14px;
+  opacity:0;transition:opacity .35s;pointer-events:none;
+}
+#parch-foot.vis{opacity:1;pointer-events:auto}
+#pcont{background:none;border:1px solid rgba(100,62,8,.35);font-family:'Courier New',monospace;font-size:clamp(10px,.85vw,13px);letter-spacing:.14em;color:rgba(70,35,4,.65);padding:5px 16px;cursor:pointer;transition:all .15s;opacity:0;pointer-events:none}
+#pcont.vis{opacity:1;pointer-events:auto}
+#pcont:hover{border-color:rgba(80,40,5,.75);color:rgba(40,18,2,.95)}
 </style>
 </head>
 <body class="not-started">
 
-<div id="st">
+<div id="st" onclick="begin()">
   <div class="sh">Probably Speaking</div>
   <div class="ss">Episode 1</div>
   <div class="sg">&mdash; click to watch &mdash;</div>
@@ -168,143 +195,205 @@ body.rec #bl{display:none}
   </div>
 </div>
 
-<script>
+<!-- PARCHMENT -->
+<div id="parch-overlay">
+  <div id="parch-box">
+    <div id="parch-title"></div>
+    <div id="parch-lines"></div>
+    <div id="parch-foot">
+      <button id="pcont" onclick="closeParch()">continue &#8594;</button>
+    </div>
+  </div>
+</div>
 
-// ═══ FRAMES ═══
+<script>
+// ═══════════════════════════════════════════════════════════
+// KATEX RENDERER
+// ═══════════════════════════════════════════════════════════
+function renderMath(str){
+  if(typeof katex==='undefined') return str;
+  // Display: $$...$$
+  str=str.replace(/\$\$([^$]+)\$\$/g,function(_,m){
+    try{return katex.renderToString(m.trim(),{displayMode:true,throwOnError:false});}
+    catch(e){return _;}
+  });
+  // Inline: $...$
+  str=str.replace(/\$([^$\n]+)\$/g,function(_,m){
+    try{return katex.renderToString(m.trim(),{displayMode:false,throwOnError:false});}
+    catch(e){return _;}
+  });
+  return str;
+}
+function renderEq(str){
+  // Whole string as display math
+  if(typeof katex==='undefined') return str;
+  // If already has $$ just use renderMath
+  if(str.indexOf('$')>=0) return renderMath(str);
+  try{return katex.renderToString(str,{displayMode:true,throwOnError:false});}
+  catch(e){return str;}
+}
+
+// ═══════════════════════════════════════════════════════════
+// FRAMES
+// t: x=text  r=aubrey  e=equation(display)  h=header
+//    a=amber  b=beat    room  coin  rc  parch
+// ═══════════════════════════════════════════════════════════
 const F=[
-  {t:'x',s:'Allow me to introduce myself.',d:3500},
+  // OPENING
+  {t:'r',s:'Allow me to introduce myself.',d:4000},
   {t:'r',s:"I'm Aubrey Squeakwell, PhD.",d:4000},
   {t:'r',s:'The PhD is in Wine and Cheese.',d:4000},
   {t:'r',s:'I am a mouse.',d:3500},
   {t:'r',s:'These facts are not unrelated.',d:4500},
-  {t:'b',d:1400},
-  {t:'x',s:'I have a plan.',d:3000},
-  {t:'x',s:'It requires probability theory.',d:3500},
-  {t:'x',s:'I have booked the observatory for one week.',d:4000},
-  {t:'b',d:700},
+  {t:'b',d:1800},
+  {t:'r',s:'I have a plan.',d:3000},
+  {t:'r',s:'It requires probability theory.',d:3500},
+  {t:'r',s:'I have booked the observatory for one week.',d:4000},
+  {t:'b',d:800},
   {t:'r',s:'I am, by any reasonable measure, prepared.',d:4500},
   {t:'b',d:800},
-  {t:'a',s:'The observatory awaits.',d:4000},
-  {t:'b',d:900},
+  {t:'a',s:'The observatory awaits.',d:5000},
+  {t:'b',d:1800},
   {t:'room',d:9000},
-  {t:'h',s:'Chapter 2.',d:2500},
-  {t:'h',s:'Probability.',d:3000},
-  {t:'b',d:700},
-  {t:'x',s:'We begin at the beginning.',d:3000},
-  {t:'r',s:'This is, statistically speaking, the correct place to begin.',d:4200},
-  {t:'b',d:1500},
+
+  // WHERE TO BEGIN
+  {t:'h',s:'Where to begin?',d:3000},
+  {t:'b',d:800},
+  {t:'x',s:'We begin at the beginning.',d:3500},
+  {t:'r',s:'This is, from a statistical standpoint, the correct place to begin.',d:4200},
+  {t:'b',d:1800},
   {t:'x',s:'Before we assign probabilities to anything,',d:3000},
   {t:'x',s:'we need to know what can happen.',d:3500},
-  {t:'b',d:700},
+  {t:'b',d:800},
   {t:'x',s:'This sounds obvious.',d:2500},
-  {t:'b',d:700},
+  {t:'b',d:800},
   {t:'r',s:'It is not always obvious.',d:3000},
   {t:'r',s:'I speak from experience.',d:3500},
-  {t:'b',d:1500},
-  {t:'h',s:'Definition 2.2.1',d:3000},
-  {t:'b',d:500},
-  {t:'x',s:'An experiment is any action or process',d:3000},
-  {t:'x',s:'whose outcome cannot be predicted with certainty.',d:3500},
-  {t:'b',d:600},
+  {t:'b',d:1800},
+
+  // EXPERIMENT
+  {t:'h',s:'Experiment',d:3000},
+  {t:'b',d:800},
+  {t:'x',s:'An experiment is any action or phenomenon',d:3000},
+  {t:'x',s:'inherently characterised by uncertainty.',d:3500},
+  {t:'b',d:800},
   {t:'x',s:'Tossing a coin is an experiment.',d:3000},
   {t:'x',s:'Rolling a die is an experiment.',d:3000},
-  {t:'x',s:'A hand of blackjack is an experiment.',d:3000},
-  {t:'b',d:600},
+  {t:'x',s:'Playing blackjack is an experiment.',d:3000},
+  {t:'b',d:800},
   {t:'r',s:'An experiment is not, as I originally understood it,',d:3500},
   {t:'r',s:'something you do in a laboratory wearing a coat.',d:3500},
   {t:'r',s:'Although I do own a coat.',d:4200},
-  {t:'b',d:1400},
-  {t:'x',s:'A sample outcome is any possible result',d:3000},
+  {t:'b',d:1800},
+  {t:'x',s:'A sample outcome, $\\omega$, is any possible result',d:3500},
   {t:'x',s:'of performing the experiment.',d:3000},
-  {t:'b',d:600},
+  {t:'b',d:800},
   {t:'x',s:'For a coin toss, heads is a sample outcome.',d:3500},
   {t:'x',s:'Tails is another.',d:3000},
-  {t:'b',d:600},
+  {t:'b',d:800},
   {t:'x',s:'The collection of all sample outcomes',d:3000},
-  {t:'x',s:'is called the sample space, denoted S.',d:3500},
+  {t:'x',s:'is called the sample space, denoted $\\Omega$.',d:3500},
   {t:'b',d:500},
-  {t:'e',s:'S = {H, T}',d:5000},
-  {t:'b',d:600},
+  {t:'x',s:'Example:',d:2500},
+  {t:'e',s:'\\Omega = \\{H,\\, T\\}',d:5000},
+  {t:'b',d:800},
   {t:'x',s:'The sample space must be exhaustive.',d:3500},
   {t:'x',s:'Every possible outcome must appear.',d:3500},
   {t:'x',s:'No outcome may be omitted.',d:3500},
-  {t:'b',d:700},
-  {t:'r',s:'My first draft of the blackjack sample space',d:3500},
+  {t:'b',d:800},
+  {t:'r',s:'My initial thoughts were that the Blackjack sample space',d:3500},
   {t:'r',s:'contained one outcome.',d:3000},
-  {t:'r',s:'The outcome was \u201cwin.\u201d',d:4000},
+  {t:'r',s:'The outcome was \u201cwin\u201d.',d:3500},
+  {t:'r',s:'Positive thinking?',d:3500},
   {t:'r',s:'I have since been informed',d:3000},
   {t:'r',s:'that this is not how probability works.',d:4200},
-  {t:'b',d:1500},
-  {t:'h',s:'Definition 2.2.2',d:3000},
-  {t:'b',d:500},
+  {t:'b',d:1800},
+
+  // EVENT
+  {t:'h',s:'Event',d:3000},
+  {t:'b',d:800},
   {t:'x',s:'An event is any subset of the sample space.',d:3500},
-  {t:'b',d:500},
-  {t:'x',s:'If S = {1, 2, 3, 4, 5, 6},',d:3000},
-  {t:'x',s:'A = {2, 4, 6} \u2014 rolling an even number \u2014 is an event.',d:4000},
-  {t:'x',s:'B = {5, 6} \u2014 rolling five or six \u2014 is also an event.',d:4000},
-  {t:'b',d:500},
+  {t:'b',d:800},
+  {t:'x',s:'If $\\Omega = \\{1, 2, 3, 4, 5, 6\\}$,',d:3000},
+  {t:'e',s:'A = \\{2,\\, 4,\\, 6\\}',d:4500},
+  {t:'x',s:'\u2014 rolling an even number \u2014 is an event.',d:3500},
+  {t:'e',s:'B = \\{5,\\, 6\\}',d:4500},
+  {t:'x',s:'\u2014 rolling five or six \u2014 is also an event.',d:3500},
+  {t:'b',d:800},
   {t:'x',s:'Any subset counts.',d:2500},
-  {t:'x',s:'Including the empty set.',d:3000},
-  {t:'x',s:'Including S itself.',d:3000},
-  {t:'b',d:600},
-  {t:'r',s:'The event \u201csomething happens\u201d is S itself,',d:3500},
-  {t:'r',s:'and has probability one.',d:3000},
-  {t:'r',s:'The event \u201cAubrey wins at blackjack on the first attempt\u201d',d:4000},
+  {t:'x',s:'Including the empty set, $\\emptyset$.',d:3000},
+  {t:'x',s:'Including $\\Omega$ itself.',d:3000},
+  {t:'b',d:800},
+  {t:'r',s:'The event \u201csomething happens\u201d is $\\Omega$ itself.',d:3500},
+  {t:'r',s:'The event \u201cI make a fortune in Blackjack\u201d',d:3500},
   {t:'r',s:'is also an event.',d:3000},
   {t:'r',s:'Its probability remains, for now, to be determined.',d:4500},
-  {t:'b',d:1500},
-  {t:'x',s:'Two events are mutually exclusive',d:3000},
+  {t:'b',d:1800},
+
+  // MUTUAL EXCLUSIVITY
+  {t:'h',s:'Mutual Exclusivity',d:3000},
+  {t:'b',d:800},
+  {t:'x',s:'Two events are mutually exclusive (or disjoint)',d:3500},
   {t:'x',s:'if they cannot both occur on the same trial.',d:3500},
   {t:'b',d:500},
-  {t:'e',s:'A \u2229 B = \u2205',d:5000},
+  {t:'e',s:'A \\cap B = \\emptyset',d:5000},
   {t:'b',d:500},
-  {t:'x',s:'They share no sample outcomes.',d:3000},
   {t:'x',s:'If one occurs, the other cannot.',d:3500},
-  {t:'b',d:500},
+  {t:'b',d:800},
   {t:'x',s:'Rolling an even number and rolling a five:',d:3000},
   {t:'x',s:'mutually exclusive.',d:3000},
   {t:'b',d:500},
   {t:'x',s:'Rolling an even number and rolling greater than four:',d:3500},
   {t:'x',s:'not mutually exclusive.',d:3000},
   {t:'x',s:'Six belongs to both events.',d:3500},
-  {t:'b',d:700},
-  {t:'r',s:'\u201cI win the hand\u201d and \u201cI lose the hand\u201d',d:3500},
+  {t:'b',d:800},
+  {t:'r',s:'\u201cMy plan succeeds\u201d and \u201cMy plan fails\u201d',d:3500},
   {t:'r',s:'are mutually exclusive.',d:3000},
-  {t:'r',s:'\u201cI win the hand\u201d and \u201cthe dealer realises I am a mouse\u201d',d:4000},
+  {t:'r',s:'\u201cMy plan succeeds\u201d and \u201cThe dealer realises I am a mouse\u201d',d:4000},
   {t:'r',s:'are, I have been advised, not mutually exclusive.',d:4000},
-  {t:'r',s:'This is a complication I had not modelled.',d:4500},
-  {t:'b',d:1500},
-  {t:'x',s:'We now define what a probability actually is.',d:3500},
+  {t:'r',s:'This is a complication I have not yet modelled.',d:4500},
+  {t:'b',d:1800},
+  {t:'x',s:'Mutual exclusivity is not independence.',d:3500},
+  {t:'x',s:'Independence is a concept we will learn later.',d:3500},
+  {t:'b',d:1800},
+  {t:'r',s:'Hopefully, before the fourth of July.',d:4500},
+
+  // PROBABILITY
+  {t:'x',s:'Next, we define what a probability actually is.',d:3500},
   {t:'b',d:500},
-  {t:'x',s:'Not informally. Formally.',d:3500},
-  {t:'b',d:1500},
-  {t:'h',s:'Definition 2.3.1',d:3000},
+  {t:'x',s:'Not informally. Formally.',d:3000},
+  {t:'x',s:'We wish to assign a measure to an event of interest.',d:3500},
+  {t:'x',s:'What do we measure?',d:3000},
+  {t:'x',s:'Belief in the chance of its occurrence.',d:3500},
   {t:'b',d:500},
-  {t:'x',s:'Let S be a sample space.',d:3500},
-  {t:'x',s:'A probability function P assigns to each event A',d:3500},
-  {t:'x',s:'a real number P(A), subject to three axioms.',d:4000},
-  {t:'b',d:700},
-  {t:'r',s:'Three axioms.',d:3000},
+  {t:'r',s:'Belief in the chance of a fortune.',d:4000},
+  {t:'b',d:1800},
+  {t:'h',s:'Probability',d:3000},
+  {t:'b',d:500},
+  {t:'x',s:'Let $\\Omega$ be a sample space.',d:3500},
+  {t:'x',s:'A probability function $P$ assigns to each event $A$',d:3500},
+  {t:'x',s:'a real number $P(A)$, defined by three axioms.',d:4000},
+  {t:'b',d:800},
+  {t:'r',s:'Three axioms. Three defining features.',d:3500},
   {t:'r',s:'Not twelve. Not a paragraph of conditions.',d:4000},
-  {t:'r',s:'Three.',d:3500},
+  {t:'r',s:'Three.',d:3000},
+  {t:'r',s:'If these axioms don\u2019t hold, the measure is not a probability.',d:4500},
   {t:'r',s:'Kolmogorov published them in 1933',d:3500},
   {t:'r',s:'and they have not required revision.',d:3500},
-  {t:'r',s:'I find this either reassuring or alarming,',d:3500},
-  {t:'r',s:'depending on the day.',d:4200},
+  {t:'r',s:'I find this reassuring.',d:3500},
   {t:'b',d:2000},
+
+  // AXIOM 1
   {t:'h',s:'Axiom 1 \u2014 Non-negativity',d:4000},
   {t:'b',d:500},
-  {t:'e',s:'P(A) \u2265 0',d:5000},
-  {t:'b',d:500},
-  {t:'x',s:'For every event A,',d:2500},
-  {t:'x',s:'the probability of A is non-negative.',d:3500},
+  {t:'e',s:'P(A) \\geq 0',d:5000},
   {t:'b',d:500},
   {t:'x',s:'Probabilities cannot be negative.',d:3500},
   {t:'x',s:'Zero means impossible.',d:3000},
-  {t:'x',s:'Below zero means nothing.',d:3000},
+  {t:'x',s:'Below zero is nonsensical.',d:3000},
   {t:'x',s:'There is no physical situation',d:3000},
   {t:'x',s:'to which a negative probability corresponds.',d:3500},
-  {t:'b',d:700},
+  {t:'b',d:800},
   {t:'r',s:'I assigned a negative probability',d:3000},
   {t:'r',s:'to the event \u201cbust on the first draw\u201d',d:3500},
   {t:'r',s:'in my preliminary calculations.',d:3000},
@@ -312,116 +401,139 @@ const F=[
   {t:'r',s:'I have corrected this.',d:3500},
   {t:'r',s:'We shall not discuss it further.',d:4500},
   {t:'b',d:2000},
+
+  // AXIOM 2
   {t:'h',s:'Axiom 2 \u2014 Normalisation',d:4000},
   {t:'b',d:500},
-  {t:'e',s:'P(S) = 1',d:5000},
+  {t:'e',s:'P(\\Omega) = 1',d:5000},
   {t:'b',d:500},
   {t:'x',s:'The probability of the entire sample space is one.',d:3500},
   {t:'b',d:500},
   {t:'x',s:'Something must happen.',d:3000},
   {t:'x',s:'Every time the experiment is performed,',d:3000},
-  {t:'x',s:'one of the outcomes in S occurs.',d:3500},
+  {t:'x',s:'one of the outcomes in $\\Omega$ occurs.',d:3500},
   {t:'x',s:'The probability that some outcome occurs',d:3500},
   {t:'x',s:'must be exactly one.',d:3500},
-  {t:'b',d:700},
+  {t:'b',d:800},
   {t:'r',s:'When I summed my preliminary probability assignments,',d:3500},
   {t:'r',s:'the total was 0.94.',d:4200},
   {t:'r',s:'I had apparently lost six percent of reality.',d:4000},
-  {t:'r',s:'It was a push scenario I had counted twice',d:3500},
-  {t:'r',s:'and then subtracted without recording that I had done so.',d:4000},
   {t:'r',s:'A basic error.',d:3000},
   {t:'r',s:'I was briefly a beginner.',d:4500},
   {t:'b',d:2000},
-  {t:'h',s:'Axiom 3 \u2014 Additivity',d:4000},
+
+  // AXIOM 3
+  {t:'h',s:'Axiom 3 \u2014 Countable Additivity',d:4000},
   {t:'b',d:500},
-  {t:'x',s:'If A and B are mutually exclusive, then:',d:3200},
-  {t:'e',s:'P(A \u222a B) = P(A) + P(B)',d:6000},
+  {t:'x',s:'If $A$ and $B$ are mutually exclusive, then:',d:3200},
+  {t:'e',s:'P(A \\cup B) = P(A) + P(B)',d:6000},
   {t:'b',d:500},
   {t:'x',s:'When two events cannot both occur,',d:3000},
-  {t:'x',s:'their probabilities add directly.',d:3500},
+  {t:'x',s:'their probabilities must add.',d:3500},
   {t:'b',d:500},
-  {t:'x',s:'More generally, for any sequence',d:2800},
-  {t:'x',s:'of mutually exclusive events A\u2081, A\u2082, A\u2083, \u2026',d:3500},
-  {t:'e',s:'P(A\u2081 \u222a A\u2082 \u222a \u22ef) = P(A\u2081) + P(A\u2082) + \u22ef',d:6000},
+  {t:'x',s:'More generally, for any countable sequence',d:2800},
+  {t:'x',s:'of mutually exclusive events $A_1, A_2, \\ldots$',d:3500},
+  {t:'e',s:'P\\bigl(A_1 \\cup A_2 \\cup \\cdots\\bigr) = P(A_1) + P(A_2) + \\cdots',d:6500},
   {t:'b',d:700},
   {t:'x',s:'No double counting.',d:2800},
   {t:'x',s:'No adjustment required.',d:3000},
-  {t:'x',s:'The disjointness is what makes addition exact.',d:4000},
-  {t:'b',d:700},
+  {t:'x',s:'The mutual exclusivity is important to remember.',d:4000},
+  {t:'b',d:800},
   {t:'r',s:'This is the axiom that does the most work.',d:3500},
-  {t:'r',s:'It is also the axiom most frequently violated',d:3500},
+  {t:'r',s:'It is also the axiom most frequently misunderstood',d:3500},
   {t:'r',s:'by people who are confident',d:3000},
   {t:'r',s:'they already understand probability.',d:3500},
   {t:'r',s:'I was one of those people.',d:3500},
   {t:'r',s:'I am no longer.',d:4500},
   {t:'b',d:2000},
-  {t:'x',s:'The three axioms have immediate consequences.',d:4000},
-  {t:'b',d:1400},
-  {t:'h',s:'Theorem 2.3.1',d:3000},
+
+  // PROPERTIES
+  {t:'x',s:'Every property of a probability function',d:3000},
+  {t:'x',s:'follows from these three axioms.',d:3000},
+  {t:'x',s:'Every property. Including $P(A) \\leq 1$.',d:3500},
+  {t:'b',d:1800},
+
+  // PROPERTY 1
+  {t:'h',s:'Property 1',d:3000},
   {t:'b',d:500},
-  {t:'e',s:'P(\u2205) = 0',d:5000},
+  {t:'e',s:'P(\\emptyset) = 0',d:5000},
   {t:'b',d:500},
   {t:'x',s:'The impossible event has probability zero.',d:4000},
   {t:'b',d:700},
-  {t:'x',s:'Proof.',d:2000},
-  {t:'b',d:500},
-  {t:'x',s:'S and \u2205 are mutually exclusive.',d:3500},
-  {t:'x',s:'S \u2229 \u2205 = \u2205   and   S \u222a \u2205 = S.',d:4000},
-  {t:'x',s:'By Axiom 3:  P(S) = P(S) + P(\u2205).',d:4500},
-  {t:'x',s:'Therefore P(\u2205) = 0.  \u220e',d:4000},
-  {t:'b',d:700},
-  {t:'r',s:'This required one line of algebra and three axioms.',d:4000},
-  {t:'r',s:'I mention this because it will not always be this easy.',d:4500},
+  {t:'parch',title:'Property 1 \u2014 Proof',lines:[
+    '$\\Omega$ and $\\emptyset$ are mutually exclusive.',
+    '$$\\Omega \\cap \\emptyset = \\emptyset \\qquad \\text{and} \\qquad \\Omega \\cup \\emptyset = \\Omega$$',
+    'By Axiom 2: $P(\\Omega) = 1$',
+    'By Axiom 3: $P(\\Omega \\cup \\emptyset) = P(\\Omega) + P(\\emptyset)$',
+    'Substituting: $P(\\Omega) = P(\\Omega) + P(\\emptyset)$',
+    '$$\\therefore \\quad P(\\emptyset) = 0 \\qquad \\blacksquare$$'
+  ]},
+  {t:'r',s:'It will not always be this easy.',d:4000},
   {t:'b',d:2000},
-  {t:'h',s:'Theorem 2.3.2',d:3000},
+
+  // PROPERTY 2
+  {t:'h',s:'Property 2',d:3000},
   {t:'b',d:500},
-  {t:'e',s:'P(A\u1d9c) = 1 \u2212 P(A)',d:5000},
+  {t:'e',s:'P(A^c) = 1 - P(A)',d:5000},
   {t:'b',d:500},
-  {t:'x',s:'The probability that A does not occur',d:3000},
+  {t:'x',s:'The probability that $A$ does not occur',d:3000},
   {t:'x',s:'equals one minus the probability that it does.',d:3500},
   {t:'b',d:700},
-  {t:'x',s:'Proof.',d:2000},
+  {t:'parch',title:'Property 2 \u2014 Proof',lines:[
+    '$A$ and $A^c$ are mutually exclusive, and $A \\cup A^c = \\Omega$',
+    'By Axiom 3: $P(A \\cup A^c) = P(A) + P(A^c)$',
+    'By Axiom 2: $P(\\Omega) = 1$',
+    'So: $P(A) + P(A^c) = 1$',
+    '$$\\therefore \\quad P(A^c) = 1 - P(A) \\qquad \\blacksquare$$'
+  ]},
+  {t:'r',s:'I will try it. With pen and paper.',d:3500},
   {t:'b',d:500},
-  {t:'x',s:'A and A\u1d9c are mutually exclusive, and A \u222a A\u1d9c = S.',d:4500},
-  {t:'x',s:'By Axiom 3: P(A) + P(A\u1d9c) = P(S) = 1.',d:4500},
-  {t:'x',s:'Therefore P(A\u1d9c) = 1 \u2212 P(A).  \u220e',d:4000},
+  {t:'r',s:'Later.',d:3000},
   {t:'b',d:700},
   {t:'x',s:'It is often easier to calculate',d:3000},
   {t:'x',s:'the probability that something does not happen,',d:3500},
   {t:'x',s:'and subtract from one.',d:3000},
   {t:'b',d:700},
-  {t:'r',s:'P(Aubrey does not embarrass himself at the casino)',d:3800},
-  {t:'r',s:'= 1 \u2212 P(Aubrey embarrasses himself at the casino).',d:4000},
+  {t:'r',s:'$P$(I do not embarrass myself at Blackjack)',d:3800},
+  {t:'r',s:'$= 1 - P$(I do embarrass myself).',d:4000},
   {t:'r',s:'I am working on the right-hand side.',d:4500},
   {t:'b',d:2000},
-  {t:'h',s:'Theorem 2.3.5',d:3000},
+
+  // PROPERTY 3
+  {t:'h',s:'Property 3',d:3000},
   {t:'b',d:500},
-  {t:'x',s:'For any two events A and B:',d:3000},
-  {t:'e',s:'P(A \u222a B) = P(A) + P(B) \u2212 P(A \u2229 B)',d:6500},
+  {t:'x',s:'There are several other useful properties. For example:',d:3500},
+  {t:'e',s:'P(A \\cup B) = P(A) + P(B) - P(A \\cap B)',d:6500},
   {t:'b',d:700},
-  {t:'x',s:'If A and B share outcomes,',d:3000},
+  {t:'x',s:'If $A$ and $B$ share outcomes,',d:3000},
   {t:'x',s:'simple addition counts those outcomes twice.',d:3500},
   {t:'x',s:'We subtract the intersection once.',d:3500},
   {t:'b',d:600},
   {t:'x',s:'This is the inclusion-exclusion principle.',d:4000},
   {t:'b',d:700},
+  {t:'x',s:'No double counting.',d:2800},
+  {t:'b',d:500},
   {t:'r',s:'Several of my early calculations omitted this correction.',d:3500},
   {t:'r',s:'They were wrong in ways that were difficult to detect',d:3500},
-  {t:'r',s:'until the probabilities exceeded one.',d:3500},
+  {t:'r',s:'until the sum of probabilities exceeded 1.',d:3500},
   {t:'r',s:'At which point they became easy to detect.',d:4500},
   {t:'b',d:2000},
+
+  // COIN
   {t:'coin',d:32000},
+
+  // CLOSE
   {t:'b',d:1200},
   {t:'x',s:'Three axioms.',d:3000},
-  {t:'x',s:'Non-negativity. Normalisation. Additivity.',d:4500},
+  {t:'x',s:'Non-negativity. Normalisation. Countable Additivity.',d:4500},
   {t:'b',d:700},
   {t:'x',s:'Every theorem in probability theory',d:3000},
-  {t:'x',s:'is a consequence of these three statements.',d:4000},
-  {t:'b',d:1400},
+  {t:'x',s:'follows from these three statements.',d:4000},
+  {t:'b',d:1800},
   {t:'r',s:'I have a complete framework.',d:3500},
-  {t:'r',s:'I do not yet have a winning strategy.',d:3500},
-  {t:'r',s:'A winning strategy requires random variables.',d:3500},
-  {t:'r',s:'Which is next.',d:4000},
+  {t:'r',s:'Axiomatic framework.',d:3000},
+  {t:'r',s:'What I do not yet have is a winning strategy.',d:3500},
+  {t:'r',s:'I will need to study random variables.',d:3500},
   {t:'b',d:1000},
   {t:'r',s:'I have booked the observatory for one week.',d:4000},
   {t:'b',d:600},
@@ -429,286 +541,317 @@ const F=[
   {t:'r',s:'I am on schedule.',d:3500},
   {t:'r',s:'I am going to be fine.',d:5000},
   {t:'b',d:1500},
-  {t:'a',s:'Next: Random Variables.',d:5000},
+  {t:'a',s:'Next episode: Random Variables.',d:5000},
   {t:'b',d:2000},
   {t:'rc',d:7000},
 ];
-const TOTAL=F.reduce((s,f)=>s+f.d,0);
-let cur=0,paused=false,running=false,timer=null,speed=1.0,light=false,musicOn=true;
 
-// SMOOTH PROGRESS
-let ptB=0,ptD=0,ptS=0;
-function startPT(b,d){ptB=b;ptD=d;ptS=performance.now();}
-(function loop(){
-  if(running&&!paused&&ptD>0){
-    var el=(performance.now()-ptS)/speed;
-    document.getElementById('pf').style.width=(Math.min(ptB+Math.min(el,ptD),TOTAL)/TOTAL*100).toFixed(2)+'%';
-  }
-  requestAnimationFrame(loop);
-})();
+const ANNS=[
+  {s:'A fair coin.  One toss.',d:2200},
+  {s:'$\\Omega = \\{H,\\, T\\}$',d:2500},
+  {s:'$P(H) = P(T) = 0.5$',d:2500},
+  {s:'Axiom 1: $P(H) \\geq 0$,  $P(T) \\geq 0$  \u2713',d:2500},
+  {s:'Axiom 2: $P(H) + P(T) = 1$  \u2713',d:2500},
+  {s:'Axiom 3: $H$ and $T$ are mutually exclusive.',d:2500},
+  {s:'$P(H \\cup T) = P(H) + P(T) = 1 = P(\\Omega)$  \u2713',d:3000},
+  {s:'',d:700},
+  {s:'Kolmogorov would be pleased.',d:2800},
+  {s:'',d:500},
+  {s:'He would not be pleased about the blackjack plan.',d:3000},
+  {s:'But that is a separate matter.',d:2800},
+];
 
-// SPEED
+const TOTAL=F.reduce((s,f)=>s+(f.d||0),0);
+let cur=0,paused=false,running=false,timer=null,speed=1;
+
+// ═══ SPEED ═══
 function setSpeed(s){
   speed=s;
-  document.querySelectorAll('.spd').forEach(function(b){
-    var m=b.getAttribute('onclick').match(/setSpeed\(([^)]+)\)/);
-    if(m)b.classList.toggle('active',Math.abs(parseFloat(m[1])-s)<.001);
+  document.querySelectorAll('.spd').forEach(b=>{
+    const m=b.getAttribute('onclick').match(/setSpeed\(([^)]+)\)/);
+    if(m) b.classList.toggle('active',Math.abs(parseFloat(m[1])-s)<.001);
   });
 }
-function W(ms){return ms/speed;}
+function wait(ms){return ms/speed;}
 
-// SKIN
-function toggleSkin(){
-  light=!light;
-  document.body.classList.toggle('light',light);
-  document.getElementById('sk').innerHTML=light?'&#9728;':'&#9728;';
-}
+// ═══ SKIN ═══
+function toggleSkin(){document.body.classList.toggle('light');}
 
-// MUSIC
-function toggleMusic(){
-  musicOn=!musicOn;
-  if(mg)mg.gain.setTargetAtTime(musicOn?.24:0,AC.currentTime,.5);
-  document.getElementById('mu').style.opacity=musicOn?'1':'.3';
-}
+// ═══ RECORDING ═══
+function toggleRec(){document.body.classList.toggle('rec');}
 
-// AUDIO - iOS safe
-var AC,mg,padI=0;
-var CHORDS=[[196,246.9,329.6],[164.8,220,293.7],[185,246.9,311.1],[196,261.6,329.6]];
+// ═══ AUDIO ═══
+let AC,mg,padI=0,musicOn=true;
+const CHORDS=[[196,246.9,329.6],[164.8,220,293.7],[185,246.9,311.1],[196,261.6,329.6]];
 function initAudio(){
   if(AC)return;
-  try{
-    var Ctx=window.AudioContext||window.webkitAudioContext;
-    if(!Ctx)return;
-    AC=new Ctx();
-    var co=AC.createDynamicsCompressor();
-    co.threshold.value=-20;co.ratio.value=4;co.connect(AC.destination);
-    mg=AC.createGain();mg.gain.value=.24;mg.connect(co);
-    // Unlock: play silent oscillator for 0.001s
-    var o=AC.createOscillator();
-    var g=AC.createGain();g.gain.value=0;
-    o.connect(g);g.connect(AC.destination);
-    o.start(0);o.stop(AC.currentTime+.001);
-    // Resume then start music
-    var p=AC.resume();
-    if(p&&p.then){p.then(function(){sPad();sMel();sTick();});}
-    else{sPad();sMel();sTick();}
-  }catch(e){console.warn('audio:',e);AC=null;mg=null;}
+  AC=new(window.AudioContext||window.webkitAudioContext)();
+  const co=AC.createDynamicsCompressor();co.threshold.value=-20;co.ratio.value=4;co.connect(AC.destination);
+  mg=AC.createGain();mg.gain.value=musicOn?0.24:0;mg.connect(co);
+  schedulePad();scheduleMel();scheduleTick();
 }
-// Re-attempt audio on any touch if not yet started
-document.addEventListener('touchstart',function(){
-  if(!AC&&running)initAudio();
-  if(AC&&AC.state==='suspended')AC.resume();
-},{passive:true});
-
-function tone(f,t,d,v){var o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.35);g.gain.linearRampToValueAtTime(v*.8,t+d-.6);g.gain.linearRampToValueAtTime(0,t+d);o.connect(g);g.connect(mg);o.start(t);o.stop(t+d+.1);}
-function sPad(){if(!AC)return;CHORDS[padI%4].forEach(function(f){tone(f,AC.currentTime,12,.018);});padI++;setTimeout(sPad,10400);}
-function sMel(){
-  if(!AC)return;
-  var M=[[{f:659,d:1.4},{f:587,d:.9},{f:523,d:2}],[{f:784,d:1.6},{f:698,d:2.1}],[{f:523,d:.9},{f:587,d:1},{f:659,d:1.8}]];
-  var fr=M[Math.floor(Math.random()*3)],t=AC.currentTime+.2;
-  fr.forEach(function(n){var o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=n.f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.008,t+.1);g.gain.exponentialRampToValueAtTime(.0001,t+n.d);o.connect(g);g.connect(mg);o.start(t);o.stop(t+n.d+.1);t+=n.d+.08;});
-  setTimeout(sMel,(15+Math.random()*14)*1000);
+function toggleMusic(){
+  musicOn=!musicOn;
+  if(mg) mg.gain.setTargetAtTime(musicOn?0.24:0,AC.currentTime,.3);
 }
-function sTick(){
+function tone(f,t,dur,v){const o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.35);g.gain.linearRampToValueAtTime(v*.8,t+dur-.6);g.gain.linearRampToValueAtTime(0,t+dur);o.connect(g);g.connect(mg);o.start(t);o.stop(t+dur+.1);}
+function schedulePad(){if(!AC)return;CHORDS[padI%4].forEach(f=>tone(f,AC.currentTime,12,.018));padI++;setTimeout(schedulePad,10400);}
+function scheduleMel(){
   if(!AC)return;
-  [[880,.002],[698,.0015]].forEach(function(a,i){var f=a[0],v=a[1],d=i*.9,o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(v,AC.currentTime+d);g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+d+.09);o.connect(g);g.connect(mg);o.start(AC.currentTime+d);o.stop(AC.currentTime+d+.12);});
-  setTimeout(sTick,1620+Math.random()*180);
+  const M=[[{f:659,d:1.4},{f:587,d:.9},{f:523,d:2}],[{f:784,d:1.6},{f:698,d:2.1}],[{f:523,d:.9},{f:587,d:1},{f:659,d:1.8}]];
+  const fr=M[Math.floor(Math.random()*3)];let t=AC.currentTime+.2;
+  fr.forEach(n=>{const o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=n.f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.008,t+.1);g.gain.exponentialRampToValueAtTime(.0001,t+n.d);o.connect(g);g.connect(mg);o.start(t);o.stop(t+n.d+.1);t+=n.d+.08;});
+  setTimeout(scheduleMel,(15+Math.random()*14)*1000);
+}
+function scheduleTick(){
+  if(!AC)return;
+  [[880,.002],[698,.0015]].forEach(([f,v],i)=>{const d=i*.9,o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(v,AC.currentTime+d);g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+d+.09);o.connect(g);g.connect(mg);o.start(AC.currentTime+d);o.stop(AC.currentTime+d+.12);});
+  setTimeout(scheduleTick,1620+Math.random()*180);
 }
 
-// GRAIN + FLICKER
-var gcv=document.getElementById('grain'),gx=gcv.getContext('2d');
-function rsz(){gcv.width=innerWidth;gcv.height=innerHeight;}rsz();
+// ═══ GRAIN + FLICKER ═══
+const gcv=document.getElementById('grain'),gx=gcv.getContext('2d');
+function resizeGrain(){gcv.width=innerWidth;gcv.height=innerHeight;}resizeGrain();
 function drawGrain(){
-  if(light){gx.clearRect(0,0,gcv.width,gcv.height);requestAnimationFrame(drawGrain);return;}
-  var w=gcv.width,h=gcv.height,id=gx.createImageData(w,h),d=id.data;
-  for(var i=0;i<d.length;i+=4){var v=Math.random()*22;d[i]=d[i+1]=d[i+2]=v;d[i+3]=Math.random()*15;}
+  const w=gcv.width,h=gcv.height,id=gx.createImageData(w,h),d=id.data;
+  for(let i=0;i<d.length;i+=4){const v=Math.random()*22;d[i]=d[i+1]=d[i+2]=v;d[i+3]=Math.random()*15;}
   gx.putImageData(id,0,0);
   if(Math.random()<.014){gx.fillStyle='rgba(212,168,67,'+(Math.random()*.12+.03)+')';gx.fillRect(0,Math.random()*h,w*(.3+Math.random()*.7),1);}
   requestAnimationFrame(drawGrain);
 }
 drawGrain();
-setInterval(function(){if(!running||paused||light)return;if(Math.random()<.05){var b=.78+Math.random()*.34;document.getElementById('stage').style.filter='brightness('+b+')';setTimeout(function(){document.getElementById('stage').style.filter='';},55+Math.random()*55);}},550);
-addEventListener('resize',rsz);
+setInterval(()=>{if(!running||paused)return;if(Math.random()<.05){const b=.78+Math.random()*.34;document.getElementById('stage').style.filter='brightness('+b+')';setTimeout(()=>document.getElementById('stage').style.filter='',55+Math.random()*55);}},550);
+addEventListener('resize',resizeGrain);
 
-// TEXT
-var tx=document.getElementById('tx');
+// ═══ TEXT ═══
+const tx=document.getElementById('tx');
 function showText(f){
   tx.className='';tx.textContent='';tx.style.opacity='0';
   if(!f.s)return;
-  requestAnimationFrame(function(){requestAnimationFrame(function(){
-    tx.textContent=f.s;tx.style.opacity='';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    var content = f.t==='e' ? renderEq(f.s) : renderMath(f.s);
+    tx.innerHTML=content;
+    tx.style.opacity='';
     var cls={r:'tr',e:'te',h:'th',a:'ta'}[f.t]||'tx';
     tx.className=cls+' arriving';
-  });});
+  }));
 }
 function hideText(cb){
-  tx.className=tx.className.replace(/arriving/g,'')+'departing';
-  setTimeout(function(){tx.className='';tx.textContent='';tx.style.opacity='0';cb();},200);
+  tx.classList.remove('arriving');tx.classList.add('departing');
+  setTimeout(()=>{tx.className='';tx.textContent='';tx.style.opacity='0';cb();},200);
 }
 
-// ROOM
-var rl=document.getElementById('rl');
+// ═══ ROOM ═══
+const rl=document.getElementById('rl');
 function showRoom(dur,cb){
   tx.style.opacity='0';tx.textContent='';tx.className='';
   rl.style.transition='opacity 2s ease-in-out';rl.style.opacity='1';
-  setTimeout(function(){rl.style.transition='opacity 2s ease-in-out';rl.style.opacity='0';setTimeout(cb,2100);},dur-2200);
+  setTimeout(()=>{rl.style.transition='opacity 2s ease-in-out';rl.style.opacity='0';setTimeout(cb,2100);},dur-2200);
 }
 function closeRoom(dur,cb){
   tx.style.opacity='0';tx.textContent='';tx.className='';
   rl.style.transition='opacity 2.5s ease-in-out';rl.style.opacity='1';
-  setTimeout(function(){rl.style.transition='opacity 3s ease-in-out';rl.style.opacity='0';setTimeout(cb,3100);},dur-3200);
+  setTimeout(()=>{rl.style.transition='opacity 3s ease-in-out';rl.style.opacity='0';setTimeout(cb,3100);},dur-3200);
 }
 
-// COIN
-var cl=document.getElementById('cl'),cc=document.getElementById('cc'),cx=cc.getContext('2d'),ct=document.getElementById('ct');
-var ANNS=[
-  {s:'A fair coin.  One toss.',d:2200},{s:'S = {H, T}',d:2500},{s:'P(H) = P(T) = 0.5',d:2500},
-  {s:'Axiom 1:  P(H) \u2265 0   P(T) \u2265 0   \u2713',d:2200},{s:'Axiom 2:  P(H) + P(T) = 1   \u2713',d:2200},
-  {s:'Axiom 3:  H and T are mutually exclusive.',d:2200},
-  {s:'P(H \u222a T) = P(H) + P(T) = 1 = P(S)   \u2713',d:2800},{s:'',d:700},
-  {s:'Kolmogorov would be pleased.',d:2800},{s:'',d:500},
-  {s:'He would not be pleased about the blackjack plan.',d:3000},{s:'But that is a separate matter.',d:2800},
-];
+// ═══ COIN ═══
+const cl=document.getElementById('cl'),cc=document.getElementById('cc'),cx=cc.getContext('2d'),ct=document.getElementById('ct');
 function runCoin(cb){
   cl.style.display='flex';tx.style.opacity='0';tx.textContent='';tx.className='';
-  var sz=Math.min(160,innerWidth*.16);cc.width=sz;cc.height=sz;
-  var r=sz/2-8,t0=Date.now(),sD=6200;
-  var cc2=function(){return light?'rgba(139,94,26,':'rgba(212,168,67,';};
+  const sz=Math.min(160,innerWidth*.16);cc.width=sz;cc.height=sz;
+  const r=sz/2-8,t0=Date.now(),spinDur=6200;
   function frame(){
-    var el=Date.now()-t0,prog=Math.min(1,el/sD),ease=1-Math.pow(1-prog,2);
-    var ang=ease*14*Math.PI,sy=Math.max(.05,Math.abs(Math.cos(ang)));
-    var w=cc.width,h=cc.height;cx.clearRect(0,0,w,h);
+    const el=Date.now()-t0,prog=Math.min(1,el/spinDur),ease=1-Math.pow(1-prog,2);
+    const ang=ease*14*Math.PI,sy=Math.max(.05,Math.abs(Math.cos(ang)));
+    const w=cc.width,h=cc.height;cx.clearRect(0,0,w,h);
     cx.save();cx.translate(w/2,h/2);cx.scale(1,sy);
-    cx.fillStyle=light?'#F5EDD6':'#080606';cx.beginPath();cx.arc(0,0,r,0,Math.PI*2);cx.fill();
-    cx.strokeStyle=cc2()+(0.55+sy*.4)+')';cx.lineWidth=2;cx.beginPath();cx.arc(0,0,r,0,Math.PI*2);cx.stroke();
+    cx.fillStyle='#080606';cx.beginPath();cx.arc(0,0,r,0,Math.PI*2);cx.fill();
+    cx.strokeStyle='rgba(212,168,67,'+(0.55+sy*.4)+')';cx.lineWidth=2;cx.beginPath();cx.arc(0,0,r,0,Math.PI*2);cx.stroke();
     cx.restore();
-    if(sy>.12){var a=Math.min(1,(sy-.12)/.25),face=Math.cos(ang)>=0?'H':'T';cx.font='300 '+Math.round(r*.72)+'px Courier New,monospace';cx.fillStyle=cc2()+a+')';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(face,w/2,h/2+1);}
+    if(sy>.12){const a=Math.min(1,(sy-.12)/.25),face=Math.cos(ang)>=0?'H':'T';cx.font='300 '+Math.round(r*.72)+'px Courier New,monospace';cx.fillStyle='rgba(212,168,67,'+a+')';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(face,w/2,h/2+1);}
     if(prog<1){requestAnimationFrame(frame);}
-    else{land('H');setTimeout(function(){anns(0,cb);},900);}
+    else{landCoin('H');setTimeout(()=>playAnns(0,cb),900);}
   }
-  function land(f){var w=cc.width,h=cc.height;cx.clearRect(0,0,w,h);cx.fillStyle=light?'#F5EDD6':'#080606';cx.beginPath();cx.arc(w/2,h/2,r,0,Math.PI*2);cx.fill();cx.strokeStyle=cc2()+'.9)';cx.lineWidth=2;cx.beginPath();cx.arc(w/2,h/2,r,0,Math.PI*2);cx.stroke();cx.font='300 '+Math.round(r*.72)+'px Courier New,monospace';cx.fillStyle=cc2()+'.92)';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(f,w/2,h/2+1);}
-  function anns(i,done){
-    if(i>=ANNS.length){ct.style.opacity='0';setTimeout(function(){cl.style.display='none';done();},500);return;}
+  function landCoin(f){
+    const w=cc.width,h=cc.height;cx.clearRect(0,0,w,h);
+    cx.fillStyle='#080606';cx.beginPath();cx.arc(w/2,h/2,r,0,Math.PI*2);cx.fill();
+    cx.strokeStyle='rgba(212,168,67,.9)';cx.lineWidth=2;cx.beginPath();cx.arc(w/2,h/2,r,0,Math.PI*2);cx.stroke();
+    cx.font='300 '+Math.round(r*.72)+'px Courier New,monospace';cx.fillStyle='rgba(212,168,67,.92)';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(f,w/2,h/2+1);
+  }
+  function playAnns(i,done){
+    if(i>=ANNS.length){ct.style.opacity='0';setTimeout(()=>{cl.style.display='none';done();},500);return;}
     ct.style.opacity='0';
-    setTimeout(function(){ct.textContent=ANNS[i].s;ct.style.opacity='1';setTimeout(function(){anns(i+1,done);},W(ANNS[i].d));},200);
+    setTimeout(()=>{ct.innerHTML=renderMath(ANNS[i].s);ct.style.opacity='1';setTimeout(()=>playAnns(i+1,done),wait(ANNS[i].d));},200);
   }
   requestAnimationFrame(frame);
 }
 
-// CHAPTERS + INDEX
-var CHAPS=[];
-function fmtT(ms){var s=Math.floor(ms/1000),m=Math.floor(s/60);return m+':'+(s%60<10?'0':'')+(s%60);}
+// ═══ PARCHMENT ═══
+var parchTimer=null,parchCb=null,parchIdx=0;
+
+function runParch(f,cb){
+  parchCb=cb;parchPaused=false;parchIdx=0;
+  var ov=document.getElementById('parch-overlay');
+  var title=document.getElementById('parch-title');
+  var linesEl=document.getElementById('parch-lines');
+  var foot=document.getElementById('parch-foot');
+  var cont=document.getElementById('pcont');
+  var ppause=document.getElementById('ppause');
+
+  title.textContent=f.title||'';
+  linesEl.innerHTML='';
+  foot.classList.remove('vis');
+  cont.classList.remove('vis');
+  (f.lines||[]).forEach(function(l){
+    var d=document.createElement('div');
+    d.className='pl';
+    d.innerHTML=renderMath(l);
+    linesEl.appendChild(d);
+  });
+
+  ov.classList.add('open');
+  if(mg) mg.gain.setTargetAtTime(0,AC.currentTime,.3);
+
+  parchNext();
+}
+
+function parchPrev(){
+  var lines=document.querySelectorAll('.pl');
+  if(parchIdx<=0) return;
+  // Hide last visible line
+  lines[parchIdx-1].classList.remove('vis');
+  parchIdx--;
+  // Also hide continue if it was showing
+  document.getElementById('parch-foot').classList.remove('vis');
+  document.getElementById('pcont').classList.remove('vis');
+  clearTimeout(parchTimer);
+}
+function parchNext(){
+  clearTimeout(parchTimer);
+  var lines=document.querySelectorAll('.pl');
+  if(parchIdx>=lines.length){
+    document.getElementById('parch-foot').classList.add('vis');
+    document.getElementById('pcont').classList.add('vis');
+    return;
+  }
+  lines[parchIdx].classList.add('vis');
+  parchIdx++;
+  parchTimer=setTimeout(parchNext,3000);
+}
+
+function closeParch(){
+  clearTimeout(parchTimer);
+  document.getElementById('parch-overlay').classList.remove('open');
+  if(mg) mg.gain.setTargetAtTime(0.24,AC.currentTime,.4);
+  if(parchCb){var c=parchCb;parchCb=null;c();}
+}
+
+// ═══ PROGRESS + CHAPTERS ═══
+var CHAPTERS=[];
 function buildChapters(){
-  CHAPS=F.reduce(function(a,f,i){if(i===0||f.t==='h'||f.t==='coin')a.push(i);return a;},[]);
-  var list=document.getElementById('ip');
-  list.innerHTML='<div id="ih">Contents</div>';
-  CHAPS.forEach(function(fi,ci){
-    var ms=F.slice(0,fi).reduce(function(s,f){return s+f.d;},0);
-    var label=fi===0?'Opening':F[fi].t==='coin'?'Example':F[fi].s||'';
-    var row=document.createElement('div');row.className='ir';row.id='ir'+ci;
-    row.innerHTML='<span class="it2">'+fmtT(ms)+'</span><span class="il2">'+label+'</span>';
-    row.addEventListener('click',function(){closeIdx();jumpTo(fi);});
-    list.appendChild(row);
-  });
-  document.getElementById('pb').addEventListener('click',function(e){
+  CHAPTERS=F.reduce((a,f,i)=>{if(i===0||f.t==='h'||f.t==='coin')a.push(i);return a;},[]);
+  var bar=document.getElementById('pb');
+  bar.addEventListener('click',function(e){
     if(!running)return;
-    var r2=document.getElementById('pb').getBoundingClientRect();
-    var pct=(e.clientX-r2.left)/r2.width,target=pct*TOTAL,acc=0;
-    for(var i=0;i<F.length;i++){if(acc+F[i].d>=target){jumpTo(i);break;}acc+=F[i].d;}
+    var r2=bar.getBoundingClientRect(),pct=(e.clientX-r2.left)/r2.width,target=pct*TOTAL;
+    var acc=0;for(var i=0;i<F.length;i++){if(acc+(F[i].d||0)>=target){jumpTo(i);break;}acc+=(F[i].d||0);}
+  });
+  // Build index panel
+  var ip=document.getElementById('ip');
+  ip.innerHTML='<div id="ih">Contents</div>';
+  CHAPTERS.forEach(function(fi){
+    var label=fi===0?'Opening':F[fi].t==='coin'?'Example':F[fi].s||'';
+    var pct=Math.round(F.slice(0,fi).reduce((s,f)=>s+(f.d||0),0)/TOTAL*100);
+    var row=document.createElement('div');row.className='ir';
+    row.innerHTML='<span class="it2">'+pct+'%</span><span class="il2">'+label+'</span>';
+    row.addEventListener('click',function(){closeIdx();jumpTo(fi);});
+    ip.appendChild(row);
   });
 }
-function updateIdx(){
-  var ci=CHAPS.reduce(function(best,fi,ci){return fi<=cur?ci:best;},-1);
-  document.querySelectorAll('.ir').forEach(function(r,i){r.classList.toggle('now',i===ci);});
+function setProgress(i){
+  var done=F.slice(0,i).reduce((s,f)=>s+(f.d||0),0);
+  document.getElementById('pf').style.width=(done/TOTAL*100)+'%';
+  // Update index current
+  document.querySelectorAll('.ir').forEach(function(r,ri){r.classList.toggle('now',CHAPTERS[ri]===i||CHAPTERS[ri]<i&&(ri===CHAPTERS.length-1||CHAPTERS[ri+1]>i));});
 }
 
-// INDEX
-var idxWas=false;
-function openIdx(){
-  if(!running)return;
-  idxWas=paused;
-  if(!paused){paused=true;clearTimeout(timer);if(mg)mg.gain.setTargetAtTime(0,AC.currentTime,.4);document.getElementById('pb2').innerHTML='&#9654;';document.getElementById('pi').classList.add('on');}
-  updateIdx();
-  document.getElementById('io').classList.add('open');
-}
-function closeIdx(){
-  document.getElementById('io').classList.remove('open');
-  if(!idxWas){paused=false;if(mg)mg.gain.setTargetAtTime(.24,AC.currentTime,.4);document.getElementById('pb2').innerHTML='&#9646;&#9646;';document.getElementById('pi').classList.remove('on');hideText(function(){play(cur+1);});}
-}
-
-// PLAYER
+// ═══ PLAYER ═══
 function play(i){
-  try{
-  if(i>=F.length){document.getElementById('pf').style.width='100%';ptD=0;return;}
-  cur=i;startPT(F.slice(0,i).reduce(function(s,f){return s+f.d;},0),F[i].d);
+  if(i>=F.length){document.getElementById('pf').style.width='100%';return;}
+  cur=i;setProgress(i);
   var f=F[i];
-  if(f.t==='b'){tx.className='';tx.textContent='';tx.style.opacity='0';timer=setTimeout(function(){if(!paused)play(i+1);},W(f.d));return;}
-  if(f.t==='room'){showRoom(f.d,function(){play(i+1);});return;}
-  if(f.t==='rc'){closeRoom(f.d,function(){play(i+1);});return;}
-  if(f.t==='coin'){runCoin(function(){play(i+1);});return;}
+  if(f.t==='b'){tx.className='';tx.textContent='';tx.style.opacity='0';timer=setTimeout(()=>{if(!paused)play(i+1);},wait(f.d));return;}
+  if(f.t==='room'){showRoom(f.d,()=>play(i+1));return;}
+  if(f.t==='rc'){closeRoom(f.d,()=>play(i+1));return;}
+  if(f.t==='coin'){runCoin(()=>play(i+1));return;}
+  if(f.t==='parch'){runParch(f,()=>play(i+1));return;}
   showText(f);
-  timer=setTimeout(function(){if(!paused)hideText(function(){play(i+1);});},W(f.d));
-  }catch(e){console.warn('play error:',e,i);}
+  timer=setTimeout(()=>{if(!paused)hideText(()=>play(i+1));},wait(f.d));
 }
 
-// CONTROLS
+// ═══ CONTROLS ═══
 function begin(){
   document.getElementById('st').style.display='none';
   document.body.classList.remove('not-started');
-  running=true;
-  try{initAudio();}catch(e){console.warn('Audio init failed:',e);}
-  buildChapters();play(0);
+  document.getElementById('ctrl').classList.add('vis');
+  running=true;initAudio();buildChapters();play(0);
+  // Show controls on mouse near bottom
+  document.addEventListener('mousemove',function(e){
+    var near=e.clientY>innerHeight-100;
+    document.getElementById('ctrl').classList.toggle('vis',near);
+  });
 }
+
 function togglePause(){
-  if(!running)return;paused=!paused;
-  var pb=document.getElementById('pb2'),pi=document.getElementById('pi');
-  if(paused){clearTimeout(timer);if(mg)mg.gain.setTargetAtTime(0,AC.currentTime,.4);pb.innerHTML='&#9654;';pi.classList.add('on');ptD=0;}
-  else{if(mg)mg.gain.setTargetAtTime(.24,AC.currentTime,.4);pb.innerHTML='&#9646;&#9646;';pi.classList.remove('on');hideText(function(){play(cur+1);});}
+  if(!running)return;
+  paused=!paused;
+  var pb2=document.getElementById('pb2'),pi=document.getElementById('pi');
+  if(paused){clearTimeout(timer);if(mg)mg.gain.setTargetAtTime(0,AC.currentTime,.4);pi.classList.add('on');pb2.innerHTML='&#9654;';}
+  else{if(mg)mg.gain.setTargetAtTime(0.24,AC.currentTime,.4);pi.classList.remove('on');pb2.innerHTML='&#9646;&#9646;';hideText(()=>play(cur+1));}
 }
-function jumpTo(i){clearTimeout(timer);paused=false;document.getElementById('pb2').innerHTML='&#9646;&#9646;';document.getElementById('pi').classList.remove('on');tx.className='';tx.textContent='';tx.style.opacity='0';cl.style.display='none';play(i);}
-function prevChap(){if(!running)return;var p=CHAPS.filter(function(i){return i<cur;});jumpTo(p.length?p[p.length-1]:0);}
-function nextChap(){if(!running)return;var n=CHAPS.filter(function(i){return i>cur;});if(n.length)jumpTo(n[0]);}
-function resetEp(){
-  clearTimeout(timer);running=false;paused=false;
-  tx.className='';tx.textContent='';tx.style.opacity='0';
-  cl.style.display='none';rl.style.opacity='0';rl.style.transition='none';
-  ptD=0;document.getElementById('pf').style.width='0%';
+
+function jumpTo(i){
+  clearTimeout(timer);paused=false;
   document.getElementById('pb2').innerHTML='&#9646;&#9646;';
   document.getElementById('pi').classList.remove('on');
-  document.getElementById('io').classList.remove('open');
-  var s=document.getElementById('st');s.style.display='';
-  document.body.classList.add('not-started');cur=0;
+  tx.className='';tx.textContent='';tx.style.opacity='0';
+  document.getElementById('cl').style.display='none';
+  document.getElementById('parch-overlay').classList.remove('open');
+  if(mg)mg.gain.setTargetAtTime(0.24,AC.currentTime,.1);
+  play(i);
 }
-function beginRec(){document.body.classList.add('rec');begin();}
 
-// CONTROLS AUTO-HIDE
-var hideT=null;
-function showCtrl(){
-  document.getElementById('ctrl').classList.add('vis');
-  clearTimeout(hideT);
-  hideT=setTimeout(function(){document.getElementById('ctrl').classList.remove('vis');},3500);
+function stepForward(){
+  if(!running)return;
+  // Skip to next non-beat frame
+  var i=cur+1;
+  while(i<F.length && F[i].t==='b') i++;
+  if(i<F.length) jumpTo(i);
 }
-document.addEventListener('mousemove',function(e){if(innerHeight-e.clientY<110)showCtrl();});
-document.getElementById('ctrl').addEventListener('mouseenter',function(){clearTimeout(hideT);document.getElementById('ctrl').classList.add('vis');});
-document.getElementById('ctrl').addEventListener('mouseleave',function(){hideT=setTimeout(function(){document.getElementById('ctrl').classList.remove('vis');},1500);});
+function stepBack(){
+  if(!running)return;
+  // Go back to previous non-beat frame
+  var i=cur-1;
+  while(i>0 && F[i].t==='b') i--;
+  if(i>=0) jumpTo(i);
+}
+function prevChap(){if(!running)return;var prev=CHAPTERS.filter(i=>i<cur);jumpTo(prev.length>0?prev[prev.length-1]:0);}
+function nextChap(){if(!running)return;var next=CHAPTERS.filter(i=>i>cur);if(next.length>0)jumpTo(next[0]);}
+function openIdx(){document.getElementById('io').classList.add('open');}
+function closeIdx(){document.getElementById('io').classList.remove('open');}
+function resetEp(){jumpTo(0);document.getElementById('st').style.display='flex';document.body.classList.add('not-started');running=false;}
 
-// START SCREEN — touch + click, no double fire
-(function(){
-  var fired=false;
-  function go(){if(fired)return;fired=true;begin();}
-  document.getElementById('st').addEventListener('touchend',go);
-  document.getElementById('st').addEventListener('click',go);
-})();
-
-// KEYBOARD
 document.addEventListener('keydown',function(e){
-  if(e.shiftKey&&e.key==='R'){e.preventDefault();if(!running)beginRec();else document.body.classList.toggle('rec');return;}
-  if(e.key===' '||e.key==='k'){e.preventDefault();if(document.getElementById('io').classList.contains('open'))closeIdx();else togglePause();showCtrl();return;}
-  if(e.key==='Escape'&&document.getElementById('io').classList.contains('open')){closeIdx();return;}
-  if(e.key==='ArrowLeft'){e.preventDefault();prevChap();showCtrl();return;}
-  if(e.key==='ArrowRight'){e.preventDefault();nextChap();showCtrl();return;}
+  if(e.key===' '||e.key==='k'){e.preventDefault();togglePause();}
+  if(e.key==='ArrowLeft'){e.preventDefault();stepBack();}
+  if(e.key==='ArrowRight'){e.preventDefault();stepForward();}
+  if(e.key==='Escape'){closeIdx();}
+  if(document.getElementById('parch-overlay').classList.contains('open')){
+    if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();parchNext();}
+    if(e.key==='ArrowLeft'){e.preventDefault();parchPrev();}
+    return;
+  }
 });
-
 </script>
 </body>
 </html>
