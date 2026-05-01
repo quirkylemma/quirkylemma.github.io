@@ -23,7 +23,7 @@ html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',mo
 .series.coming{cursor:default;pointer-events:none}
 .series.coming .series-title{color:rgba(238,225,196,.22)}
 .series.coming .series-sub{color:rgba(212,168,67,.15)}
-#icon{position:fixed;bottom:22vh;left:0;right:0;text-align:center;font-size:clamp(32px,4vw,52px);z-index:10;pointer-events:auto;cursor:pointer;opacity:.75;-webkit-tap-highlight-color:transparent;user-select:none}
+#icon{position:fixed;bottom:12vh;left:0;right:0;text-align:center;font-size:clamp(32px,4vw,52px);z-index:10;pointer-events:auto;cursor:pointer;opacity:.75;-webkit-tap-highlight-color:transparent;user-select:none}
 #icon:hover{opacity:1}
 #ha{position:fixed;top:0;left:0;z-index:100;color:rgba(212,168,67,.9);font-family:'Courier New',monospace;font-size:clamp(18px,2vw,28px);letter-spacing:.12em;pointer-events:none;opacity:0;font-weight:600}
 #msg{position:fixed;bottom:14vh;left:0;right:0;text-align:center;z-index:50;color:rgba(212,168,67,.55);font-family:'Courier New',monospace;font-size:clamp(12px,1.1vw,16px);letter-spacing:.08em;padding:0 10%;line-height:1.6;opacity:0;pointer-events:none;transition:opacity .8s ease-in-out;text-shadow:0 0 20px rgba(212,168,67,.3)}
@@ -35,6 +35,194 @@ html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',mo
 <canvas id="grain"></canvas>
 <div id="vig"></div>
 <div id="wrap">
+  <div id="brand">Welcome to Quirky Lemma</div>
+  <div id="sub">Econometrics. With Character.</div>
+  <div id="series-scroll">
+    <a class="series" href="probably-speaking.html">
+      <div class="series-title">Series 1 &nbsp;&mdash;&nbsp; Probably Speaking</div>
+      <div class="series-sub">Probability theory &nbsp;&middot;&nbsp; Aubrey Squeakwell, PhD</div>
+    </a>
+    <div class="series coming">
+      <div class="series-title">Series 2 &nbsp;&mdash;&nbsp; Statistically Speaking</div>
+      <div class="series-sub">Statistical inference &nbsp;&middot;&nbsp; Coming soon</div>
+    </div>
+    <div class="series coming">
+      <div class="series-title">Series 3 &nbsp;&mdash;&nbsp; Relatively Speaking</div>
+      <div class="series-sub">Econometrics &nbsp;&middot;&nbsp; Coming soon</div>
+    </div>
+    <div class="series coming">
+      <div class="series-title">Series 4 &nbsp;&mdash;&nbsp; Strictly Speaking</div>
+      <div class="series-sub">Time series &nbsp;&middot;&nbsp; Coming soon</div>
+    </div>
+    <div class="series coming">
+      <div class="series-title">Series 5 &nbsp;&mdash;&nbsp; Generally Speaking</div>
+      <div class="series-sub">Generalised linear models &nbsp;&middot;&nbsp; Coming soon</div>
+    </div>
+    <div class="series coming">
+      <div class="series-title">Series 6 &nbsp;&mdash;&nbsp; Broadly Speaking</div>
+      <div class="series-sub">Bayesian methods &nbsp;&middot;&nbsp; Coming soon</div>
+    </div>
+  </div>
+</div>
+<div id="icon">&#127917;</div>
+<div id="ha">Ha!</div>
+<div id="msg"></div>
+<div id="foot">Quirky Lemma was created by Ragvir Sabharwal, PhD.<br>&copy; 2026 All rights reserved. All wrongs denied.</div>
+<script>
+// GRAIN
+var cv=document.getElementById('grain'),gx=cv.getContext('2d');
+function rsz(){cv.width=innerWidth;cv.height=innerHeight;}rsz();
+addEventListener('resize',rsz);
+function grain(){
+  var w=cv.width,h=cv.height,id=gx.createImageData(w,h),d=id.data;
+  for(var i=0;i<d.length;i+=4){var v=Math.random()*20;d[i]=d[i+1]=d[i+2]=v;d[i+3]=Math.random()*13;}
+  gx.putImageData(id,0,0);
+  if(Math.random()<.01){gx.fillStyle='rgba(212,168,67,'+(Math.random()*.09+.02)+')';gx.fillRect(0,Math.random()*h,w*(.2+Math.random()*.5),1);}
+  requestAnimationFrame(grain);
+}
+grain();
+
+// GLITCH
+var brand=document.getElementById('brand');
+function glitch(){
+  var n=Math.floor(1+Math.random()*3),i=0;
+  function step(){
+    if(i>=n*2){brand.style.opacity='1';brand.style.transform='';return;}
+    brand.style.opacity=i%2===0?(0.4+Math.random()*0.5).toFixed(2):'1';
+    brand.style.transform=i%2===0?'translateX('+(Math.random()-.5)*4+'px)':'';
+    i++;setTimeout(step,40+Math.random()*60);
+  }
+  step();setTimeout(glitch,3000+Math.random()*9000);
+}
+setTimeout(glitch,2000+Math.random()*4000);
+
+// DIM
+function dim(){
+  document.body.style.filter='brightness('+(0.55+Math.random()*0.3).toFixed(2)+')';
+  setTimeout(function(){document.body.style.filter='';setTimeout(dim,15000+Math.random()*12000);},80+Math.random()*120);
+}
+setTimeout(dim,4000+Math.random()*8000);
+
+// AUDIO
+var AC=null;
+function whimper(){
+  try{
+    if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();
+    var now=AC.currentTime;
+    function t(f,s,e,d,v){var o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.setValueAtTime(f,now+s);o.frequency.linearRampToValueAtTime(e,now+s+d);g.gain.setValueAtTime(0,now+s);g.gain.linearRampToValueAtTime(v,now+s+0.05);g.gain.exponentialRampToValueAtTime(0.001,now+s+d);o.connect(g);g.connect(AC.destination);o.start(now+s);o.stop(now+s+d+0.05);}
+    t(800,0,200,1.0,0.08);t(600,0.3,100,0.8,0.06);
+  }catch(e){}
+}
+
+// ICON GAME
+var ICONS=['🧲','🎲','🗝️','🐠','🍄','🧀','🦋','🫙','🎪','🎭','🦞','🫧','🪝','🫖','🦩','🦈','🦤','🔑','🧷','🧸','🔭','🔮','🪐','🐙','🧊','🪴','🧭','🪓','🎄','🛍️','🌮','🔩','🪆'];
+var MASKS='&#127917;';
+var MSGS=[
+  {at:5,t:'I see you are enjoying the icons.'},
+  {at:10,t:'Alright. You can stop now.'},
+  {at:17,t:'The same icons will keep reappearing.'},
+  {at:32,t:'You do know that there are better things to do?'},
+  {at:60,t:'I admire your commitment.'},
+  {at:110,t:'Are you aware that this is your 110th?'},
+  {at:210,t:'This is really getting obsessive now.'},
+  {at:390,t:'Even Kolmogorov did not anticipate this!'},
+  {at:600,t:'There exists no theorem to explain your behaviour. I looked.'},
+  {at:700,t:'The probability of stopping now appears to be approaching zero.'},
+  {at:850,t:'That\'s it. I have nothing further to add.'},
+  {at:950,t:'I have truly run out of things to say. I will now simply watch.'}
+];
+var DODGE_START=1000, DODGE_MAX=7;
+var el=document.getElementById('icon'),haEl=document.getElementById('ha'),msgEl=document.getElementById('msg');
+var taps=0,dcount=0,broken=false,msgTmr=null;
+var px=0,py=0,dodging=false;
+
+function showMsg(txt,persist){
+  clearTimeout(msgTmr);
+  msgEl.textContent=txt;msgEl.classList.add('on');
+  if(!persist)msgTmr=setTimeout(function(){msgEl.classList.remove('on');},3500);
+}
+
+function showHa(){
+  var r=el.getBoundingClientRect();
+  var hx=r.left+r.width/2-20+(Math.random()-.5)*80;
+  var hy=r.top+(Math.random()-.5)*40;
+  haEl.style.cssText='position:fixed;top:0;left:0;z-index:100;color:rgba(212,168,67,.9);font-family:Courier New,monospace;font-size:clamp(18px,2vw,28px);letter-spacing:.12em;pointer-events:none;font-weight:600;opacity:0;transform:translate('+hx+'px,'+hy+'px) scale(0.7);transition:none';
+  haEl.offsetHeight;
+  haEl.style.transition='opacity .15s,transform .4s ease-out';
+  haEl.style.opacity='1';
+  haEl.style.transform='translate('+hx+'px,'+(hy-22)+'px) scale(1.1)';
+  setTimeout(function(){haEl.style.transition='opacity .3s';haEl.style.opacity='0';},420);
+}
+
+
+function deathThroe(final){
+  if(dcount===1){
+    // First tap only — one wobble
+    var w=0, wint=setInterval(function(){
+      w++;
+      var s=1+(w%2?0.18:-0.12);
+      el.style.transition='transform .07s ease-in-out';
+      el.style.transform='scale('+s+')';
+      if(w>=8){clearInterval(wint);el.style.transform='scale(1)';}
+    },70);
+    return;
+  }
+  if(final){
+    // 7th tap — straight to puff
+    setTimeout(function(){
+      whimper();
+      el.style.transition='transform 1.8s ease-out, opacity 1.6s ease-in';
+      el.style.transform='scale(4)';
+      el.style.opacity='0';
+      setTimeout(function(){
+        el.style.display='none';
+        broken=true;
+        showMsg('You have broken it. I hope you are pleased with yourself.',true);
+      },1800);
+    },150);
+  }
+  // Taps 2-6 — nothing, just count
+}
+
+var iconFired=false;
+function iconTap(){
+  if(iconFired)return;iconFired=true;
+  setTimeout(function(){iconFired=false;},300);
+  if(broken)return;
+  taps++;
+  if(taps<DODGE_START){
+    el.innerHTML=ICONS[Math.floor(Math.random()*ICONS.length)];
+    for(var i=0;i<MSGS.length;i++){if(taps===MSGS[i].at){showMsg(MSGS[i].t,false);break;}}
+    return;
+  }
+  dcount++;
+  if(dcount===1){el.innerHTML=MASKS;showMsg('Careful now!',false);}
+  if(dcount>=DODGE_MAX){
+    deathThroe(true); // final throes — puff after
+  } else {
+    deathThroe(false);
+  }
+}
+el.addEventListener('touchend',function(e){e.preventDefault();iconTap();},{passive:false});
+el.addEventListener('click',function(){
+  if(broken)return;
+  taps++;
+  if(taps<DODGE_START){
+    el.innerHTML=ICONS[Math.floor(Math.random()*ICONS.length)];
+    for(var i=0;i<MSGS.length;i++){if(taps===MSGS[i].at){showMsg(MSGS[i].t,false);break;}}
+    return;
+  }
+  dcount++;
+  if(dcount===1){el.innerHTML=MASKS;showMsg('Careful now!',false);}
+  if(dcount>=DODGE_MAX){
+    deathThroe(true); // final throes — puff after
+  } else {
+    deathThroe(false);
+  }
+});
+</script>
+</body>
+</html><div id="wrap">
   <div id="brand">Welcome to Quirky Lemma</div>
   <div id="sub">Econometrics. With Character.</div>
   <div id="series-scroll">
