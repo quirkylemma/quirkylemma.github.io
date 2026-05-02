@@ -1,832 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=1920">
-<title>Probably Speaking — Episode 1: Briefly a Beginner</title>
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
-  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]})"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>Quirky Lemma</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-:root{
-  --bg:#06050a;--fg:rgba(212,168,67,.92);--dim:rgba(212,168,67,.38);
-  --hd:rgba(212,168,67,.6);--sd:rgba(212,168,67,.45);--sa:rgba(212,168,67,.9);
-  --bh:rgba(212,168,67,.55);--cf:rgba(6,5,10,0);--cb:rgba(6,5,10,.82);
-}
-html,body{width:100%;height:100%;background:var(--bg);overflow:hidden;
-  font-family:'Courier New',Courier,monospace;color:var(--fg);}
-
-/* ── GRAIN ── */
-#grain{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:.55;}
-
-/* ── VIGNETTE ── */
-#vig{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;
-  background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.65) 100%);}
-
-/* ── STAGE ── */
-#stage{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;
-  display:flex;align-items:center;justify-content:center;}
-
-/* ── TEXT ── */
-#tx{position:absolute;width:min(780px,72vw);text-align:center;
-  font-size:clamp(23px,2.2vw,37px);line-height:1.7;letter-spacing:.04em;
-  opacity:0;transition:opacity 1.2s ease;}
-#tx.arriving{opacity:1;}
-#tx.departing{opacity:0;transition:opacity .8s ease;}
-.tr{color:#ffffff;font-style:normal;}
-.tn{color:var(--hd);font-variant:small-caps;letter-spacing:.1em;font-style:normal;font-size:clamp(24px,2.6vw,42px);}
-.th{color:var(--hd);font-size:clamp(16px,1.35vw,22px);letter-spacing:.22em;text-transform:uppercase;font-style:normal;}
-.te{font-size:clamp(22px,2.15vw,36px);font-style:normal;}
-.tx{color:var(--dim);font-style:normal;}
-
-/* ── START SCREEN ── */
-#st{position:fixed;top:0;left:0;width:100%;height:100%;z-index:50;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2vh;
-  cursor:pointer;background:var(--bg);transition:opacity 1.2s ease;}
-#st-exit{position:absolute;top:3vh;left:3vw;font-family:'Courier New',monospace;
-  font-size:clamp(12px,1vw,16px);letter-spacing:.14em;color:rgba(212,168,67,.38);
-  text-decoration:none;transition:color .18s;}
-#st-exit:hover{color:rgba(212,168,67,.8);}
-#st.gone{opacity:0;pointer-events:none;}
-.sh{font-size:clamp(16px,1.5vw,24px);letter-spacing:.26em;text-transform:uppercase;color:var(--dim);}
-.ss{font-size:clamp(44px,5vw,80px);letter-spacing:.08em;color:var(--sa);}
-#start-music{margin-top:1.5vh;font-family:'Courier New',monospace;
-  font-size:clamp(18px,1.8vw,28px);letter-spacing:.14em;color:var(--sd);
-  background:none;border:1px solid rgba(212,168,67,.25);padding:10px 28px;cursor:pointer;}
-#start-music:hover{border-color:rgba(212,168,67,.6);color:var(--sa);}
-.sg{margin-top:2vh;font-size:clamp(18px,1.8vw,28px);letter-spacing:.2em;color:var(--dim);text-transform:uppercase;}
-
-/* ── IDENT ── */
-#ident{position:fixed;top:0;left:0;width:100%;height:100%;z-index:60;
-  background:var(--bg);display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity 1.2s ease;}
-#ident.vis{opacity:1;}
-#ident.vis #ident-welcome{opacity:1;}
-#ident-welcome{opacity:0;transition:opacity 1s ease;text-align:center;}
-#ident-name{font-family:'Courier New',monospace;font-size:clamp(20px,2.2vw,34px);
-  font-weight:400;letter-spacing:.22em;color:rgba(212,168,67,.88);text-transform:uppercase;line-height:1.15;}
-#ident-sq{display:inline-block;width:clamp(10px,1.1vw,16px);height:clamp(10px,1.1vw,16px);
-  border:1.5px solid rgba(212,168,67,.7);vertical-align:middle;margin-left:3px;margin-bottom:2px;}
-
-/* ── MOUSE ── */
-#mouse-ov{position:fixed;top:0;left:0;width:100%;height:100%;z-index:30;
-  display:flex;align-items:center;justify-content:center;pointer-events:none;
-  opacity:0;transition:opacity 1.8s ease;}
-#mouse-ov.vis{opacity:1;}
-#mouse-ov svg{width:min(260px,32vw);height:auto;filter:drop-shadow(0 0 18px rgba(212,168,67,.15));}
-
-/* ── POPUP CARD ── */
-#parch-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:40;
-  background:rgba(6,5,10,.82);display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity .35s ease;}
-#parch-overlay.open{opacity:1;pointer-events:auto;}
-#parch-box{background:rgba(255,252,242,.97);border-left:4px solid rgba(180,130,30,.8);
-  width:min(920px,92vw);max-height:82vh;overflow-y:auto;
-  padding:clamp(20px,2.5vw,36px) clamp(20px,2.5vw,36px);
-  display:flex;flex-direction:column;}
-#parch-title{font-family:'Courier New',monospace;font-size:clamp(14px,1.2vw,19px);
-  letter-spacing:.2em;text-transform:uppercase;color:rgba(90,60,8,.65);
-  padding-bottom:10px;margin-bottom:14px;border-bottom:1px solid rgba(139,94,26,.2);}
-#parch-lines{display:flex;flex-direction:column;gap:10px;}
-.pl{font-family:Georgia,serif;font-size:clamp(15px,1.25vw,20px);line-height:1.65;
-  color:rgba(20,20,20,.88);opacity:0;transition:opacity .2s;}
-.pl.vis{opacity:1;}
-#parch-pause{font-family:'Courier New',monospace;font-size:clamp(13px,1.05vw,16px);
-  letter-spacing:.14em;text-transform:uppercase;color:rgba(100,62,8,.6);
-  text-align:center;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(139,94,26,.2);}
-
-/* ── END CARD ── */
-#end-card{position:fixed;top:0;left:0;width:100%;height:100%;z-index:55;
-  display:none;flex-direction:column;align-items:center;justify-content:center;gap:2vh;
-  background:rgba(6,5,10,.95);}
-#end-card.vis{display:flex;}
-.ec-label{font-family:'Courier New',monospace;font-size:clamp(16px,1.5vw,24px);
-  letter-spacing:.26em;text-transform:uppercase;color:rgba(212,168,67,.6);}
-.ec-ep{font-family:'Courier New',monospace;font-size:clamp(44px,5vw,80px);
-  letter-spacing:.08em;color:rgba(212,168,67,.92);}
-.ec-sub{font-family:'Courier New',monospace;font-size:clamp(20px,2vw,34px);
-  letter-spacing:.12em;color:rgba(212,168,67,.65);}
-.ec-rule{width:min(500px,50vw);height:1px;background:rgba(212,168,67,.3);}
-.ec-small{font-family:'Courier New',monospace;font-size:clamp(13px,1.1vw,18px);
-  letter-spacing:.14em;color:rgba(212,168,67,.5);margin-top:.5vh;}
-
-/* ── NAV BAR ── */
-#nav{position:fixed;bottom:0;left:0;width:100%;z-index:80;
-  background:rgba(6,5,10,.92);border-top:1px solid rgba(212,168,67,.2);
-  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
-  gap:6px;padding:10px 14px;}
-#nav .nav-btn{font-family:'Courier New',monospace;font-size:clamp(11px,1vw,15px);
-  letter-spacing:.1em;text-transform:uppercase;color:rgba(212,168,67,.6);
-  background:none;border:1px solid rgba(212,168,67,.22);padding:7px 14px;cursor:pointer;}
-#nav .nav-btn:hover{color:rgba(212,168,67,.95);border-color:rgba(212,168,67,.6);}
-#nav .nav-btn.active{color:rgba(212,168,67,1);border-color:rgba(212,168,67,.85);text-shadow:0 0 12px rgba(212,168,67,.7);box-shadow:0 0 10px rgba(212,168,67,.25);}
-#pause-btn{font-family:'Courier New',monospace;font-size:clamp(16px,1.6vw,26px);
-  color:rgba(212,168,67,.9);background:none;
-  border:1px solid rgba(212,168,67,.4);padding:7px 22px;cursor:pointer;
-  margin-right:10px;}
-#pause-btn:hover{border-color:rgba(212,168,67,.9);}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',monospace;overflow:hidden}
+#grain{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.45}
+#vig{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 50% 50%,transparent 38%,rgba(0,0,0,.65) 100%)}
+#wrap{position:fixed;top:0;left:0;right:0;bottom:0;z-index:1;display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;align-items:center;justify-content:flex-start;padding:12vh 8% 14vh;overflow:hidden}
+#brand{font-size:clamp(22px,2.8vw,40px);letter-spacing:.15em;color:rgba(212,168,67,.88);margin-bottom:1.8vh;font-weight:400}
+.sq{display:inline-block;width:.45em;height:.45em;border:1.5px solid rgba(212,168,67,.8);vertical-align:middle;margin-left:4px;margin-bottom:3px;}
+#sub{font-size:clamp(14px,1.4vw,20px);color:rgba(238,225,196,.52);letter-spacing:.1em;margin-bottom:7vh}
+#series-scroll{width:100%;max-width:580px;max-height:33vh;overflow-y:auto;scrollbar-width:none}
+#series-scroll::-webkit-scrollbar{display:none}
+.series{display:block;text-decoration:none;padding:20px 0;border-bottom:1px solid rgba(212,168,67,.1);transition:all .2s;width:100%}
+.series:first-of-type{border-top:1px solid rgba(212,168,67,.1)}
+.series-title{font-size:clamp(16px,1.8vw,26px);color:rgba(238,225,196,.85);letter-spacing:.05em;margin-bottom:6px;transition:color .18s;font-weight:400}
+.series-sub{font-size:clamp(13px,1.1vw,17px);color:rgba(212,168,67,.55);letter-spacing:.08em}
+.series:hover .series-title{color:rgba(212,168,67,.92)}
+.series:hover .series-sub{color:rgba(212,168,67,.72)}
+.series.coming{cursor:default;pointer-events:none}
+.series.coming .series-title{color:rgba(238,225,196,.22)}
+.series.coming .series-sub{color:rgba(212,168,67,.15)}
+#icon{position:fixed;top:4vh;left:0;right:0;text-align:center;font-size:clamp(32px,4vw,52px);z-index:10;pointer-events:auto;cursor:pointer;opacity:.75;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+#icon:hover{opacity:1}
+#ha{position:fixed;top:0;left:0;z-index:100;color:rgba(212,168,67,.9);font-family:'Courier New',monospace;font-size:clamp(18px,2vw,28px);letter-spacing:.12em;pointer-events:none;opacity:0;font-weight:600}
+#msg{position:fixed;bottom:14vh;left:0;right:0;text-align:center;z-index:50;color:rgba(212,168,67,.55);font-family:'Courier New',monospace;font-size:clamp(12px,1.1vw,16px);letter-spacing:.08em;padding:0 10%;line-height:1.6;opacity:0;pointer-events:none;transition:opacity .8s ease-in-out;text-shadow:0 0 20px rgba(212,168,67,.3)}
+#msg.on{opacity:1}
+#foot{position:fixed;bottom:3vh;left:0;right:0;z-index:2;font-size:clamp(11px,.9vw,14px);color:rgba(212,168,67,.5);letter-spacing:.08em;text-align:center;line-height:2;pointer-events:none}
 </style>
 </head>
 <body>
-
-
-<!-- NAV BAR -->
-<div id="nav">
-  <button id="pause-btn" onclick="togglePause()">&#9646;&#9646;</button>
-  <button class="nav-btn" onclick="hardJump(0)" data-sec="ident">Ident</button>
-  <button class="nav-btn" onclick="jumpTo('opening')" data-sec="opening">Opening</button>
-  <button class="nav-btn" onclick="jumpTo('preface')" data-sec="preface">Preface</button>
-  <button class="nav-btn" onclick="jumpTo('experiments')" data-sec="experiments">Experiments</button>
-  <button class="nav-btn" onclick="jumpTo('events')" data-sec="events">Events</button>
-  <button class="nav-btn" onclick="jumpTo('mutual')" data-sec="mutual">Mutual excl.</button>
-  <button class="nav-btn" onclick="jumpTo('probability')" data-sec="probability">Probability</button>
-  <button class="nav-btn" onclick="jumpTo('axiom1')" data-sec="axiom1">Axiom 1</button>
-  <button class="nav-btn" onclick="jumpTo('axiom2')" data-sec="axiom2">Axiom 2</button>
-  <button class="nav-btn" onclick="jumpTo('axiom3')" data-sec="axiom3">Axiom 3</button>
-  <button class="nav-btn" onclick="jumpTo('application')" data-sec="application">Application</button>
-</div>
-
 <canvas id="grain"></canvas>
 <div id="vig"></div>
-
-<!-- START SCREEN -->
-<div id="st">
-  <a id="st-exit" href="probably-speaking.html" onclick="event.stopPropagation()">&#8592; Probably Speaking</a>
-  <div class="sh">Probably Speaking</div>
-  <div class="ss">Episode 1</div>
-  <button id="start-music" onclick="toggleMusic(event)">&#9835; music: on</button>
-  <div class="sg">click anywhere to begin</div>
-</div>
-
-<!-- STAGE -->
-<div id="stage">
-  <div id="tx"></div>
-</div>
-
-<!-- IDENT -->
-<div id="ident">
-  <div id="ident-welcome"><div id="ident-name">Welcome to<br>Quirky Lemma<span id="ident-sq"></span></div></div>
-</div>
-
-<!-- MOUSE -->
-<div id="mouse-ov">
-  <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="100" cy="120" rx="52" ry="40" fill="#1a1a2a" stroke="rgba(212,168,67,.5)" stroke-width="1.2"/>
-    <ellipse cx="100" cy="80" rx="32" ry="28" fill="#1a1a2a" stroke="rgba(212,168,67,.5)" stroke-width="1.2"/>
-    <ellipse cx="72" cy="56" rx="14" ry="14" fill="#1a1a2a" stroke="rgba(212,168,67,.5)" stroke-width="1.2"/>
-    <ellipse cx="72" cy="56" rx="8" ry="8" fill="rgba(180,80,80,.35)"/>
-    <ellipse cx="128" cy="56" rx="14" ry="14" fill="#1a1a2a" stroke="rgba(212,168,67,.5)" stroke-width="1.2"/>
-    <ellipse cx="128" cy="56" rx="8" ry="8" fill="rgba(180,80,80,.35)"/>
-    <circle cx="88" cy="76" r="4.5" fill="rgba(212,168,67,.88)"/>
-    <circle cx="112" cy="76" r="4.5" fill="rgba(212,168,67,.88)"/>
-    <circle cx="89.5" cy="74.5" r="1.5" fill="#080606"/>
-    <circle cx="113.5" cy="74.5" r="1.5" fill="#080606"/>
-    <ellipse cx="100" cy="90" rx="4" ry="2.5" fill="rgba(180,80,80,.65)"/>
-    <line x1="96" y1="89" x2="66" y2="83" stroke="rgba(212,168,67,.35)" stroke-width="0.8"/>
-    <line x1="96" y1="91" x2="66" y2="91" stroke="rgba(212,168,67,.35)" stroke-width="0.8"/>
-    <line x1="96" y1="93" x2="66" y2="99" stroke="rgba(212,168,67,.35)" stroke-width="0.8"/>
-    <line x1="104" y1="89" x2="134" y2="83" stroke="rgba(212,168,67,.35)" stroke-width="0.8"/>
-    <line x1="104" y1="91" x2="134" y2="91" stroke="rgba(212,168,67,.35)" stroke-width="0.8"/>
-    <line x1="104" y1="93" x2="134" y2="99" stroke="rgba(212,168,67,.35)" stroke-width="0.8"/>
-    <path d="M148 130 Q175 120 180 145 Q185 165 165 168" fill="none" stroke="rgba(212,168,67,.4)" stroke-width="2" stroke-linecap="round"/>
-    <ellipse cx="80" cy="155" rx="14" ry="7" fill="#1a1a2a" stroke="rgba(212,168,67,.35)" stroke-width="1"/>
-    <ellipse cx="120" cy="155" rx="14" ry="7" fill="#1a1a2a" stroke="rgba(212,168,67,.35)" stroke-width="1"/>
-  </svg>
-</div>
-
-<!-- POPUP CARD -->
-<div id="parch-overlay">
-  <div id="parch-box">
-    <div id="parch-pause">&#9646;&#9646; Pause the video if you need more time</div>
-    <div id="parch-title"></div>
-    <div id="parch-lines"></div>
+<div id="wrap">
+  <div id="brand">Welcome to Quirky Lemma<span class="sq"></span></div>
+  <div id="sub">Econometrics. With Character.</div>
+  <div id="series-scroll">
+    <a class="series" href="probably-speaking.html">
+      <div class="series-title">Series 1 &nbsp;&mdash;&nbsp; Probably Speaking</div>
+      <div class="series-sub">Aubrey Squeakwell, BSc</div>
+    </a>
+    <div class="series coming">
+      <div class="series-title">Series 2 &nbsp;&mdash;&nbsp; Statistically Speaking</div>
+      <div class="series-sub">Statistical inference &nbsp;&middot;&nbsp; Coming soon</div>
+    </div>
+    <div class="series coming">
+      <div class="series-title">Series 3 &nbsp;&mdash;&nbsp; Relatively Speaking</div>
+      <div class="series-sub">Econometrics &nbsp;&middot;&nbsp; Coming soon</div>
+    </div>
+    <div class="series coming">
+      <div class="series-title">Series 4 &nbsp;&mdash;&nbsp; Strictly Speaking</div>
+      <div class="series-sub">Time series &nbsp;&middot;&nbsp; Coming soon</div>
+    </div>
+    <div class="series coming">
+      <div class="series-title">Series 5 &nbsp;&mdash;&nbsp; Generally Speaking</div>
+      <div class="series-sub">Generalised linear models &nbsp;&middot;&nbsp; Coming soon</div>
+    </div>
+    <div class="series coming">
+      <div class="series-title">Series 6 &nbsp;&mdash;&nbsp; Broadly Speaking</div>
+      <div class="series-sub">Bayesian methods &nbsp;&middot;&nbsp; Coming soon</div>
+    </div>
   </div>
 </div>
-
-<!-- END CARD -->
-<div id="end-card">
-  <div class="ec-label">Probably Speaking</div>
-  <div class="ec-rule"></div>
-  <div class="ec-ep">Episode 2</div>
-  <div class="ec-sub">Random Variables</div>
-  <div class="ec-rule"></div>
-  <div class="ec-small">The relevant form has been filed.</div>
-</div>
-
+<div id="icon" onclick="void(0)">&#127917;</div>
+<div id="ha">Ha!</div>
+<div id="msg"></div>
+<div id="foot">Quirky Lemma was created by Ragvir Sabharwal, PhD.<br>Copyright &copy; 2026. Credit accepted. Blame deflected.</div>
 <script>
-// ═══════════════════════════════════════════════════════
-// FRAMES
-// t: r=aubrey(italic)  h=header  b=beat  parch=popup
-//    mouse=mouse image  ident=logo  end=end card
-// ═══════════════════════════════════════════════════════
-const F=[
-
-  {t:'ident',d:4700},
-  {t:'b',d:500},
-
-  // ── OPENING ──────────────────────────────────────────────
-  {t:'r',s:'Allow me to introduce myself.',d:4000},
-  {t:'r',s:'I am Aubrey Squeakwell, BSc.',d:4000},
-  {t:'r',s:'The BSc is in Wine and Cheese.',d:4000},
-  {t:'r',s:'I am a mouse. I think it. Therefore, I must be.',d:4000},
-  {t:'r',s:'The facts are on file.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'Last October, I decided to make a fortune.',d:4000},
-  {t:'r',s:'I had a plan.',d:4000},
-  {t:'r',s:'To go to the casino.',d:4000},
-  {t:'r',s:'I was not admitted.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'I was informed that I lacked the necessary framework.',d:4000},
-  {t:'r',s:'The framework is the condition of entry.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'I enquired. I was referred to a document.',d:4000},
-  {t:'r',s:'The document was authored by A.N. Kolmogorov.',d:4000},
-  {t:'r',s:'In 1933.',d:4000},
-  {t:'r',s:'There is no forwarding address.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'The document contains three axioms. The mathematical word for requirements.',d:5500},
-  {t:'r',s:'I am told I must absorb them.',d:4000},
-  {t:'r',s:'I am not yet sure whether this means I must understand them or embody them.',d:5500},
-  {t:'r',s:'The distinction, I suspect, will matter.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'The casino&#x2019;s name?',d:4000},
-  {t:'r',s:'Gambler&#x2019;s Ruin.',d:4000},
-  {t:'r',s:'A warning, or a formality. I have not yet decided.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'I intend to absorb the axioms.',d:4000},
-  {t:'r',s:'The plan is foolproof.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'I have unfinished business at the casino.',d:4000},
-  {t:'r',s:'Next time, I will be prepared.',d:4000},
-  {t:'b',d:2200},
-  {t:'r',s:'Probably.',d:5500},
-  {t:'b',d:2000},
-  {t:'mouse'},
-  {t:'b',d:1500},
-
-  // ── PREFACE ───────────────────────────────────────────────
-  {t:'h',s:'The preface',d:3200},
-  {t:'b',d:800},
-  {t:'r',s:'The document opens with a remark.',d:4000},
-  {t:'r',s:'Before the conditions, there is a framing.',d:4000},
-  {t:'r',s:'It concerns uncertainty.',d:4000},
-  {t:'r',s:'Specifically, what it means to measure it.',d:4000},
-  {t:'b',d:1200},
-  {t:'parch',title:'Quantifying Uncertainty',lines:[
-    'Uncertainty is not just a feeling \u2014 not just an unease about what might happen.',
-    'It can be measured. A <strong>measure</strong> assigns a number to something.',
-    'We can contemplate uncertainty by gathering potential outcomes into <strong>sets</strong>.',
-    'Probability is a <strong>measure</strong> \u2014 a function that maps sets of outcomes to real numbers.',
-    'A probability quantifies the chance of occurrence of each set of outcomes.'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'This sounds straightforward.',d:4000},
-  {t:'r',s:'It is not always straightforward.',d:4000},
-  {t:'r',s:'I speak from experience.',d:4000},
-  {t:'b',d:1800},
-
-  // ── EXPERIMENTS ───────────────────────────────────────────
-  {t:'h',s:'Experiments',d:3200},
-  {t:'b',d:800},
-  {t:'r',s:'The document introduces the concept of an experiment.',d:4000},
-  {t:'r',s:'Not, as I had assumed, something conducted in a laboratory with a white coat.',d:5500},
-  {t:'b',d:1000},
-  {t:'parch',title:'Experiment',lines:[
-    'An <strong>experiment</strong> is any phenomenon inherently characterised by uncertainty.',
-    'Tossing a coin is an experiment.',
-    'Rolling a die is an experiment.',
-    'Presenting oneself at the casino is an experiment.'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'An experiment produces a result.',d:4000},
-  {t:'r',s:'Which results are possible?',d:4000},
-  {t:'r',s:'This is the first question.',d:4000},
-  {t:'b',d:1200},
-  {t:'parch',title:'Sample Space',lines:[
-    'Possible results are called <strong>sample outcomes</strong>, denoted $\\omega$.',
-    'The set of all possible outcomes is the <strong>sample space</strong>, $\\Omega$: $\\{\\,\\omega_1,\\,\\omega_2,\\,\\ldots\\,\\}$',
-    'Every outcome that can occur must appear in $\\Omega$. No outcome may be omitted.'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'Last October, my sample space contained one outcome.',d:4000},
-  {t:'r',s:'$\\Omega = \\{\\text{Win}\\}$.',d:4000},
-  {t:'r',s:'Proof by wishful thinking.',d:4500},
-  {t:'b',d:1800},
-
-  // ── EVENTS ────────────────────────────────────────────────
-  {t:'h',s:'Events',d:3200},
-  {t:'b',d:800},
-  {t:'r',s:'Having established what can happen,',d:4000},
-  {t:'r',s:'the document now asks which happenings are of interest.',d:4000},
-  {t:'r',s:'These are called events.',d:4000},
-  {t:'b',d:1200},
-  {t:'parch',title:'Event',lines:[
-    'An <strong>event</strong> is any subset of the sample space.',
-    'Any subset counts \u2014 including $\\emptyset$ and $\\Omega$ itself.',
-    'If $\\Omega = \\{1,2,3,4,5,6\\}$, then $A = \\{2,4,6\\}$ is an event. So is $B = \\{5,6\\}$.'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'The event that something happens is $\\Omega$ itself.',d:4000},
-  {t:'r',s:'The event that I make a fortune at Gambler&#x2019;s Ruin is also an event.',d:5000},
-  {t:'r',s:'Its probability remains, for the moment, pending.',d:4500},
-  {t:'b',d:1800},
-  {t:'r',s:'Outcomes can be collected into sets \u2014 each such set is an event.',d:5000},
-  {t:'r',s:'What is to stop us from collecting events in a similar manner?',d:5000},
-  {t:'b',d:1200},
-  {t:'r',s:'The set of all outcomes has a name: the sample space, $\\Omega$.',d:5000},
-  {t:'r',s:'The collection of all events also has a name: the sigma-algebra, $\\mathcal{F}$.',d:5500},
-  {t:'b',d:1200},
-  {t:'parch',title:'The Sigma-Algebra',lines:[
-    'Beyond $\\Omega$, we need a collection of all the events we wish to consider.',
-    'For a coin toss, $\\Omega = \\{H, T\\}$. The events of interest are: $\\emptyset$, $\\{H\\}$, $\\{T\\}$, and $\\{H,T\\}$. That is all of them.',
-    'For a die, $\\Omega = \\{1,2,3,4,5,6\\}$. Events of interest include $\\{2,4,6\\}$, $\\{5,6\\}$, $\\{1,3,5\\}$, and many others.',
-    'The collection of all such events is called a <strong>sigma-algebra</strong>, denoted $\\mathcal{F}$.',
-    'Together, $\\Omega$ and $\\mathcal{F}$ form a <strong>measurable space</strong> $(\\Omega, \\mathcal{F})$ \u2014 the space on which probability will be defined as a mapping to the real number line.'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'The document is building a foundation.',d:4000},
-  {t:'r',s:'Each definition depends on the last.',d:4000},
-  {t:'r',s:'I find this either elegant or ominous.',d:4000},
-  {t:'r',s:'Possibly both.',d:4000},
-  {t:'b',d:1800},
-
-  // ── MUTUAL EXCLUSIVITY ────────────────────────────────────
-  {t:'h',s:'Mutual exclusivity',d:3200},
-  {t:'b',d:800},
-  {t:'parch',title:'Mutual Exclusivity',lines:[
-    'Two events are <strong>mutually exclusive</strong> if they cannot both occur on the same trial: $A \\cap B = \\emptyset$',
-    'Rolling an even number and rolling five are mutually exclusive.',
-    'Rolling an even number and rolling greater than four are not. Six belongs to both.'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'A single hand of Blackjack.',d:4000},
-  {t:'r',s:'The outcomes are: win, lose, push.',d:4000},
-  {t:'r',s:'Winning and losing are mutually exclusive.',d:4000},
-  {t:'r',s:'Winning and pushing are mutually exclusive.',d:4000},
-  {t:'r',s:'Losing and pushing are mutually exclusive.',d:4000},
-  {t:'r',s:'All three are pairwise mutually exclusive.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'This, I note, is the correct version of my original sample space.',d:5000},
-  {t:'r',s:'$\\Omega = \\{\\,\\text{Win},\\,\\text{Lose},\\,\\text{Push}\\,\\}$.',d:4500},
-  {t:'r',s:'I have updated the file.',d:4000},
-  {t:'b',d:1800},
-  {t:'parch',title:'A Note',lines:[
-    'Mutual exclusivity is not independence. They are distinct concepts.',
-    'The confusion is common.'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'Independence will appear in a subsequent document.',d:4000},
-  {t:'r',s:'It is handled by a different department.',d:4000},
-  {t:'r',s:'I have submitted the relevant form.',d:4000},
-  {t:'b',d:1800},
-
-  // ── PROBABILITY DEFINED ───────────────────────────────────
-  {t:'h',s:'Probability defined',d:3200},
-  {t:'b',d:800},
-  {t:'r',s:'The document states what a probability is.',d:4000},
-  {t:'r',s:'Not informally. Formally.',d:4000},
-  {t:'r',s:'I had been awaiting this.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'I already know what probability feels like.',d:4000},
-  {t:'r',s:'A weight. A sense of how likely.',d:4000},
-  {t:'r',s:'The events of October felt unlikely. They happened anyway.',d:5000},
-  {t:'r',s:'Feeling is not a number.',d:4000},
-  {t:'r',s:'The document requires a number.',d:4000},
-  {t:'b',d:1200},
-  {t:'parch',title:'Probability Measure',lines:[
-    'Let $(\\Omega, \\mathcal{F})$ be a measurable space.',
-    'A <strong>probability measure</strong> is a function $P : \\mathcal{F} \\rightarrow \\mathbb{R}$ that assigns to each event $A \\in \\mathcal{F}$ a real number $P(A)$.',
-    '$P(A)$ is interpreted as the probability that event $A$ occurs.',
-    'Not every function from $\\mathcal{F}$ to $\\mathbb{R}$ qualifies.',
-    'A real-valued function defined on $(\\Omega, \\mathcal{F})$ is a probability measure if and only if it satisfies three <strong>axioms</strong>.',
-    'These are the three axioms I am required to absorb.'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'Three axioms.',d:4000},
-  {t:'r',s:'Not twelve. Not a paragraph. Three.',d:4000},
-  {t:'r',s:'Kolmogorov stated them in 1933.',d:4000},
-  {t:'r',s:'They have not been revised.',d:4000},
-  {t:'r',s:'No appeal has been lodged.',d:4000},
-  {t:'b',d:1800},
-
-  // ── AXIOM 1 ───────────────────────────────────────────────
-  {t:'h',s:'Axiom 1 \u2014 Non-negativity',d:3200},
-  {t:'b',d:800},
-  {t:'r',s:'The first axiom concerns sign.',d:4000},
-  {t:'r',s:'Probabilities must not be negative.',d:4000},
-  {t:'r',s:'I note this with some personal relevance.',d:4000},
-  {t:'b',d:1000},
-  {t:'parch',title:'Axiom 1 \u2014 Non-negativity',lines:[
-    'For all events $A \\in \\mathcal{F}$: $P(A) \\geq 0$',
-    'Probabilities cannot be negative.',
-    'Zero means the event is impossible.',
-    'Below zero is meaningless.'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'In my preliminary calculations last October,',d:4000},
-  {t:'r',s:'I assigned a negative probability to the event: lose.',d:5500},
-  {t:'b',d:1800},
-  {t:'r',s:'The value was $-0.3$.',d:4200},
-  {t:'b',d:1000},
-  {t:'r',s:'I checked it twice.',d:4000},
-  {t:'b',d:600},
-  {t:'r',s:'It was wrong twice.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'A correction is on file.',d:4000},
-  {t:'b',d:1800},
-
-  // ── AXIOM 2 ───────────────────────────────────────────────
-  {t:'h',s:'Axiom 2 \u2014 Normalisation',d:3200},
-  {t:'b',d:800},
-  {t:'r',s:'The second axiom concerns totality.',d:4000},
-  {t:'b',d:1000},
-  {t:'parch',title:'Axiom 2 \u2014 Normalisation',lines:[
-    'The probability of the entire sample space is one: $P(\\Omega) = 1$',
-    'Not $0.94$. Not $1.06$. Exactly one.'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'When I summed my preliminary probability assignments,',d:4000},
-  {t:'r',s:'the total was $0.94$.',d:4000},
-  {t:'r',s:'I had apparently lost six percent of reality.',d:4500},
-  {t:'r',s:'A basic error.',d:4000},
-  {t:'r',s:'I was briefly a beginner.',d:5500},
-  {t:'b',d:1800},
-
-  // ── AXIOM 3 ───────────────────────────────────────────────
-  {t:'h',s:'Axiom 3 \u2014 Countable Additivity',d:3200},
-  {t:'b',d:800},
-  {t:'r',s:'The third axiom concerns additivity.',d:4000},
-  {t:'r',s:'When events cannot overlap, the probability that one or the other occurs',d:5000},
-  {t:'r',s:'is simply the sum of their individual probabilities.',d:5000},
-  {t:'r',s:'No correction. No adjustment. Just addition.',d:4000},
-  {t:'b',d:1000},
-  {t:'parch',title:'Axiom 3 \u2014 Countable Additivity',lines:[
-    'For any countable collection of mutually exclusive events $A_1, A_2, \\ldots \\in \\mathcal{F}$:',
-    '$$P\\!\\left(\\bigcup_{i=1}^{\\infty} A_i\\right) = \\sum_{i=1}^{\\infty} P(A_i)$$'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'This is the axiom that does the most work.',d:4000},
-  {t:'r',s:'It is also the axiom most frequently misunderstood',d:4000},
-  {t:'r',s:'by those who believe they have already satisfied it.',d:4000},
-  {t:'r',s:'I was one of those.',d:4500},
-  {t:'b',d:1800},
-  {t:'r',s:'You may be thinking: are three axioms really enough?',d:4000},
-  {t:'r',s:'Three statements, and that is all?',d:4000},
-  {t:'b',d:1500},
-  {t:'r',s:'Yes.',d:3000},
-  {t:'r',s:'Everything else follows.',d:4500},
-  {t:'b',d:1800},
-
-  // ── APPLICATION ───────────────────────────────────────────
-  {t:'h',s:'The application',d:3200},
-  {t:'b',d:800},
-  {t:'r',s:'Three axioms.',d:4000},
-  {t:'r',s:'Non-negativity. Normalisation. Countable Additivity.',d:5000},
-  {t:'r',s:'Everything in probability theory follows from these three statements.',d:5500},
-  {t:'b',d:1800},
-  {t:'r',s:'I have verified this to the extent permitted by one week.',d:5000},
-  {t:'b',d:1800},
-  {t:'r',s:'The framework is absorbed.',d:4000},
-  {t:'r',s:'The application has been submitted.',d:4000},
-  {t:'r',s:'I am awaiting a response.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'What I do not yet have is a strategy.',d:4000},
-  {t:'r',s:'The axioms tell me what probability is.',d:4000},
-  {t:'r',s:'They do not tell me what mine are.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'That is a matter for the next document.',d:4000},
-  {t:'b',d:2500},
-  {t:'n',s:'Aubrey Squeakwell was not, as yet, at the casino.',d:5000},
-  {t:'n',s:'But he had absorbed the three axioms.',d:5500},
-  {t:'b',d:2000},
-  {t:'n',s:'Probably.',d:6000},
-  {t:'b',d:2000},
-  {t:'end'},
-
-]
-
-// ═══ STATE ═══════════════════════════════════════════
-let cur=0, timer=null, parchTimer=null, parchCb=null, running=false, speed=1;
-
-// ═══ MATH RENDERING ══════════════════════════════════
-function renderMath(s){
-  var d=document.createElement('div');
-  d.innerHTML=s;
-  try{renderMathInElement(d,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}catch(e){}
-  return d.innerHTML;
-}
-
-// ═══ GRAIN ═══════════════════════════════════════════
-var gcv=document.getElementById('grain'),gx=gcv.getContext('2d');
-function resizeGrain(){gcv.width=innerWidth;gcv.height=innerHeight;}
-resizeGrain();
-addEventListener('resize',resizeGrain);
-function drawGrain(){
-  var w=gcv.width,h=gcv.height,id=gx.createImageData(w,h),d=id.data;
-  for(var i=0;i<d.length;i+=4){var v=Math.random()*22;d[i]=d[i+1]=d[i+2]=v;d[i+3]=Math.random()*15;}
+// GRAIN
+var cv=document.getElementById('grain'),gx=cv.getContext('2d');
+function rsz(){cv.width=innerWidth;cv.height=innerHeight;}rsz();
+addEventListener('resize',rsz);
+function grain(){
+  var w=cv.width,h=cv.height,id=gx.createImageData(w,h),d=id.data;
+  for(var i=0;i<d.length;i+=4){var v=Math.random()*20;d[i]=d[i+1]=d[i+2]=v;d[i+3]=Math.random()*13;}
   gx.putImageData(id,0,0);
-  if(Math.random()<.014){gx.fillStyle='rgba(212,168,67,'+(Math.random()*.1+.02)+')';gx.fillRect(0,Math.random()*h,w*(.3+Math.random()*.7),1);}
-  requestAnimationFrame(drawGrain);
+  if(Math.random()<.01){gx.fillStyle='rgba(212,168,67,'+(Math.random()*.09+.02)+')';gx.fillRect(0,Math.random()*h,w*(.2+Math.random()*.5),1);}
+  requestAnimationFrame(grain);
 }
-drawGrain();
-setInterval(function(){
-  if(!running)return;
-  if(Math.random()<.05){
-    var b=.8+Math.random()*.3;
-    document.getElementById('stage').style.filter='brightness('+b+')';
-    setTimeout(function(){document.getElementById('stage').style.filter='';},(55+Math.random()*55));
+grain();
+
+// GLITCH
+var brand=document.getElementById('brand');
+function glitch(){
+  var n=Math.floor(1+Math.random()*3),i=0;
+  function step(){
+    if(i>=n*2){brand.style.opacity='1';brand.style.transform='';return;}
+    brand.style.opacity=i%2===0?(0.4+Math.random()*0.5).toFixed(2):'1';
+    brand.style.transform=i%2===0?'translateX('+(Math.random()-.5)*4+'px)':'';
+    i++;setTimeout(step,40+Math.random()*60);
   }
-},550);
+  step();setTimeout(glitch,3000+Math.random()*9000);
+}
+setTimeout(glitch,2000+Math.random()*4000);
 
-// ═══ AUDIO ═══════════════════════════════════════════
-var AC,mg,padI=0,musicOn=true;
-var CHORDS=[[196,246.9,329.6],[164.8,220,293.7],[185,246.9,311.1],[196,261.6,329.6]];
-function initAudio(){
-  if(AC)return;
-  AC=new(window.AudioContext||window.webkitAudioContext)();
-  var co=AC.createDynamicsCompressor();co.threshold.value=-20;co.ratio.value=4;co.connect(AC.destination);
-  mg=AC.createGain();mg.gain.value=musicOn?0.24:0;mg.connect(co);
-  schedulePad();scheduleMel();scheduleTick();
+// DIM
+function dim(){
+  document.body.style.filter='brightness('+(0.55+Math.random()*0.3).toFixed(2)+')';
+  setTimeout(function(){document.body.style.filter='';setTimeout(dim,15000+Math.random()*12000);},80+Math.random()*120);
 }
-function toggleMusic(e){
-  if(e)e.stopPropagation();
-  musicOn=!musicOn;
-  if(mg)mg.gain.setTargetAtTime(musicOn?0.24:0,AC.currentTime,.3);
-  document.getElementById('start-music').textContent=(musicOn?'♫ music: on':'♫ music: off');
-}
-function tone(f,t,dur,v){var o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.35);g.gain.linearRampToValueAtTime(v*.8,t+dur-.6);g.gain.linearRampToValueAtTime(0,t+dur);o.connect(g);g.connect(mg);o.start(t);o.stop(t+dur+.1);}
-function schedulePad(){if(!AC)return;CHORDS[padI%4].forEach(function(f){tone(f,AC.currentTime,12,.018);});padI++;setTimeout(schedulePad,10400);}
-function scheduleMel(){
-  if(!AC)return;
-  var M=[[{f:659,d:1.4},{f:587,d:.9},{f:523,d:2}],[{f:784,d:1.6},{f:698,d:2.1}],[{f:523,d:.9},{f:587,d:1},{f:659,d:1.8}]];
-  var fr=M[Math.floor(Math.random()*3)];var t=AC.currentTime+.2;
-  fr.forEach(function(n){var o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=n.f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.008,t+.1);g.gain.exponentialRampToValueAtTime(.0001,t+n.d);o.connect(g);g.connect(mg);o.start(t);o.stop(t+n.d+.1);t+=n.d+.08;});
-  setTimeout(scheduleMel,(15+Math.random()*14)*1000);
-}
-function scheduleTick(){
-  if(!AC)return;
-  [[880,.002],[698,.0015]].forEach(function(p,i){var d=i*.9,o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=p[0];g.gain.setValueAtTime(p[1],AC.currentTime+d);g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+d+.09);o.connect(g);g.connect(mg);o.start(AC.currentTime+d);o.stop(AC.currentTime+d+.12);});
-  setTimeout(scheduleTick,1620+Math.random()*180);
+setTimeout(dim,4000+Math.random()*8000);
+
+// AUDIO
+var AC=null;
+function whimper(){
+  try{
+    if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();
+    var now=AC.currentTime;
+    function t(f,s,e,d,v){var o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.setValueAtTime(f,now+s);o.frequency.linearRampToValueAtTime(e,now+s+d);g.gain.setValueAtTime(0,now+s);g.gain.linearRampToValueAtTime(v,now+s+0.05);g.gain.exponentialRampToValueAtTime(0.001,now+s+d);o.connect(g);g.connect(AC.destination);o.start(now+s);o.stop(now+s+d+0.05);}
+    t(800,0,200,1.0,0.08);t(600,0.3,100,0.8,0.06);
+  }catch(e){}
 }
 
-// ═══ TEXT ════════════════════════════════════════════
-var tx=document.getElementById('tx');
-function showText(f){
-  tx.className='';tx.innerHTML='';tx.style.opacity='0';
-  if(!f.s)return;
-  requestAnimationFrame(function(){requestAnimationFrame(function(){
-    tx.innerHTML=renderMath(f.s);
-    tx.style.opacity='';
-    tx.className=({r:'tr',h:'th',e:'te',n:'tn'}[f.t]||'tx')+' arriving';
-  });});
-}
-function hideText(cb){
-  tx.classList.remove('arriving');tx.classList.add('departing');
-  setTimeout(function(){tx.className='';tx.innerHTML='';tx.style.opacity='0';cb();},800);
-}
+// ICON GAME
+var ICONS=['🧲','🎲','🗝️','🐠','🍄','🧀','🦋','🫙','🎪','🎭','🦞','🫧','🪝','🫖','🦩','🦈','🦤','🔑','🧷','🧸','🔭','🔮','🪐','🐙','🧊','🪴','🧭','🪓','🎄','🛍️','🌮','🔩','🪆'];
+var MASKS='&#127917;';
+var MSGS=[
+  {at:5,t:'I see you are enjoying the icons.'},
+  {at:10,t:'Alright. You can stop now.'},
+  {at:17,t:'The same icons will keep reappearing.'},
+  {at:32,t:'You do know that there are better things to do?'},
+  {at:60,t:'I admire your commitment.'},
+  {at:110,t:'Are you aware that this is your 110th?'},
+  {at:210,t:'This is really getting obsessive now.'},
+  {at:390,t:'Even Kolmogorov did not anticipate this!'},
+  {at:600,t:'There exists no theorem to explain your behaviour. I looked.'},
+  {at:700,t:'The probability of stopping now appears to be approaching zero.'},
+  {at:850,t:'That\'s it. I have nothing further to add.'},
+  {at:950,t:'I have truly run out of things to say. I will now simply watch.'}
+];
+var DODGE_START=1000, DODGE_MAX=7;
+var el=document.getElementById('icon'),haEl=document.getElementById('ha'),msgEl=document.getElementById('msg');
+var taps=0,dcount=0,broken=false,msgTmr=null;
+var px=0,py=0,dodging=false;
 
-// ═══ POPUP CARD ══════════════════════════════════════
-var overlay=document.getElementById('parch-overlay');
-var parchTitle=document.getElementById('parch-title');
-var parchLines=document.getElementById('parch-lines');
-
-function openParch(f,cb){
-  parchCb=cb;
-  parchTitle.textContent=f.title;
-  parchLines.innerHTML='';
-  f.lines.forEach(function(l){
-    var d=document.createElement('div');
-    d.className='pl';
-    d.innerHTML=renderMath(l);
-    parchLines.appendChild(d);
-  });
-  overlay.classList.add('open');
-  // Show all lines immediately
-  requestAnimationFrame(function(){
-    parchLines.querySelectorAll('.pl').forEach(function(el){el.classList.add('vis');});
-    // Auto-advance after hold time
-    var n=f.lines.length;
-    var hasMath=f.lines.some(function(l){return l.indexOf('$$')>-1||l.indexOf('$')>-1;});
-    var hold=(n<=3?8000:n<=5?11000:14000)+(hasMath?3000:0);
-    parchTimer=setTimeout(closeParch,hold/speed);
-  });
+function showMsg(txt,persist){
+  clearTimeout(msgTmr);
+  msgEl.textContent=txt;msgEl.classList.add('on');
+  if(!persist)msgTmr=setTimeout(function(){msgEl.classList.remove('on');},3500);
 }
 
-function closeParch(){
-  clearTimeout(parchTimer);
-  overlay.classList.remove('open');
-  if(parchCb){var c=parchCb;parchCb=null;c();}
+function showHa(){
+  var r=el.getBoundingClientRect();
+  var hx=r.left+r.width/2-20+(Math.random()-.5)*80;
+  var hy=r.top+(Math.random()-.5)*40;
+  haEl.style.cssText='position:fixed;top:0;left:0;z-index:100;color:rgba(212,168,67,.9);font-family:Courier New,monospace;font-size:clamp(18px,2vw,28px);letter-spacing:.12em;pointer-events:none;font-weight:600;opacity:0;transform:translate('+hx+'px,'+hy+'px) scale(0.7);transition:none';
+  haEl.offsetHeight;
+  haEl.style.transition='opacity .15s,transform .4s ease-out';
+  haEl.style.opacity='1';
+  haEl.style.transform='translate('+hx+'px,'+(hy-22)+'px) scale(1.1)';
+  setTimeout(function(){haEl.style.transition='opacity .3s';haEl.style.opacity='0';},420);
 }
 
-// ═══ IDENT ═══════════════════════════════════════════
-function runIdent(d,cb){
-  var el=document.getElementById('ident');
-  el.classList.add('vis');
-  setTimeout(function(){
-    el.style.transition='opacity 1.4s ease';
-    el.classList.remove('vis');
+
+function deathThroe(final){
+  if(dcount===1){
+    // First tap only — one wobble
+    var w=0, wint=setInterval(function(){
+      w++;
+      var s=1+(w%2?0.18:-0.12);
+      el.style.transition='transform .07s ease-in-out';
+      el.style.transform='scale('+s+')';
+      if(w>=8){clearInterval(wint);el.style.transform='scale(1)';}
+    },70);
+    return;
+  }
+  if(final){
+    // 7th tap — straight to puff
     setTimeout(function(){
-      el.style.transition='opacity 1.2s ease';
-      cb();
-    },1500);
-  },d-1500);
-}
-
-// ═══ MOUSE ═══════════════════════════════════════════
-function runMouse(cb){
-  var mo=document.getElementById('mouse-ov');
-  mo.classList.add('vis');
-  setTimeout(function(){
-    mo.style.transition='opacity 2.2s ease';
-    mo.classList.remove('vis');
-    setTimeout(function(){mo.style.transition='opacity 1.8s ease';cb();},2300);
-  },3500);
-}
-
-// ═══ END CARD ════════════════════════════════════════
-function runEnd(d){
-  var ec=document.getElementById('end-card');
-  ec.classList.add('vis');
-  // Just hold — no callback needed, episode is done
-}
-
-// ═══ PLAY ════════════════════════════════════════════
-function play(i){
-  if(paused) return;
-  cur=i;
-  if(i>=F.length) return;
-  updateNav(i);
-  var f=F[i];
-  var g=gen; // capture generation — stale callbacks will see gen!==g
-
-  function next(){ if(gen===g && !paused) play(i+1); }
-
-  // For beats and text: just reset display immediately (no fade delay)
-  function quickReset(cb){
-    if(!tx.innerHTML){cb();return;}  // already empty, no need to fade
-    tx.classList.remove('arriving');
-    tx.classList.add('departing');
-    setTimeout(function(){
-      tx.className=''; tx.innerHTML=''; tx.style.opacity='0';
-      cb();
-    }, 800);
+      whimper();
+      el.style.transition='transform 1.8s ease-out, opacity 1.6s ease-in';
+      el.style.transform='scale(4)';
+      el.style.opacity='0';
+      setTimeout(function(){
+        el.style.display='none';
+        broken=true;
+        showMsg('You have broken it. I hope you are pleased with yourself.',true);
+      },1800);
+    },150);
   }
-
-  if(f.t==='ident'){
-    quickReset(function(){ if(gen!==g) return;
-      runIdent(f.d,next);
-    }); return;
-  }
-  if(f.t==='mouse'){
-    quickReset(function(){ if(gen!==g) return;
-      runMouse(next);
-    }); return;
-  }
-  if(f.t==='parch'){
-    quickReset(function(){ if(gen!==g) return;
-      openParch(f,next);
-    }); return;
-  }
-  if(f.t==='end'){
-    quickReset(function(){ if(gen!==g) return;
-      runEnd(f.d);
-    }); return;
-  }
-  if(f.t==='b'){
-    quickReset(function(){ if(gen!==g) return;
-      timer=setTimeout(next, f.d/speed);
-    }); return;
-  }
-  // Text frame (r, h, n, e, x)
-  quickReset(function(){
-    if(gen!==g) return;
-    showText(f);
-    timer=setTimeout(next, f.d/speed);
-  });
+  // Taps 2-6 — nothing, just count
 }
 
-
-// ═══ NAV + PAUSE ═════════════════════════════════════
-var paused=false;
-var gen=0; // abort-generation: stale callbacks check this
-
-function stopAll(){
-  gen++;
-  clearTimeout(timer); clearTimeout(parchTimer);
-  timer=null; parchTimer=null; parchCb=null;
-  overlay.classList.remove('open');
-  document.getElementById('ident').classList.remove('vis');
-  document.getElementById('mouse-ov').classList.remove('vis');
-  tx.className=''; tx.innerHTML=''; tx.style.opacity='0';
-}
-
-function hardJump(idx){
-  paused=false;
-  document.getElementById('pause-btn').innerHTML='&#9646;&#9646;';
-  stopAll();
-  if(!running){running=true;}
-  play(idx);
-}
-
-function jumpTo(k){
-  var idx=F.findIndex(function(f){
-    if(f.t!=='h'||!f.s) return false;
-    var s=f.s.toLowerCase();
-    if(k==='opening') return false;
-    if(k==='preface') return s.indexOf('preface')>-1;
-    if(k==='experiments') return s.indexOf('experiment')>-1;
-    if(k==='events') return s.indexOf('event')>-1&&s.indexOf('mutual')<0;
-    if(k==='mutual') return s.indexOf('mutual')>-1;
-    if(k==='probability') return s.indexOf('prob')>-1&&s.indexOf('defined')>-1;
-    if(k==='axiom1') return s.indexOf('axiom 1')>-1||s.indexOf('axiom1')>-1;
-    if(k==='axiom2') return s.indexOf('axiom 2')>-1||s.indexOf('axiom2')>-1;
-    if(k==='axiom3') return s.indexOf('axiom 3')>-1||s.indexOf('axiom3')>-1;
-    if(k==='application') return s.indexOf('application')>-1;
-    return false;
-  });
-  if(k==='opening') idx=2;
-  if(idx<0) return;
-  hardJump(idx);
-}
-
-function togglePause(){
-  if(!running) return;
-  if(paused){
-    paused=false;
-    document.getElementById('pause-btn').innerHTML='&#9646;&#9646;';
-    // If a popup was open, it stays open — resume after it closes
-    if(!overlay.classList.contains('open')){
-      play(cur);
-    } else {
-      // Re-arm the parch auto-advance
-      var f=F[cur];
-      if(f&&f.t==='parch'){
-        var n=f.lines.length;
-        var hasMath=f.lines.some(function(l){return l.indexOf('$$')>-1||l.indexOf('$')>-1;});
-        var hold=(n<=3?8000:n<=5?11000:14000)+(hasMath?3000:0);
-        parchCb=function(){play(cur+1);};
-        parchTimer=setTimeout(closeParch,hold/speed);
-      }
-    }
+var iconFired=false;
+function iconTap(){
+  if(iconFired)return;iconFired=true;
+  setTimeout(function(){iconFired=false;},300);
+  if(broken)return;
+  taps++;
+  if(taps<DODGE_START){
+    el.innerHTML=ICONS[Math.floor(Math.random()*ICONS.length)];
+    for(var i=0;i<MSGS.length;i++){if(taps===MSGS[i].at){showMsg(MSGS[i].t,false);break;}}
+    return;
+  }
+  dcount++;
+  if(dcount===1){el.innerHTML=MASKS;showMsg('Careful now!',false);}
+  if(dcount>=DODGE_MAX){
+    deathThroe(true); // final throes — puff after
   } else {
-    paused=true;
-    document.getElementById('pause-btn').innerHTML='&#9654;';
-    // Only cancel timers — leave popup and text visible
-    gen++;
-    clearTimeout(timer); clearTimeout(parchTimer);
-    timer=null; parchTimer=null;
-    // Don't touch overlay, tx, ident, or mouse
+    deathThroe(false);
   }
 }
-
-
-// ═══ NAV HIGHLIGHT ═══════════════════════════════════
-var sectionBoundaries=null;
-function buildSectionBoundaries(){
-  sectionBoundaries=[
-    {sec:'ident',    start:0},
-    {sec:'opening',  start:2},
-    {sec:'preface',  start: F.findIndex(function(f){return f.t==='h'&&f.s&&f.s.toLowerCase().indexOf('preface')>-1;})},
-    {sec:'experiments',start:F.findIndex(function(f){return f.t==='h'&&f.s&&f.s.toLowerCase().indexOf('experiment')>-1;})},
-    {sec:'events',   start:F.findIndex(function(f){return f.t==='h'&&f.s&&f.s.toLowerCase().indexOf('event')>-1&&f.s.toLowerCase().indexOf('mutual')<0;})},
-    {sec:'mutual',   start:F.findIndex(function(f){return f.t==='h'&&f.s&&f.s.toLowerCase().indexOf('mutual')>-1;})},
-    {sec:'probability',start:F.findIndex(function(f){return f.t==='h'&&f.s&&f.s.toLowerCase().indexOf('prob')>-1&&f.s.toLowerCase().indexOf('defined')>-1;})},
-    {sec:'axiom1',   start:F.findIndex(function(f){return f.t==='h'&&f.s&&f.s.toLowerCase().indexOf('axiom 1')>-1;})},
-    {sec:'axiom2',   start:F.findIndex(function(f){return f.t==='h'&&f.s&&f.s.toLowerCase().indexOf('axiom 2')>-1;})},
-    {sec:'axiom3',   start:F.findIndex(function(f){return f.t==='h'&&f.s&&f.s.toLowerCase().indexOf('axiom 3')>-1;})},
-    {sec:'application',start:F.findIndex(function(f){return f.t==='h'&&f.s&&f.s.toLowerCase().indexOf('application')>-1;})}
-  ].filter(function(s){return s.start>-1;})
-   .sort(function(a,b){return a.start-b.start;});
-}
-function currentSection(i){
-  if(!sectionBoundaries) buildSectionBoundaries();
-  var sec='ident';
-  for(var k=0;k<sectionBoundaries.length;k++){
-    if(i>=sectionBoundaries[k].start) sec=sectionBoundaries[k].sec;
-    else break;
+el.addEventListener('touchend',function(e){e.preventDefault();iconTap();},{passive:false});
+el.addEventListener('click',function(){
+  if(broken)return;
+  taps++;
+  if(taps<DODGE_START){
+    el.innerHTML=ICONS[Math.floor(Math.random()*ICONS.length)];
+    for(var i=0;i<MSGS.length;i++){if(taps===MSGS[i].at){showMsg(MSGS[i].t,false);break;}}
+    return;
   }
-  return sec;
-}
-function updateNav(i){
-  var sec=currentSection(i);
-  document.querySelectorAll('#nav .nav-btn').forEach(function(btn){
-    btn.classList.toggle('active', btn.getAttribute('data-sec')===sec);
-  });
-}
-
-// ═══ BEGIN ═══════════════════════════════════════════
-function begin(){
-  var st=document.getElementById('st');
-  st.classList.add('gone');
-  setTimeout(function(){st.style.display='none';},700);
-  initAudio();
-  running=true;
-  play(0);
-}
-document.getElementById('st').addEventListener('click',begin);
+  dcount++;
+  if(dcount===1){el.innerHTML=MASKS;showMsg('Careful now!',false);}
+  if(dcount>=DODGE_MAX){
+    deathThroe(true); // final throes — puff after
+  } else {
+    deathThroe(false);
+  }
+});
 </script>
 </body>
 </html>
