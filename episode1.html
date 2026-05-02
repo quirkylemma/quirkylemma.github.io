@@ -131,13 +131,32 @@ html,body{width:100%;height:100%;background:var(--bg);overflow:hidden;
   border:1px solid rgba(212,168,67,.4);padding:7px 22px;cursor:pointer;
   margin-right:10px;}
 #pause-btn:hover{border-color:rgba(212,168,67,.9);}
+
+/* ── POPUP MENU ── */
+#card-menu-btn{font-family:'Courier New',monospace;font-size:clamp(11px,1vw,15px);
+  letter-spacing:.1em;text-transform:uppercase;color:rgba(212,168,67,.6);
+  background:none;border:1px solid rgba(212,168,67,.22);padding:7px 14px;cursor:pointer;}
+#card-menu-btn:hover{color:rgba(212,168,67,.95);border-color:rgba(212,168,67,.6);}
+#card-menu{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);
+  z-index:85;background:rgba(6,5,10,.96);border:1px solid rgba(212,168,67,.2);
+  padding:10px 0;min-width:280px;display:none;flex-direction:column;}
+#card-menu.open{display:flex;}
+#card-menu button{font-family:'Courier New',monospace;font-size:clamp(12px,1vw,15px);
+  letter-spacing:.08em;color:rgba(212,168,67,.65);background:none;border:none;
+  padding:10px 20px;text-align:left;cursor:pointer;border-bottom:1px solid rgba(212,168,67,.08);}
+#card-menu button:last-child{border-bottom:none;}
+#card-menu button:hover{color:rgba(212,168,67,1);background:rgba(212,168,67,.06);}
 </style>
 </head>
 <body>
 
 
+<!-- CARD MENU -->
+<div id="card-menu"></div>
+
 <!-- NAV BAR -->
 <div id="nav">
+  <button id="card-menu-btn" onclick="toggleCardMenu()">&#9783; Cards</button>
   <button id="pause-btn" onclick="togglePause()">&#9646;&#9646;</button>
   <button class="nav-btn" onclick="hardJump(0)" data-sec="ident">Ident</button>
   <button class="nav-btn" onclick="jumpTo('opening')" data-sec="opening">Opening</button>
@@ -407,7 +426,6 @@ const F=[
     '$P(A)$ is interpreted as the probability that event $A$ occurs.',
     'Not every function from $\\mathcal{F}$ to $\\mathbb{R}$ qualifies.',
     'A real-valued function defined on $(\\Omega, \\mathcal{F})$ is a probability measure if and only if it satisfies three <strong>axioms</strong>.',
-    'These are the three axioms I am required to absorb.'
   ]},
   {t:'b',d:800},
   {t:'r',s:'Three axioms.',d:4000},
@@ -821,6 +839,57 @@ function updateNav(i){
     btn.classList.toggle('active', btn.getAttribute('data-sec')===sec);
   });
 }
+
+
+// ═══ CARD MENU ═══════════════════════════════════════════
+function buildCardMenu(){
+  var menu=document.getElementById('card-menu');
+  if(menu.children.length>0) return; // already built
+  F.forEach(function(f,i){
+    if(f.t!=='parch') return;
+    var btn=document.createElement('button');
+    btn.textContent=f.title;
+    btn.onclick=function(){
+      closeCardMenu();
+      if(!running){
+        var st=document.getElementById('st');
+        st.classList.add('gone');
+        setTimeout(function(){st.style.display='none';},700);
+        musicOn=false;
+        initAudio();
+        running=true;
+      }
+      hardJump(i);
+      // Pause after the card opens so it stays on screen
+      setTimeout(function(){
+        if(!paused){
+          paused=true;
+          document.getElementById('pause-btn').innerHTML='&#9654;';
+          gen++;
+          clearTimeout(timer);clearTimeout(parchTimer);
+          timer=null;parchTimer=null;
+        }
+      },200);
+    };
+    menu.appendChild(btn);
+  });
+}
+function toggleCardMenu(){
+  buildCardMenu();
+  var menu=document.getElementById('card-menu');
+  menu.classList.toggle('open');
+}
+function closeCardMenu(){
+  document.getElementById('card-menu').classList.remove('open');
+}
+// Close menu if clicking outside
+document.addEventListener('click',function(e){
+  var menu=document.getElementById('card-menu');
+  var btn=document.getElementById('card-menu-btn');
+  if(menu.classList.contains('open')&&!menu.contains(e.target)&&e.target!==btn){
+    closeCardMenu();
+  }
+});
 
 // ═══ BEGIN ═══════════════════════════════════════════
 function begin(){
