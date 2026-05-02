@@ -33,7 +33,7 @@ html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',mo
 #ambitions{cursor:pointer;animation:glimmer 3s ease-in-out infinite;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-user-select:none;user-select:none}
 @keyframes glimmer{0%,100%{opacity:.5}50%{opacity:1}}
 
-/* CASINO PASCAL OVERLAY */
+/* GAMBLER'S RUIN OVERLAY */
 #bj{position:fixed;top:0;left:0;right:0;bottom:0;z-index:60;background:#06050A;display:none;-webkit-flex-direction:column;flex-direction:column;align-items:center;justify-content:flex-start;padding:18vh 8% 10vh;font-family:'Courier New',monospace;overflow:hidden}
 #bj.open{display:flex}
 #bj-grain{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.45}
@@ -71,13 +71,13 @@ html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',mo
   <div id="brand">Probably Speaking</div>
   <div id="sub">Probability theory. Rigorously.</div>
   <div id="ep-scroll">
-    <a class="ep" href="episode1.html">
+    <a class="ep" href="episode1-youtube.html">
       <div class="ep-num">EP. 01</div>
       <div class="ep-info">
         <div class="ep-title">Briefly a Beginner</div>
         <div class="ep-sub">Sample spaces &nbsp;&middot;&nbsp; Events &nbsp;&middot;&nbsp; Axioms</div>
       </div>
-      <div class="ep-dur">~10 min</div>
+      <div class="ep-dur">~13 min</div>
     </a>
     <div class="ep coming">
       <div class="ep-num">EP. 02</div>
@@ -117,15 +117,15 @@ html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',mo
   </div>
 </div>
 
-<div id="foot">This series concerns Aubrey Squeakwell, PhD.<br>He has a plan. <span id="ambitions">The casino awaits.</span></div>
+<div id="foot">This series concerns Aubrey Squeakwell, BSc.<br>He has a plan. <span id="ambitions">The casino awaits.</span></div>
 
-<!-- CASINO PASCAL -->
+<!-- GAMBLER'S RUIN -->
 <div id="bj">
   <canvas id="bj-grain"></canvas>
   <div id="bj-vig"></div>
   <button id="bj-back" onclick="bjClose()">&#8592; Reconsider life choice</button>
   <div id="bj-box">
-    <div id="bj-title">Casino Pascal</div>
+    <div id="bj-title">Gambler's Ruin</div>
     <div id="bj-slogan">The house will win. Almost surely.</div>
     <div id="bj-sub">Blackjack</div>
     <div id="bj-dealer">
@@ -184,7 +184,7 @@ function glitch(){
   function step(){
     if(i>=n*2){brand.style.opacity='1';brand.style.transform='';return;}
     brand.style.opacity=i%2===0?(0.4+Math.random()*0.5).toFixed(2):'1';
-    brand.style.transform=i%2===0?'translateX('+(Math.random()-.5)*4+'px)':'';
+    brand.style.transform=i%2===0?'translateX('+(Math.random()-.5)*4+'px)':'';;
     i++;setTimeout(step,40+Math.random()*60);
   }
   step();setTimeout(glitch,3000+Math.random()*9000);
@@ -198,9 +198,7 @@ function dim(){
 }
 setTimeout(dim,4000+Math.random()*8000);
 
-// ═══════════════════════════════════════
-// CASINO PASCAL — BLACKJACK
-// ═══════════════════════════════════════
+// BLACKJACK ENGINE (unchanged from original)
 var BJ={
   chips:20,bet:5,deck:[],player:[],playerB:null,playingB:false,dealer:[],active:false,
   SUITS:['\u2660','\u2665','\u2666','\u2663'],
@@ -249,179 +247,26 @@ var BJ={
           'The house edge guarantees this outcome over time. This is what the series is about.']
   }
 };
-
 function bjRnd(a){return a[Math.floor(Math.random()*a.length)];}
-function bjSay(type){
-  var arr=BJ.COM[type];if(!arr||!arr.length)return;
-  var m=document.getElementById('bj-msg');
-  m.style.opacity='0';
-  setTimeout(function(){m.textContent=bjRnd(arr);m.style.opacity='1';},200);
-}
-function bjShuffle(){
-  BJ.deck=[];
-  for(var s=0;s<4;s++) for(var v=0;v<13;v++) BJ.deck.push({s:BJ.SUITS[s],v:BJ.VALS[v]});
-  for(var i=BJ.deck.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=BJ.deck[i];BJ.deck[i]=BJ.deck[j];BJ.deck[j]=t;}
-}
+function bjSay(type){var arr=BJ.COM[type];if(!arr||!arr.length)return;var m=document.getElementById('bj-msg');m.style.opacity='0';setTimeout(function(){m.textContent=bjRnd(arr);m.style.opacity='1';},200);}
+function bjShuffle(){BJ.deck=[];for(var s=0;s<4;s++)for(var v=0;v<13;v++)BJ.deck.push({s:BJ.SUITS[s],v:BJ.VALS[v]});for(var i=BJ.deck.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=BJ.deck[i];BJ.deck[i]=BJ.deck[j];BJ.deck[j]=t;}}
 function bjDraw(){return BJ.deck.pop();}
-function bjVal(hand){
-  var v=0,aces=0;
-  hand.forEach(function(c){
-    if(c.v==='A'){aces++;v+=11;}
-    else if(['J','Q','K'].indexOf(c.v)>=0){v+=10;}
-    else{v+=parseInt(c.v);}
-  });
-  while(v>21&&aces>0){v-=10;aces--;}
-  return v;
-}
-function bjCardHTML(c){
-  var red=c.s==='\u2665'||c.s==='\u2666';
-  return '<div class="card'+(red?' red':'')+'"><span>'+c.v+'</span><span class="suit">'+c.s+'</span></div>';
-}
+function bjVal(hand){var v=0,aces=0;hand.forEach(function(c){if(c.v==='A'){aces++;v+=11;}else if(['J','Q','K'].indexOf(c.v)>=0){v+=10;}else{v+=parseInt(c.v);}});while(v>21&&aces>0){v-=10;aces--;}return v;}
+function bjCardHTML(c){var red=c.s==='\u2665'||c.s==='\u2666';return '<div class="card'+(red?' red':'')+'"><span>'+c.v+'</span><span class="suit">'+c.s+'</span></div>';}
 function bjBackHTML(){return '<div class="card back"></div>';}
-function bjRender(hideHole){
-  var ph=BJ.player.map(bjCardHTML).join('');
-  if(BJ.playerB){
-    var sep='<span style="color:rgba(212,168,67,.3);font-size:.8em;margin:0 6px">|</span>';
-    ph=BJ.playingB
-      ?'<span style="opacity:.4">'+BJ.playerB.map(bjCardHTML).join('')+'</span>'+sep+ph
-      :ph+sep+'<span style="opacity:.4">'+BJ.playerB.map(bjCardHTML).join('')+'</span>';
-  }
-  document.getElementById('bj-pcards').innerHTML=ph;
-  document.getElementById('bj-pval').textContent='= '+bjVal(BJ.player);
-  if(hideHole){
-    document.getElementById('bj-dcards').innerHTML=bjCardHTML(BJ.dealer[0])+bjBackHTML();
-    document.getElementById('bj-dval').textContent='';
-  } else {
-    document.getElementById('bj-dcards').innerHTML=BJ.dealer.map(bjCardHTML).join('');
-    document.getElementById('bj-dval').textContent='= '+bjVal(BJ.dealer);
-  }
-  document.getElementById('bj-info').textContent='Chips: '+BJ.chips+'   Bet: '+BJ.bet;
-}
-function bjBtns(cfg){
-  ['hit','stand','double','split','deal'].forEach(function(b){
-    var el=document.getElementById('btn-'+b);
-    el.style.display=cfg[b]?'':'none';
-    el.disabled=cfg[b]==='off';
-  });
-}
-function bjEndRound(res,chips){
-  BJ.active=false;
-  BJ.chips+=chips;if(BJ.chips<0)BJ.chips=0;
-  document.getElementById('bj-result').textContent={win:'You win.',lose:'Dealer wins.',push:'Push.',bust:'Bust.',blackjack:'Blackjack!'}[res]||'';
-  bjSay(res==='blackjack'?'blackjack':res==='bust'?'bust':res);
-  document.getElementById('bj-info').textContent='Chips: '+BJ.chips+'   Bet: '+BJ.bet;
-  if(BJ.chips<=0){
-    setTimeout(function(){
-      document.getElementById('bj-result').textContent='';
-      document.getElementById('bj-msg').textContent=bjRnd(BJ.COM.ruin);
-      bjBtns({});
-      setTimeout(bjClose,4000);
-    },2000);
-    return;
-  }
-  setTimeout(function(){bjBtns({deal:true});},600);
-}
-function bjDealerPlay(cb){
-  bjRender(false);
-  function step(){
-    if(bjVal(BJ.dealer)<17){BJ.dealer.push(bjDraw());bjRender(false);setTimeout(step,600);}
-    else{cb(bjVal(BJ.dealer));}
-  }
-  setTimeout(step,400);
-}
-function bjSettle(pv,dv,bet){
-  if(pv>21)          return bjEndRound('bust',-bet);
-  if(dv>21||pv>dv)   return bjEndRound('win', +bet);
-  if(pv===dv)        return bjEndRound('push', 0);
-                      return bjEndRound('lose',-bet);
-}
-function bjDeal(){
-  BJ.bet=5;if(BJ.chips<5)BJ.bet=BJ.chips;
-  bjShuffle();
-  BJ.player=[bjDraw(),bjDraw()];BJ.dealer=[bjDraw(),bjDraw()];
-  BJ.playerB=null;BJ.playingB=false;BJ.active=true;
-  document.getElementById('bj-result').textContent='';
-  bjRender(true);bjSay('deal');
-  if(bjVal(BJ.player)===21){
-    bjDealerPlay(function(dv){
-      dv===21?bjEndRound('push',0):(BJ.chips+=Math.floor(BJ.bet*0.5),bjEndRound('blackjack',BJ.bet));
-    });
-    return;
-  }
-  bjBtns({hit:true,stand:true,double:BJ.chips>=BJ.bet?true:'off',split:BJ.player[0].v===BJ.player[1].v&&BJ.chips>=BJ.bet?true:'off'});
-}
-function bjHit(){
-  if(!BJ.active)return;
-  BJ.player.push(bjDraw());bjRender(true);
-  bjBtns({hit:true,stand:true});
-  if(bjVal(BJ.player)>21){
-    if(BJ.playerB&&!BJ.playingB){
-      BJ.chips-=BJ.bet;
-      document.getElementById('bj-result').textContent='Bust (hand 1).';
-      BJ.player=BJ.playerB;BJ.playerB=null;BJ.playingB=true;
-      bjRender(true);bjBtns({hit:true,stand:true});
-    } else {
-      bjEndRound('bust',-BJ.bet);
-    }
-  }
-}
-function bjStand(){
-  if(!BJ.active)return;
-  if(BJ.playerB&&!BJ.playingB){
-    var h1=BJ.player.slice();
-    document.getElementById('bj-result').textContent='Hand 1: '+bjVal(h1)+'. Hand 2:';
-    BJ.player=BJ.playerB;BJ.playerB=h1;BJ.playingB=true;
-    bjRender(true);bjBtns({hit:true,stand:true});return;
-  }
-  bjBtns({});
-  bjDealerPlay(function(dv){
-    if(BJ.playingB&&BJ.playerB){
-      function s(pv){if(pv>21)return['Bust',-BJ.bet];if(dv>21||pv>dv)return['Win',+BJ.bet];if(pv===dv)return['Push',0];return['Lose',-BJ.bet];}
-      var r1=s(bjVal(BJ.playerB)),r2=s(bjVal(BJ.player));
-      BJ.chips+=r1[1]+r2[1];if(BJ.chips<0)BJ.chips=0;
-      BJ.active=false;
-      document.getElementById('bj-result').textContent='Hand 1: '+r1[0]+'. Hand 2: '+r2[0]+'.';
-      document.getElementById('bj-info').textContent='Chips: '+BJ.chips+'   Bet: '+BJ.bet;
-      if(BJ.chips<=0){setTimeout(function(){document.getElementById('bj-msg').textContent=bjRnd(BJ.COM.ruin);bjBtns({});setTimeout(bjClose,4000);},2000);}
-      else{setTimeout(function(){bjBtns({deal:true});},600);}
-    } else {
-      bjSettle(bjVal(BJ.player),dv,BJ.bet);
-    }
-  });
-}
-function bjDouble(){
-  if(!BJ.active)return;
-  BJ.chips-=BJ.bet;BJ.bet*=2;
-  BJ.player.push(bjDraw());bjRender(true);bjSay('double');bjBtns({});
-  setTimeout(function(){bjVal(BJ.player)>21?bjEndRound('bust',-BJ.bet):bjStand();},500);
-}
-function bjSplit(){
-  if(!BJ.active)return;
-  BJ.chips-=BJ.bet;
-  BJ.playerB=[BJ.player[1],bjDraw()];
-  BJ.player=[BJ.player[0],bjDraw()];
-  BJ.playingB=false;
-  bjRender(true);bjSay('split');
-  bjBtns({hit:true,stand:true});
-}
-function bjOpen(){
-  BJ.chips=20;BJ.bet=5;BJ.player=[];BJ.dealer=[];BJ.playerB=null;BJ.playingB=false;BJ.active=false;
-  document.getElementById('bj-result').textContent='';
-  document.getElementById('bj-msg').textContent='The table awaits. I am prepared.';
-  document.getElementById('bj-pcards').innerHTML='';document.getElementById('bj-pval').textContent='';
-  document.getElementById('bj-dcards').innerHTML='';document.getElementById('bj-dval').textContent='';
-  document.getElementById('bj-info').textContent='Chips: 20   Bet: 5';
-  bjBtns({deal:true});
-  document.getElementById('bj').classList.add('open');
-}
+function bjRender(hideHole){var ph=BJ.player.map(bjCardHTML).join('');if(BJ.playerB){var sep='<span style="color:rgba(212,168,67,.3);font-size:.8em;margin:0 6px">|</span>';ph=BJ.playingB?'<span style="opacity:.4">'+BJ.playerB.map(bjCardHTML).join('')+'</span>'+sep+ph:ph+sep+'<span style="opacity:.4">'+BJ.playerB.map(bjCardHTML).join('')+'</span>';}document.getElementById('bj-pcards').innerHTML=ph;document.getElementById('bj-pval').textContent='= '+bjVal(BJ.player);if(hideHole){document.getElementById('bj-dcards').innerHTML=bjCardHTML(BJ.dealer[0])+bjBackHTML();document.getElementById('bj-dval').textContent='';}else{document.getElementById('bj-dcards').innerHTML=BJ.dealer.map(bjCardHTML).join('');document.getElementById('bj-dval').textContent='= '+bjVal(BJ.dealer);}document.getElementById('bj-info').textContent='Chips: '+BJ.chips+'   Bet: '+BJ.bet;}
+function bjBtns(cfg){['hit','stand','double','split','deal'].forEach(function(b){var el=document.getElementById('btn-'+b);el.style.display=cfg[b]?'':'none';el.disabled=cfg[b]==='off';});}
+function bjEndRound(res,chips){BJ.active=false;BJ.chips+=chips;if(BJ.chips<0)BJ.chips=0;document.getElementById('bj-result').textContent={win:'You win.',lose:'Dealer wins.',push:'Push.',bust:'Bust.',blackjack:'Blackjack!'}[res]||'';;bjSay(res==='blackjack'?'blackjack':res==='bust'?'bust':res);document.getElementById('bj-info').textContent='Chips: '+BJ.chips+'   Bet: '+BJ.bet;if(BJ.chips<=0){setTimeout(function(){document.getElementById('bj-result').textContent='';document.getElementById('bj-msg').textContent=bjRnd(BJ.COM.ruin);bjBtns({});setTimeout(bjClose,4000);},2000);return;}setTimeout(function(){bjBtns({deal:true});},600);}
+function bjDealerPlay(cb){bjRender(false);function step(){if(bjVal(BJ.dealer)<17){BJ.dealer.push(bjDraw());bjRender(false);setTimeout(step,600);}else{cb(bjVal(BJ.dealer));}}setTimeout(step,400);}
+function bjSettle(pv,dv,bet){if(pv>21)return bjEndRound('bust',-bet);if(dv>21||pv>dv)return bjEndRound('win',+bet);if(pv===dv)return bjEndRound('push',0);return bjEndRound('lose',-bet);}
+function bjDeal(){BJ.bet=5;if(BJ.chips<5)BJ.bet=BJ.chips;bjShuffle();BJ.player=[bjDraw(),bjDraw()];BJ.dealer=[bjDraw(),bjDraw()];BJ.playerB=null;BJ.playingB=false;BJ.active=true;document.getElementById('bj-result').textContent='';bjRender(true);bjSay('deal');if(bjVal(BJ.player)===21){bjDealerPlay(function(dv){dv===21?bjEndRound('push',0):(BJ.chips+=Math.floor(BJ.bet*0.5),bjEndRound('blackjack',BJ.bet));});return;}bjBtns({hit:true,stand:true,double:BJ.chips>=BJ.bet?true:'off',split:BJ.player[0].v===BJ.player[1].v&&BJ.chips>=BJ.bet?true:'off'});}
+function bjHit(){if(!BJ.active)return;BJ.player.push(bjDraw());bjRender(true);bjBtns({hit:true,stand:true});if(bjVal(BJ.player)>21){if(BJ.playerB&&!BJ.playingB){BJ.chips-=BJ.bet;document.getElementById('bj-result').textContent='Bust (hand 1).';BJ.player=BJ.playerB;BJ.playerB=null;BJ.playingB=true;bjRender(true);bjBtns({hit:true,stand:true});}else{bjEndRound('bust',-BJ.bet);}}}
+function bjStand(){if(!BJ.active)return;if(BJ.playerB&&!BJ.playingB){var h1=BJ.player.slice();document.getElementById('bj-result').textContent='Hand 1: '+bjVal(h1)+'. Hand 2:';BJ.player=BJ.playerB;BJ.playerB=h1;BJ.playingB=true;bjRender(true);bjBtns({hit:true,stand:true});return;}bjBtns({});bjDealerPlay(function(dv){if(BJ.playingB&&BJ.playerB){function s(pv){if(pv>21)return['Bust',-BJ.bet];if(dv>21||pv>dv)return['Win',+BJ.bet];if(pv===dv)return['Push',0];return['Lose',-BJ.bet];}var r1=s(bjVal(BJ.playerB)),r2=s(bjVal(BJ.player));BJ.chips+=r1[1]+r2[1];if(BJ.chips<0)BJ.chips=0;BJ.active=false;document.getElementById('bj-result').textContent='Hand 1: '+r1[0]+'. Hand 2: '+r2[0]+'.';document.getElementById('bj-info').textContent='Chips: '+BJ.chips+'   Bet: '+BJ.bet;if(BJ.chips<=0){setTimeout(function(){document.getElementById('bj-msg').textContent=bjRnd(BJ.COM.ruin);bjBtns({});setTimeout(bjClose,4000);},2000);}else{setTimeout(function(){bjBtns({deal:true});},600);}}else{bjSettle(bjVal(BJ.player),dv,BJ.bet);}});}
+function bjDouble(){if(!BJ.active)return;BJ.chips-=BJ.bet;BJ.bet*=2;BJ.player.push(bjDraw());bjRender(true);bjSay('double');bjBtns({});setTimeout(function(){bjVal(BJ.player)>21?bjEndRound('bust',-BJ.bet):bjStand();},500);}
+function bjSplit(){if(!BJ.active)return;BJ.chips-=BJ.bet;BJ.playerB=[BJ.player[1],bjDraw()];BJ.player=[BJ.player[0],bjDraw()];BJ.playingB=false;bjRender(true);bjSay('split');bjBtns({hit:true,stand:true});}
+function bjOpen(){BJ.chips=20;BJ.bet=5;BJ.player=[];BJ.dealer=[];BJ.playerB=null;BJ.playingB=false;BJ.active=false;document.getElementById('bj-result').textContent='';document.getElementById('bj-msg').textContent='The table awaits. I am prepared.';document.getElementById('bj-pcards').innerHTML='';document.getElementById('bj-pval').textContent='';document.getElementById('bj-dcards').innerHTML='';document.getElementById('bj-dval').textContent='';document.getElementById('bj-info').textContent='Chips: 20   Bet: 5';bjBtns({deal:true});document.getElementById('bj').classList.add('open');}
 function bjClose(){document.getElementById('bj').classList.remove('open');}
-(function(){
-  var a=document.getElementById('ambitions');
-  var fired=false;
-  function go(e){if(fired)return;fired=true;e.preventDefault();bjOpen();setTimeout(function(){fired=false;},500);}
-  a.addEventListener('touchend',go,{passive:false});
-  a.addEventListener('click',go);
-})();
+(function(){var a=document.getElementById('ambitions');var fired=false;function go(e){if(fired)return;fired=true;e.preventDefault();bjOpen();setTimeout(function(){fired=false;},500);}a.addEventListener('touchend',go,{passive:false});a.addEventListener('click',go);})();
 document.addEventListener('keydown',function(e){if(e.key==='Escape')bjClose();});
 </script>
 </body>
