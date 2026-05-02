@@ -30,8 +30,9 @@ html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',mo
 .ep.coming .ep-title{color:rgba(238,225,196,.22)}
 .ep.coming .ep-num{color:rgba(212,168,67,.15)}
 #foot{position:fixed;bottom:4vh;left:0;right:0;z-index:2;font-size:clamp(13px,.9vw,16px);color:rgba(212,168,67,.5);letter-spacing:.08em;text-align:center;line-height:2;pointer-events:auto}
-#ambitions{cursor:pointer;animation:glimmer 3s ease-in-out infinite;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-user-select:none;user-select:none}
-@keyframes glimmer{0%,100%{opacity:.5}50%{opacity:1}}
+#ambitions{cursor:pointer;animation:glimmer 3s ease-in-out infinite,glow 3s ease-in-out infinite;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+@keyframes glimmer{0%{opacity:.55}35%{opacity:.08}70%{opacity:1}100%{opacity:.55}}
+@keyframes glow{0%{text-shadow:none}35%{text-shadow:none}70%{text-shadow:0 0 12px rgba(212,168,67,1),0 0 30px rgba(212,168,67,.8),0 0 60px rgba(212,168,67,.5)}100%{text-shadow:none}}
 
 /* GAMBLER'S RUIN OVERLAY */
 #bj{position:fixed;top:0;left:0;right:0;bottom:0;z-index:60;background:#06050A;display:none;-webkit-flex-direction:column;flex-direction:column;align-items:center;justify-content:flex-start;padding:18vh 8% 10vh;font-family:'Courier New',monospace;overflow:hidden}
