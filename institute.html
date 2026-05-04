@@ -234,6 +234,280 @@ body {
 
     <a class="space-item" href="episode1-game.html">
       <div class="sp-num">First Floor</div>
+      <div class="sp-title">Briefly a Beginner<br><span style="font-family:'Special Elite',monospace;font-size:9px;letter-spacing:.12em;color:#7A7060;text-transform:uppercase">Sample Spaces &nbsp;&middot;&nbsp; Events &nbsp;&middot;&nbsp; Axioms</span></div>
+      <div class="sp-tag">Available</div>
+    </a>
+
+    <div class="space-item locked">
+      <div class="sp-num">Second Floor</div>
+      <div class="sp-title dim">The Second Document</div>
+      <div class="sp-tag">Forthcoming</div>
+    </div>
+
+    <div class="space-item locked">
+      <div class="sp-num">Third Floor</div>
+      <div class="sp-title dim">The Third Document</div>
+      <div class="sp-tag">Forthcoming</div>
+    </div>
+
+    <div class="space-item locked">
+      <div class="sp-num">Fourth Floor</div>
+      <div class="sp-title dim">The Fourth Document</div>
+      <div class="sp-tag">Forthcoming</div>
+    </div>
+
+    <div class="space-item locked">
+      <div class="sp-num">Fifth Floor</div>
+      <div class="sp-title dim">The Fifth Document</div>
+      <div class="sp-tag">Forthcoming</div>
+    </div>
+
+    <div class="space-item locked">
+      <div class="sp-num">Sixth Floor</div>
+      <div class="sp-title dim">The Sixth Document</div>
+      <div class="sp-tag">Forthcoming</div>
+    </div>
+
+    <div class="space-item locked">
+      <div class="sp-num">Seventh Floor</div>
+      <div class="sp-title dim">The Seventh Document</div>
+      <div class="sp-tag">Forthcoming</div>
+    </div>
+
+    <div class="space-item locked">
+      <div class="sp-num">Eighth Floor</div>
+      <div class="sp-title dim">The Eighth Document</div>
+      <div class="sp-tag">Forthcoming</div>
+    </div>
+
+    <div class="space-item locked">
+      <div class="sp-num">Ninth Floor</div>
+      <div class="sp-title dim">The Ninth Document</div>
+      <div class="sp-tag">Forthcoming</div>
+    </div>
+
+    <div class="space-item locked">
+      <div class="sp-num">Tenth Floor</div>
+      <div class="sp-title dim">The Tenth Document</div>
+      <div class="sp-tag">Forthcoming</div>
+    </div>
+
+    <div class="space-item locked" style="border-top: 2px solid rgba(26,22,16,.3); margin-top: 12px; padding-top: 16px;">
+      <div class="sp-num" style="color:#1A1610;opacity:.35">The Casino</div>
+      <div class="sp-title dim">Gambler's Ruin</div>
+      <div class="sp-tag">Locked</div>
+    </div>
+
+  </div>
+</div>
+
+<div id="footer">
+  <a class="f-btn" href="index.html">&#8592; Quirky Lemma</a>
+  <div class="f-mid">The Institute</div>
+  <a class="f-btn" href="episode1-game.html">Enter First Floor &#8594;</a>
+</div>
+
+</body>
+</html>  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #3A3020;
+  line-height: 1.9;
+}
+.inst-name strong {
+  display: block;
+  font-size: 15px;
+  letter-spacing: .08em;
+  color: #1A1610;
+  margin-bottom: 2px;
+}
+.ref-block {
+  text-align: right;
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  color: #7A7060;
+  line-height: 1.9;
+}
+
+/* TITLE BAR */
+#form-title {
+  background: #1A1610;
+  color: #F2EDD7;
+  padding: 10px 40px;
+  font-family: 'Special Elite', monospace;
+  font-size: 12px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* CONTENT */
+#content {
+  padding: 36px 40px;
+}
+
+/* AUBREY INTRO — blackboard */
+#blackboard {
+  background: #1C2A1C;
+  margin: 0 -40px 36px;
+  padding: 32px 48px;
+  box-shadow: inset 0 0 80px rgba(0,0,0,.6);
+  border-top: 5px solid #243824;
+  border-bottom: 5px solid #243824;
+}
+.chalk-text {
+  font-family: 'Special Elite', monospace;
+  font-size: 18px;
+  line-height: 2.1;
+  color: #F0E8C0;
+  text-shadow: 0 0 8px rgba(240,232,192,.12);
+}
+.chalk-text p { margin-bottom: .5em; }
+.chalk-text p:last-child { margin-bottom: 0; }
+
+/* DESCRIPTION */
+#description {
+  margin-bottom: 36px;
+  border-bottom: 1px solid rgba(26,22,16,.15);
+  padding-bottom: 28px;
+}
+#description p {
+  font-size: 18px;
+  line-height: 1.8;
+  color: #1A1610;
+  margin-bottom: 1em;
+}
+#description p:last-child { margin-bottom: 0; }
+
+/* SPACES LIST */
+#spaces-label {
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #7A7060;
+  margin-bottom: 16px;
+  border-bottom: 1px dotted rgba(26,22,16,.2);
+  padding-bottom: 8px;
+}
+
+.space-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  padding: 14px 0;
+  border-bottom: 1px dotted rgba(26,22,16,.15);
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: background .15s;
+}
+.space-item:hover { background: rgba(26,22,16,.03); margin: 0 -8px; padding: 14px 8px; }
+.space-item.locked { opacity: .38; cursor: default; }
+.space-item.locked:hover { background: none; margin: 0; padding: 14px 0; }
+
+.sp-num {
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: .16em;
+  color: #7A7060;
+  width: 110px;
+  flex-shrink: 0;
+}
+.sp-title {
+  font-size: 19px;
+  color: #1A1610;
+  flex: 1;
+  line-height: 1.3;
+}
+.sp-title.dim { color: #7A7060; }
+.sp-tag {
+  font-family: 'Special Elite', monospace;
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #7A7060;
+  flex-shrink: 0;
+  padding-left: 16px;
+}
+
+/* FOOTER */
+#footer {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 740px;
+  background: #1A1610;
+  padding: 12px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 50;
+}
+.f-btn {
+  background: none;
+  border: 1px solid rgba(242,237,215,.35);
+  color: rgba(242,237,215,.7);
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: 7px 18px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all .15s;
+}
+.f-btn:hover { border-color: white; color: white; }
+.f-mid {
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  color: rgba(242,237,215,.3);
+  text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+<div id="wrap">
+
+  <div id="inst-header">
+    <div class="inst-name">
+      <strong>The Institute</strong>
+      Absorption Record &mdash; Candidate: Squeakwell, A. (BSc)
+    </div>
+    <div class="ref-block">
+      Status: In Progress
+    </div>
+  </div>
+
+  <div id="form-title">
+    <span>Ground Floor</span>
+  </div>
+
+  <div id="content">
+
+    <div id="blackboard">
+      <div class="chalk-text">
+        <p>I am Aubrey Squeakwell, BSc.</p>
+        <p>I am here.</p>
+        <p>Because I intend to be somewhere else. &nbsp;&#9633;</p>
+      </div>
+    </div>
+
+    <div id="description">
+      <p>The lights of the casino are on.</p>
+      <p>Across the road, in relative darkness, is the Institute. It is a building of uncertain provenance, constructed during the 1980s. Its style suggests the architect had strong feelings about concrete. It houses ten floors.</p>
+      <p>Candidate Squeakwell stands on the ground floor of the Institute. He intends to file an application for entry to the casino. The requisite framework for entry is mathematical. It is available on the floors above. The floors are to be visited in order. Or not.</p>
+      <p>The casino is called Gambler's Ruin. There is only one game. Blackjack. The lights are always on. No application for entry from this building has yet been successful. Several have been filed.</p>
+    </div>
+
+    <div id="spaces-label">Spaces &mdash; Select to enter</div>
+
+    <a class="space-item" href="episode1-game.html">
+      <div class="sp-num">First Floor</div>
       <div class="sp-title">Briefly a Beginner</div>
       <div class="sp-tag">Available</div>
     </a>
