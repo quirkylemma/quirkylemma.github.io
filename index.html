@@ -8,16 +8,32 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
-  background: #F2EDE2;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  color: #0F0D08;
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 52px 64px 72px;
+html, body {
+  min-height: 100%;
+  background: #E8E4D8;
+}
+
+/* FIXED WIDTH PAPER — scrolls vertically, never shrinks */
+#page {
+  max-width: 760px;
   min-height: 100vh;
+  margin: 0 auto;
+  background: #F4F0E6;
+  padding: 52px 64px 72px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 0 40px rgba(0,0,0,.12);
+}
+
+
+
+/* GRAIN */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 100; opacity: .18;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  background-size: 180px;
 }
 
 /* MASTHEAD */
@@ -29,118 +45,177 @@ body {
   padding-bottom: 18px;
   margin-bottom: 52px;
 }
-.wm { font-family: 'Cormorant SC', serif; font-size: 20px; letter-spacing: .2em; color: #8A8070; line-height: 1.35; }
-.mr { font-size: 20px; color: #8A8070; text-align: right; line-height: 1.45; }
+
+.wm {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 22px;
+  letter-spacing: .2em;
+  color: #8A8070;
+  line-height: 1.35;
+}
+
+.mr {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 22px;
+  color: #8A8070;
+  text-align: right;
+  line-height: 1.5;
+}
 
 /* TITLE */
 #title { margin-bottom: 48px; }
-h1 { font-family: 'Cormorant SC', serif; font-size: clamp(52px,8.5vw,90px); font-weight: 300; line-height: 1; margin-bottom: 26px; }
+
+h1 {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 80px;
+  font-weight: 300;
+  line-height: 1;
+  color: #0F0D08;
+  margin-bottom: 26px;
+}
 h1 span { display: block; }
-.tagline { font-size: 19px; line-height: 1.72; color: #3D3828; font-style: italic; max-width: 500px; border-left: 2px solid #1C3A38; padding-left: 18px; }
+
+.tagline {
+  font-size: 21px;
+  line-height: 1.72;
+  color: #3D3828;
+  font-style: italic;
+  border-left: 2px solid #1C3A38;
+  padding-left: 18px;
+}
 
 /* SPACES */
-#spaces { flex: 1; margin-bottom: 48px; border-top: 1px solid rgba(15,13,8,.13); }
+#spaces {
+  flex: 1;
+  border-top: 1px solid rgba(15,13,8,.13);
+  margin-bottom: 48px;
+}
 
 .row {
   display: grid;
-  grid-template-columns: 44px 1fr auto;
+  grid-template-columns: 44px 1fr 220px;
   align-items: baseline;
+  gap: 16px;
   padding: 20px 0;
   border-bottom: 1px solid rgba(15,13,8,.13);
-  cursor: pointer;
   text-decoration: none;
   color: inherit;
-  gap: 16px;
+  cursor: pointer;
 }
 .row.off { cursor: default; opacity: .35; }
 .row:not(.off):hover { background: rgba(15,13,8,.03); margin: 0 -8px; padding: 20px 8px; }
 
 .num {
-  font-family: 'Cormorant SC', serif;
-  font-size: 15px;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 17px;
   letter-spacing: .18em;
   color: #8A8070;
 }
 
 .name {
-  font-size: clamp(20px, 2.2vw, 26px);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 26px;
   font-weight: 300;
   color: #0F0D08;
 }
 .name.dim { color: #8A8070; }
 
 .subj {
-  font-family: 'Cormorant SC', serif;
+  font-family: 'Cormorant SC', Georgia, serif;
   font-size: 17px;
   letter-spacing: .12em;
   color: #8A8070;
   text-align: right;
-  white-space: nowrap;
 }
 
 /* FOOTER */
 #footer {
   border-top: 1px solid rgba(15,13,8,.13);
-  padding-top: 22px;
+  padding-top: 24px;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   gap: 40px;
 }
-.fn { font-size: 19px; line-height: 1.78; color: #3D3828; font-style: italic; max-width: 420px; }
-.fs { font-family: 'Cormorant SC', serif; font-size: 16px; letter-spacing: .14em; color: #8A8070; white-space: nowrap; }
+
+.fn {
+  font-size: 19px;
+  line-height: 1.78;
+  color: #3D3828;
+  font-style: italic;
+  max-width: 400px;
+}
+
+.fs {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 17px;
+  letter-spacing: .14em;
+  color: #8A8070;
+  text-align: right;
+  white-space: nowrap;
+  line-height: 1.6;
+}
+@media (max-width: 600px) {
+  #page { padding: 32px 28px 52px; }
+  h1 { font-size: 52px; }
+  .name { font-size: 20px; }
+  .subj { font-size: 14px; }
+  .row { grid-template-columns: 36px 1fr 140px; gap: 8px; }
+}
 </style>
 </head>
 <body>
+<div id="page">
 
-<div id="masthead">
-  <div class="wm">Quirky<br>Lemma &nbsp;&#9633;</div>
-  <div class="mr">Dr Ragvir Sabharwal<br>Room 197A</div>
-</div>
-
-<div id="title">
-  <h1><span>Quirky</span><span>Lemma &nbsp;&#9633;</span></h1>
-  <p class="tagline">A set of discoverable worlds in statistics and econometrics. The worlds are fictional. The rigour is real. The distinction is less than one might expect.</p>
-</div>
-
-<div id="spaces">
-
-  <a class="row" href="institute.html">
-    <div class="num">I</div>
-    <div class="name">The Institute</div>
-    <div class="subj">Probability Foundations</div>
-  </a>
-
-  <div class="row off">
-    <div class="num">II</div>
-    <div class="name dim">The Conference of Birds</div>
-    <div class="subj">Statistical Inference</div>
+  <div id="masthead">
+    <div class="wm">Quirky<br>Lemma &nbsp;&#9633;</div>
+    <div class="mr">Dr Ragvir Sabharwal<br>Room 197A</div>
   </div>
 
-  <div class="row off">
-    <div class="num">III</div>
-    <div class="name dim">The Observatory</div>
-    <div class="subj">Regression Analysis</div>
+  <div id="title">
+    <h1><span>Quirky</span><span>Lemma &nbsp;&#9633;</span></h1>
+    <p class="tagline">A set of discoverable worlds in statistics and econometrics. The worlds are fictional. The rigour is real. The distinction is less than one might expect.</p>
   </div>
 
-  <div class="row off">
-    <div class="num">IV</div>
-    <div class="name dim">The Confessional</div>
-    <div class="subj">Binary Choice Models</div>
+  <div id="spaces">
+
+    <a class="row" href="institute.html">
+      <div class="num">I</div>
+      <div class="name">The Institute</div>
+      <div class="subj">Probability Foundations</div>
+    </a>
+
+    <div class="row off">
+      <div class="num">II</div>
+      <div class="name dim">The Conference of Birds</div>
+      <div class="subj">Statistical Inference</div>
+    </div>
+
+    <div class="row off">
+      <div class="num">III</div>
+      <div class="name dim">The Observatory</div>
+      <div class="subj">Regression Analysis</div>
+    </div>
+
+    <div class="row off">
+      <div class="num">IV</div>
+      <div class="name dim">The Confessional</div>
+      <div class="subj">Binary Choice Models</div>
+    </div>
+
+    <div class="row off">
+      <div class="num">V</div>
+      <div class="name dim">The Lighthouse</div>
+      <div class="subj">Time Series Analysis</div>
+    </div>
+
   </div>
 
-  <div class="row off">
-    <div class="num">V</div>
-    <div class="name dim">The Lighthouse</div>
-    <div class="subj">Time Series Analysis</div>
+  <div id="footer">
+    <p class="fn">The mathematics was never the problem. The problem was the gap between the formula on the page and the moment it becomes inevitable. The worlds I have created exist in that very gap.</p>
+    <div class="fs">— Ragvir<br>Room 197A</div>
   </div>
 
 </div>
-
-<div id="footer"><div id="footer">
-  <p class="fn">The mathematics was never the problem. The problem was the gap between the formula on the page and the moment it becomes inevitable. The worlds I have created exist in that very gap.</p>
-  <div class="fs">— R.S., Room 197A</div>
-</div>
-
 </body>
 </html>
