@@ -2,107 +2,156 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Quirky Lemma</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cormorant+SC:wght@300;400&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;height:100%;background:#06050A;font-family:'Courier New',monospace;overflow:hidden}
-#grain{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.45}
-#vig{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 50% 50%,transparent 38%,rgba(0,0,0,.65) 100%)}
-#wrap{position:fixed;top:0;left:0;right:0;bottom:0;z-index:1;display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;align-items:center;justify-content:flex-start;padding:12vh 8% 14vh;overflow:hidden}
-#brand{font-size:clamp(22px,2.8vw,40px);letter-spacing:.15em;color:rgba(212,168,67,.88);margin-bottom:1.8vh;font-weight:400}
-.sq{display:inline-block;width:.45em;height:.45em;border:1.5px solid rgba(212,168,67,.8);vertical-align:middle;margin-left:4px;margin-bottom:3px;}
-#sub{font-size:clamp(14px,1.4vw,20px);color:rgba(238,225,196,.52);letter-spacing:.1em;margin-bottom:7vh}
-#series-scroll{width:100%;max-width:580px;max-height:33vh;overflow-y:auto;scrollbar-width:none}
-#series-scroll::-webkit-scrollbar{display:none}
-.series{display:block;text-decoration:none;padding:20px 0;border-bottom:1px solid rgba(212,168,67,.1);transition:all .2s;width:100%}
-.series:first-of-type{border-top:1px solid rgba(212,168,67,.1)}
-.series-title{font-size:clamp(16px,1.8vw,26px);color:rgba(238,225,196,.85);letter-spacing:.05em;margin-bottom:6px;transition:color .18s;font-weight:400}
-.series-sub{font-size:clamp(13px,1.1vw,17px);color:rgba(212,168,67,.55);letter-spacing:.08em}
-.series:hover .series-title{color:rgba(212,168,67,.92)}
-.series:hover .series-sub{color:rgba(212,168,67,.72)}
-.series.coming{cursor:default;pointer-events:none}
-.series.coming .series-title{color:rgba(238,225,196,.22)}
-.series.coming .series-sub{color:rgba(212,168,67,.15)}
-#foot{position:fixed;bottom:3vh;left:0;right:0;z-index:2;font-size:clamp(11px,.9vw,14px);color:rgba(212,168,67,.5);letter-spacing:.08em;text-align:center;line-height:2;pointer-events:none}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #F2EDE2;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  color: #0F0D08;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 52px 64px 72px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* MASTHEAD */
+#masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1.5px solid #1C3A38;
+  padding-bottom: 18px;
+  margin-bottom: 52px;
+}
+.wm { font-family: 'Cormorant SC', serif; font-size: 20px; letter-spacing: .2em; color: #8A8070; line-height: 1.35; }
+.mr { font-size: 20px; color: #8A8070; text-align: right; line-height: 1.45; }
+
+/* TITLE */
+#title { margin-bottom: 48px; }
+h1 { font-family: 'Cormorant SC', serif; font-size: clamp(52px,8.5vw,90px); font-weight: 300; line-height: 1; margin-bottom: 26px; }
+h1 span { display: block; }
+.tagline { font-size: 19px; line-height: 1.72; color: #3D3828; font-style: italic; max-width: 500px; border-left: 2px solid #1C3A38; padding-left: 18px; }
+
+/* SPACES */
+#spaces { flex: 1; margin-bottom: 48px; border-top: 1px solid rgba(15,13,8,.13); }
+
+.row {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 0;
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(15,13,8,.13);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+.row.off { cursor: default; opacity: .35; }
+
+.num { font-family: 'Cormorant SC', serif; font-size: 15px; letter-spacing: .18em; color: #8A8070; padding-top: 3px; }
+
+/* The key: one div, two spans stacked. Only one visible at a time via JS. */
+.title-cell { position: relative; overflow: hidden; height: 1.6em; }
+.front, .back {
+  position: absolute;
+  top: 0; left: 0; width: 100%;
+  font-size: clamp(20px,2.2vw,28px);
+  font-weight: 300;
+  line-height: 1.35;
+  transition: transform 0.35s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.front { transform: translateY(0); color: #0F0D08; }
+.front.dim { color: #8A8070; }
+.back { transform: translateY(100%); color: #3D3828; font-style: italic; }
+
+/* hover — only on active rows */
+.row:not(.off):hover .front { transform: translateY(-100%); }
+.row:not(.off):hover .back  { transform: translateY(0); }
+
+/* subtle hover bg */
+.row:not(.off):hover { background: rgba(15,13,8,.03); }
+
+/* FOOTER */
+#footer {
+  border-top: 1px solid rgba(15,13,8,.13);
+  padding-top: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+}
+.fn { font-size: 19px; line-height: 1.78; color: #3D3828; font-style: italic; max-width: 420px; }
+.fs { font-family: 'Cormorant SC', serif; font-size: 16px; letter-spacing: .14em; color: #8A8070; white-space: nowrap; }
 </style>
 </head>
 <body>
-<canvas id="grain"></canvas>
-<div id="vig"></div>
-<div id="wrap">
-  <div id="brand">Welcome to Quirky Lemma<span class="sq"></span></div>
-  <div id="sub">Econometrics. With Character.</div>
-  <div id="series-scroll">
-    <a class="series" href="probably-speaking.html">
-      <div class="series-title">Series 1 &nbsp;&mdash;&nbsp; Probably Speaking</div>
-      <div class="series-sub">Aubrey Squeakwell, BSc</div>
-    </a>
-    <div class="series coming">
-      <div class="series-title">Series 2 &nbsp;&mdash;&nbsp; Statistically Speaking</div>
-      <div class="series-sub">Statistical inference &nbsp;&middot;&nbsp; Coming soon</div>
+
+<div id="masthead">
+  <div class="wm">Quirky<br>Lemma &nbsp;&#9633;</div>
+  <div class="mr">Dr Ragvir Sabharwal<br>Room 197A</div>
+</div>
+
+<div id="title">
+  <h1><span>Quirky</span><span>Lemma &nbsp;&#9633;</span></h1>
+  <p class="tagline">A set of discoverable worlds in statistics and econometrics. The worlds are fictional. The rigour is real. The distinction is less than one might expect.</p>
+</div>
+
+<div id="spaces">
+
+  <a class="row" href="institute.html">
+    <div class="num">I</div>
+    <div class="title-cell">
+      <div class="front">The Institute</div>
+      <div class="back">Probability Foundations</div>
     </div>
-    <div class="series coming">
-      <div class="series-title">Series 3 &nbsp;&mdash;&nbsp; Relatively Speaking</div>
-      <div class="series-sub">Econometrics &nbsp;&middot;&nbsp; Coming soon</div>
-    </div>
-    <div class="series coming">
-      <div class="series-title">Series 4 &nbsp;&mdash;&nbsp; Strictly Speaking</div>
-      <div class="series-sub">Time series &nbsp;&middot;&nbsp; Coming soon</div>
-    </div>
-    <div class="series coming">
-      <div class="series-title">Series 5 &nbsp;&mdash;&nbsp; Generally Speaking</div>
-      <div class="series-sub">Generalised linear models &nbsp;&middot;&nbsp; Coming soon</div>
-    </div>
-    <div class="series coming">
-      <div class="series-title">Series 6 &nbsp;&mdash;&nbsp; Broadly Speaking</div>
-      <div class="series-sub">Bayesian methods &nbsp;&middot;&nbsp; Coming soon</div>
+  </a>
+
+  <div class="row off">
+    <div class="num">II</div>
+    <div class="title-cell">
+      <div class="front dim">The Conference of Birds</div>
+      <div class="back">Statistical Inference</div>
     </div>
   </div>
+
+  <div class="row off">
+    <div class="num">III</div>
+    <div class="title-cell">
+      <div class="front dim">The Observatory</div>
+      <div class="back">Regression Analysis</div>
+    </div>
+  </div>
+
+  <div class="row off">
+    <div class="num">IV</div>
+    <div class="title-cell">
+      <div class="front dim">The Confessional</div>
+      <div class="back">Binary Choice Models</div>
+    </div>
+  </div>
+
+  <div class="row off">
+    <div class="num">V</div>
+    <div class="title-cell">
+      <div class="front dim">The Lighthouse</div>
+      <div class="back">Time Series Analysis</div>
+    </div>
+  </div>
+
 </div>
-<div id="foot">Quirky Lemma was created by Ragvir Sabharwal, PhD.<br>Copyright &copy; 2026. Credit accepted. Blame deflected.</div>
-<script>
-// GRAIN
-var cv=document.getElementById('grain'),gx=cv.getContext('2d');
-function rsz(){cv.width=innerWidth;cv.height=innerHeight;}rsz();
-addEventListener('resize',rsz);
-function grain(){
-  var w=cv.width,h=cv.height,id=gx.createImageData(w,h),d=id.data;
-  for(var i=0;i<d.length;i+=4){var v=Math.random()*20;d[i]=d[i+1]=d[i+2]=v;d[i+3]=Math.random()*13;}
-  gx.putImageData(id,0,0);
-  if(Math.random()<.01){gx.fillStyle='rgba(212,168,67,'+(Math.random()*.09+.02)+')';gx.fillRect(0,Math.random()*h,w*(.2+Math.random()*.5),1);}
-  requestAnimationFrame(grain);
-}
-grain();
 
-// GLITCH
-var brand=document.getElementById('brand');
-function glitch(){
-  var n=Math.floor(1+Math.random()*3),i=0;
-  function step(){
-    if(i>=n*2){brand.style.opacity='1';brand.style.transform='';return;}
-    brand.style.opacity=i%2===0?(0.4+Math.random()*0.5).toFixed(2):'1';
-    brand.style.transform=i%2===0?'translateX('+(Math.random()-.5)*4+'px)':'';
-    i++;setTimeout(step,40+Math.random()*60);
-  }
-  step();setTimeout(glitch,3000+Math.random()*9000);
-}
-setTimeout(glitch,2000+Math.random()*4000);
+<div id="footer">
+  <p class="fn">The mathematics was never the problem. The problem was the gap between the formula on the page and the moment it becomes inevitable. These worlds exist in that very gap.</p>
+  <div class="fs">— R.S., Room 197A</div>
+</div>
 
-// DIM
-function dim(){
-  document.body.style.filter='brightness('+(0.55+Math.random()*0.3).toFixed(2)+')';
-  setTimeout(function(){document.body.style.filter='';setTimeout(dim,15000+Math.random()*12000);},80+Math.random()*120);
-}
-setTimeout(dim,4000+Math.random()*8000);
-
-// AUDIO
-var AC=null;
-function whimper(){
-  try{
-    if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();
-    var now=AC.currentTime;
-    function t(f,s,e,d,v){var o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.setValueAtTime(f,now+s);o.frequency.linearRampToValueAtTime(e,now+s+d);g.gain.setValueAtTime(0,now+s);g.gain.linearRampToValueAtTime(v,now+s+0.05);g.gain.exponentialRampToValueAtTime(0.001,now+s+d);o.connect(g);g.connect(AC.destination);o.start(now+s);o.stop(now+s+d+0.05);}
-    t(800,0,200,1.0,0.08);t(600,0.3,100,0.8,0.06);
-  }catch(e){}
-}
+</body>
+</html>
