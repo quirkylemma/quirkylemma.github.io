@@ -10,7 +10,7 @@
 
 html, body {
   min-height: 100%;
-  background: #F5F5F0;
+  background: #1A1810;
   font-family: 'Cormorant Garamond', Georgia, serif;
   color: #111108;
 }
@@ -74,6 +74,11 @@ h1 {
   color: #111108;
   margin-bottom: 28px;
   letter-spacing: -.01em;
+  animation: fadein .7s ease .7s both, breathe 5s ease-in-out 2s infinite;
+}
+@keyframes breathe {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .82; }
 }
 
 
@@ -162,6 +167,55 @@ h1 {
   white-space: nowrap;
   line-height: 1.65;
 }
+
+/* D — rule draws itself */
+#masthead {
+  border-bottom: none;
+  position: relative;
+}
+#masthead::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  height: 1.5px;
+  background: #1C3A38;
+  width: 0;
+  animation: drawrule 0.9s ease .2s forwards;
+}
+@keyframes drawrule {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+/* E — aged paper wash over whole page */
+#page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse at 50% 40%, rgba(184,134,11,.07) 0%, rgba(184,134,11,.03) 45%, rgba(184,134,11,0) 75%);
+  animation: pagefade 2.5s ease .2s both;
+}
+@keyframes pagefade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Sequential fade-ins */
+#masthead { opacity: 0; animation: fadein .7s ease .3s forwards, nothing 0s .2s; }
+#title    { opacity: 0; animation: fadein .7s ease .7s forwards; }
+#spaces   { opacity: 0; animation: fadein .7s ease 1.0s forwards; }
+#footer   { opacity: 0; animation: fadein .7s ease 1.3s forwards; }
+
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Ensure z-index above ink drop */
+#masthead, #title, #spaces, #footer { position: relative; z-index: 1; }
+
 </style>
 </head>
 <body>
