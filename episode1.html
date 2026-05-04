@@ -360,9 +360,10 @@ function hub(idx){
       '<button class="rbtn'+(d.anteroom?' done':'')+'" onclick="roomgo('+idx+',0)"><div class="rl">Foundation</div><div class="rn">Basic</div></button>'+
       '<button class="rbtn'+(d.members?' done':'')+'" onclick="roomgo('+idx+',2)"><div class="rl">Advanced</div><div class="rn">Algebra</div></button>'+
       '<button class="rbtn'+(d.counting?' done':'')+'" onclick="roomgo('+idx+',3)"><div class="rl">Real World</div><div class="rn">Application</div></button>'+
+      (getQC(c.id)?'<button class="rbtn'+(d.qc?' done':'')+'" onclick="showQCForm('+idx+',null)"><div class="rl">Self-Test</div><div class="rn">Problem</div></button>':'<button class="rbtn" style="opacity:.25;cursor:default"><div class="rl">Self-Test</div><div class="rn">Problem</div></button>')+
       '<button class="rbtn" onclick="roomgo('+idx+',1)"><div class="rl">Office Hour</div><div class="rn">Room 197A</div></button>'+
-      '<button class="rbtn" onclick="openMap()"><div class="rl">Floor Plan</div><div class="rn">Map</div></button>'+
     '</div>'+
+
     (d.anteroom?
       '<div class="prompt">Ready to proceed?</div><div class="choices"><button class="choice" onclick="cdone('+idx+')">Mark absorbed and continue →</button></div>':
       ''
@@ -378,14 +379,14 @@ function roomgo(idx,ri){
   if(which==='anteroom'){
     inner='<div class="card"><div class="card-title">'+c.title+'</div><ul>'+c.anteroom.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
   } else if(which==='r197a'){
-    inner='<div class="rheader">Room 197A — Office Hours</div><div class="ragvir">'+c.r197a.map(x=>'<p>'+x+'</p>').join('')+'</div>';
+    inner='<div class="rheader">Office Hour — Room 197A</div><div class="ragvir">'+c.r197a.map(x=>'<p>'+x+'</p>').join('')+'</div>';
   } else if(which==='members'){
-    inner='<div class="rheader">The Members\' Room — Formal Treatment</div><div class="card"><div class="card-title">'+c.title+'</div><ul>'+c.members.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
+    inner='<div class="rheader">Advanced — Algebra</div><div class="card"><div class="card-title">'+c.title+'</div><ul>'+c.members.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
   } else if(which==='counting'){
-    inner='<div class="rheader">The Counting House — Applied</div><div class="rcontent">'+c.counting.map(x=>'<p>'+x+'</p>').join('')+'</div>';
+    inner='<div class="rheader">Real World — Application</div><div class="rcontent">'+c.counting.map(x=>'<p>'+x+'</p>').join('')+'</div>';
   }
-  show('<button class="bbtn" onclick="hub('+idx+')">&#8592; Back to corridor</button>'+inner,
-    [{l:'Return to corridor',f:()=>hub(idx)}]);
+  show('<button class="bbtn" onclick="hub('+idx+')">&#8592; Back</button>'+inner,
+    [{l:'Back → Rooms',f:()=>hub(idx)}]);
 }
 
 function cdone(idx){
@@ -401,17 +402,39 @@ function postnav(idx){
   const q=getQC(c.id);
   const nxt=idx+1<C.length?()=>prenav(idx+1):apply;
   const lbl=idx+1<C.length?'Continue →':'File the application →';
+  const attempted=S.dos[c.id].qc || !q; // unlocked if attempted OR no QC exists
 
-  // Build choices — form is always optional, even for axioms
+  if(!attempted){
+    // Self-test not yet attempted — show gate scene
+    show(
+      '<div class="inotice">The Institute — First Floor — '+c.section+'</div>'+
+      '<div class="narration">'+
+        '<p>Before proceeding, the Institute requires a response.</p>'+
+        '<p>Form '+q.form+' is on the desk.</p>'+
+        '<p>It need not be correct. It must be attempted.</p>'+
+      '</div>',
+      [
+        {l:'Attempt Form '+q.form, f:function(){ showQCForm(idx, function(){ postnav(idx); }); }},
+        {l:'Skip — return to rooms', f:function(){ hub(idx); }}
+      ]
+    );
+    return;
+  }
+
+  // Self-test attempted (or no QC) — show POST synthesis
   var choices=[];
   choices.push({l:lbl, f:nxt});
-  if(q) choices.push({l:'Complete Form '+q.form, f:function(){ showQCForm(idx,nxt); }});
-  choices.push({l:'Visit a room', f:function(){ hub(idx); }});
+  choices.push({l:'Return to rooms', f:function(){ hub(idx); }});
 
   if(c.post&&c.post.length){
-    show('<div class="inotice">The Institute — First Floor — '+c.section+'</div><div class="narration">'+c.post.map(p=>'<p>'+p+'</p>').join('')+'</div>',
-      choices);
-  } else { nxt(); }
+    show(
+      '<div class="inotice">The Institute — First Floor — '+c.section+'</div>'+
+      '<div class="narration">'+c.post.map(p=>'<p>'+p+'</p>').join('')+'</div>',
+      choices
+    );
+  } else {
+    nxt();
+  }
 }
 
 function prenav(idx){
@@ -495,7 +518,7 @@ function apply(){
   }
   body+='<p style="font-size:.8em;color:rgba(212,168,67,.3);margin-top:1.5vh">You visited '+vis+' of '+(C.length*4)+' rooms ('+pct+'%).</p>';
   const choices=[{l:'Watch Episode 1 →',f:()=>{window.location.href='episode1.html';}}];
-  if(!allDone){const fi=C.findIndex(c=>!S.dos[c.id].absorbed);choices.push({l:'Return to the corridor',f:()=>prenav(fi)});}
+  if(!allDone){const fi=C.findIndex(c=>!S.dos[c.id].absorbed);choices.push({l:'Return to rooms',f:()=>prenav(fi)});}
   show(
     '<div class="inotice">The Institute — Ground Floor — Application</div>'+
     '<div class="narration">'+body+'</div>'+
@@ -624,7 +647,7 @@ function getQC(conceptId){
 function showQCForm(idx, onComplete){
   const q=getQC(C[idx].id);
   if(!q) { onComplete(); return; }
-  const nxt=idx+1<C.length?()=>prenav(idx+1):apply;
+  const nxt=onComplete||(idx+1<C.length?()=>prenav(idx+1):apply);
 
   var inner='';
   inner+='<div class="qc-form">';
