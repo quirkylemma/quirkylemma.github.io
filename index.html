@@ -43,41 +43,40 @@ h1 span { display: block; }
 
 .row {
   display: grid;
-  grid-template-columns: 44px 1fr;
-  gap: 0;
-  padding: 24px 0;
+  grid-template-columns: 44px 1fr auto;
+  align-items: baseline;
+  padding: 20px 0;
   border-bottom: 1px solid rgba(15,13,8,.13);
   cursor: pointer;
   text-decoration: none;
   color: inherit;
+  gap: 16px;
 }
 .row.off { cursor: default; opacity: .35; }
+.row:not(.off):hover { background: rgba(15,13,8,.03); margin: 0 -8px; padding: 20px 8px; }
 
-.num { font-family: 'Cormorant SC', serif; font-size: 15px; letter-spacing: .18em; color: #8A8070; padding-top: 3px; }
-
-/* The key: one div, two spans stacked. Only one visible at a time via JS. */
-.title-cell { position: relative; overflow: hidden; height: 1.6em; }
-.front, .back {
-  position: absolute;
-  top: 0; left: 0; width: 100%;
-  font-size: clamp(20px,2.2vw,28px);
-  font-weight: 300;
-  line-height: 1.35;
-  transition: transform 0.35s ease;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.num {
+  font-family: 'Cormorant SC', serif;
+  font-size: 15px;
+  letter-spacing: .18em;
+  color: #8A8070;
 }
-.front { transform: translateY(0); color: #0F0D08; }
-.front.dim { color: #8A8070; }
-.back { transform: translateY(100%); color: #3D3828; font-style: italic; }
 
-/* hover — only on active rows */
-.row:not(.off):hover .front { transform: translateY(-100%); }
-.row:not(.off):hover .back  { transform: translateY(0); }
+.name {
+  font-size: clamp(20px, 2.2vw, 26px);
+  font-weight: 300;
+  color: #0F0D08;
+}
+.name.dim { color: #8A8070; }
 
-/* subtle hover bg */
-.row:not(.off):hover { background: rgba(15,13,8,.03); }
+.subj {
+  font-family: 'Cormorant SC', serif;
+  font-size: 17px;
+  letter-spacing: .12em;
+  color: #8A8070;
+  text-align: right;
+  white-space: nowrap;
+}
 
 /* FOOTER */
 #footer {
@@ -108,47 +107,37 @@ h1 span { display: block; }
 
   <a class="row" href="institute.html">
     <div class="num">I</div>
-    <div class="title-cell">
-      <div class="front">The Institute</div>
-      <div class="back">Probability Foundations</div>
-    </div>
+    <div class="name">The Institute</div>
+    <div class="subj">Probability Foundations</div>
   </a>
 
   <div class="row off">
     <div class="num">II</div>
-    <div class="title-cell">
-      <div class="front dim">The Conference of Birds</div>
-      <div class="back">Statistical Inference</div>
-    </div>
+    <div class="name dim">The Conference of Birds</div>
+    <div class="subj">Statistical Inference</div>
   </div>
 
   <div class="row off">
     <div class="num">III</div>
-    <div class="title-cell">
-      <div class="front dim">The Observatory</div>
-      <div class="back">Regression Analysis</div>
-    </div>
+    <div class="name dim">The Observatory</div>
+    <div class="subj">Regression Analysis</div>
   </div>
 
   <div class="row off">
     <div class="num">IV</div>
-    <div class="title-cell">
-      <div class="front dim">The Confessional</div>
-      <div class="back">Binary Choice Models</div>
-    </div>
+    <div class="name dim">The Confessional</div>
+    <div class="subj">Binary Choice Models</div>
   </div>
 
   <div class="row off">
     <div class="num">V</div>
-    <div class="title-cell">
-      <div class="front dim">The Lighthouse</div>
-      <div class="back">Time Series Analysis</div>
-    </div>
+    <div class="name dim">The Lighthouse</div>
+    <div class="subj">Time Series Analysis</div>
   </div>
 
 </div>
 
-<div id="footer">
+<div id="footer"><div id="footer">
   <p class="fn">The mathematics was never the problem. The problem was the gap between the formula on the page and the moment it becomes inevitable. These worlds exist in that very gap.</p>
   <div class="fs">— R.S., Room 197A</div>
 </div>
