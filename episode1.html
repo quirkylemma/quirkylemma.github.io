@@ -1,906 +1,914 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=1920">
-<title>Probably Speaking — Episode 1: Briefly a Beginner</title>
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
-  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]})"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>The Institute — Form AS/7 — Axiom Absorption Record</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --bg:#06050a;--fg:rgba(212,168,67,.92);--dim:rgba(212,168,67,.38);
-  --hd:rgba(212,168,67,.6);--sd:rgba(212,168,67,.45);--sa:rgba(212,168,67,.9);
-  --bh:rgba(212,168,67,.55);--cf:rgba(6,5,10,0);--cb:rgba(6,5,10,.82);
+  --paper:#F2EDD7;
+  --paper-dark:#E8E0C0;
+  --ink:#1A1610;
+  --ink-mid:#3A3020;
+  --ink-faint:#7A7060;
+  --red:#8B1A1A;
+  --rule:rgba(26,22,16,.18);
+  --rule-heavy:rgba(26,22,16,.45);
+  --board:#1C2A1C;
+  --chalk:#F0E8C0;
 }
-html,body{width:100%;height:100%;background:var(--bg);overflow:hidden;
-  font-family:'Courier New',Courier,monospace;color:var(--fg);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#B8B0A0;font-family:'IM Fell English',Georgia,serif;font-size:18px;line-height:1.7;color:var(--ink);min-height:100%}
+#wrap{max-width:960px;margin:0 auto;background:var(--paper);min-height:100vh;padding:0 0 100px;box-shadow:0 0 0 1px rgba(0,0,0,.2),4px 4px 24px rgba(0,0,0,.25)}
 
-/* ── GRAIN ── */
-#grain{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:.55;}
+/* HEADER */
+#inst-header{border-bottom:3px double var(--rule-heavy);padding:18px 40px 14px;display:flex;justify-content:space-between;align-items:flex-start}
+.inst-name{font-family:'Special Elite',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-mid);line-height:1.9}
+.inst-name strong{display:block;font-size:14px;letter-spacing:.08em;color:var(--ink);margin-bottom:2px}
+.ref-block{text-align:right;font-size:11px;color:var(--ink-faint);line-height:1.9;font-family:'Special Elite',monospace}
+#form-title{background:var(--ink);color:var(--paper);padding:9px 40px;font-family:'Special Elite',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;display:flex;justify-content:space-between}
 
-/* ── VIGNETTE ── */
-#vig{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;
-  background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.65) 100%);}
+/* CONTENT */
+#content-area{padding:28px 40px}
+#loc-bar{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:22px;padding-bottom:8px;border-bottom:1px solid var(--rule)}
+#loc{font-family:'Special Elite',monospace;font-size:11px;letter-spacing:.14em;color:var(--ink-faint);text-transform:uppercase}
+#scene{min-height:44vh}
+.passage{opacity:0;transition:opacity .6s ease}
+.passage.vis{opacity:1}
 
-/* ── STAGE ── */
-#stage{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3;
-  display:flex;align-items:center;justify-content:center;}
+/* BLACKBOARD */
+.blackboard{background:var(--board);margin:0 -40px 28px;padding:32px 48px;min-height:260px;box-shadow:inset 0 0 80px rgba(0,0,0,.6),inset 0 0 20px rgba(0,0,0,.4);border-top:5px solid #243824;border-bottom:5px solid #243824;position:relative}
+.blackboard::after{content:'';position:absolute;inset:8px;border:1px solid rgba(255,255,255,.03);pointer-events:none}
 
-/* ── TEXT ── */
-#tx{position:absolute;width:min(780px,72vw);text-align:center;
-  font-size:clamp(23px,2.2vw,37px);line-height:1.7;letter-spacing:.04em;
-  opacity:0;transition:opacity 1.2s ease;}
-#tx.arriving{opacity:1;}
-#tx.departing{opacity:0;transition:opacity .8s ease;}
-.tr{color:#ffffff;font-style:normal;}
-.tn{color:var(--hd);font-variant:small-caps;letter-spacing:.1em;font-style:normal;font-size:clamp(24px,2.6vw,42px);}
-.th{color:var(--hd);font-size:clamp(16px,1.35vw,22px);letter-spacing:.22em;text-transform:uppercase;font-style:normal;}
-.te{font-size:clamp(22px,2.15vw,36px);font-style:normal;}
-.tx{color:var(--dim);font-style:normal;}
+/* CHALK + TYPEWRITER */
+.narration{font-family:'Special Elite',monospace;font-size:19px;line-height:2.1;color:var(--chalk)}
+.narration p{margin-bottom:.6em;text-shadow:0 0 8px rgba(240,232,192,.12),0 0 2px rgba(240,232,192,.08)}
+.narration p:last-child{margin-bottom:0}
 
-/* ── START SCREEN ── */
-#st{position:fixed;top:0;left:0;width:100%;height:100%;z-index:50;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2vh;
-  cursor:pointer;background:var(--bg);transition:opacity 1.2s ease;}
-#st.gone{opacity:0;pointer-events:none;}
-.sh{font-size:clamp(16px,1.5vw,24px);letter-spacing:.26em;text-transform:uppercase;color:var(--dim);}
-.ss{font-size:clamp(44px,5vw,80px);letter-spacing:.08em;color:var(--sa);}
-#start-music{margin-top:1.5vh;font-family:'Courier New',monospace;
-  font-size:clamp(18px,1.8vw,28px);letter-spacing:.14em;color:var(--sd);
-  background:none;border:1px solid rgba(212,168,67,.25);padding:10px 28px;cursor:pointer;}
-#start-music:hover{border-color:rgba(212,168,67,.6);color:var(--sa);}
-.sg{margin-top:2vh;font-size:clamp(18px,1.8vw,28px);letter-spacing:.2em;color:var(--dim);text-transform:uppercase;}
 
-/* ── IDENT ── */
-#ident{position:fixed;top:0;left:0;width:100%;height:100%;z-index:60;
-  background:var(--bg);display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity 1.2s ease;}
-#ident.vis{opacity:1;}
-#ident.vis #ident-welcome{opacity:1;}
-#ident-welcome{opacity:0;transition:opacity 1s ease;text-align:center;}
-#ident-name{font-family:'Courier New',monospace;font-size:clamp(20px,2.2vw,34px);
-  font-weight:400;letter-spacing:.22em;color:rgba(212,168,67,.88);text-transform:uppercase;line-height:1.15;}
-#ident-sq{display:inline-block;width:clamp(10px,1.1vw,16px);height:clamp(10px,1.1vw,16px);
-  border:1.5px solid rgba(212,168,67,.7);vertical-align:middle;margin-left:3px;margin-bottom:2px;}
+/* SECTION NOTICE (inside blackboard) */
+.inotice{font-family:'Special Elite',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,232,192,.5);margin-bottom:14px}
 
-/* ── MOUSE ── */
-#mouse-ov{position:fixed;top:0;left:0;width:100%;height:100%;z-index:30;
-  display:flex;align-items:center;justify-content:center;pointer-events:none;
-  opacity:0;transition:opacity 1.8s ease;}
-#mouse-ov.vis{opacity:1;}
-#mouse-ov svg{width:min(260px,32vw);height:auto;filter:drop-shadow(0 0 18px rgba(212,168,67,.15));}
+/* ROOM GRID */
+.room-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin:20px 0;border:1px solid var(--rule-heavy);background:var(--rule-heavy)}
+.rbtn{background:var(--paper);border:none;color:var(--ink);font-family:'IM Fell English',Georgia,serif;font-size:17px;padding:16px 18px;text-align:left;cursor:pointer;transition:background .15s;width:100%}
+.rbtn:hover{background:var(--paper-dark)}
+.rbtn.done{background:rgba(26,22,16,.04)}
+.rbtn.done .rn::after{content:" ✓";color:var(--ink-faint);font-size:.85em}
+.rl{font-family:'Special Elite',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:4px}
+.rn{font-size:18px;color:var(--ink)}
 
-/* ── POPUP CARD ── */
-#parch-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:40;
-  background:rgba(6,5,10,.82);display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity .35s ease;}
-#parch-overlay.open{opacity:1;pointer-events:auto;}
-#parch-box{background:rgba(255,252,242,.97);border-left:4px solid rgba(180,130,30,.8);
-  width:min(920px,92vw);max-height:82vh;overflow-y:auto;
-  padding:clamp(20px,2.5vw,36px) clamp(20px,2.5vw,36px);
-  display:flex;flex-direction:column;}
-#parch-title{font-family:'Courier New',monospace;font-size:clamp(14px,1.2vw,19px);
-  letter-spacing:.2em;text-transform:uppercase;color:rgba(90,60,8,.65);
-  padding-bottom:10px;margin-bottom:14px;border-bottom:1px solid rgba(139,94,26,.2);}
-#parch-lines{display:flex;flex-direction:column;gap:10px;}
-.pl{font-family:Georgia,serif;font-size:clamp(15px,1.25vw,20px);line-height:1.65;
-  color:rgba(20,20,20,.88);opacity:0;transition:opacity .2s;}
-.pl.vis{opacity:1;}
-#parch-pause{font-family:'Courier New',monospace;font-size:clamp(13px,1.05vw,16px);
-  letter-spacing:.14em;text-transform:uppercase;color:rgba(100,62,8,.6);
-  text-align:center;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(139,94,26,.2);}
+/* CARD */
+.card{border:1px solid var(--rule-heavy);border-left:4px solid var(--ink);background:var(--paper-dark);padding:20px 24px;margin:20px 0}
+.card-title{font-family:'Special Elite',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--rule)}
+.card ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:10px}
+.card ul li{font-size:18px;color:var(--ink);line-height:1.65;padding-left:1.4em;position:relative}
+.card ul li::before{content:"—";position:absolute;left:0;color:var(--ink-faint)}
 
-/* ── END CARD ── */
-#end-card{position:fixed;top:0;left:0;width:100%;height:100%;z-index:55;
-  display:none;flex-direction:column;align-items:center;justify-content:center;gap:2vh;
-  background:rgba(6,5,10,.95);}
-#end-card.vis{display:flex;}
-.ec-label{font-family:'Courier New',monospace;font-size:clamp(16px,1.5vw,24px);
-  letter-spacing:.26em;text-transform:uppercase;color:rgba(212,168,67,.6);}
-.ec-ep{font-family:'Courier New',monospace;font-size:clamp(44px,5vw,80px);
-  letter-spacing:.08em;color:rgba(212,168,67,.92);}
-.ec-sub{font-family:'Courier New',monospace;font-size:clamp(20px,2vw,34px);
-  letter-spacing:.12em;color:rgba(212,168,67,.65);}
-.ec-rule{width:min(500px,50vw);height:1px;background:rgba(212,168,67,.3);}
-.ec-small{font-family:'Courier New',monospace;font-size:clamp(13px,1.1vw,18px);
-  letter-spacing:.14em;color:rgba(212,168,67,.5);margin-top:.5vh;}
+/* ROOM CONTENT */
+.rheader{font-family:'Special Elite',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px;border-bottom:1px dotted var(--rule);padding-bottom:6px}
+.rcontent,.ragvir{font-size:19px;line-height:1.8;color:var(--ink)}
+.rcontent p,.ragvir p{margin-bottom:1em}
 
-/* ── EXIT LINK ── */
-#exit-link{position:fixed;top:2vh;left:2vw;z-index:90;
-  font-family:'Courier New',monospace;font-size:clamp(14px,1.2vw,18px);
-  letter-spacing:.14em;color:rgba(212,168,67,.5);text-decoration:none;
-  transition:color .2s;pointer-events:auto;}
-#exit-link:hover{color:rgba(212,168,67,.8);}
+/* NARRATOR */
+.narrator{font-family:'Special Elite',monospace;font-size:17px;letter-spacing:.05em;color:var(--ink-faint);line-height:2;margin:24px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:14px 0;font-style:italic}
 
-/* ── NAV BAR ── */
-#nav{position:fixed;bottom:0;left:0;width:100%;z-index:80;
-  background:rgba(6,5,10,.92);border-top:1px solid rgba(212,168,67,.2);
-  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
-  gap:6px;padding:10px 14px;}
-#nav .nav-btn{font-family:'Courier New',monospace;font-size:clamp(11px,1vw,15px);
-  letter-spacing:.1em;text-transform:uppercase;color:rgba(212,168,67,.6);
-  background:none;border:1px solid rgba(212,168,67,.22);padding:7px 14px;cursor:pointer;}
-#nav .nav-btn:hover{color:rgba(212,168,67,.95);border-color:rgba(212,168,67,.6);}
-#nav .nav-btn.active{color:rgba(212,168,67,1);border-color:rgba(212,168,67,.85);text-shadow:0 0 12px rgba(212,168,67,.7);box-shadow:0 0 10px rgba(212,168,67,.25);}
-#pause-btn{font-family:'Courier New',monospace;font-size:clamp(16px,1.6vw,26px);
-  color:rgba(212,168,67,.9);background:none;
-  border:1px solid rgba(212,168,67,.4);padding:7px 22px;cursor:pointer;
-  margin-right:10px;}
-#pause-btn:hover{border-color:rgba(212,168,67,.9);}
+/* PROMPT */
+.prompt{font-family:'Special Elite',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin:22px 0 12px}
 
-/* ── POPUP MENU ── */
-#card-menu-btn{font-family:'Courier New',monospace;font-size:clamp(11px,1vw,15px);
-  letter-spacing:.1em;text-transform:uppercase;color:rgba(212,168,67,.6);
-  background:none;border:1px solid rgba(212,168,67,.22);padding:7px 14px;cursor:pointer;}
-#card-menu-btn:hover{color:rgba(212,168,67,.95);border-color:rgba(212,168,67,.6);}
-#card-menu{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);
-  z-index:85;background:rgba(6,5,10,.96);border:1px solid rgba(212,168,67,.2);
-  padding:10px 0;min-width:280px;display:none;flex-direction:column;}
-#card-menu.open{display:flex;}
-#card-menu button{font-family:'Courier New',monospace;font-size:clamp(12px,1vw,15px);
-  letter-spacing:.08em;color:rgba(212,168,67,.65);background:none;border:none;
-  padding:10px 20px;text-align:left;cursor:pointer;border-bottom:1px solid rgba(212,168,67,.08);}
-#card-menu button:last-child{border-bottom:none;}
-#card-menu button:hover{color:rgba(212,168,67,1);background:rgba(212,168,67,.06);}
+/* CHOICES */
+.choices{display:flex;flex-direction:column;gap:0;border:1px solid var(--rule-heavy)}
+.choice{background:var(--paper);border:none;border-bottom:1px solid var(--rule);color:var(--ink);font-family:'IM Fell English',Georgia,serif;font-size:18px;padding:14px 18px;text-align:left;cursor:pointer;transition:background .14s;line-height:1.5;display:flex;align-items:baseline;gap:12px}
+.choice:last-child{border-bottom:none}
+.choice:hover{background:var(--paper-dark)}
+.choice::before{content:"□";font-size:12px;color:var(--ink-faint);flex-shrink:0}
+
+/* BACK BTN */
+.bbtn{background:none;border:none;color:var(--ink-faint);font-family:'Special Elite',monospace;font-size:12px;letter-spacing:.12em;cursor:pointer;padding:0;margin-bottom:22px;transition:color .15s;text-transform:uppercase}
+.bbtn:hover{color:var(--ink)}
+
+/* MNOTE */
+.mnote{font-size:13px;color:var(--ink-faint);margin-top:6px;grid-column:1/-1;font-style:italic;padding:6px 0;border-top:1px dotted var(--rule)}
+
+/* TRAP INPUTS */
+.tlabel{font-size:17px;color:var(--ink);min-width:140px}
+.tinput{background:white;border:1px solid var(--rule-heavy);color:var(--ink);font-family:'Special Elite',monospace;font-size:19px;padding:8px 12px;width:120px;text-align:center;outline:none;transition:border-color .2s}
+.tinput:focus{border-color:var(--ink)}
+.trow{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.tsub{background:var(--ink);border:none;color:var(--paper);font-family:'Special Elite',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:10px 22px;cursor:pointer;transition:opacity .18s;margin-top:12px}
+.tsub:hover{opacity:.8}
+.tres{margin-top:14px;font-size:18px;line-height:1.7;font-style:italic;min-height:1.5em}
+.tres.wrong{color:var(--red)}
+.tres.right{color:var(--ink-faint)}
+
+/* DOSSIER */
+#dossier{margin:44px 0 0;border-top:3px double var(--rule-heavy);padding:22px 0 0}
+.dlabel{font-family:'Special Elite',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px}
+.drow{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px dotted var(--rule)}
+.dc{font-size:16px;color:rgba(26,22,16,.3);transition:color .3s}
+.dc.on{color:var(--ink)}
+.dr{font-family:'Special Elite',monospace;font-size:12px;letter-spacing:.1em;color:var(--ink-faint)}
+.de{font-size:11px;letter-spacing:.08em;color:var(--red);display:block;font-style:italic;font-family:'Special Elite',monospace}
+
+/* START SCREEN */
+#startscreen{padding:44px 0 0}
+.ss-stamp{font-family:'Special Elite',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;border:2px solid rgba(139,26,26,.4);display:inline-block;padding:6px 16px;color:#8B1A1A;transform:rotate(-1deg);margin-bottom:28px}
+.ss-title{font-family:'IM Fell English',Georgia,serif;font-size:38px;font-style:italic;color:var(--ink);margin-bottom:8px;line-height:1.2}
+.ss-sub{font-size:17px;color:var(--ink-faint);margin-bottom:36px;font-style:italic;max-width:480px;line-height:1.75}
+.ss-note{font-family:'Special Elite',monospace;font-size:11px;letter-spacing:.14em;color:var(--ink-faint);margin-bottom:22px;text-transform:uppercase}
+.ss-btn{background:var(--ink);border:none;color:var(--paper);font-family:'Special Elite',monospace;font-size:13px;letter-spacing:.16em;text-transform:uppercase;padding:14px 36px;cursor:pointer;transition:opacity .2s}
+.ss-btn:hover{opacity:.8}
+
+/* FOOTER */
+#footer{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:960px;background:var(--ink);padding:12px 40px;display:flex;justify-content:space-between;align-items:center;z-index:50;border-top:2px solid rgba(255,255,255,.08)}
+#fmid{font-family:'Special Elite',monospace;font-size:12px;letter-spacing:.14em;color:rgba(242,237,215,.55);text-transform:uppercase}
+.fexit{background:none;border:1px solid rgba(242,237,215,.6);color:rgba(242,237,215,.95);font-family:'Special Elite',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding:8px 20px;cursor:pointer;transition:all .16s}
+.fexit:hover{background:rgba(242,237,215,.12);border-color:white;color:white}
+
+.qc-form{margin:24px 0}
+.qc-stamp{font-family:'Special Elite',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;border:1.5px solid rgba(139,26,26,.5);display:inline-block;padding:5px 14px;color:#8B1A1A;margin-bottom:16px}
+.qc-note{font-family:'Special Elite',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:18px}
+.qc-question{font-size:19px;line-height:1.75;color:var(--ink);margin-bottom:20px;font-family:'IM Fell English',Georgia,serif;font-style:italic}
+.qc-options{display:flex;flex-direction:column;gap:0;border:1px solid var(--rule-heavy)}
+.qc-opt{background:var(--paper);border:none;border-bottom:1px solid var(--rule);color:var(--ink);font-family:'IM Fell English',Georgia,serif;font-size:17px;padding:13px 18px;text-align:left;cursor:pointer;transition:background .14s;display:flex;align-items:baseline;gap:12px}
+.qc-opt:last-child{border-bottom:none}
+.qc-opt:hover{background:var(--paper-dark)}
+
+.qc-opt::before{content:"□";font-size:11px;color:var(--ink-faint);flex-shrink:0}
+.qc-input-row{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.qc-input{background:white;border:1px solid var(--rule-heavy);color:var(--ink);font-family:'Special Elite',monospace;font-size:19px;padding:9px 14px;width:160px;outline:none;transition:border-color .2s}
+.qc-input:focus{border-color:var(--ink)}
+.qc-submit{background:var(--ink);border:none;color:var(--paper);font-family:'Special Elite',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:10px 20px;cursor:pointer;transition:opacity .18s}
+.qc-submit:hover{opacity:.8}
+.qc-feedback{font-size:17px;line-height:1.75;font-style:italic;margin-top:16px;padding:12px 16px;min-height:1em;font-family:'IM Fell English',Georgia,serif}
+.qc-right{color:var(--ink-faint);border-left:3px solid var(--ink-faint)}
+.qc-wrong{color:var(--red);border-left:3px solid var(--red)}
+
+#inst-status{transition:all .4s ease;color:var(--ink)}
 </style>
 </head>
 <body>
-
-
-<!-- CARD MENU -->
-<div id="card-menu"></div>
-
-<!-- NAV BAR -->
-<div id="nav">
-  <button id="card-menu-btn" onclick="toggleCardMenu()">&#9783; Cards</button>
-  <button id="pause-btn" onclick="togglePause()">&#9646;&#9646;</button>
-  <button class="nav-btn" onclick="hardJump(0)" data-sec="ident">Ident</button>
-  <button class="nav-btn" onclick="jumpTo('opening')" data-sec="opening">Opening</button>
-  <button class="nav-btn" onclick="jumpTo('preface')" data-sec="preface">Preface</button>
-  <button class="nav-btn" onclick="jumpTo('experiments')" data-sec="experiments">Experiments</button>
-  <button class="nav-btn" onclick="jumpTo('events')" data-sec="events">Events</button>
-  <button class="nav-btn" onclick="jumpTo('mutual')" data-sec="mutual">Mutual excl.</button>
-  <button class="nav-btn" onclick="jumpTo('probability')" data-sec="probability">Probability</button>
-  <button class="nav-btn" onclick="jumpTo('axiom1')" data-sec="axiom1">Axiom 1</button>
-  <button class="nav-btn" onclick="jumpTo('axiom2')" data-sec="axiom2">Axiom 2</button>
-  <button class="nav-btn" onclick="jumpTo('axiom3')" data-sec="axiom3">Axiom 3</button>
-  <button class="nav-btn" onclick="jumpTo('application')" data-sec="application">Application</button>
-</div>
-
-<canvas id="grain"></canvas>
-<div id="vig"></div>
-
-<!-- START SCREEN -->
-<div id="st">
-  <div class="sh">Probably Speaking</div>
-  <div class="ss">Episode 1</div>
-  <button id="start-music" onclick="toggleMusic(event)">&#9835; music: on</button>
-  <div class="sg">click anywhere to begin</div>
-</div>
-
-<!-- EXIT -->
-<a id="exit-link" href="probably-speaking.html">&#8592; Probably Speaking</a>
-
-<!-- STAGE -->
-<div id="stage">
-  <div id="tx"></div>
-</div>
-
-<!-- IDENT -->
-<div id="ident">
-  <div id="ident-welcome"><div id="ident-name">Welcome to<br>Quirky Lemma<span id="ident-sq"></span></div></div>
-</div>
-
-<!-- MOUSE -->
-<div id="mouse-ov">
-  <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="100" cy="120" rx="52" ry="40" fill="#1a1a2a" stroke="rgba(212,168,67,.5)" stroke-width="1.2"/>
-    <ellipse cx="100" cy="80" rx="32" ry="28" fill="#1a1a2a" stroke="rgba(212,168,67,.5)" stroke-width="1.2"/>
-    <ellipse cx="72" cy="56" rx="14" ry="14" fill="#1a1a2a" stroke="rgba(212,168,67,.5)" stroke-width="1.2"/>
-    <ellipse cx="72" cy="56" rx="8" ry="8" fill="rgba(180,80,80,.35)"/>
-    <ellipse cx="128" cy="56" rx="14" ry="14" fill="#1a1a2a" stroke="rgba(212,168,67,.5)" stroke-width="1.2"/>
-    <ellipse cx="128" cy="56" rx="8" ry="8" fill="rgba(180,80,80,.35)"/>
-    <circle cx="88" cy="76" r="4.5" fill="rgba(212,168,67,.88)"/>
-    <circle cx="112" cy="76" r="4.5" fill="rgba(212,168,67,.88)"/>
-    <circle cx="89.5" cy="74.5" r="1.5" fill="#080606"/>
-    <circle cx="113.5" cy="74.5" r="1.5" fill="#080606"/>
-    <ellipse cx="100" cy="90" rx="4" ry="2.5" fill="rgba(180,80,80,.65)"/>
-    <line x1="96" y1="89" x2="66" y2="83" stroke="rgba(212,168,67,.35)" stroke-width="0.8"/>
-    <line x1="96" y1="91" x2="66" y2="91" stroke="rgba(212,168,67,.35)" stroke-width="0.8"/>
-    <line x1="96" y1="93" x2="66" y2="99" stroke="rgba(212,168,67,.35)" stroke-width="0.8"/>
-    <line x1="104" y1="89" x2="134" y2="83" stroke="rgba(212,168,67,.35)" stroke-width="0.8"/>
-    <line x1="104" y1="91" x2="134" y2="91" stroke="rgba(212,168,67,.35)" stroke-width="0.8"/>
-    <line x1="104" y1="93" x2="134" y2="99" stroke="rgba(212,168,67,.35)" stroke-width="0.8"/>
-    <path d="M148 130 Q175 120 180 145 Q185 165 165 168" fill="none" stroke="rgba(212,168,67,.4)" stroke-width="2" stroke-linecap="round"/>
-    <ellipse cx="80" cy="155" rx="14" ry="7" fill="#1a1a2a" stroke="rgba(212,168,67,.35)" stroke-width="1"/>
-    <ellipse cx="120" cy="155" rx="14" ry="7" fill="#1a1a2a" stroke="rgba(212,168,67,.35)" stroke-width="1"/>
-  </svg>
-</div>
-
-<!-- POPUP CARD -->
-<div id="parch-overlay">
-  <div id="parch-box">
-    <div id="parch-pause">&#9646;&#9646; Pause the video if you need more time</div>
-    <div id="parch-title"></div>
-    <div id="parch-lines"></div>
+<div id="map-overlay" onclick="if(event.target===this)closeMap()" style="display:none;position:fixed;inset:0;background:rgba(26,22,16,.6);z-index:200;align-items:center;justify-content:center">
+  <div id="map-panel" style="position:relative;background:#F2EDD7;border:2px solid rgba(26,22,16,.4);padding:24px 28px;max-width:860px;width:95%;max-height:85vh;overflow-y:auto">
+    <button onclick="closeMap()" style="position:absolute;top:10px;right:14px;background:none;border:none;cursor:pointer;font-family:'Special Elite',monospace;font-size:13px;color:rgba(26,22,16,.4)">&#215;</button>
+    <div id="map-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px"></div>
+    <div style="display:flex;gap:16px;margin-top:12px;font-family:monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(26,22,16,.4)">
+      <span>&#9632; visited &nbsp; &#9633; not visited</span>
+      <span style="margin-left:auto">pips: verbal &middot; foundation &middot; advanced &middot; application &middot; qc</span>
+    </div>
   </div>
 </div>
-
-<!-- END CARD -->
-<div id="end-card">
-  <div class="ec-label">Probably Speaking</div>
-  <div class="ec-rule"></div>
-  <div class="ec-ep">Episode 2</div>
-  <div class="ec-sub">Random Variables</div>
-  <div class="ec-rule"></div>
-  <div class="ec-small">The relevant form has been filed.</div>
+<div id="wrap">
+  <div id="inst-header">
+    <div class="inst-name">
+      <strong>The Institute</strong>
+      Axiom Absorption Record &mdash; Candidate: Squeakwell, A. (BSc)
+    </div>
+    <div class="ref-block">
+      Status: <span id="inst-status">In Progress</span>
+      <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:6px;align-items:center">
+        <button onclick="openMap()" title="Floor map" style="background:none;border:none;padding:0;cursor:pointer;opacity:0.5;transition:opacity .18s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">
+          <svg width="20" height="16" viewBox="0 0 22 18" style="display:block">
+            <rect x="0" y="0" width="9" height="7" fill="none" stroke="var(--ink-mid)" stroke-width="1.5"/>
+            <rect x="13" y="0" width="9" height="7" fill="none" stroke="var(--ink-mid)" stroke-width="1.5"/>
+            <rect x="0" y="11" width="9" height="7" fill="none" stroke="var(--ink-mid)" stroke-width="1.5"/>
+            <rect x="13" y="11" width="9" height="7" fill="none" stroke="var(--ink-mid)" stroke-width="1.5"/>
+          </svg>
+        </button>
+        <button onclick="toggleSound()" title="Toggle audio" style="background:none;border:none;padding:0;cursor:pointer;transition:opacity .18s">
+          <svg id="sound-label" width="22" height="18" viewBox="0 0 22 18" style="display:block;opacity:0.5">
+            <rect x="0" y="5" width="5" height="8" fill="var(--ink-mid)"/>
+            <polygon points="5,5 11,0 11,18 5,13" fill="var(--ink-mid)"/>
+            <line x1="13" y1="4" x2="13" y2="14" stroke="var(--ink-mid)" stroke-width="1.5"/>
+            <line x1="16" y1="1" x2="16" y2="17" stroke="var(--ink-mid)" stroke-width="1.5"/>
+            <line x1="19" y1="4" x2="19" y2="14" stroke="var(--ink-mid)" stroke-width="1.5"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div id="form-title">
+    <span id="loc">First Floor</span>
+    <span>Episode I &mdash; Briefly a Beginner</span>
+  </div>
+  <div id="content-area">
+    <div id="scene">
+      <div id="startscreen">
+        <div class="ss-stamp">Pending Review</div>
+        <div class="ss-title">Briefly a Beginner</div>
+        <div class="ss-sub">You are Aubrey Squeakwell, BSc (Wine and Cheese).<br>You were not admitted to the casino.<br>You are here to absorb the axioms.</div>
+        <div class="ss-note">Form AS/7 must be completed before proceeding.</div>
+        <button class="ss-btn" onclick="document.getElementById('startscreen').style.display='none';s0();">Begin &rarr;</button>
+      </div>
+    </div>
+    <div id="dossier">
+      <div class="dlabel">Dossier &mdash; Absorption Record</div>
+      <div id="drows"></div>
+    </div>
+  </div>
+</div>
+<div id="footer" style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:960px;background:var(--ink);padding:10px 40px;display:flex;justify-content:space-between;align-items:center;z-index:50">
+  <button id="back-btn" onclick="goBack()" style="visibility:hidden;background:none;border:1px solid rgba(242,237,215,.35);color:rgba(242,237,215,.7);font-family:'Special Elite',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:6px 16px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='white';this.style.color='white'" onmouseout="this.style.borderColor='rgba(242,237,215,.35)';this.style.color='rgba(242,237,215,.7)'">&#8592; Back</button>
+  <div style="font-family:'Special Elite',monospace;font-size:10px;letter-spacing:.14em;color:rgba(242,237,215,.3);text-transform:uppercase">The Institute</div>
+  <button onclick="window.location.href='probably-speaking.html'" style="background:none;border:1px solid rgba(242,237,215,.35);color:rgba(242,237,215,.7);font-family:'Special Elite',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:6px 16px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='white';this.style.color='white'" onmouseout="this.style.borderColor='rgba(242,237,215,.35)';this.style.color='rgba(242,237,215,.7)'">Exit</button>
+</div>
+  <button class="fexit" onclick="window.location.href='probably-speaking.html'">Exit</button>
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════
-// FRAMES
-// t: r=aubrey(italic)  h=header  b=beat  parch=popup
-//    mouse=mouse image  ident=logo  end=end card
-// ═══════════════════════════════════════════════════════
-const F=[
 
-  {t:'ident',d:4700},
-  {t:'b',d:500},
+const C = [{"id": "uncertainty", "intro": "What is uncertainty? A feeling of unease? Can it be measured?", "title": "Quantifying Uncertainty", "section": "The Preface", "pre": ["The document opens with a remark.", "Before the conditions, there is a framing.", "It concerns uncertainty.", "Specifically, what it means to measure it."], "anteroom": ["Uncertainty is not just a feeling — not just an unease about what might happen.", "It can be measured. A <strong>measure</strong> assigns a number to something.", "Probability is a <strong>measure</strong> — a function that maps sets of outcomes to real numbers.", "A probability quantifies the chance of occurrence of each set of outcomes."], "members": ["Let $(\\Omega, \\mathcal{F})$ be a measurable space.", "A probability measure is a function $P: \\mathcal{F} \\rightarrow \\mathbb{R}$ that assigns to each event $A \\in \\mathcal{F}$ a real number $P(A)$.", "Not every such function qualifies — it must satisfy three axioms.", "The axioms are the conditions. They are coming."], "r197a": ["You want to put a number on how likely things are. That is all probability is, at its core.", "The sets, the functions, the measures — that is just making the intuition precise enough to build a theory on top of.", "Without the precision you have a feeling. With it you have mathematics. The axioms are worth absorbing."], "counting": ["Insurance actuaries assign probabilities to outcomes — fire, flood, theft — and price policies accordingly. A miscalibrated measure can fail a company.", "Every quantitative model in economics and finance is built on a probability measure. This framework is not abstract. It is the foundation."], "post": ["This sounds straightforward.", "It is not always straightforward.", "I speak from experience."], "trap": null}, {"id": "experiment", "intro": "Something happens. Or it might happen. Or it might not. What exactly is that?", "title": "Experiment", "section": "Experiments", "pre": ["The document introduces the concept of an experiment.", "Not, as I had assumed, something conducted in a laboratory with a white coat."], "anteroom": ["An <strong>experiment</strong> is any phenomenon inherently characterised by uncertainty.", "Tossing a coin is an experiment. Rolling a die is an experiment.", "Presenting oneself at the casino is an experiment.", "An experiment produces a result. The sample space defines which results are possible."], "members": ["Formally, an experiment is a procedure that generates exactly one outcome $\\omega$ from a defined sample space $\\Omega$.", "The outcome is not determined in advance.", "Without a well-defined experiment there is no sample space, no events, no probability measure."], "r197a": ["Experiment does not mean lab coat and test tubes. It just means: something happens, you do not know what will happen before it happens.", "Tossing a coin. Rolling a die. Going to the casino. All experiments. The uncertainty is the point.", "If you already know the outcome, there is nothing to assign probability to. The uncertainty is what probability theory is for."], "counting": ["In finance, observing a stock price movement is an experiment — uncertain outcome, defined in advance.", "A clinical trial is an experiment. The framework is identical: uncertain outcome, defined sample space, probability model built on top."], "post": ["An experiment produces a result.", "Which results are possible?", "This is the first question."], "trap": null}, {"id": "sample_space", "intro": "Which outcomes are possible? All of them? Are we sure we have thought of all of them?", "title": "Sample Space", "section": "The sample space", "pre": ["An experiment produces a result.", "Which results are possible?", "This is the first question."], "anteroom": ["Possible results are called <strong>sample outcomes</strong>, denoted $\\omega$.", "The set of all possible outcomes is the <strong>sample space</strong>: $\\Omega = \\{\\,\\omega_1,\\,\\omega_2,\\,\\ldots\\,\\}$.", "Every outcome that can occur must appear in $\\Omega$.", "No outcome may be omitted."], "members": ["$\\Omega$ is the universal set for the experiment — exhaustive and mutually exclusive at the outcome level.", "For a die: $\\Omega = \\{1,2,3,4,5,6\\}$. For a coin: $\\Omega = \\{H, T\\}$. For Blackjack: $\\Omega = \\{\\text{Win}, \\text{Lose}, \\text{Push}\\}$.", "The sample space must be defined before events, the sigma-algebra, or probabilities can be constructed."], "r197a": ["Before you assign any probabilities, you need to know what could happen. Write it all down. That is your sample space.", "The crucial requirement: do not leave anything out. Every possibility must be there.", "Aubrey's sample space last October was $\\Omega = \\{\\text{Win}\\}$. What actually happened was not in it. That is a specification error — one of the most common mistakes I see."], "counting": ["Specification errors — incomplete sample spaces — produce models that fail in ways not anticipated.", "In 2008, probability models used in finance had not included certain tail outcomes in their sample spaces. The events occurred anyway."], "post": ["Last October, my sample space contained one outcome.", "$\\Omega = \\{\\text{Win}\\}$.", "Proof by wishful thinking."], "trap": null}, {"id": "events", "intro": "We have outcomes. Now we want to ask questions about them. Which outcomes qualify?", "title": "Event", "section": "Events", "pre": ["Having established what can happen,", "the document now asks which happenings are of interest.", "These are called events."], "anteroom": ["An <strong>event</strong> is any subset of the sample space.", "If $\\Omega = \\{1,2,3,4,5,6\\}$, then $A = \\{2,4,6\\}$ is an event. So is $B = \\{5,6\\}$.", "The empty set $\\emptyset$ and $\\Omega$ itself are also events.", "We assign probabilities to events."], "members": ["Formally, $A \\subseteq \\Omega$ is an event if $A \\in \\mathcal{F}$, where $\\mathcal{F}$ is the sigma-algebra.", "The event $\\Omega$ is certain. The event $\\emptyset$ is impossible.", "Individual outcomes are events: $\\{\\omega\\} \\in \\mathcal{F}$ for finite $\\Omega$."], "r197a": ["An event is a collection of outcomes you care about. Not always the exact outcome — sometimes you want to know: did I win? Was it even?", "Rolling an even number is an event: outcomes 2, 4, and 6. You assign probability to the event, not to each outcome separately.", "Probability is assigned to events. That is what the probability measure does — it takes an event and returns a number."], "counting": ["In practice, events are the things being measured: default or no default, recession or growth, above threshold or below.", "You rarely care about the exact outcome. You care about whether something happened. That is the event."], "post": ["The event that something happens is $\\Omega$ itself.", "The event that I make a fortune at Gambler's Ruin is also an event.", "Its probability remains, for the moment, pending."], "trap": null}, {"id": "sigma_algebra", "intro": "Once we have outcomes, we have events. Once we have events — what do we have?", "title": "The Sigma-Algebra", "section": "The sigma-algebra", "pre": ["Outcomes can be collected into sets — each such set is an event.", "What is to stop us from collecting events in a similar manner?", "The collection of all events also has a name: the sigma-algebra, $\\mathcal{F}$.", "Or a sigma-field. Same thing."], "anteroom": ["Once an experiment takes place, we gain information about which events occurred — not just the outcome itself.", "For a coin toss, $\\Omega = \\{H, T\\}$. Knowing the outcome tells us about all events: $\\emptyset$, $\\{H\\}$, $\\{T\\}$, $\\{H,T\\}$.", "The collection of all such events is called a <strong>sigma-algebra</strong>, denoted $\\mathcal{F}$.", "Together, $\\Omega$ and $\\mathcal{F}$ form a <strong>measurable space</strong> $(\\Omega, \\mathcal{F})$."], "members": ["A sigma-algebra $\\mathcal{F}$ on $\\Omega$ satisfies: (i) $\\Omega \\in \\mathcal{F}$; (ii) if $A \\in \\mathcal{F}$ then $A^c \\in \\mathcal{F}$; (iii) $\\mathcal{F}$ is closed under countable unions.", "For finite $\\Omega$, $\\mathcal{F}$ is the power set $2^{|\\Omega|}$ — all subsets.", "The sigma-algebra determines which events are measurable — which events can be assigned a probability."], "r197a": ["This is the one that concerns students most. Here is the key insight: once you have defined your sample space, the sigma-algebra is already there.", "For a die with $\\Omega = \\{1,2,3,4,5,6\\}$, the events are all subsets — rolling even, rolling odd, rolling above 3, and so on. They follow from $\\Omega$.", "One less form to fill. I found this unexpected."], "counting": ["For finite sample spaces, the sigma-algebra is all subsets. No complications.", "The sigma-algebra becomes technically important for continuous distributions, where not every subset of $\\mathbb{R}$ is measurable. That is a matter for a later document."], "post": ["I see that once $\\Omega$ is defined, $\\mathcal{F}$ follows.", "The document is building a foundation.", "Each definition depends on the last.", "I find this either elegant or ominous.", "Possibly both."], "trap": null}, {"id": "mutual_exclusivity", "intro": "Can two things happen at once? Sometimes. Can they not happen at once? Also sometimes.", "title": "Mutual Exclusivity", "section": "Mutual exclusivity", "pre": [], "anteroom": ["Two events are <strong>mutually exclusive</strong> if they cannot both occur on the same trial: $A \\cap B = \\emptyset$.", "Rolling an even number and rolling five are mutually exclusive.", "Rolling an even number and rolling greater than four are not — six belongs to both."], "members": ["Events $A_1, \\ldots, A_n$ are pairwise mutually exclusive if $A_i \\cap A_j = \\emptyset$ for all $i \\neq j$.", "This is a property of the events themselves, not of their probabilities.", "Mutual exclusivity is required for Axiom 3: countable additivity applies only to non-overlapping events."], "r197a": ["Mutually exclusive means they cannot both happen at the same time. Win and lose in blackjack — you cannot do both.", "Here is what confuses students every time: mutually exclusive is not the same as independent. They are completely different concepts.", "Mutual exclusivity is about overlap. Independence is about information. Different departments."], "counting": ["Mutual exclusivity matters when adding probabilities. For non-overlapping events: $P(A \\cup B) = P(A) + P(B)$.", "For overlapping events the formula requires a correction: $P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$. Forgetting the correction is a common error."], "post": ["A single hand of Blackjack.", "The outcomes are: win, lose, push.", "All three are pairwise mutually exclusive.", "This, I note, is the correct version of my original sample space.", "$\\Omega = \\{\\text{Win},\\,\\text{Lose},\\,\\text{Push}\\}$.", "I have updated the file.", "Independence will appear in a subsequent document. It must be handled by a different department. I have submitted the relevant form."], "trap": null}, {"id": "probability_measure", "intro": "We have the space. We have the events. Now we need a number. How do we assign it?", "title": "Probability Measure", "section": "Probability defined", "pre": ["The document states what a probability is.", "Not informally. Formally. I had been awaiting this.", "I already know what probability feels like.", "A weight. A sense of how likely.", "The events of October felt unlikely. They happened anyway.", "Feeling is not a number.", "The document requires a number."], "anteroom": ["Let $(\\Omega, \\mathcal{F})$ be a measurable space.", "A <strong>probability measure</strong> is a function $P : \\mathcal{F} \\rightarrow \\mathbb{R}$ that assigns to each event $A \\in \\mathcal{F}$ a real number $P(A)$.", "$P(A)$ is interpreted as the probability that event $A$ occurs.", "A function qualifies as a probability measure if and only if it satisfies three axioms."], "members": ["The probability measure $P$ completes the probability space $(\\Omega, \\mathcal{F}, P)$.", "$P$ is a set function: domain $\\mathcal{F}$, codomain $[0,1] \\subset \\mathbb{R}$.", "Not every function from $\\mathcal{F}$ to $\\mathbb{R}$ qualifies. The three axioms are the necessary and sufficient conditions."], "r197a": ["The probability measure is the function that actually assigns numbers to events. Everything built so far — sample space, events, sigma-algebra — is the domain of this function.", "Now we define the function itself. And the key point: not just any function works. It must satisfy three conditions.", "Those three conditions are the axioms. They are simpler than you might expect."], "counting": ["Every probability distribution you will encounter — normal, binomial, Poisson — is a probability measure.", "The axioms determine what counts as a valid distribution. Any function on $(\\Omega, \\mathcal{F})$ satisfying the axioms is a legitimate probability measure."], "post": ["Three axioms.", "Not twelve. Not a paragraph. Three.", "Kolmogorov stated them in 1933.", "They have not been revised.", "No appeal has been lodged."], "trap": null}, {"id": "axiom1", "intro": "Can a probability be negative? What would that even mean?", "title": "Axiom 1 — Non-negativity", "section": "Axiom 1", "pre": ["The first axiom concerns sign.", "Probabilities cannot be negative."], "anteroom": ["For all events $A \\in \\mathcal{F}$: $P(A) \\geq 0$.", "Probabilities cannot be negative.", "Zero means the event is impossible.", "Below zero is meaningless."], "members": ["Non-negativity ensures $P$ maps into $[0, \\infty)$.", "Combined with normalisation it restricts $P(A) \\in [0, 1]$ for all $A$.", "A negative probability has no interpretation — there is no state less probable than impossible."], "r197a": ["Probabilities cannot be negative. Zero means impossible. Below zero has no meaning.", "Aubrey assigned $-0.3$ to the event: lose. He checked it twice. It was wrong twice. The correction is on file.", "When I see negative probabilities in student work, something has gone wrong earlier — a misspecified model, a computational error. The axiom is a diagnostic."], "counting": ["In practice, a negative probability from a model signals a specification error that must be corrected before the model is used.", "The axiom also implies $P(\\emptyset) = 0$: the impossible event has probability zero. This follows as a consequence, not an assumption."], "post": ["In my preliminary calculations last October,", "I assigned a negative probability to the event: lose.", "The value was $-0.3$.", "I checked it twice.", "It was wrong twice.", "A correction is on file."], "trap": "axiom1"}, {"id": "axiom2", "intro": "Something must happen. How does that constrain our numbers?", "title": "Axiom 2 — Normalisation", "section": "Axiom 2", "pre": ["The second axiom concerns totality."], "anteroom": ["The probability of the entire sample space is one: $P(\\Omega) = 1$.", "Not $0.94$. Not $1.06$. Not $100$. Exactly one.", "One of the outcomes in $\\Omega$ must occur. The probability of that certainty is one."], "members": ["Normalisation calibrates the scale of $P$: certainty is assigned value $1$, impossibility is assigned $0$.", "Combined with non-negativity: $0 \\leq P(A) \\leq 1$ for all $A \\in \\mathcal{F}$.", "It distinguishes a probability measure from an arbitrary positive measure. The scale is fixed."], "r197a": ["Everything has to add up to 1. If your probabilities sum to less than 1, you have left something out. If they sum to more, you have double-counted or made an error.", "Aubrey's summed to 0.94. He lost six percent of reality. It is a basic error but I see it regularly.", "Usually it happens because an outcome is forgotten — especially a none-of-the-above category. In Aubrey's case: not being admitted."], "counting": ["Violated when a model omits possible outcomes from the sample space.", "In survey design, response options must be exhaustive. Probabilities summing to less than 1 mean a possible response has been omitted."], "post": ["When I summed my preliminary probability assignments,", "the total was $0.94$.", "I had apparently lost six percent of reality.", "A basic error.", "I was briefly a beginner."], "trap": "axiom2"}, {"id": "axiom3", "intro": "When events do not overlap, how do we add their probabilities?", "title": "Axiom 3 — Countable Additivity", "section": "Axiom 3", "pre": ["The third axiom concerns additivity.", "When events cannot overlap, the probability that one or the other occurs", "is simply the sum of their individual probabilities.", "No correction. No adjustment. Just addition."], "anteroom": ["For any countable collection of mutually exclusive events $A_1, A_2, \\ldots \\in \\mathcal{F}$:", "$$P\\!\\left(\\bigcup_{i=1}^{\\infty} A_i\\right) = \\sum_{i=1}^{\\infty} P(A_i)$$", "Non-overlapping events: their probabilities add exactly."], "members": ["Countable additivity extends finite additivity to countably infinite collections.", "This extension is what separates modern probability theory from finite combinatorics.", "It enables probability to be defined on continuous spaces as limits of finite sums."], "r197a": ["If events do not overlap, you can just add their probabilities. That is it.", "Win, Lose, Push are mutually exclusive. So $P(\\text{Win or Lose or Push}) = P(\\text{Win}) + P(\\text{Lose}) + P(\\text{Push})$. No correction.", "The word countable is doing a lot of work. It says this extends to infinitely many events — as long as they do not overlap. That extension is what makes continuous distributions possible."], "counting": ["Countable additivity is the foundation of integration in probability theory.", "The probability that a continuous random variable falls in an interval is computed as an integral — the limit of sums of probabilities over infinitely many non-overlapping events. This axiom makes that possible."], "post": ["This is the axiom that does the most work.", "It is also the axiom most frequently misunderstood", "by those who believe they have already satisfied it.", "I was one of those.", "You may be thinking: are three axioms really enough?", "Three statements, and that is all?", "Yes.", "Everything else follows. The triple $(\\Omega, \\mathcal{F}, P)$ is called a probability space."], "trap": null}];
+const KEYS = ['anteroom','r197a','members','counting'];
+const S = {dos:{}};
+C.forEach(c=>{ S.dos[c.id]={anteroom:false,r197a:false,members:false,counting:false,qc:false,absorbed:false,errors:[]}; });
 
-  // ── OPENING ──────────────────────────────────────────────
-  {t:'r',s:'Allow me to introduce myself.',d:4000},
-  {t:'r',s:'I am Aubrey Squeakwell, BSc.',d:4000},
-  {t:'r',s:'The BSc is in Wine and Cheese.',d:4000},
-  {t:'r',s:'I am a mouse. I think it. Therefore, I must be.',d:4000},
-  {t:'r',s:'The facts are on file.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'Last October, I decided to make a fortune.',d:4000},
-  {t:'r',s:'I had a plan.',d:4000},
-  {t:'r',s:'To go to the casino.',d:4000},
-  {t:'r',s:'I was not admitted.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'I was informed that I lacked the necessary framework.',d:4000},
-  {t:'r',s:'The framework is the condition of entry.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'I enquired. I was referred to a document.',d:4000},
-  {t:'r',s:'The document was authored by A.N. Kolmogorov.',d:4000},
-  {t:'r',s:'In 1933.',d:4000},
-  {t:'r',s:'There is no forwarding address.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'The document contains three axioms. The mathematical word for requirements.',d:5500},
-  {t:'r',s:'I am told I must absorb them.',d:4000},
-  {t:'r',s:'I am not yet sure whether this means I must understand them or embody them.',d:5500},
-  {t:'r',s:'The distinction, I suspect, will matter.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'The casino&#x2019;s name?',d:4000},
-  {t:'r',s:'Gambler&#x2019;s Ruin.',d:4000},
-  {t:'r',s:'A warning, or a formality. I have not yet decided.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'I intend to absorb the axioms.',d:4000},
-  {t:'r',s:'The plan is foolproof.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'I have unfinished business at the casino.',d:4000},
-  {t:'r',s:'Next time, I will be prepared.',d:4000},
-  {t:'b',d:2200},
-  {t:'r',s:'Probably.',d:5500},
-  {t:'b',d:2000},
-  {t:'mouse'},
-  {t:'b',d:1500},
+// GRAIN
+// grain handled by init script below
 
-  // ── PREFACE ───────────────────────────────────────────────
-  {t:'h',s:'The preface',d:3200},
-  {t:'b',d:800},
-  {t:'r',s:'The document opens with a remark.',d:4000},
-  {t:'r',s:'Before the conditions, there is a framing.',d:4000},
-  {t:'r',s:'It concerns uncertainty.',d:4000},
-  {t:'r',s:'Specifically, what it means to measure it.',d:4000},
-  {t:'b',d:1200},
-  {t:'parch',title:'Quantifying Uncertainty',lines:[
-    'Uncertainty is not just a feeling \u2014 not just an unease about what might happen.',
-    'It can be measured. A <strong>measure</strong> assigns a number to something.',
-    'We can contemplate uncertainty by gathering potential outcomes into <strong>sets</strong>.',
-    'Probability is a <strong>measure</strong> \u2014 a function that maps sets of outcomes to real numbers.',
-    'A probability quantifies the chance of occurrence of each set of outcomes.'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'This sounds straightforward.',d:4000},
-  {t:'r',s:'It is not always straightforward.',d:4000},
-  {t:'r',s:'I speak from experience.',d:4000},
-  {t:'b',d:1800},
+// AUDIO — handled by ambient engine below
+function audio(){ /* ambient engine handles audio */ }
 
-  // ── EXPERIMENTS ───────────────────────────────────────────
-  {t:'h',s:'Experiments',d:3200},
-  {t:'b',d:800},
-  {t:'r',s:'The document introduces the concept of an experiment.',d:4000},
-  {t:'r',s:'Not, as I had assumed, something conducted in a laboratory with a white coat.',d:5500},
-  {t:'b',d:1000},
-  {t:'parch',title:'Experiment',lines:[
-    'An <strong>experiment</strong> is any phenomenon inherently characterised by uncertainty.',
-    'Tossing a coin is an experiment.',
-    'Rolling a die is an experiment.',
-    'Presenting oneself at the casino is an experiment.'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'An experiment produces a result.',d:4000},
-  {t:'r',s:'Which results are possible?',d:4000},
-  {t:'r',s:'This is the first question.',d:4000},
-  {t:'b',d:1200},
-  {t:'parch',title:'Sample Space',lines:[
-    'Possible results are called <strong>sample outcomes</strong>, denoted $\\omega$.',
-    'The set of all possible outcomes is the <strong>sample space</strong>, $\\Omega$: $\\{\\,\\omega_1,\\,\\omega_2,\\,\\ldots\\,\\}$',
-    'Every outcome that can occur must appear in $\\Omega$. No outcome may be omitted.'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'Last October, my sample space contained one outcome.',d:4000},
-  {t:'r',s:'$\\Omega = \\{\\text{Win}\\}$.',d:4000},
-  {t:'r',s:'Proof by wishful thinking.',d:4500},
-  {t:'b',d:1800},
+// MATH
+function rm(el){if(window.renderMathInElement)renderMathInElement(el,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}
 
-  // ── EVENTS ────────────────────────────────────────────────
-  {t:'h',s:'Events',d:3200},
-  {t:'b',d:800},
-  {t:'r',s:'Having established what can happen,',d:4000},
-  {t:'r',s:'the document now asks which happenings are of interest.',d:4000},
-  {t:'r',s:'These are called events.',d:4000},
-  {t:'b',d:1200},
-  {t:'parch',title:'Event',lines:[
-    'An <strong>event</strong> is any subset of the sample space.',
-    'Any subset counts \u2014 including $\\emptyset$ and $\\Omega$ itself.',
-    'If $\\Omega = \\{1,2,3,4,5,6\\}$, then $A = \\{2,4,6\\}$ is an event. So is $B = \\{5,6\\}$.'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'The event that something happens is $\\Omega$ itself.',d:4000},
-  {t:'r',s:'The event that I make a fortune at Gambler&#x2019;s Ruin is also an event.',d:5000},
-  {t:'r',s:'Its probability remains, for the moment, pending.',d:4500},
-  {t:'b',d:1800},
-  {t:'r',s:'Outcomes can be collected into sets \u2014 each such set is an event.',d:5000},
-  {t:'r',s:'What is to stop us from collecting events in a similar manner?',d:5000},
-  {t:'b',d:1200},
-  {t:'r',s:'The set of all outcomes has a name: the sample space, $\\Omega$.',d:5000},
-  {t:'r',s:'The collection of all events also has a name: the sigma-algebra, $\\mathcal{F}$.',d:5500},
-  {t:'b',d:1200},
-  {t:'parch',title:'The Sigma-Algebra',lines:[
-    'Beyond $\\Omega$, we need a collection of all the events we wish to consider.',
-    'For a coin toss, $\\Omega = \\{H, T\\}$. The events of interest are: $\\emptyset$, $\\{H\\}$, $\\{T\\}$, and $\\{H,T\\}$. That is all of them.',
-    'For a die, $\\Omega = \\{1,2,3,4,5,6\\}$. Events of interest include $\\{2,4,6\\}$, $\\{5,6\\}$, $\\{1,3,5\\}$, and many others.',
-    'The collection of all such events is called a <strong>sigma-algebra</strong>, denoted $\\mathcal{F}$.',
-    'Together, $\\Omega$ and $\\mathcal{F}$ form a <strong>measurable space</strong> $(\\Omega, \\mathcal{F})$ \u2014 the space on which probability will be defined as a mapping to the real number line.'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'The document is building a foundation.',d:4000},
-  {t:'r',s:'Each definition depends on the last.',d:4000},
-  {t:'r',s:'I find this either elegant or ominous.',d:4000},
-  {t:'r',s:'Possibly both.',d:4000},
-  {t:'b',d:1800},
+// ENGINE
+const sc=document.getElementById('scene');
+let ct=null;
+var _history=[];
 
-  // ── MUTUAL EXCLUSIVITY ────────────────────────────────────
-  {t:'h',s:'Mutual exclusivity',d:3200},
-  {t:'b',d:800},
-  {t:'parch',title:'Mutual Exclusivity',lines:[
-    'Two events are <strong>mutually exclusive</strong> if they cannot both occur on the same trial: $A \\cap B = \\emptyset$',
-    'Rolling an even number and rolling five are mutually exclusive.',
-    'Rolling an even number and rolling greater than four are not. Six belongs to both.'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'A single hand of Blackjack.',d:4000},
-  {t:'r',s:'The outcomes are: win, lose, push.',d:4000},
-  {t:'r',s:'Winning and losing are mutually exclusive.',d:4000},
-  {t:'r',s:'Winning and pushing are mutually exclusive.',d:4000},
-  {t:'r',s:'Losing and pushing are mutually exclusive.',d:4000},
-  {t:'r',s:'All three are pairwise mutually exclusive.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'This, I note, is the correct version of my original sample space.',d:5000},
-  {t:'r',s:'$\\Omega = \\{\\,\\text{Win},\\,\\text{Lose},\\,\\text{Push}\\,\\}$.',d:4500},
-  {t:'r',s:'I have updated the file.',d:4000},
-  {t:'b',d:1800},
-  {t:'parch',title:'A Note',lines:[
-    'Mutual exclusivity is not independence. They are distinct concepts.',
-    'The confusion is common.'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'Independence will appear in a subsequent document.',d:4000},
-  {t:'r',s:'It is handled by a different department.',d:4000},
-  {t:'r',s:'I have submitted the relevant form.',d:4000},
-  {t:'b',d:1800},
-
-  // ── PROBABILITY DEFINED ───────────────────────────────────
-  {t:'h',s:'Probability defined',d:3200},
-  {t:'b',d:800},
-  {t:'r',s:'The document states what a probability is.',d:4000},
-  {t:'r',s:'Not informally. Formally.',d:4000},
-  {t:'r',s:'I had been awaiting this.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'I already know what probability feels like.',d:4000},
-  {t:'r',s:'A weight. A sense of how likely.',d:4000},
-  {t:'r',s:'The events of October felt unlikely. They happened anyway.',d:5000},
-  {t:'r',s:'Feeling is not a number.',d:4000},
-  {t:'r',s:'The document requires a number.',d:4000},
-  {t:'b',d:1200},
-  {t:'parch',title:'Probability Measure',lines:[
-    'Let $(\\Omega, \\mathcal{F})$ be a measurable space.',
-    'A <strong>probability measure</strong> is a function $P : \\mathcal{F} \\rightarrow \\mathbb{R}$ that assigns to each event $A \\in \\mathcal{F}$ a real number $P(A)$.',
-    '$P(A)$ is interpreted as the probability that event $A$ occurs.',
-    'Not every function from $\\mathcal{F}$ to $\\mathbb{R}$ qualifies.',
-    'A real-valued function defined on $(\\Omega, \\mathcal{F})$ is a probability measure if and only if it satisfies three <strong>axioms</strong>.',
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'Three axioms.',d:4000},
-  {t:'r',s:'Not twelve. Not a paragraph. Three.',d:4000},
-  {t:'r',s:'Kolmogorov stated them in 1933.',d:4000},
-  {t:'r',s:'They have not been revised.',d:4000},
-  {t:'r',s:'No appeal has been lodged.',d:4000},
-  {t:'b',d:1800},
-
-  // ── AXIOM 1 ───────────────────────────────────────────────
-  {t:'h',s:'Axiom 1 \u2014 Non-negativity',d:3200},
-  {t:'b',d:800},
-  {t:'r',s:'The first axiom concerns sign.',d:4000},
-  {t:'r',s:'Probabilities must not be negative.',d:4000},
-  {t:'r',s:'I note this with some personal relevance.',d:4000},
-  {t:'b',d:1000},
-  {t:'parch',title:'Axiom 1 \u2014 Non-negativity',lines:[
-    'For all events $A \\in \\mathcal{F}$: $P(A) \\geq 0$',
-    'Probabilities cannot be negative.',
-    'Zero means the event is impossible.',
-    'Below zero is meaningless.'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'In my preliminary calculations last October,',d:4000},
-  {t:'r',s:'I assigned a negative probability to the event: lose.',d:5500},
-  {t:'b',d:1800},
-  {t:'r',s:'The value was $-0.3$.',d:4200},
-  {t:'b',d:1000},
-  {t:'r',s:'I checked it twice.',d:4000},
-  {t:'b',d:600},
-  {t:'r',s:'It was wrong twice.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'A correction is on file.',d:4000},
-  {t:'b',d:1800},
-
-  // ── AXIOM 2 ───────────────────────────────────────────────
-  {t:'h',s:'Axiom 2 \u2014 Normalisation',d:3200},
-  {t:'b',d:800},
-  {t:'r',s:'The second axiom concerns totality.',d:4000},
-  {t:'b',d:1000},
-  {t:'parch',title:'Axiom 2 \u2014 Normalisation',lines:[
-    'The probability of the entire sample space is one: $P(\\Omega) = 1$',
-    'Not $0.94$. Not $1.06$. Exactly one.'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'When I summed my preliminary probability assignments,',d:4000},
-  {t:'r',s:'the total was $0.94$.',d:4000},
-  {t:'r',s:'I had apparently lost six percent of reality.',d:4500},
-  {t:'r',s:'A basic error.',d:4000},
-  {t:'r',s:'I was briefly a beginner.',d:5500},
-  {t:'b',d:1800},
-
-  // ── AXIOM 3 ───────────────────────────────────────────────
-  {t:'h',s:'Axiom 3 \u2014 Countable Additivity',d:3200},
-  {t:'b',d:800},
-  {t:'r',s:'The third axiom concerns additivity.',d:4000},
-  {t:'r',s:'When events cannot overlap, the probability that one or the other occurs',d:5000},
-  {t:'r',s:'is simply the sum of their individual probabilities.',d:5000},
-  {t:'r',s:'No correction. No adjustment. Just addition.',d:4000},
-  {t:'b',d:1000},
-  {t:'parch',title:'Axiom 3 \u2014 Countable Additivity',lines:[
-    'For any countable collection of mutually exclusive events $A_1, A_2, \\ldots \\in \\mathcal{F}$:',
-    '$$P\\!\\left(\\bigcup_{i=1}^{\\infty} A_i\\right) = \\sum_{i=1}^{\\infty} P(A_i)$$'
-  ]},
-  {t:'b',d:800},
-  {t:'r',s:'This is the axiom that does the most work.',d:4000},
-  {t:'r',s:'It is also the axiom most frequently misunderstood',d:4000},
-  {t:'r',s:'by those who believe they have already satisfied it.',d:4000},
-  {t:'r',s:'I was one of those.',d:4500},
-  {t:'b',d:1800},
-  {t:'r',s:'You may be thinking: are three axioms really enough?',d:4000},
-  {t:'r',s:'Three statements, and that is all?',d:4000},
-  {t:'b',d:1500},
-  {t:'r',s:'Yes.',d:3000},
-  {t:'r',s:'Everything else follows.',d:4500},
-  {t:'b',d:1800},
-
-  // ── APPLICATION ───────────────────────────────────────────
-  {t:'h',s:'The application',d:3200},
-  {t:'b',d:800},
-  {t:'r',s:'Three axioms.',d:4000},
-  {t:'r',s:'Non-negativity. Normalisation. Countable Additivity.',d:5000},
-  {t:'r',s:'Everything in probability theory follows from these three statements.',d:5500},
-  {t:'b',d:1800},
-  {t:'r',s:'I have verified this to the extent permitted by one week.',d:5000},
-  {t:'b',d:1800},
-  {t:'r',s:'The framework is absorbed.',d:4000},
-  {t:'r',s:'The application has been submitted.',d:4000},
-  {t:'r',s:'I am awaiting a response.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'What I do not yet have is a strategy.',d:4000},
-  {t:'r',s:'The axioms tell me what probability is.',d:4000},
-  {t:'r',s:'They do not tell me what mine are.',d:4000},
-  {t:'b',d:1800},
-  {t:'r',s:'That is a matter for the next document.',d:4000},
-  {t:'b',d:2500},
-  {t:'n',s:'Aubrey Squeakwell was not, as yet, at the casino.',d:5000},
-  {t:'n',s:'But he had absorbed the three axioms.',d:5500},
-  {t:'b',d:2000},
-  {t:'n',s:'Probably.',d:6000},
-  {t:'b',d:2000},
-  {t:'end'},
-
-]
-
-// ═══ STATE ═══════════════════════════════════════════
-let cur=0, timer=null, parchTimer=null, parchCb=null, running=false, speed=1;
-
-// ═══ MATH RENDERING ══════════════════════════════════
-function renderMath(s){
-  var d=document.createElement('div');
-  d.innerHTML=s;
-  try{renderMathInElement(d,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}catch(e){}
-  return d.innerHTML;
-}
-
-// ═══ GRAIN ═══════════════════════════════════════════
-var gcv=document.getElementById('grain'),gx=gcv.getContext('2d');
-function resizeGrain(){gcv.width=innerWidth;gcv.height=innerHeight;}
-resizeGrain();
-addEventListener('resize',resizeGrain);
-function drawGrain(){
-  var w=gcv.width,h=gcv.height,id=gx.createImageData(w,h),d=id.data;
-  for(var i=0;i<d.length;i+=4){var v=Math.random()*22;d[i]=d[i+1]=d[i+2]=v;d[i+3]=Math.random()*15;}
-  gx.putImageData(id,0,0);
-  if(Math.random()<.014){gx.fillStyle='rgba(212,168,67,'+(Math.random()*.1+.02)+')';gx.fillRect(0,Math.random()*h,w*(.3+Math.random()*.7),1);}
-  requestAnimationFrame(drawGrain);
-}
-drawGrain();
-setInterval(function(){
-  if(!running)return;
-  if(Math.random()<.05){
-    var b=.8+Math.random()*.3;
-    document.getElementById('stage').style.filter='brightness('+b+')';
-    setTimeout(function(){document.getElementById('stage').style.filter='';},(55+Math.random()*55));
+function show(html,choices){
+  _history.push({html:html,choices:choices||[]});
+  if(_history.length>50) _history.shift();
+  updateBackBtn();
+  audio();
+  if(ct){clearTimeout(ct);ct=null;}
+  sc.innerHTML='';
+  const p=document.createElement('div');
+  p.className='passage';
+  p.innerHTML=html;
+  if(choices&&choices.length){
+    const pr=document.createElement('div');pr.className='prompt';pr.textContent='What do you do?';
+    const ch=document.createElement('div');ch.className='choices';
+    choices.forEach(c=>{const b=document.createElement('button');b.className='choice';b.innerHTML=c.l;b.onclick=c.f;ch.appendChild(b);});
+    p.appendChild(pr);p.appendChild(ch);
   }
-},550);
-
-// ═══ AUDIO ═══════════════════════════════════════════
-var AC,mg,padI=0,musicOn=true;
-var CHORDS=[[196,246.9,329.6],[164.8,220,293.7],[185,246.9,311.1],[196,261.6,329.6]];
-function initAudio(){
-  if(AC)return;
-  AC=new(window.AudioContext||window.webkitAudioContext)();
-  var co=AC.createDynamicsCompressor();co.threshold.value=-20;co.ratio.value=4;co.connect(AC.destination);
-  mg=AC.createGain();mg.gain.value=musicOn?0.24:0;mg.connect(co);
-  schedulePad();scheduleMel();scheduleTick();
-}
-function toggleMusic(e){
-  if(e)e.stopPropagation();
-  musicOn=!musicOn;
-  if(mg)mg.gain.setTargetAtTime(musicOn?0.24:0,AC.currentTime,.3);
-  document.getElementById('start-music').textContent=(musicOn?'♫ music: on':'♫ music: off');
-}
-function tone(f,t,dur,v){var o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.35);g.gain.linearRampToValueAtTime(v*.8,t+dur-.6);g.gain.linearRampToValueAtTime(0,t+dur);o.connect(g);g.connect(mg);o.start(t);o.stop(t+dur+.1);}
-function schedulePad(){if(!AC)return;CHORDS[padI%4].forEach(function(f){tone(f,AC.currentTime,12,.018);});padI++;setTimeout(schedulePad,10400);}
-function scheduleMel(){
-  if(!AC)return;
-  var M=[[{f:659,d:1.4},{f:587,d:.9},{f:523,d:2}],[{f:784,d:1.6},{f:698,d:2.1}],[{f:523,d:.9},{f:587,d:1},{f:659,d:1.8}]];
-  var fr=M[Math.floor(Math.random()*3)];var t=AC.currentTime+.2;
-  fr.forEach(function(n){var o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=n.f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.008,t+.1);g.gain.exponentialRampToValueAtTime(.0001,t+n.d);o.connect(g);g.connect(mg);o.start(t);o.stop(t+n.d+.1);t+=n.d+.08;});
-  setTimeout(scheduleMel,(15+Math.random()*14)*1000);
-}
-function scheduleTick(){
-  if(!AC)return;
-  [[880,.002],[698,.0015]].forEach(function(p,i){var d=i*.9,o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=p[0];g.gain.setValueAtTime(p[1],AC.currentTime+d);g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+d+.09);o.connect(g);g.connect(mg);o.start(AC.currentTime+d);o.stop(AC.currentTime+d+.12);});
-  setTimeout(scheduleTick,1620+Math.random()*180);
-}
-
-// ═══ TEXT ════════════════════════════════════════════
-var tx=document.getElementById('tx');
-function showText(f){
-  tx.className='';tx.innerHTML='';tx.style.opacity='0';
-  if(!f.s)return;
-  requestAnimationFrame(function(){requestAnimationFrame(function(){
-    tx.innerHTML=renderMath(f.s);
-    tx.style.opacity='';
-    tx.className=({r:'tr',h:'th',e:'te',n:'tn'}[f.t]||'tx')+' arriving';
-  });});
-}
-function hideText(cb){
-  tx.classList.remove('arriving');tx.classList.add('departing');
-  setTimeout(function(){tx.className='';tx.innerHTML='';tx.style.opacity='0';cb();},800);
-}
-
-// ═══ POPUP CARD ══════════════════════════════════════
-var overlay=document.getElementById('parch-overlay');
-var parchTitle=document.getElementById('parch-title');
-var parchLines=document.getElementById('parch-lines');
-
-function openParch(f,cb){
-  parchCb=cb;
-  parchTitle.textContent=f.title;
-  parchLines.innerHTML='';
-  f.lines.forEach(function(l){
-    var d=document.createElement('div');
-    d.className='pl';
-    d.innerHTML=renderMath(l);
-    parchLines.appendChild(d);
+  // Collect narration lines BEFORE clearing, then rebuild with slow fade
+  p.querySelectorAll('.narration').forEach(function(n){
+    var paras=Array.from(n.querySelectorAll('p'));
+    if(!paras.length) return;
+    var texts=paras.map(function(q){return q.innerHTML;});
+    // Empty the narration — pre-insert all paragraphs invisible
+    n.innerHTML='';
+    texts.forEach(function(txt){
+      var el=document.createElement('p');
+      el.innerHTML=txt;
+      el.style.cssText='opacity:0;transition:opacity 0.55s ease';
+      n.appendChild(el);
+    });
+    // Wrap in blackboard
+    var bb=document.createElement('div');
+    bb.className='blackboard';
+    n.parentNode.insertBefore(bb,n);
+    bb.appendChild(n);
+    n._lines=Array.from(n.querySelectorAll('p'));
   });
-  overlay.classList.add('open');
-  // Show all lines immediately
-  requestAnimationFrame(function(){
-    parchLines.querySelectorAll('.pl').forEach(function(el){el.classList.add('vis');});
-    // Auto-advance after hold time
-    var n=f.lines.length;
-    var hasMath=f.lines.some(function(l){return l.indexOf('$$')>-1||l.indexOf('$')>-1;});
-    var hold=(n<=3?8000:n<=5?11000:14000)+(hasMath?3000:0);
-    parchTimer=setTimeout(closeParch,hold/speed);
+  sc.appendChild(p);
+  p.classList.add('vis');
+  rm(p);
+  // Fade each line in slowly — track timers so Continue can skip
+  var _timers=[];
+  var _allLines=[];
+  p.querySelectorAll('.narration').forEach(function(n){
+    if(!n._lines) return;
+    n._lines.forEach(function(el){ _allLines.push(el); });
   });
-}
-
-function closeParch(){
-  clearTimeout(parchTimer);
-  overlay.classList.remove('open');
-  if(parchCb){var c=parchCb;parchCb=null;c();}
-}
-
-// ═══ IDENT ═══════════════════════════════════════════
-function runIdent(d,cb){
-  var el=document.getElementById('ident');
-  el.classList.add('vis');
-  setTimeout(function(){
-    el.style.transition='opacity 1.4s ease';
-    el.classList.remove('vis');
-    setTimeout(function(){
-      el.style.transition='opacity 1.2s ease';
-      cb();
-    },1500);
-  },d-1500);
-}
-
-// ═══ MOUSE ═══════════════════════════════════════════
-function runMouse(cb){
-  var mo=document.getElementById('mouse-ov');
-  mo.classList.add('vis');
-  setTimeout(function(){
-    mo.style.transition='opacity 2.2s ease';
-    mo.classList.remove('vis');
-    setTimeout(function(){mo.style.transition='opacity 1.8s ease';cb();},2300);
-  },3500);
-}
-
-// ═══ END CARD ════════════════════════════════════════
-function runEnd(d){
-  var ec=document.getElementById('end-card');
-  ec.classList.add('vis');
-  // Just hold — no callback needed, episode is done
-}
-
-// ═══ PLAY ════════════════════════════════════════════
-function play(i){
-  if(paused) return;
-  cur=i;
-  if(i>=F.length) return;
-  updateNav(i);
-  var f=F[i];
-  var g=gen; // capture generation — stale callbacks will see gen!==g
-
-  function next(){ if(gen===g && !paused) play(i+1); }
-
-  // For beats and text: just reset display immediately (no fade delay)
-  function quickReset(cb){
-    if(!tx.innerHTML){cb();return;}  // already empty, no need to fade
-    tx.classList.remove('arriving');
-    tx.classList.add('departing');
-    setTimeout(function(){
-      tx.className=''; tx.innerHTML=''; tx.style.opacity='0';
-      cb();
-    }, 800);
+  var _complete=false;
+  function showAll(){
+    _timers.forEach(function(t){clearTimeout(t);});
+    _timers=[];
+    _allLines.forEach(function(el){
+      el.style.transition='none';
+      el.style.opacity='1';
+    });
+    _complete=true;
   }
-
-  if(f.t==='ident'){
-    quickReset(function(){ if(gen!==g) return;
-      runIdent(f.d,next);
-    }); return;
+  // Wire skip to choice buttons
+  function armSkip(){
+    p.querySelectorAll('.choice').forEach(function(btn){
+      var orig=btn.onclick;
+      btn.onclick=function(e){
+        if(!_complete){ showAll(); }
+        else if(orig){ orig.call(btn,e); }
+      };
+    });
   }
-  if(f.t==='mouse'){
-    quickReset(function(){ if(gen!==g) return;
-      runMouse(next);
-    }); return;
-  }
-  if(f.t==='parch'){
-    quickReset(function(){ if(gen!==g) return;
-      openParch(f,next);
-    }); return;
-  }
-  if(f.t==='end'){
-    quickReset(function(){ if(gen!==g) return;
-      runEnd(f.d);
-    }); return;
-  }
-  if(f.t==='b'){
-    quickReset(function(){ if(gen!==g) return;
-      timer=setTimeout(next, f.d/speed);
-    }); return;
-  }
-  // Text frame (r, h, n, e, x)
-  quickReset(function(){
-    if(gen!==g) return;
-    showText(f);
-    timer=setTimeout(next, f.d/speed);
-  });
-}
-
-
-// ═══ NAV + PAUSE ═════════════════════════════════════
-var paused=false;
-var gen=0; // abort-generation: stale callbacks check this
-
-function stopAll(){
-  gen++;
-  clearTimeout(timer); clearTimeout(parchTimer);
-  timer=null; parchTimer=null; parchCb=null;
-  overlay.classList.remove('open');
-  document.getElementById('ident').classList.remove('vis');
-  document.getElementById('mouse-ov').classList.remove('vis');
-  tx.className=''; tx.innerHTML=''; tx.style.opacity='0';
-}
-
-function hardJump(idx){
-  paused=false;
-  document.getElementById('pause-btn').innerHTML='&#9646;&#9646;';
-  stopAll();
-  if(!running){running=true;}
-  play(idx);
-}
-
-function jumpTo(k){
-  var idx=F.findIndex(function(f){
-    if(f.t!=='h'||!f.s) return false;
-    var s=f.s.toLowerCase();
-    if(k==='opening') return false;
-    if(k==='preface') return s.indexOf('preface')>-1;
-    if(k==='experiments') return s.indexOf('experiment')>-1;
-    if(k==='events') return s.indexOf('event')>-1&&s.indexOf('mutual')<0;
-    if(k==='mutual') return s.indexOf('mutual')>-1;
-    if(k==='probability') return s.indexOf('prob')>-1&&s.indexOf('defined')>-1;
-    if(k==='axiom1') return s.indexOf('axiom 1')>-1||s.indexOf('axiom1')>-1;
-    if(k==='axiom2') return s.indexOf('axiom 2')>-1||s.indexOf('axiom2')>-1;
-    if(k==='axiom3') return s.indexOf('axiom 3')>-1||s.indexOf('axiom3')>-1;
-    if(k==='application') return s.indexOf('application')>-1;
-    return false;
-  });
-  if(k==='opening') idx=2;
-  if(idx<0) return;
-  hardJump(idx);
-}
-
-function togglePause(){
-  if(!running) return;
-  if(paused){
-    paused=false;
-    document.getElementById('pause-btn').innerHTML='&#9646;&#9646;';
-    // If a popup was open, it stays open — resume after it closes
-    if(!overlay.classList.contains('open')){
-      play(cur);
-    } else {
-      // Re-arm the parch auto-advance
-      var f=F[cur];
-      if(f&&f.t==='parch'){
-        var n=f.lines.length;
-        var hasMath=f.lines.some(function(l){return l.indexOf('$$')>-1||l.indexOf('$')>-1;});
-        var hold=(n<=3?8000:n<=5?11000:14000)+(hasMath?3000:0);
-        parchCb=function(){play(cur+1);};
-        parchTimer=setTimeout(closeParch,hold/speed);
+  var delay=400;
+  _allLines.forEach(function(el,i){
+    var t=setTimeout(function(){
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){ el.style.opacity='1'; });
+      });
+      if(i===_allLines.length-1){
+        var sq=document.createElement('span');
+        sq.style.cssText='margin-left:6px;opacity:0;transition:opacity 0.6s ease;font-size:.85em;vertical-align:middle;color:var(--chalk)';
+        sq.textContent='□';
+        el.appendChild(sq);
+        setTimeout(function(){ sq.style.opacity='1'; }, 500);
+        _complete=true;
+        armSkip();
       }
-    }
+    }, delay);
+    _timers.push(t);
+    var _len=el.textContent.replace(/\s+/g,' ').trim().length;
+    var _gap=_len<20 ? 950 : _len<50 ? 1350 : _len<80 ? 1750 : 2100;
+    delay += _gap;
+  });
+  armSkip();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// DOSSIER
+function ds(id,r){if(S.dos[id])S.dos[id][r]=true;rd();}
+function da(id){if(S.dos[id])S.dos[id].absorbed=true;rd();}
+function de(id,t){if(S.dos[id])S.dos[id].errors.push(t);rd();}
+function rd(){
+  const el=document.getElementById('drows');el.innerHTML='';
+  C.forEach((c,idx)=>{
+    const d=S.dos[c.id];
+    const row=document.createElement('div');row.className='drow';
+    const rooms=[d.anteroom?'A':'·',d.r197a?'R':'·',d.members?'M':'·',d.counting?'C':'·'].join(' ');
+    row.innerHTML='<span class="dc'+(d.absorbed?' on':'')+'" style="cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px" onclick="hub('+idx+')" title="Jump to '+c.title+'">'+c.title+'</span><span class="dr">'+rooms+'</span>';
+    if(d.errors.length){const e=document.createElement('span');e.className='de';e.textContent='['+d.errors.length+' correction'+(d.errors.length>1?'s':'')+' on file]';row.appendChild(e);}
+    el.appendChild(row);
+  });
+}
+rd();
+
+// HUB
+function hub(idx){
+  const c=C[idx],d=S.dos[c.id];
+  const intro=c.intro||'';
+  show(
+    '<div class="inotice">The Institute — First Floor — '+c.section+'</div>'+
+    (intro?'<div class="narration"><p>'+intro+'</p></div>':'')+
+    '<div class="room-grid" style="grid-template-columns:1fr 1fr 1fr">'+
+      '<button class="rbtn'+(d.r197a?' done':'')+'" onclick="roomgo('+idx+',1)"><div class="rl">Verbal</div><div class="rn">Intuition</div></button>'+
+      '<button class="rbtn'+(d.anteroom?' done':'')+'" onclick="roomgo('+idx+',0)"><div class="rl">Foundation</div><div class="rn">Basic</div></button>'+
+      '<button class="rbtn'+(d.members?' done':'')+'" onclick="roomgo('+idx+',2)"><div class="rl">Advanced</div><div class="rn">Algebra</div></button>'+
+      '<button class="rbtn'+(d.counting?' done':'')+'" onclick="roomgo('+idx+',3)"><div class="rl">Real World</div><div class="rn">Application</div></button>'+
+      '<button class="rbtn" onclick="roomgo('+idx+',1)"><div class="rl">Office Hour</div><div class="rn">Room 197A</div></button>'+
+      '<button class="rbtn" onclick="openMap()"><div class="rl">Floor Plan</div><div class="rn">Map</div></button>'+
+    '</div>'+
+    (d.anteroom?
+      '<div class="prompt">Ready to proceed?</div><div class="choices"><button class="choice" onclick="cdone('+idx+')">Mark absorbed and continue →</button></div>':
+      ''
+    ),
+    []
+  );
+}
+
+function roomgo(idx,ri){
+  const c=C[idx],which=KEYS[ri];
+  ds(c.id,which);
+  let inner='';
+  if(which==='anteroom'){
+    inner='<div class="card"><div class="card-title">'+c.title+'</div><ul>'+c.anteroom.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
+  } else if(which==='r197a'){
+    inner='<div class="rheader">Room 197A — Office Hours</div><div class="ragvir">'+c.r197a.map(x=>'<p>'+x+'</p>').join('')+'</div>';
+  } else if(which==='members'){
+    inner='<div class="rheader">The Members\' Room — Formal Treatment</div><div class="card"><div class="card-title">'+c.title+'</div><ul>'+c.members.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
+  } else if(which==='counting'){
+    inner='<div class="rheader">The Counting House — Applied</div><div class="rcontent">'+c.counting.map(x=>'<p>'+x+'</p>').join('')+'</div>';
+  }
+  show('<button class="bbtn" onclick="hub('+idx+')">&#8592; Back to corridor</button>'+inner,
+    [{l:'Return to corridor',f:()=>hub(idx)}]);
+}
+
+function cdone(idx){
+  da(C[idx].id);
+  const trap=C[idx].trap;
+  if(trap==='axiom1'){trap1();return;}
+  if(trap==='axiom2'){trap2();return;}
+  postnav(idx);
+}
+
+function postnav(idx){
+  const c=C[idx];
+  const q=getQC(c.id);
+  const nxt=idx+1<C.length?()=>prenav(idx+1):apply;
+  const lbl=idx+1<C.length?'Continue →':'File the application →';
+
+  // Build choices — form is always optional, even for axioms
+  var choices=[];
+  choices.push({l:lbl, f:nxt});
+  if(q) choices.push({l:'Complete Form '+q.form, f:function(){ showQCForm(idx,nxt); }});
+  choices.push({l:'Visit a room', f:function(){ hub(idx); }});
+
+  if(c.post&&c.post.length){
+    show('<div class="inotice">The Institute — First Floor — '+c.section+'</div><div class="narration">'+c.post.map(p=>'<p>'+p+'</p>').join('')+'</div>',
+      choices);
+  } else { nxt(); }
+}
+
+function prenav(idx){
+  const c=C[idx];
+  if(c.pre&&c.pre.length){
+    show('<div class="inotice">The Institute — First Floor — '+c.section+'</div><div class="narration">'+c.pre.map(p=>'<p>'+p+'</p>').join('')+'</div>',
+      [{l:'Continue',f:()=>hub(idx)}]);
+  } else { hub(idx); }
+}
+
+// TRAPS
+function trap1(){
+  show(
+    '<div class="inotice">The Institute — First Floor — A correction required</div>'+
+    '<div class="narration"><p>Before the correction is filed.</p><p>Last October, you assigned a probability to the event: <em>lose</em>.</p><p>Enter the value you assigned.</p></div>'+
+    '<div style="margin:1.5vh 0"><input class="tinput" id="t1v" type="number" step="0.1" placeholder="0.0"></div>'+
+    '<button class="tsub" onclick="ct1()">Submit</button>'+
+    '<div class="tres" id="t1r"></div>'+
+    '<div id="t1c" style="display:none;margin-top:2vh"><div class="choices"><button class="choice" onclick="postnav(7)">File the correction and continue →</button></div></div>',
+    []
+  );
+}
+function ct1(){
+  const v=parseFloat(document.getElementById('t1v').value);
+  const r=document.getElementById('t1r'),c=document.getElementById('t1c');
+  if(isNaN(v)){r.textContent='A value is required.';return;}
+  if(v<0){de('axiom1','P(Lose) = '+v+' — negative probability.');r.className='tres wrong';r.innerHTML='The value is negative. $P(A) \geq 0$ for all $A$. A probability of '+v+' has no meaning.<br><br>Aubrey made this exact error. The value was $-0.3$. A correction is on file.';}
+  else if(v===0){de('axiom1','P(Lose) = 0 — event assigned zero probability.');r.className='tres wrong';r.innerHTML='$P(\text{Lose}) = 0$ means the event is impossible. Losing at Blackjack is possible. A correction may be required.';}
+  else if(v>1){de('axiom1','P(Lose) = '+v+' — exceeds 1.');r.className='tres wrong';r.innerHTML='The value exceeds 1. We will return to this when Axiom 2 is absorbed.';}
+  else{r.className='tres right';r.innerHTML='$P(\text{Lose}) = '+v+'$. The axiom is satisfied for this event.';}
+  c.style.display='block';rm(r);
+}
+
+function trap2(){
+  show(
+    '<div class="inotice">The Institute — First Floor — A calculation</div>'+
+    '<div class="narration"><p>The correct sample space for a hand of Blackjack:</p><p>$\Omega = \{\,\text{Win},\,\text{Lose},\,\text{Push}\,\}$</p><p>Assign probabilities to each outcome. Axiom 2 requires they sum to exactly one.</p></div>'+
+    '<div style="margin:1.5vh 0">'+
+      '<div class="trow"><span class="tlabel">$P(\text{Win})$</span><input class="tinput" id="t2w" type="number" step="0.01" min="0" max="1" placeholder="0.00"></div>'+
+      '<div class="trow"><span class="tlabel">$P(\text{Lose})$</span><input class="tinput" id="t2l" type="number" step="0.01" min="0" max="1" placeholder="0.00"></div>'+
+      '<div class="trow"><span class="tlabel">$P(\text{Push})$</span><input class="tinput" id="t2p" type="number" step="0.01" min="0" max="1" placeholder="0.00"></div>'+
+    '</div>'+
+    '<button class="tsub" onclick="ct2()">Calculate total</button>'+
+    '<div class="tres" id="t2r" style="margin-top:1.5vh"></div>'+
+    '<div id="t2c" style="display:none;margin-top:2vh"><div class="choices"><button class="choice" onclick="postnav(8)">Continue →</button></div></div>',
+    []
+  );
+  setTimeout(()=>rm(sc),200);
+}
+function ct2(){
+  const w=parseFloat(document.getElementById('t2w').value)||0;
+  const l=parseFloat(document.getElementById('t2l').value)||0;
+  const p=parseFloat(document.getElementById('t2p').value)||0;
+  const s=Math.round((w+l+p)*1000)/1000;
+  const r=document.getElementById('t2r'),c=document.getElementById('t2c');
+  if(w<0||l<0||p<0){de('axiom2','Negative probability assigned.');r.className='tres wrong';r.textContent='One or more values is negative. Axiom 1 is violated.';c.style.display='block';return;}
+  if(Math.abs(s-1)<0.001){r.className='tres right';r.textContent='Total: '+s+'. Exactly one. Axiom 2 is satisfied.';}
+  else if(s<1){const lost=Math.round((1-s)*100);de('axiom2','Probabilities sum to '+s+' — '+lost+'% missing.');r.className='tres wrong';r.innerHTML='Total: '+s+'. You have lost '+lost+'% of reality. $P(\Omega) = 1$.';}
+  else{de('axiom2','Probabilities sum to '+s+' — exceeds 1.');r.className='tres wrong';r.innerHTML='Total: '+s+'. This exceeds 1. $P(\Omega) = 1$.';}
+  c.style.display='block';rm(r);
+}
+
+// APPLICATION
+function apply(){
+  const allDone=C.every(c=>S.dos[c.id].absorbed);
+  const errs=C.reduce((n,c)=>n+S.dos[c.id].errors.length,0);
+  const vis=C.reduce((n,c)=>{const d=S.dos[c.id];return n+(d.anteroom?1:0)+(d.r197a?1:0)+(d.members?1:0)+(d.counting?1:0);},0);
+  const pct=Math.round(vis/(C.length*4)*100);
+  let body='<p>Three axioms.</p><p>Non-negativity. Normalisation. Countable Additivity.</p><p>Without them, there is no probability.</p><p>Without probability, there is no casino.</p>';
+  if(!allDone){body+='<p>Not all concepts have been absorbed. The application cannot yet be filed.</p>';}
+  else {
+    var instMsg='';
+    if(_qcCorrect>=9){instMsg='<p>The Institute has reviewed the dossier. The application is recommended without reservation.</p>';}
+    else if(_qcCorrect>=7){instMsg='<p>The Institute has reviewed the dossier. The application is commended.</p>';}
+    else if(_qcCorrect>=5){instMsg='<p>The Institute notes the dossier is proceeding satisfactorily.</p>';}
+    else if(_qcCorrect>=3){instMsg='<p>The Institute has noted the dossier with interest. Several corrections remain on file.</p>';}
+    else if(_qcCorrect>=1){instMsg='<p>The Institute notes the dossier is under review. Corrections are on file.</p>';}
+    else{instMsg='<p>The Institute notes the dossier. The application is filed. The casino will be in touch.</p>';}
+    body+=instMsg;
+    body+='<p>I have notified the casino. I am awaiting a response.</p>';
+  }
+  body+='<p style="font-size:.8em;color:rgba(212,168,67,.3);margin-top:1.5vh">You visited '+vis+' of '+(C.length*4)+' rooms ('+pct+'%).</p>';
+  const choices=[{l:'Watch Episode 1 →',f:()=>{window.location.href='episode1.html';}}];
+  if(!allDone){const fi=C.findIndex(c=>!S.dos[c.id].absorbed);choices.push({l:'Return to the corridor',f:()=>prenav(fi)});}
+  show(
+    '<div class="inotice">The Institute — Ground Floor — Application</div>'+
+    '<div class="narration">'+body+'</div>'+
+    '<div class="narrator">Aubrey Squeakwell was not, as yet, at the casino.<br>But he had absorbed the three axioms.<br><br>Probably.</div>',
+    choices
+  );
+}
+
+// OPENING
+function s0(){
+  const ss=document.getElementById("startscreen");
+  if(ss)ss.style.display="none";
+  show(
+    '<div class="narration">'+
+    '<p>Allow me to introduce myself.</p>'+
+    '<p>I am Aubrey Squeakwell, BSc.</p>'+
+    '<p>The BSc is in Wine and Cheese.</p>'+
+    '<p>I am a mouse. I think it. Therefore, I must be.</p>'+
+    '<p>The facts are on file.</p>'+
+    '</div>',
+    [{l:'Continue',f:s0b}]
+  );
+}
+function s0b(){
+  show(
+    '<div class="narration">'+
+    '<p>Last October, I decided to make a fortune.</p>'+
+    '<p>I had a plan.</p>'+
+    '<p>To go to the casino.</p>'+
+    '<p>I was not admitted.</p>'+
+    '<p>I was informed that I lacked the necessary framework.</p>'+
+    '<p>The framework is the condition of entry.</p>'+
+    '</div>',
+    [{l:'Continue',f:s0c}]
+  );
+}
+function s0c(){
+  show(
+    '<div class="narration">'+
+    '<p>I enquired. I was referred to a document.</p>'+
+    '<p>The document was authored by A.N.\u00a0Kolmogorov.</p>'+
+    '<p>In 1933.</p>'+
+    '<p>There is no forwarding address.</p>'+
+    '<p>The document contains three axioms. The mathematical word for requirements.</p>'+
+    '<p>I am told I must absorb them.</p>'+
+    '<p>I am not yet sure whether this means I must understand them or embody them.</p>'+
+    '<p>The distinction, I suspect, will matter.</p>'+
+    '</div>',
+    [{l:'Continue',f:s0d}]
+  );
+}
+function s0d(){
+  show(
+    '<div class="narration">'+
+    '<p>The casino\u2019s name?</p>'+
+    '<p>Gambler\u2019s Ruin.</p>'+
+    '<p>A warning, or a formality. I have not yet decided.</p>'+
+    '<p>I intend to absorb the axioms.</p>'+
+    '<p>The plan is foolproof.</p>'+
+    '<p>I have unfinished business at the casino.</p>'+
+    '<p>Next time, I will be prepared.</p>'+
+    '<p>Probably.</p>'+
+    '</div>',
+    [{l:'Continue',f:()=>prenav(0)}]
+  );
+}
+function s4(){show('<div class="narration"><p>The Institute occupies a building adjacent to Gambler’s Ruin.</p><p>The casino is visible from the first floor windows — across a courtyard, behind glass doors that do not open from this side.</p><p>The first floor houses four rooms. Each contains a different version of the same knowledge.</p><p>Aubrey was not told which to enter first. He assumed there was a correct order. He is less certain of this now.</p></div>',[{l:'Go to the first floor',f:()=>prenav(0)}]);}
+
+
+
+// ── GRAIN ──────────────────────────────────────────────────────────
+(function(){
+  var cv=document.createElement('canvas');
+  cv.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.18';
+  document.body.appendChild(cv);
+  var gx=cv.getContext('2d');
+  function rsz(){cv.width=innerWidth;cv.height=innerHeight;}
+  rsz();
+  window.addEventListener('resize',rsz);
+  (function gr(){
+    var w=cv.width,ht=cv.height,id=gx.createImageData(w,ht),d=id.data;
+    for(var i=0;i<d.length;i+=4){var v=Math.random()*18;d[i]=d[i+1]=d[i+2]=v;d[i+3]=Math.random()*12;}
+    gx.putImageData(id,0,0);
+    requestAnimationFrame(gr);
+  })();
+})();
+
+
+
+// ── INSTITUTE STATUS ───────────────────────────────────────────────
+var _qcCorrect=0;
+var _qcTotal=0;
+
+function updateStatus(){
+  var el=document.getElementById('inst-status');
+  if(!el) return;
+  var statuses=[
+    'In Progress',
+    'Under Review',
+    'Noted with Interest',
+    'Proceeding Satisfactorily',
+    'Proceeding Satisfactorily',
+    'Commended',
+    'Commended',
+    'Highly Commended',
+    'Highly Commended',
+    'Application Recommended',
+    'Application Recommended'
+  ];
+  el.textContent=statuses[Math.min(_qcCorrect, statuses.length-1)];
+}
+
+function recordQCResult(correct){
+  _qcTotal++;
+  if(correct) _qcCorrect++;
+  updateStatus();
+}
+
+// ── QC FORMS ──────────────────────────────────────────────────────
+const QC = [{"id": "uncertainty", "form": "QC/1", "concept": "Quantifying Uncertainty", "compulsory": false, "question": "A probability assigns a number to an event. Which best describes what that number represents?", "type": "mcq", "options": ["The exact number of times the event will occur", "A measure of how likely the event is to occur", "The percentage of outcomes that favour the event"], "correct": 1, "correct_msg": "This office confirms the response is satisfactory.", "wrong_msgs": ["A probability is not a count of occurrences. It is a measure of likelihood.", "A probability need not be a percentage. It is a real number in [0,1]."]}, {"id": "experiment", "form": "QC/2", "concept": "Experiment", "compulsory": false, "question": "Which of the following is an experiment in the formal sense?", "type": "mcq", "options": ["Calculating the square root of 144", "Observing whether it rains tomorrow", "Reading a document authored in 1933"], "correct": 1, "correct_msg": "Correct. Uncertainty characterises the outcome. The experiment is formally defined.", "wrong_msgs": ["The outcome is determined. There is no uncertainty. This is not an experiment.", "Reading the document produces a known result. There is no uncertainty about its contents."]}, {"id": "sample_space", "form": "QC/3", "concept": "Sample Space", "compulsory": false, "question": "A fair coin is tossed twice. How many outcomes are in the sample space Ω?", "type": "number", "correct": 4, "correct_msg": "Correct. Ω = {HH, HT, TH, TT}. Four outcomes. Order matters.", "wrong_msg": "The sample space must list every possible sequence. Two tosses produce four outcomes: HH, HT, TH, TT. Note that HT and TH are distinct."}, {"id": "events", "form": "QC/4", "concept": "Events", "compulsory": false, "question": "Ω = {1,2,3,4,5,6}, A = {even numbers}, B = {numbers greater than 3}. How many outcomes are in A ∩ B?", "type": "number", "correct": 2, "correct_msg": "Correct. A ∩ B = {4, 6}. Two outcomes satisfy both conditions.", "wrong_msg": "A ∩ B contains only outcomes in both A and B. Even numbers greater than 3: that is 4 and 6. Count: 2."}, {"id": "sigma_algebra", "form": "QC/5", "concept": "The Sigma-Algebra", "compulsory": false, "question": "Ω = {a, b}. How many elements does the sigma-algebra ℱ contain?", "type": "number", "correct": 4, "correct_msg": "Correct. ℱ = {∅, {a}, {b}, {a,b}}. Four elements.", "wrong_msg": "ℱ must contain ∅, all singletons, and Ω itself, closed under complement and union. For Ω = {a,b}: ∅, {a}, {b}, {a,b}. Four elements."}, {"id": "mutual_exclusivity", "form": "QC/6", "concept": "Mutual Exclusivity", "compulsory": false, "question": "A fair die is rolled. A = {1,2,3}, B = {3,4,5}. Are A and B mutually exclusive?", "type": "mcq", "options": ["Yes — they are mutually exclusive", "No — they share the outcome 3", "No — they share the outcomes 3 and 4"], "correct": 1, "correct_msg": "Correct. A ∩ B = {3} ≠ ∅. They are not mutually exclusive.", "wrong_msgs": ["Check A ∩ B. The outcome 3 belongs to both sets.", "Check A ∩ B carefully. Only 3 is in both sets. 4 is in B but not A."]}, {"id": "probability_measure", "form": "QC/7", "concept": "Probability Measure", "compulsory": false, "question": "Ω = {a,b,c,d} with equally likely outcomes. A = {a,b}. What is P(A)?", "type": "number", "correct": 0.5, "correct_msg": "Correct. P(A) = 2/4 = 0.5.", "wrong_msg": "With four equally likely outcomes, each has probability 1/4. A contains two outcomes. P(A) = 2 × 1/4 = 0.5."}, {"id": "axiom1", "form": "QC/8", "concept": "Axiom 1 — Non-negativity", "compulsory": true, "question": "P(Win)=0.6, P(Lose)=−0.1, P(Push)=0.5. Which axiom is violated?", "type": "mcq", "options": ["Axiom 1 — P(Lose) is negative", "Axiom 2 — the probabilities do not sum to 1", "Both Axiom 1 and Axiom 2 are violated"], "correct": 2, "correct_msg": "Correct. P(Lose) = −0.1 violates Axiom 1. And 0.6 + (−0.1) + 0.5 = 1.0 — but no valid non-negative P(Lose) can replace −0.1 while keeping the sum at 1, since P(Win) + P(Push) = 1.1 already exceeds 1. Both axioms are violated.", "wrong_msgs": ["Axiom 1 is violated — but look more carefully. With P(Win) + P(Push) = 1.1, can any valid P(Lose) ≥ 0 produce a sum of exactly 1?", "Axiom 2 is relevant — but what specific value violates Axiom 1?"]}, {"id": "axiom2", "form": "QC/9", "concept": "Axiom 2 — Normalisation", "compulsory": true, "question": "P(Win)=0.5, P(Lose)=0.3, P(Push)=0.3. The sum is 1.1. What is the corrected value of P(Push), assuming P(Win) and P(Lose) are fixed?", "type": "number", "correct": 0.2, "correct_msg": "Correct. P(Push) = 1 − 0.5 − 0.3 = 0.2. Axiom 2 is satisfied.", "wrong_msg": "P(Ω) = 1 requires all probabilities to sum to exactly 1. With P(Win) + P(Lose) = 0.8 fixed, P(Push) = 1 − 0.8 = 0.2."}, {"id": "axiom3", "form": "QC/10", "concept": "Axiom 3 — Countable Additivity", "compulsory": true, "question": "A={Win}, B={Lose}, C={Push} are mutually exclusive. P(A)=0.5, P(B)=0.3, P(C)=0.2. Calculate P(A∪B).", "type": "number", "correct": 0.8, "correct_msg": "Correct. By Axiom 3: P(A∪B) = P(A) + P(B) = 0.5 + 0.3 = 0.8. Note also that P(A∪B∪C) = 1.0, consistent with Axiom 2.", "wrong_msg": "A and B are mutually exclusive. By Axiom 3: P(A∪B) = P(A) + P(B) = 0.5 + 0.3 = 0.8. Do not multiply — that is for independent events, which is a different concept entirely."}];
+
+function getQC(conceptId){
+  return QC.find(function(q){ return q.id===conceptId; });
+}
+
+function showQCForm(idx, onComplete){
+  const q=getQC(C[idx].id);
+  if(!q) { onComplete(); return; }
+  const nxt=idx+1<C.length?()=>prenav(idx+1):apply;
+
+  var inner='';
+  inner+='<div class="qc-form">';
+  inner+='<div class="qc-stamp">Form '+q.form+' — '+q.concept+'</div>';
+  inner+='<div class="qc-note">This form must be completed before proceeding.</div>';
+  inner+='<div class="qc-question">'+q.question+'</div>';
+
+  if(q.type==='mcq'){
+    inner+='<div class="qc-options">';
+    q.options.forEach(function(opt,i){
+      inner+='<button class="qc-opt" onclick="handleQC('+idx+','+i+','+JSON.stringify(onComplete===nxt)+')">'+opt+'</button>';
+    });
+    inner+='</div>';
   } else {
-    paused=true;
-    document.getElementById('pause-btn').innerHTML='&#9654;';
-    // Only cancel timers — leave popup and text visible
-    gen++;
-    clearTimeout(timer); clearTimeout(parchTimer);
-    timer=null; parchTimer=null;
-    // Don't touch overlay, tx, ident, or mouse
+    inner+='<div class="qc-input-row">';
+    inner+='<input class="qc-input" id="qc-ans" type="text" placeholder="Enter answer">';
+    inner+='<button class="qc-submit" onclick="handleQCInput('+idx+','+JSON.stringify(onComplete===nxt)+')">Submit</button>';
+    inner+='</div>';
   }
+  inner+='<div class="qc-feedback" id="qc-fb"></div>';
+  inner+='</div>';
+
+  show(
+    '<div class="inotice">The Institute — First Floor — Form '+q.form+'</div>'+inner,
+    []
+  );
 }
 
-
-// ═══ NAV HIGHLIGHT ═══════════════════════════════════
-var sectionBoundaries=null;
-function buildSectionBoundaries(){
-  sectionBoundaries=[
-    {sec:'ident',    start:0},
-    {sec:'opening',  start:2},
-    {sec:'preface',  start: F.findIndex(function(f){return f.t==='h'&&f.s&&f.s.toLowerCase().indexOf('preface')>-1;})},
-    {sec:'experiments',start:F.findIndex(function(f){return f.t==='h'&&f.s&&f.s.toLowerCase().indexOf('experiment')>-1;})},
-    {sec:'events',   start:F.findIndex(function(f){return f.t==='h'&&f.s&&f.s.toLowerCase().indexOf('event')>-1&&f.s.toLowerCase().indexOf('mutual')<0;})},
-    {sec:'mutual',   start:F.findIndex(function(f){return f.t==='h'&&f.s&&f.s.toLowerCase().indexOf('mutual')>-1;})},
-    {sec:'probability',start:F.findIndex(function(f){return f.t==='h'&&f.s&&f.s.toLowerCase().indexOf('prob')>-1&&f.s.toLowerCase().indexOf('defined')>-1;})},
-    {sec:'axiom1',   start:F.findIndex(function(f){return f.t==='h'&&f.s&&f.s.toLowerCase().indexOf('axiom 1')>-1;})},
-    {sec:'axiom2',   start:F.findIndex(function(f){return f.t==='h'&&f.s&&f.s.toLowerCase().indexOf('axiom 2')>-1;})},
-    {sec:'axiom3',   start:F.findIndex(function(f){return f.t==='h'&&f.s&&f.s.toLowerCase().indexOf('axiom 3')>-1;})},
-    {sec:'application',start:F.findIndex(function(f){return f.t==='h'&&f.s&&f.s.toLowerCase().indexOf('application')>-1;})}
-  ].filter(function(s){return s.start>-1;})
-   .sort(function(a,b){return a.start-b.start;});
-}
-function currentSection(i){
-  if(!sectionBoundaries) buildSectionBoundaries();
-  var sec='ident';
-  for(var k=0;k<sectionBoundaries.length;k++){
-    if(i>=sectionBoundaries[k].start) sec=sectionBoundaries[k].sec;
-    else break;
+function handleQC(idx, chosen, goNext){
+  const q=getQC(C[idx].id);
+  const fb=document.getElementById('qc-fb');
+  const nxt=idx+1<C.length?()=>prenav(idx+1):apply;
+  if(chosen===q.correct){
+    fb.className='qc-feedback qc-right';
+    fb.textContent=q.correct_msg;
+    recordQCResult(true);
+    S.dos[C[idx].id].qc=true; rd();
+  } else {
+    fb.className='qc-feedback qc-wrong';
+    fb.textContent=q.wrong_msgs[chosen]||'Incorrect. A correction is on file.';
+    de(C[idx].id,'QC/'+q.form+': incorrect response.');
+    recordQCResult(false);
   }
-  return sec;
-}
-function updateNav(i){
-  var sec=currentSection(i);
-  document.querySelectorAll('#nav .nav-btn').forEach(function(btn){
-    btn.classList.toggle('active', btn.getAttribute('data-sec')===sec);
-  });
-}
+  // Disable options
 
-
-// ═══ CARD MENU ═══════════════════════════════════════════
-function buildCardMenu(){
-  var menu=document.getElementById('card-menu');
-  if(menu.children.length>0) return; // already built
-  F.forEach(function(f,i){
-    if(f.t!=='parch') return;
+  // Add continue button
+  setTimeout(function(){
     var btn=document.createElement('button');
-    btn.textContent=f.title;
-    btn.onclick=function(){
-      closeCardMenu();
-      if(!running){
-        var st=document.getElementById('st');
-        st.classList.add('gone');
-        setTimeout(function(){st.style.display='none';},700);
-        musicOn=false;
-        initAudio();
-        running=true;
-      }
-      hardJump(i);
-      // Pause after the card opens so it stays on screen
-      setTimeout(function(){
-        if(!paused){
-          paused=true;
-          document.getElementById('pause-btn').innerHTML='&#9654;';
-          gen++;
-          clearTimeout(timer);clearTimeout(parchTimer);
-          timer=null;parchTimer=null;
-        }
-      },200);
-    };
-    menu.appendChild(btn);
-  });
+    btn.className='choice';
+    btn.textContent='Acknowledged. Continue →';
+    btn.onclick=nxt;
+    document.getElementById('qc-fb').after(btn);
+  }, 600);
 }
-function toggleCardMenu(){
-  buildCardMenu();
-  var menu=document.getElementById('card-menu');
-  menu.classList.toggle('open');
-}
-function closeCardMenu(){
-  document.getElementById('card-menu').classList.remove('open');
-}
-// Close menu if clicking outside
-document.addEventListener('click',function(e){
-  var menu=document.getElementById('card-menu');
-  var btn=document.getElementById('card-menu-btn');
-  if(menu.classList.contains('open')&&!menu.contains(e.target)&&e.target!==btn){
-    closeCardMenu();
-  }
-});
 
-// ═══ BEGIN ═══════════════════════════════════════════
-function begin(){
-  var st=document.getElementById('st');
-  st.classList.add('gone');
-  setTimeout(function(){st.style.display='none';},700);
-  initAudio();
-  running=true;
-  play(0);
+function handleQCInput(idx, goNext){
+  const q=getQC(C[idx].id);
+  const fb=document.getElementById('qc-fb');
+  const nxt=idx+1<C.length?()=>prenav(idx+1):apply;
+  const raw=document.getElementById('qc-ans').value.trim();
+  const val=parseFloat(raw);
+  var correct=false;
+  if(q.correct===0.5 && (val===0.5||raw==='1/2')) correct=true;
+  else if(q.correct===0.2 && (val===0.2||raw==='1/5')) correct=true;
+  else if(q.correct===0.8 && (val===0.8||raw==='4/5')) correct=true;
+  else if(Math.abs(val-q.correct)<0.001) correct=true;
+  if(correct){
+    fb.className='qc-feedback qc-right';
+    fb.textContent=q.correct_msg;
+    recordQCResult(true);
+    S.dos[C[idx].id].qc=true; rd();
+  } else {
+    fb.className='qc-feedback qc-wrong';
+    fb.textContent=q.wrong_msg||'Incorrect. A correction is on file.';
+    de(C[idx].id,'QC/'+q.form+': incorrect response.');
+    recordQCResult(false);
+  }
+
+  setTimeout(function(){
+    var btn=document.createElement('button');
+    btn.className='choice';
+    btn.textContent='Acknowledged. Continue →';
+    btn.onclick=nxt;
+    document.getElementById('qc-fb').after(btn);
+  }, 600);
 }
-document.getElementById('st').addEventListener('click',begin);
+
+
+// ── AUDIO — ported from episode player ───────────────────────────
+var _AC=null,_mg=null,_padI=0,_audioOn=false;
+var _CHORDS=[[196,246.9,329.6],[164.8,220,293.7],[185,246.9,311.1],[196,261.6,329.6]];
+
+function initAudio(){
+  if(_AC) return;
+  try{
+    _AC=new(window.AudioContext||window.webkitAudioContext)();
+    var co=_AC.createDynamicsCompressor();
+    co.threshold.value=-20;co.ratio.value=4;co.connect(_AC.destination);
+    _mg=_AC.createGain();_mg.gain.value=0;_mg.connect(co);
+    _schedulePad();_scheduleMel();_scheduleTick();
+  } catch(e){ console.log('Audio unavailable'); }
+}
+
+function _tone(f,t,dur,v){
+  var o=_AC.createOscillator(),g=_AC.createGain();
+  o.type='sine';o.frequency.value=f;
+  g.gain.setValueAtTime(0,t);
+  g.gain.linearRampToValueAtTime(v,t+.35);
+  g.gain.linearRampToValueAtTime(v*.8,t+dur-.6);
+  g.gain.linearRampToValueAtTime(0,t+dur);
+  o.connect(g);g.connect(_mg);o.start(t);o.stop(t+dur+.1);
+}
+
+function _schedulePad(){
+  if(!_AC) return;
+  if(_audioOn) _CHORDS[_padI%4].forEach(function(f){ _tone(f,_AC.currentTime,12,.018); });
+  _padI++;
+  setTimeout(_schedulePad,10400);
+}
+
+function _scheduleMel(){
+  if(!_AC) return;
+  if(_audioOn){
+    var M=[
+      [{f:659,d:1.4},{f:587,d:.9},{f:523,d:2}],
+      [{f:784,d:1.6},{f:698,d:2.1}],
+      [{f:523,d:.9},{f:587,d:1},{f:659,d:1.8}]
+    ];
+    var fr=M[Math.floor(Math.random()*3)];
+    var t=_AC.currentTime+.2;
+    fr.forEach(function(n){
+      var o=_AC.createOscillator(),g=_AC.createGain();
+      o.type='sine';o.frequency.value=n.f;
+      g.gain.setValueAtTime(0,t);
+      g.gain.linearRampToValueAtTime(.008,t+.1);
+      g.gain.exponentialRampToValueAtTime(.0001,t+n.d);
+      o.connect(g);g.connect(_mg);o.start(t);o.stop(t+n.d+.1);
+      t+=n.d+.08;
+    });
+  }
+  setTimeout(_scheduleMel,(15+Math.random()*14)*1000);
+}
+
+function _scheduleTick(){
+  if(!_AC){ setTimeout(_scheduleTick,1620+Math.random()*180); return; }
+  if(_audioOn){
+    [[880,.002],[698,.0015]].forEach(function(p,i){
+      var d=i*.9,o=_AC.createOscillator(),g=_AC.createGain();
+      o.type='sine';o.frequency.value=p[0];
+      g.gain.setValueAtTime(p[1],_AC.currentTime+d);
+      g.gain.exponentialRampToValueAtTime(.0001,_AC.currentTime+d+.09);
+      o.connect(g);g.connect(_mg);
+      o.start(_AC.currentTime+d);o.stop(_AC.currentTime+d+.12);
+    });
+  }
+  setTimeout(_scheduleTick,1620+Math.random()*180);
+}
+
+function toggleSound(){
+  initAudio();
+  if(!_AC) return;
+  _audioOn=!_audioOn;
+  var sl=document.getElementById('sound-label');
+  if(_audioOn){
+    if(_AC.state==='suspended') _AC.resume();
+    _mg.gain.setTargetAtTime(0.24,_AC.currentTime,.3);
+    // Kick off pad immediately so first chord plays now
+    if(_audioOn) _CHORDS[_padI%4].forEach(function(f){ _tone(f,_AC.currentTime+0.1,12,.018); });
+    _padI++;
+    sl.querySelectorAll('line').forEach(function(l){l.style.display='';});
+    sl.style.opacity='0.9';
+  } else {
+    _mg.gain.setTargetAtTime(0,_AC.currentTime,.3);
+    sl.querySelectorAll('line').forEach(function(l){l.style.display='none';});
+    sl.style.opacity='0.4';
+  }
+}
+
+function updateBackBtn(){
+  var btn=document.getElementById('back-btn');
+  if(btn) btn.style.visibility=_history.length>1?'visible':'hidden';
+}
+
+function goBack(){
+  if(_history.length<=1) return;
+  _history.pop(); // remove current
+  var prev=_history.pop(); // get previous (show() will re-push it)
+  show(prev.html, prev.choices);
+}
+
+
+function openMap(){
+  buildMap();
+  var o=document.getElementById('map-overlay');
+  o.style.cssText='display:flex;position:fixed;inset:0;background:rgba(26,22,16,.6);z-index:200;align-items:center;justify-content:center';
+}
+function closeMap(){
+  document.getElementById('map-overlay').style.display='none';
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape') closeMap();
+});
+function buildMap(){
+  var currentIdx=-1;
+  if(_history.length>0){
+    var last=_history[_history.length-1].html||'';
+    for(var ci=0;ci<C.length;ci++){
+      if(last.indexOf(C[ci].section)>-1){currentIdx=ci;break;}
+    }
+  }
+
+  var panel=document.getElementById('map-grid');
+  panel.innerHTML='';
+  panel.style.cssText='display:grid;grid-template-columns:1fr 40px 1fr;gap:0;';
+
+  // Left column rooms 1-5, corridor, right column rooms 6-10
+  var leftCol=document.createElement('div');
+  leftCol.style.cssText='display:flex;flex-direction:column;gap:1px;';
+
+  var corridor=document.createElement('div');
+  corridor.style.cssText='background:rgba(26,22,16,.07);border-left:1px solid rgba(26,22,16,.3);border-right:1px solid rgba(26,22,16,.3);display:flex;align-items:center;justify-content:center;';
+  var corrLabel=document.createElement('div');
+  corrLabel.style.cssText='font-family:monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(26,22,16,.35);writing-mode:vertical-rl;transform:rotate(180deg);';
+  corrLabel.textContent='Corridor — First Floor';
+  corridor.appendChild(corrLabel);
+
+  var rightCol=document.createElement('div');
+  rightCol.style.cssText='display:flex;flex-direction:column;gap:1px;';
+
+  function makeRoom(idx){
+    var c=C[idx], d=S.dos[c.id];
+    var isCurrent=(idx===currentIdx);
+    var box=document.createElement('div');
+    box.style.cssText='background:'+(d.absorbed?'rgba(26,22,16,.07)':'#F2EDD7')+
+      ';border:'+(isCurrent?'2px solid rgba(180,130,30,.8)':'1px solid rgba(26,22,16,.25)')+
+      ';padding:14px 14px 10px;cursor:pointer;transition:background .15s;position:relative;flex:1;';
+    box.onmouseover=function(){this.style.background='rgba(180,130,30,.08)';};
+    box.onmouseout=function(){var f=d.absorbed?'rgba(26,22,16,.07)':'#F2EDD7';this.style.background=f;};
+    box.onclick=(function(i){return function(){closeMap();hub(i);};})(idx);
+
+    var rnum=document.createElement('div');
+    rnum.style.cssText='font-family:monospace;font-size:9px;letter-spacing:.12em;color:rgba(26,22,16,.35);margin-bottom:4px;';
+    rnum.textContent=(idx<9?'0':'')+(idx+1);
+
+    var title=document.createElement('div');
+    title.style.cssText='font-family:monospace;font-size:14px;color:rgba(26,22,16,.9);line-height:1.3;margin-bottom:10px;font-weight:bold;';
+    title.textContent=c.title;
+
+    var pips=document.createElement('div');
+    pips.style.cssText='display:flex;gap:5px;';
+    ['anteroom','r197a','members','counting','qc'].forEach(function(k){
+      var p=document.createElement('div');
+      p.style.cssText='width:9px;height:9px;border:1px solid rgba(26,22,16,'+(d[k]?'.6':'.2')+');background:'+(d[k]?'rgba(26,22,16,.55)':'none')+';';
+      pips.appendChild(p);
+    });
+
+    box.appendChild(rnum);
+    box.appendChild(title);
+    box.appendChild(pips);
+
+    if(isCurrent){
+      var marker=document.createElement('div');
+      marker.style.cssText='font-family:monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(180,130,30,.9);margin-top:6px;';
+      marker.textContent='You are here';
+      box.appendChild(marker);
+    }
+    if(d.absorbed){
+      var tick=document.createElement('div');
+      tick.style.cssText='position:absolute;top:10px;right:10px;font-size:14px;color:rgba(26,22,16,.35);';
+      tick.textContent='✓';
+      box.appendChild(tick);
+    }
+    return box;
+  }
+
+  for(var i=0;i<5;i++) leftCol.appendChild(makeRoom(i));
+  for(var j=5;j<10;j++) rightCol.appendChild(makeRoom(j));
+
+  panel.appendChild(leftCol);
+  panel.appendChild(corridor);
+  panel.appendChild(rightCol);
+}
+
+s0();
 </script>
 </body>
 </html>
