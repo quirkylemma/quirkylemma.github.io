@@ -163,28 +163,29 @@ body {
 #footer {
   position: fixed;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 740px;
+  left: 0;
+  right: 0;
   background: #1A1610;
-  padding: 12px 40px;
+  padding: 12px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 50;
+  gap: 8px;
 }
 .f-btn {
   background: none;
   border: 1px solid rgba(242,237,215,.35);
-  color: rgba(242,237,215,.7);
+  color: rgba(242,237,215,.8);
   font-family: 'Special Elite', monospace;
-  font-size: 11px;
-  letter-spacing: .14em;
+  font-size: 12px;
+  letter-spacing: .12em;
   text-transform: uppercase;
-  padding: 7px 18px;
+  padding: 8px 16px;
   cursor: pointer;
   text-decoration: none;
   transition: all .15s;
+  white-space: nowrap;
 }
 .f-btn:hover { border-color: white; color: white; }
 .f-mid {
@@ -193,6 +194,12 @@ body {
   letter-spacing: .14em;
   color: rgba(242,237,215,.3);
   text-transform: uppercase;
+  text-align: center;
+  flex: 1;
+}
+@media (max-width: 500px) {
+  .f-mid { display: none; }
+  .f-btn { font-size: 11px; padding: 8px 12px; letter-spacing: .08em; }
 }
 </style>
 </head>
@@ -218,8 +225,7 @@ body {
     <div id="blackboard">
       <div class="chalk-text">
         <p>I am Aubrey Squeakwell, BSc.</p>
-        <p>I am here.</p>
-        <p>Because I intend to be somewhere else. &nbsp;&#9633;</p>
+        <p>I am here because I intend to be somewhere else. &nbsp;&#9633;</p>
       </div>
     </div>
 
@@ -227,7 +233,7 @@ body {
       <p>The lights of the casino are on.</p>
       <p>Across the road, in relative darkness, is the Institute. It is a building of uncertain provenance, constructed during the 1980s. Its style suggests the architect had strong feelings about concrete. It houses ten floors.</p>
       <p>Candidate Squeakwell stands on the ground floor of the Institute. He intends to file an application for entry to the casino. The requisite framework for entry is mathematical. It is available on the floors above. The floors are to be visited in order. Or not.</p>
-      <p>The casino is called Gambler's Ruin. There is only one game. Blackjack. The lights are always on. No application for entry from this building has yet been successful. Several have been filed.</p>
+      <p>The casino is called Gambler's Ruin. The lights are always on. Several applications for entry have been filed. None have been successful yet.</p>
     </div>
 
     <div id="spaces-label">Spaces &mdash; Select to enter</div>
