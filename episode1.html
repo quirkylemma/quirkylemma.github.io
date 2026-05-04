@@ -149,6 +149,22 @@ html,body{background:#B8B0A0;font-family:'IM Fell English',Georgia,serif;font-si
 .qc-wrong{color:var(--red);border-left:3px solid var(--red)}
 
 #inst-status{transition:all .4s ease;color:var(--ink)}
+
+/* OFFICE HOUR AI */
+#oh-wrap{display:flex;flex-direction:column;height:380px}
+#oh-messages{flex:1;overflow-y:auto;padding:16px 0;display:flex;flex-direction:column;gap:14px}
+.oh-msg{max-width:88%;line-height:1.6;font-size:17px;font-family:'IM Fell English',Georgia,serif}
+.oh-msg.ragvir{align-self:flex-start;color:var(--ink)}
+.oh-msg.student{align-self:flex-end;color:var(--ink-mid);font-style:italic}
+.oh-msg.ragvir::before{content:'R.S. — ';font-family:'Special Elite',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:4px}
+.oh-msg.student::before{content:'You — ';font-family:'Special Elite',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:4px}
+#oh-input-row{display:flex;gap:8px;margin-top:12px;border-top:1px solid var(--rule);padding-top:12px}
+#oh-input{flex:1;background:white;border:1px solid var(--rule-heavy);color:var(--ink);font-family:'IM Fell English',Georgia,serif;font-size:17px;padding:9px 12px;outline:none}
+#oh-input:focus{border-color:var(--ink)}
+#oh-send{background:var(--ink);border:none;color:var(--paper);font-family:'Special Elite',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:9px 18px;cursor:pointer;white-space:nowrap}
+#oh-send:hover{opacity:.8}
+.oh-thinking{color:var(--ink-faint);font-style:italic;font-size:15px}
+
 </style>
 </head>
 <body>
@@ -361,7 +377,7 @@ function hub(idx){
       '<button class="rbtn'+(d.members?' done':'')+'" onclick="roomgo('+idx+',2)"><div class="rl">Advanced</div><div class="rn">Algebra</div></button>'+
       '<button class="rbtn'+(d.counting?' done':'')+'" onclick="roomgo('+idx+',3)"><div class="rl">Real World</div><div class="rn">Application</div></button>'+
       (getQC(c.id)?'<button class="rbtn'+(d.qc?' done':'')+'" onclick="showQCForm('+idx+',null)"><div class="rl">Self-Test</div><div class="rn">Problem</div></button>':'<button class="rbtn" style="opacity:.25;cursor:default"><div class="rl">Self-Test</div><div class="rn">Problem</div></button>')+
-      '<button class="rbtn" onclick="roomgo('+idx+',1)"><div class="rl">Office Hour</div><div class="rn">Room 197A</div></button>'+
+      '<button class="rbtn" onclick="officeHour('+idx+')"><div class="rl">Office Hour</div><div class="rn">Room 197A</div></button>'+
     '</div>'+
 
     (d.anteroom?
@@ -929,6 +945,133 @@ function buildMap(){
   panel.appendChild(leftCol);
   panel.appendChild(corridor);
   panel.appendChild(rightCol);
+}
+
+
+// ── OFFICE HOUR AI ────────────────────────────────────────────────
+var _ohHistory=[];
+var _ohIdx=-1;
+var _ohThinking=false;
+
+function officeHour(idx){
+  _ohIdx=idx;
+  _ohHistory=[];
+  const c=C[idx];
+  ds(c.id,'r197a');
+
+  // Build context from all room content
+  var ctx='';
+  ctx+='Concept: '+c.title+'\n';
+  if(c.pre&&c.pre.length) ctx+='Introduction: '+c.pre.join(' ')+'\n';
+  if(c.anteroom&&c.anteroom.length) ctx+='Foundation content: '+c.anteroom.join(' ')+'\n';
+  if(c.r197a&&c.r197a.length) ctx+='Verbal content: '+c.r197a.join(' ')+'\n';
+  if(c.members&&c.members.length) ctx+='Advanced content: '+c.members.join(' ')+'\n';
+  if(c.counting&&c.counting.length) ctx+='Application content: '+c.counting.join(' ')+'\n';
+  var qc=getQC(c.id);
+  if(qc) ctx+='Self-test question: '+qc.question+' Correct answer: '+qc.correct_msg+'\n';
+
+  window._ohSystemPrompt = 'You are Ragvir Sabharwal, Senior Teaching Fellow at Imperial Business School. '+
+    'You are running an office hour session on the topic of '+c.title+' from Kolmogorov\'s probability framework. '+
+    'The student has just studied this material: '+ctx+
+    'Your role is Socratic. Ask questions rather than give answers. Push back even on correct responses — '+
+    'ask the student to justify or extend their thinking. Never simply confirm an answer as correct without probing deeper. '+
+    'When a student is genuinely stuck, give a hint not an answer. '+
+    'Be warm but rigorous. You are precise about mathematics. '+
+    'Keep responses concise — two or three sentences maximum. One probing question per response. '+
+    'Do not use bullet points or lists. Speak directly to the student.';
+
+  show(
+    '<div class="inotice">Office Hour — Room 197A — '+c.section+'</div>'+
+    '<div id="oh-wrap">'+
+      '<div id="oh-messages"></div>'+
+      '<div id="oh-input-row">'+
+        '<input id="oh-input" type="text" placeholder="Type your response…" onkeydown="if(event.key===\'Enter\')ohSend()">'+
+        '<button id="oh-send" onclick="ohSend()">Send</button>'+
+      '</div>'+
+    '</div>',
+    [{l:'← Back → Rooms', f:function(){hub(idx);}}]
+  );
+
+  // Opening question from Ragvir
+  setTimeout(function(){
+    var opening = getOHOpening(c.id);
+    ohAddMessage('ragvir', opening);
+    _ohHistory.push({role:'assistant', content:opening});
+  }, 400);
+}
+
+function getOHOpening(id){
+  var openings = {
+    'uncertainty':    'You\'ve just read about probability as a measure. In your own words — what does it mean to measure something?',
+    'experiment':     'The material defines an experiment formally. But how would you explain to someone why a coin toss qualifies as an experiment, and a calculation does not?',
+    'sample_space':   'You\'ve seen the definition of a sample space. What would go wrong if we omitted an outcome from Ω?',
+    'events':         'An event is a subset of the sample space. Can you give me an example where two events overlap — and tell me what that overlap means?',
+    'sigma_algebra':  'Ω is the set of outcomes. ℱ is the collection of events. Why do we need both? What would be missing if we only had Ω?',
+    'mutual_exclusivity': 'Two events are mutually exclusive. What precisely does that mean — and what does it not mean?',
+    'probability_measure': 'We have a measurable space (Ω, ℱ). Why isn\'t any function from ℱ to ℝ a valid probability measure?',
+    'axiom1':         'Axiom 1 says P(A) ≥ 0 for all events A. What would it mean for a probability to be negative? Is it simply inconvenient, or is it something deeper?',
+    'axiom2':         'P(Ω) = 1. Why exactly 1? What breaks if we set P(Ω) = 100?',
+    'axiom3':         'Countable additivity. Walk me through why the word “countable” is there. What happens with uncountably many events?'
+  };
+  return openings[id] || 'You\'ve studied '+id+'. What is the key idea, in one sentence?';
+}
+
+async function ohSend(){
+  if(_ohThinking) return;
+  var input=document.getElementById('oh-input');
+  if(!input) return;
+  var text=input.value.trim();
+  if(!text) return;
+  input.value='';
+
+  ohAddMessage('student', text);
+  _ohHistory.push({role:'user', content:text});
+
+  _ohThinking=true;
+  var thinkEl=document.createElement('div');
+  thinkEl.className='oh-msg ragvir oh-thinking';
+  thinkEl.textContent='…';
+  document.getElementById('oh-messages').appendChild(thinkEl);
+  ohScroll();
+
+  try {
+    var messages=[{role:'user',content:'Begin the office hour session.'},
+                  {role:'assistant',content:_ohHistory[0].content}]
+                  .concat(_ohHistory.slice(1));
+
+    var res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:window._ohSystemPrompt,
+        messages:messages
+      })
+    });
+    var data=await res.json();
+    var reply=data.content&&data.content[0]&&data.content[0].text||'I\'m afraid I didn\'t catch that. Could you rephrase?';
+    thinkEl.remove();
+    ohAddMessage('ragvir', reply);
+    _ohHistory.push({role:'assistant', content:reply});
+  } catch(e) {
+    thinkEl.remove();
+    ohAddMessage('ragvir','The connection appears to have lapsed. Please try again.');
+  }
+  _ohThinking=false;
+}
+
+function ohAddMessage(role, text){
+  var el=document.createElement('div');
+  el.className='oh-msg '+role;
+  el.textContent=text;
+  var msgs=document.getElementById('oh-messages');
+  if(msgs){ msgs.appendChild(el); ohScroll(); }
+}
+
+function ohScroll(){
+  var msgs=document.getElementById('oh-messages');
+  if(msgs) msgs.scrollTop=msgs.scrollHeight;
 }
 
 s0();
