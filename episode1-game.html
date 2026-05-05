@@ -1340,13 +1340,15 @@ function ohScroll(){
 
 
 function cutscene1(){
+  // Hide K quote on cut scene
   var wm=document.getElementById('header-wordmark');
   var hn=document.getElementById('header-notice');
   if(wm) wm.style.display='';
   if(hn) hn.style.display='none';
-  // Update title bar to First Floor
+  // Update title bar directly — not via setFloorLabel to avoid showing notice
   var lbl=document.getElementById('floor-label');
-  setFloorLabel('First Floor');
+  if(lbl){ lbl.textContent='First Floor'; lbl.style.cursor='pointer'; lbl.title='First Floor'; lbl.onclick=floor1arrival; }
+  var mb=document.getElementById('map-btn'); if(mb) mb.style.display='block';
   var mb=document.getElementById('map-btn'); if(mb) mb.style.display='block';
 
   show(
