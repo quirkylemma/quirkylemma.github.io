@@ -59,7 +59,7 @@ html,body{background:#B8B0A0;font-family:'IM Fell English',Georgia,serif;font-si
 .rbtn:hover{background:rgba(26,22,16,.05)}
 
 .rbtn.done .rn::after{content:" ✓";color:var(--ink-faint);font-size:.85em}
-.rl{font-family:'IM Fell English',Georgia,serif;font-size:15px;color:var(--ink);line-height:1.2;text-align:center}
+.rl{font-family:'IM Fell English',Georgia,serif;font-size:13px;color:var(--ink);line-height:1.3;text-align:center}.rl .rsub{display:block;font-family:'Special Elite',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:2px}
 .rn{display:none}
 
 /* CARD */
@@ -365,6 +365,7 @@ html,body{background:#B8B0A0;font-family:'IM Fell English',Georgia,serif;font-si
         <button class="ss-btn" onclick="document.getElementById('startscreen').style.display='none';s0();">Begin &rarr;</button>
       </div>
     </div>
+
     <div id="dossier">
       <div class="dossier-open-wrap">
         <div class="dossier-open-back"></div>
@@ -556,6 +557,7 @@ rd();
 
 // HUB
 function hub(idx){
+  var cd=document.getElementById('cutscene-doc');if(cd)cd.style.display='none';var cb=document.getElementById('cutscene-board');if(cb)cb.style.display='none';
   setFloorLabel('First Floor');
   const c=C[idx],d=S.dos[c.id];
   const intro=c.intro||'';
@@ -563,12 +565,12 @@ function hub(idx){
     '<div class="inotice">The Institute — First Floor — '+c.section+'</div>'+
     (intro?'<div class="narration"><p>'+intro+'</p></div>':'')+
     '<div class="room-grid" style="grid-template-columns:1fr 1fr 1fr">'+
-      '<button class="rbtn" onclick="roomgo('+idx+',1)">'+stampSVG('r197a',d,20)+'<div class="rl">Intuition</div></button>'+
-      '<button class="rbtn" onclick="roomgo('+idx+',0)">'+stampSVG('anteroom',d,20)+'<div class="rl">Basic</div></button>'+
-      '<button class="rbtn" onclick="roomgo('+idx+',2)">'+stampSVG('members',d,20)+'<div class="rl">Advanced</div></button>'+
-      '<button class="rbtn" onclick="roomgo('+idx+',3)">'+stampSVG('counting',d,20)+'<div class="rl">Application</div></button>'+
-      (getQC(c.id)?'<button class="rbtn" onclick="showQCForm('+idx+',null)">'+stampSVG('qc',d,20)+'<div class="rl">Assessment</div></button>':'<button class="rbtn" style="opacity:.25;cursor:default"><div class="rl">Assessment</div></button>')+
-      '<button class="rbtn" onclick="officeHour('+idx+')" style="flex-direction:row;gap:14px;min-height:50px"><div style="font-size:22px;line-height:1">∴</div><div class="rl">Room 197A</div></button>'+
+      '<button class="rbtn" onclick="roomgo('+idx+',1)">'+stampSVG('r197a',d,20)+'<div class="rl">Intuition<span class="rsub">Descriptive</span></div></button>'+
+      '<button class="rbtn" onclick="roomgo('+idx+',0)">'+stampSVG('anteroom',d,20)+'<div class="rl">Basic<span class="rsub">Algebra</span></div></button>'+
+      '<button class="rbtn" onclick="roomgo('+idx+',2)">'+stampSVG('members',d,20)+'<div class="rl">Advanced<span class="rsub">Algebra</span></div></button>'+
+      '<button class="rbtn" onclick="roomgo('+idx+',3)">'+stampSVG('counting',d,20)+'<div class="rl">Application<span class="rsub">Real-World</span></div></button>'+
+      (getQC(c.id)?'<button class="rbtn" onclick="showQCForm('+idx+',null)">'+stampSVG('qc',d,20)+'<div class="rl">Assessment<span class="rsub">Problems</span></div></button>':'<button class="rbtn" style="opacity:.25;cursor:default"><div class="rl">Assessment</div></button>')+
+      '<button class="rbtn" onclick="officeHour('+idx+')" style="grid-column:1/-1;flex-direction:row;gap:14px;min-height:50px">'+stampSVG('r197a',d,20)+'<div class="rl">Room 197A<span class="rsub">Office Hour</span></div></button>'+
     '</div>'+
 
     (d.anteroom?
@@ -646,6 +648,7 @@ function postnav(idx){
 }
 
 function prenav(idx){
+  var cd=document.getElementById('cutscene-doc');if(cd)cd.style.display='none';var cb=document.getElementById('cutscene-board');if(cb)cb.style.display='none';
   const c=C[idx];
   // Ensure floor label is correct and clickable
   var lbl=document.getElementById('floor-label');
@@ -740,6 +743,7 @@ function apply(){
 
 // OPENING
 function s0(){
+  var cd=document.getElementById('cutscene-doc');if(cd)cd.style.display='none';var cb=document.getElementById('cutscene-board');if(cb)cb.style.display='none';
   const ss=document.getElementById("startscreen");
   if(ss)ss.style.display="none";
   show(
@@ -1344,40 +1348,24 @@ function cutscene1(){
   var hn=document.getElementById('header-notice');
   if(wm) wm.style.display='';
   if(hn) hn.style.display='none';
-  // Update title bar directly — not via setFloorLabel to avoid showing notice
   var lbl=document.getElementById('floor-label');
   if(lbl){ lbl.textContent='First Floor'; lbl.style.cursor='pointer'; lbl.title='First Floor'; lbl.onclick=floor1arrival; }
   var mb=document.getElementById('map-btn'); if(mb) mb.style.display='block';
-  var mb=document.getElementById('map-btn'); if(mb) mb.style.display='block';
-
   show(
-    '<div class="narration">'+
-    '<p>The Cleaner passed through.</p>'+
-    '<p>She said one thing.</p>'+
-    '<p>It was, unfortunately, correct.</p>'+
-    '</div>'+
-    '<div class="cutscene-page">'+
-      '<div class="cutscene-header">'+
-        '<span class="cutscene-label">The Institute  □</span>'+
-        '<span class="cutscene-loc">First Floor Corridor</span>'+
-      '</div>'+
-      '<div>'+
-        '<p class="cs-dir">The Cleaner passed through the first floor corridor with a mop. She did not look up.</p>'+
-        '<p class="cs-speech">“I am uncertain about —” said Aubrey.</p>'+
-        '<p class="cs-dir">She stopped. Still did not look up.</p>'+
-        '<p class="cs-speech">“About what?” said the Cleaner.</p>'+
-        '<p class="cs-speech">“That,” said Aubrey, “is rather the question.”</p>'+
-        '<p class="cs-speech">“And how uncertain are you?”</p>'+
-        '<p class="cs-dir">He had not thought about it in those terms. He looked at the empty dossier in his hand.</p>'+
-        '<p class="cs-speech">“I don’t know.”</p>'+
-        '<p class="cs-dir">The Cleaner resumed moving.</p>'+
-        '<p class="cs-speech">“Then you have two problems. Not one.”  □</p>'+
-      '</div>',
+    '<div class="inotice">The Institute — First Floor — The Corridor</div>',
     [{l:'Continue →',f:floor1arrival}]
   );
+  // Show static document after show() has rendered
+  setTimeout(function(){
+    var cd=document.getElementById('cutscene-doc');
+    if(cd) cd.style.display='block';
+    var cb=document.getElementById('cutscene-board');
+    if(cb) cb.style.display='block';
+  }, 50);
 }
 
 function floor1arrival(){
+  var cd=document.getElementById('cutscene-doc');if(cd)cd.style.display='none';var cb=document.getElementById('cutscene-board');if(cb)cb.style.display='none';
   setFloorLabel('First Floor');
   var wm=document.getElementById('header-wordmark');
   var hn=document.getElementById('header-notice');
@@ -2139,15 +2127,23 @@ function ohScroll(){
 
 
 function cutscene1(){
-  // Update title bar to First Floor
+  var wm=document.getElementById('header-wordmark');
+  var hn=document.getElementById('header-notice');
+  if(wm) wm.style.display='';
+  if(hn) hn.style.display='none';
   var lbl=document.getElementById('floor-label');
-  setFloorLabel('First Floor');
+  if(lbl){ lbl.textContent='First Floor'; lbl.style.cursor='pointer'; lbl.title='First Floor'; lbl.onclick=floor1arrival; }
   var mb=document.getElementById('map-btn'); if(mb) mb.style.display='block';
 
   show(
+    '<div class="narration">'+
+      '<p>The Cleaner passed through.</p>'+
+      '<p>She said something.</p>'+
+      '<p>It was, unfortunately, correct.</p>'+
+    '</div>'+
     '<div class="cutscene-page">'+
       '<div class="cutscene-header">'+
-        '<span class="cutscene-label">The Institute  □</span>'+
+        '<span class="cutscene-label">The Institute</span>'+
         '<span class="cutscene-loc">First Floor Corridor</span>'+
       '</div>'+
       '<div>'+
@@ -2160,29 +2156,25 @@ function cutscene1(){
         '<p class="cs-dir">He had not thought about it in those terms. He looked at the empty dossier in his hand.</p>'+
         '<p class="cs-speech">“I don’t know.”</p>'+
         '<p class="cs-dir">The Cleaner resumed moving.</p>'+
-        '<p class="cs-speech">“Then you have two problems. Not one.”  □</p>'+
-      '</div>',
+        '<p class="cs-speech">“Then you have two problems. Not one.”</p>'+
+      '</div>'+
+    '</div>'+
+    '<div class="cutscene-shadow"></div>',
     [{l:'Continue →',f:floor1arrival}]
   );
 }
 
 function floor1arrival(){
-  // Update title bar to First Floor
+  setFloorLabel('First Floor');
   var lbl=document.getElementById('floor-label');
-  if(lbl){
-    lbl.textContent='First Floor';
-    lbl.style.cursor='pointer';
-    lbl.title='Opening cut scene';
-    lbl.onclick=function(){ cutscene1(); };
-  }
+  if(lbl){ lbl.style.cursor='default'; lbl.title=''; lbl.onclick=null; }
   show(
-    '<div class="narration">'+'<p>The first floor corridor.</p>'+'<div style="margin-top:20px;position:relative;display:inline-block">'+'<div style="position:absolute;top:-6px;left:16px;width:10px;height:10px;background:radial-gradient(circle at 35% 35%,#E8C84A,#B8860B);border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.5);z-index:2"></div>'+'<div style="background:#EDE4C8;border:1px solid rgba(26,22,16,.2);padding:16px 20px 14px;max-width:380px;position:relative;transform:rotate(-0.8deg);box-shadow:1px 2px 8px rgba(0,0,0,.3),3px 3px 16px rgba(0,0,0,.15);overflow:hidden">'+'<div style="position:absolute;inset:0;background-image:repeating-linear-gradient(to bottom,transparent,transparent 27px,rgba(26,22,16,.07) 27px,rgba(26,22,16,.07) 28px);background-position:0 22px;pointer-events:none"></div>'+'<div style="font-family:Special Elite,monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(26,22,16,.38);margin-bottom:10px;position:relative;z-index:1">Notice — The Institute</div>'+'<div style="font-family:Georgia,serif;font-size:16px;line-height:1.8;color:#1A1610;font-style:italic;position:relative;z-index:1;margin-bottom:10px">The theory of probability as a mathematical discipline can and should be developed from axioms.</div>'+'<div style="font-family:Special Elite,monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:rgba(26,22,16,.4);text-align:right;position:relative;z-index:1">— A.N. Kolmogorov, 1933</div>'+'</div>'+'<div style="height:6px;background:radial-gradient(ellipse,rgba(0,0,0,.2) 0%,rgba(0,0,0,0) 100%);margin:1px 8px 0;border-radius:50%"></div>'+'</div>'+'</div>',
+    '<div class="narration"><p>The first floor corridor.</p></div>',
     [
       {l:'Go to Room 1', f:()=>prenav(0)},
       {l:'Find floor plan →', f:function(){ triggerMapAnim(); }},
       {l:'Review conversation with the Cleaner', f:cutscene1}
     ]
-  
   );
 }
 
@@ -2263,14 +2255,27 @@ function resetToStairwell(){
 
 function stampSVG(room, d, size){
   var s = typeof size==='number' ? size : (size==='sm' ? 20 : 16);
-  var visited = d[room];
-  var op = '1';
+  var v = d[room];
+  var c = s/2;
+  // Star points for r197a (5-point star)
+  function starPoints(cx,cy,r1,r2,n){
+    var pts=[]; var angle=-Math.PI/2;
+    for(var i=0;i<n*2;i++){
+      var r=i%2===0?r1:r2;
+      pts.push((cx+r*Math.cos(angle)).toFixed(2)+','+(cy+r*Math.sin(angle)).toFixed(2));
+      angle+=Math.PI/n;
+    }
+    return pts.join(' ');
+  }
+  // A as polygon outline (letter A shape using path)
+  var ah=s-2, aw=s-4, mx=s/2;
+  var aPath='M'+mx+',2 L'+(mx+aw/2)+','+(s-2)+' L'+(mx+aw/4)+','+(s-2)+' L'+(mx+aw/4*0.6)+','+(s*0.62)+' L'+(mx-aw/4*0.6)+','+(s*0.62)+' L'+(mx-aw/4)+','+(s-2)+' L'+(mx-aw/2)+','+(s-2)+' Z';
   var svgs = {
-    'r197a':    '<circle cx="'+s/2+'" cy="'+s/2+'" r="'+(s/2-2)+'" fill="'+(visited?'#1A3A5C':'none')+'" stroke="#1A3A5C" stroke-width="1.5" opacity="'+op+'"/>',
-    'anteroom': '<polygon points="'+s/2+',2 '+(s-1)+','+(s-1)+' 1,'+(s-1)+'" fill="'+(visited?'#1C3A38':'none')+'" stroke="#1C3A38" stroke-width="1.5" stroke-linejoin="round" opacity="'+op+'"/>',
-    'members':  '<rect x="2" y="2" width="'+(s-4)+'" height="'+(s-4)+'" fill="'+(visited?'#1A1610':'none')+'" stroke="#1A1610" stroke-width="1.5" opacity="'+op+'"/>',
-    'counting': '<polygon points="1,2 '+(s-1)+',2 '+s/2+','+(s-1)+'" fill="'+(visited?'#8B6414':'none')+'" stroke="#8B6414" stroke-width="1.5" stroke-linejoin="round" opacity="'+op+'"/>',
-    'qc':       '<text x="'+s/2+'" y="'+(s-3)+'" text-anchor="middle" font-family="monospace" font-size="'+(s-4)+'" font-weight="bold" fill="#8B1A1A" opacity="'+op+'">A</text>'
+    'r197a':    '<polygon points="'+starPoints(c,c,c-1,c*0.42,5)+'" fill="'+(v?'#1A3A5C':'none')+'" stroke="#1A3A5C" stroke-width="1.5" stroke-linejoin="round"/>',
+    'anteroom': '<polygon points="'+c+',2 '+(s-1)+','+(s-1)+' 1,'+(s-1)+'" fill="'+(v?'#1C3A38':'none')+'" stroke="#1C3A38" stroke-width="1.5" stroke-linejoin="round"/>',
+    'members':  '<rect x="2" y="2" width="'+(s-4)+'" height="'+(s-4)+'" fill="'+(v?'#1A1610':'none')+'" stroke="#1A1610" stroke-width="1.5"/>',
+    'counting': '<polygon points="1,2 '+(s-1)+',2 '+c+','+(s-1)+'" fill="'+(v?'#8B6414':'none')+'" stroke="#8B6414" stroke-width="1.5" stroke-linejoin="round"/>',
+    'qc':       '<path d="'+aPath+'" fill="'+(v?'#8B1A1A':'none')+'" stroke="#8B1A1A" stroke-width="1.2" stroke-linejoin="round"/>'
   };
   return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 '+s+' '+s+'" style="display:block;margin:0 auto">'+svgs[room]+'</svg>';
 }
