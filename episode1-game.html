@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>The Institute — Form AS/7 — Axiom Absorption Record</title>
+<title>The Institute — Form AS/7 — Absorption Record</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
@@ -41,7 +41,7 @@ html,body{background:#B8B0A0;font-family:'IM Fell English',Georgia,serif;font-si
 .passage.vis{opacity:1}
 
 /* BLACKBOARD */
-.blackboard{background:var(--board);margin:0 -40px 28px;padding:32px 48px;min-height:260px;box-shadow:inset 0 0 80px rgba(0,0,0,.6),inset 0 0 20px rgba(0,0,0,.4);border-top:5px solid #243824;border-bottom:5px solid #243824;position:relative}
+.blackboard{background:var(--board);margin:0 -40px 28px;padding:32px 48px;box-shadow:inset 0 0 80px rgba(0,0,0,.6),inset 0 0 20px rgba(0,0,0,.4);border-top:5px solid #243824;border-bottom:5px solid #243824;position:relative;min-height:260px}
 .blackboard::after{content:'';position:absolute;inset:8px;border:1px solid rgba(255,255,255,.03);pointer-events:none}
 
 /* CHALK + TYPEWRITER */
@@ -55,12 +55,12 @@ html,body{background:#B8B0A0;font-family:'IM Fell English',Georgia,serif;font-si
 
 /* ROOM GRID */
 .room-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin:20px 0;border:1px solid var(--rule-heavy);background:var(--rule-heavy)}
-.rbtn{background:var(--paper);border:none;color:var(--ink);font-family:'IM Fell English',Georgia,serif;font-size:17px;padding:16px 18px;text-align:left;cursor:pointer;transition:background .15s;width:100%}
-.rbtn:hover{background:var(--paper-dark)}
-.rbtn.done{background:rgba(26,22,16,.04)}
+.rbtn{background:var(--paper);border:1px solid rgba(26,22,16,.15);border-bottom:2px solid rgba(26,22,16,.12);color:var(--ink);font-family:'IM Fell English',Georgia,serif;font-size:15px;padding:14px 8px 12px;text-align:center;cursor:pointer;transition:all .15s;width:100%;display:flex;flex-direction:column;align-items:center;gap:10px;min-height:88px;justify-content:center}
+.rbtn:hover{background:rgba(26,22,16,.05)}
+
 .rbtn.done .rn::after{content:" ✓";color:var(--ink-faint);font-size:.85em}
-.rl{font-family:'Special Elite',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:4px}
-.rn{font-size:18px;color:var(--ink)}
+.rl{font-family:'IM Fell English',Georgia,serif;font-size:15px;color:var(--ink);line-height:1.2;text-align:center}
+.rn{display:none}
 
 /* CARD */
 .card{border:1px solid var(--rule-heavy);border-left:4px solid var(--ink);background:var(--paper-dark);padding:20px 24px;margin:20px 0}
@@ -106,11 +106,11 @@ html,body{background:#B8B0A0;font-family:'IM Fell English',Georgia,serif;font-si
 .tres.right{color:var(--ink-faint)}
 
 /* DOSSIER */
-#dossier{margin:44px 0 0;border-top:3px double var(--rule-heavy);padding:22px 0 0}
-.dlabel{font-family:'Special Elite',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px}
-.drow{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px dotted var(--rule)}
-.dc{font-size:16px;color:rgba(26,22,16,.3);transition:color .3s}
-.dc.on{color:var(--ink)}
+#dossier{display:none;margin:32px 0 0;padding:0}
+.dlabel{display:none}
+.drow{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dotted rgba(26,22,16,.12)}
+.dc{font-size:16px;color:rgba(26,22,16,.45);transition:color .3s}
+
 .dr{font-family:'Special Elite',monospace;font-size:12px;letter-spacing:.1em;color:var(--ink-faint)}
 .de{font-size:11px;letter-spacing:.08em;color:var(--red);display:block;font-style:italic;font-family:'Special Elite',monospace}
 
@@ -167,12 +167,141 @@ html,body{background:#B8B0A0;font-family:'IM Fell English',Georgia,serif;font-si
 
 
 /* CUT SCENE */
-.cutscene-page{background:#fff;margin:0 -40px;padding:48px 60px 8px;border-top:1px solid rgba(15,13,8,.08)}
-.cutscene-header{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid #1C3A38;padding-bottom:12px;margin-bottom:36px}
-.cutscene-label{font-family:'Special Elite',monospace;font-size:13px;letter-spacing:.18em;color:#8A8070}
-.cutscene-loc{font-size:13px;color:#8A8070;font-style:italic}
-.cs-dir{font-size:19px;line-height:1.85;color:#3D3828;margin-bottom:1em}
-.cs-speech{font-size:19px;line-height:1.85;color:#111108;margin-bottom:1em;padding-left:20px}
+.cutscene-page{
+  background:linear-gradient(160deg,#FAFAF7 0%,#F5F2EC 100%);
+  padding:32px 40px 28px;
+  width:100%;
+  position:relative;
+  transform:rotate(-0.5deg);
+  margin:20px 0 0;
+  box-shadow:
+    0 1px 3px rgba(0,0,0,.08),
+    2px 4px 16px rgba(0,0,0,.12),
+    4px 8px 28px rgba(0,0,0,.08);
+  border:1px solid rgba(26,22,16,.08);
+}
+/* Paper grain */
+.cutscene-page::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+  background-size:120px;
+  opacity:.18;
+  pointer-events:none;
+}
+/* Shadow beneath */
+.cutscene-shadow{
+  height:10px;
+  background:radial-gradient(ellipse,rgba(0,0,0,.15) 0%,rgba(0,0,0,0) 70%);
+  margin:0 20px;
+  border-radius:50%;
+}
+.cutscene-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  border-bottom:1.5px solid #1C3A38;
+  padding-bottom:10px;
+  margin-bottom:28px;
+  position:relative;
+  z-index:1;
+}
+.cutscene-label{font-family:'Special Elite',monospace;font-size:11px;letter-spacing:.18em;color:#8A8070}
+.cutscene-loc{font-size:12px;color:#8A8070;font-style:italic;font-family:'IM Fell English',Georgia,serif}
+.cs-dir{font-size:17px;line-height:1.85;color:#3D3828;margin-bottom:.9em;position:relative;z-index:1}
+.cs-speech{font-size:17px;line-height:1.85;color:#111108;margin-bottom:.9em;padding-left:18px;position:relative;z-index:1}
+
+#map-btn{display:none}
+
+/* MAP BUTTON ATTENTION ANIMATION */
+@keyframes pulse-ring {
+  0%   { transform: scale(1);   opacity: 1; }
+  100% { transform: scale(3); opacity: 0; }
+}
+@keyframes glow-breathe {
+  0%, 100% { filter: drop-shadow(0 0 0px #B8860B); opacity: .4; }
+  50%       { filter: drop-shadow(0 0 12px #B8860B); opacity: 1; }
+}
+.map-btn-pulse {
+  position: relative;
+}
+.map-btn-pulse::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1.5px solid #B8860B;
+  animation: pulse-ring .9s ease-out forwards;
+}
+.map-btn-glow {
+  animation: glow-breathe 1.8s ease-in-out 5;
+}
+
+.dr { letter-spacing: 3px; font-family: 'IM Fell English', Georgia, serif; }
+
+
+
+/* STAIRWELL DOSSIER */
+.dossier-wrap-s{position:relative;width:260px;margin:28px auto 0;transform:rotate(1.2deg);filter:drop-shadow(3px 5px 16px rgba(0,0,0,.3))}
+.dossier-back-s{position:absolute;bottom:-5px;left:4px;right:-4px;top:5px;background:#C8A84A;border:1px solid rgba(0,0,0,.18)}
+.dossier-front-s{position:relative;background:linear-gradient(135deg,#D4A84A 0%,#C89832 60%,#B88820 100%);border:1px solid rgba(0,0,0,.22);z-index:1}
+.dossier-tab-s{height:24px;width:90px;background:linear-gradient(135deg,#C89832 0%,#B88820 100%);border:1px solid rgba(0,0,0,.18);border-bottom:none;margin-left:20px;position:relative;top:1px;display:flex;align-items:center;justify-content:center}
+.dossier-tab-s span{font-family:'Special Elite',monospace;font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:rgba(26,22,16,.6)}
+.dossier-lbl-s{background:#F2EDD7;margin:12px 12px 0;padding:12px 14px;border:1px solid rgba(0,0,0,.12);position:relative}
+.dossier-lbl-s::after{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(to bottom,transparent,transparent 22px,rgba(26,22,16,.08) 22px,rgba(26,22,16,.08) 23px);background-position:0 20px;pointer-events:none}
+.dlbl-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;position:relative;z-index:1}
+.dlbl-key{font-family:'Special Elite',monospace;font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:rgba(26,22,16,.4)}
+.dlbl-val{font-family:'Special Elite',monospace;font-size:11px;color:#1A1610;letter-spacing:.04em}
+.dossier-int-s{margin:10px 12px 12px;background:#F8F4E8;border:1px solid rgba(0,0,0,.08);padding:14px;min-height:80px;display:flex;flex-direction:column;gap:8px;align-items:stretch;position:relative}
+.d-empty-line{width:100%;height:1px;background:rgba(26,22,16,.1)}
+.d-empty-stamp{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-12deg);border:2px solid rgba(139,26,26,.3);padding:3px 12px;font-family:'Special Elite',monospace;font-size:14px;letter-spacing:.28em;text-transform:uppercase;color:rgba(139,26,26,.3);white-space:nowrap}
+.dossier-ref-s{font-family:'Special Elite',monospace;font-size:7px;letter-spacing:.12em;color:rgba(26,22,16,.3);text-align:right;padding:0 12px 10px}
+.dossier-shadow-s{width:80%;height:8px;background:radial-gradient(ellipse,rgba(0,0,0,.18) 0%,rgba(0,0,0,0) 100%);border-radius:50%;margin:3px auto 0}
+
+
+
+
+
+
+
+
+
+
+
+
+/* OPEN DOSSIER — first floor */
+.dossier-open-wrap{position:relative;width:100%;margin:32px 0 0;filter:drop-shadow(3px 5px 16px rgba(0,0,0,.25))}
+.dossier-open-back{position:absolute;bottom:-5px;left:4px;right:-4px;top:5px;background:#C8A84A;border:1px solid rgba(0,0,0,.18)}
+.dossier-open-front{position:relative;background:linear-gradient(135deg,#D4A84A 0%,#C89832 60%,#B88820 100%);border:1px solid rgba(0,0,0,.22);z-index:1}
+.dossier-open-tab{height:24px;width:90px;background:linear-gradient(135deg,#C89832 0%,#B88820 100%);border:1px solid rgba(0,0,0,.18);border-bottom:none;margin-left:20px;position:relative;top:1px;display:flex;align-items:center;justify-content:center}
+.dossier-open-tab span{font-family:'Special Elite',monospace;font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:rgba(26,22,16,.6)}
+.dossier-open-lbl{background:#F2EDD7;margin:12px 12px 0;padding:10px 14px;border:1px solid rgba(0,0,0,.12);position:relative}
+.dossier-open-lbl::after{display:none}
+.dossier-open-int{margin:10px 12px 12px;background:#F8F4E8;border:1px solid rgba(0,0,0,.08);padding:14px 16px;position:relative}
+.dossier-open-int::after{display:none}
+.dossier-open-shadow{width:90%;height:8px;background:radial-gradient(ellipse,rgba(0,0,0,.16) 0%,rgba(0,0,0,0) 100%);border-radius:50%;margin:3px auto 0}
+/* Rows inside open dossier */
+.drow{display:flex;align-items:center;padding:6px 0;border-bottom:1px solid rgba(26,22,16,.08);position:relative;z-index:1}
+.drow:last-child{border-bottom:none}
+.dc{font-size:14px;color:rgba(26,22,16,.4);transition:color .3s;font-family:'IM Fell English',Georgia,serif;cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}
+
+.dr{display:flex;gap:4px;align-items:center}
+.de{font-size:10px;letter-spacing:.08em;color:var(--red);display:block;font-style:italic;font-family:'Special Elite',monospace;margin-top:2px}
+.dlabel{display:none}
+
+
+
+/* HEADER PINNED NOTICE */
+.pinned-notice{position:relative;padding-top:6px;flex:1;margin-right:24px}
+.notice-pin{position:absolute;top:-2px;left:8px;width:9px;height:9px;background:radial-gradient(circle at 35% 35%,#E8C84A,#B8860B);border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.4),0 0 0 1px rgba(0,0,0,.1);z-index:3}
+.notice-card{background:linear-gradient(150deg,#EDE8D0 0%,#E8E0C8 100%);border:1px solid rgba(26,22,16,.18);padding:9px 14px 8px;position:relative;transform:rotate(-0.6deg);transform-origin:12px 0;box-shadow:1px 1px 0 rgba(0,0,0,.06),2px 2px 6px rgba(0,0,0,.18),3px 4px 14px rgba(0,0,0,.1)}
+.notice-card::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(to bottom,transparent,transparent 20px,rgba(26,22,16,.07) 20px,rgba(26,22,16,.07) 21px);background-position:0 17px;pointer-events:none}
+.notice-card::after{content:'';position:absolute;bottom:0;right:0;width:16px;height:16px;background:linear-gradient(135deg,transparent 50%,rgba(0,0,0,.05) 50%)}
+.notice-hdr{font-family:'Special Elite',monospace;font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:rgba(26,22,16,.35);margin-bottom:5px;position:relative;z-index:1}
+.notice-quote{font-family:'Special Elite',monospace;font-size:15px;line-height:1.65;color:#1A1610;font-style:normal;position:relative;z-index:1;margin-bottom:6px}
+.notice-attr{font-family:'Special Elite',monospace;font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:rgba(26,22,16,.4);text-align:right;position:relative;z-index:1}
+.notice-shadow{height:5px;background:radial-gradient(ellipse at 30% 50%,rgba(0,0,0,.14) 0%,rgba(0,0,0,0) 70%);margin:1px 4px 0;border-radius:50%}
 
 </style>
 </head>
@@ -189,14 +318,23 @@ html,body{background:#B8B0A0;font-family:'IM Fell English',Georgia,serif;font-si
 </div>
 <div id="wrap">
   <div id="inst-header">
-    <div class="inst-name">
+    <div id="header-wordmark" class="inst-name">
       <strong>The Institute</strong>
-      Axiom Absorption Record &mdash; Candidate: Squeakwell, A. (BSc)
+      Absorption Record &mdash; Candidate: Squeakwell, A. (BSc)
+    </div>
+    <div id="header-notice" class="pinned-notice" style="display:none">
+      <div class="notice-pin"></div>
+      <div class="notice-card">
+        <div class="notice-hdr">Notice &mdash; The Institute</div>
+        <div class="notice-quote">The theory of probability as a mathematical discipline can and should be developed from axioms.</div>
+        <div class="notice-attr">&mdash; A.N. Kolmogorov, 1933</div>
+      </div>
+      <div class="notice-shadow"></div>
     </div>
     <div class="ref-block">
       Status: <span id="inst-status">In Progress</span>
       <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:6px;align-items:center">
-        <button onclick="openMap()" title="Floor map" style="background:none;border:none;padding:0;cursor:pointer;opacity:0.5;transition:opacity .18s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">
+        <button id="map-btn" onclick="openMap()" title="Floor map" style="background:none;border:none;padding:0;cursor:pointer;opacity:0.5;transition:opacity .18s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">
           <svg width="20" height="16" viewBox="0 0 22 18" style="display:block">
             <rect x="0" y="0" width="9" height="7" fill="none" stroke="var(--ink-mid)" stroke-width="1.5"/>
             <rect x="13" y="0" width="9" height="7" fill="none" stroke="var(--ink-mid)" stroke-width="1.5"/>
@@ -216,7 +354,7 @@ html,body{background:#B8B0A0;font-family:'IM Fell English',Georgia,serif;font-si
       </div>
     </div>
   </div>
-  <div id="form-title"><span>First Floor</span></div>
+  <div id="form-title"><span id="floor-label" style="cursor:pointer" title="Return to The Stairwell" onclick="s0()">The Stairwell</span></div>
   <div id="content-area">
     <div id="scene">
       <div id="startscreen">
@@ -228,8 +366,21 @@ html,body{background:#B8B0A0;font-family:'IM Fell English',Georgia,serif;font-si
       </div>
     </div>
     <div id="dossier">
-      <div class="dlabel">Dossier &mdash; Absorption Record</div>
-      <div id="drows"></div>
+      <div class="dossier-open-wrap">
+        <div class="dossier-open-back"></div>
+        <div class="dossier-open-front">
+          <div class="dossier-open-tab"><span>The Institute</span></div>
+          <div class="dossier-open-lbl">
+            <div class="dlbl-row"><span class="dlbl-key">Candidate</span><span class="dlbl-val">Squeakwell, A. (BSc)</span></div>
+            <div class="dlbl-row"><span class="dlbl-key">Record</span><span class="dlbl-val">Absorption Record</span></div>
+          </div>
+          <div class="dossier-open-int">
+            <div id="drows"></div>
+          </div>
+          <div class="dossier-ref-s">Form DS/1 &middot; First Floor</div>
+        </div>
+      </div>
+      <div class="dossier-open-shadow"></div>
     </div>
   </div>
 </div>
@@ -243,7 +394,7 @@ html,body{background:#B8B0A0;font-family:'IM Fell English',Georgia,serif;font-si
 
 <script>
 
-const C = [{"id": "uncertainty", "intro": "What is uncertainty? A feeling of unease? Can it be measured?", "title": "Quantifying Uncertainty", "section": "The Preface", "pre": ["The document opens with a remark.", "Before the conditions, there is a framing.", "It concerns uncertainty.", "Specifically, what it means to measure it."], "anteroom": ["Uncertainty is not just a feeling — not just an unease about what might happen.", "It can be measured. A <strong>measure</strong> assigns a number to something.", "Probability is a <strong>measure</strong> — a function that maps sets of outcomes to real numbers.", "A probability quantifies the chance of occurrence of each set of outcomes."], "members": ["Let $(\\Omega, \\mathcal{F})$ be a measurable space.", "A probability measure is a function $P: \\mathcal{F} \\rightarrow \\mathbb{R}$ that assigns to each event $A \\in \\mathcal{F}$ a real number $P(A)$.", "Not every such function qualifies — it must satisfy three axioms.", "The axioms are the conditions. They are coming."], "r197a": ["You want to put a number on how likely things are. That is all probability is, at its core.", "The sets, the functions, the measures — that is just making the intuition precise enough to build a theory on top of.", "Without the precision you have a feeling. With it you have mathematics. The axioms are worth absorbing."], "counting": ["Insurance actuaries assign probabilities to outcomes — fire, flood, theft — and price policies accordingly. A miscalibrated measure can fail a company.", "Every quantitative model in economics and finance is built on a probability measure. This framework is not abstract. It is the foundation."], "post": ["This sounds straightforward.", "It is not always straightforward.", "I speak from experience."], "trap": null}, {"id": "experiment", "intro": "Something happens. Or it might happen. Or it might not. What exactly is that?", "title": "Experiment", "section": "Experiments", "pre": ["The document introduces the concept of an experiment.", "Not, as I had assumed, something conducted in a laboratory with a white coat."], "anteroom": ["An <strong>experiment</strong> is any phenomenon inherently characterised by uncertainty.", "Tossing a coin is an experiment. Rolling a die is an experiment.", "Presenting oneself at the casino is an experiment.", "An experiment produces a result. The sample space defines which results are possible."], "members": ["Formally, an experiment is a procedure that generates exactly one outcome $\\omega$ from a defined sample space $\\Omega$.", "The outcome is not determined in advance.", "Without a well-defined experiment there is no sample space, no events, no probability measure."], "r197a": ["Experiment does not mean lab coat and test tubes. It just means: something happens, you do not know what will happen before it happens.", "Tossing a coin. Rolling a die. Going to the casino. All experiments. The uncertainty is the point.", "If you already know the outcome, there is nothing to assign probability to. The uncertainty is what probability theory is for."], "counting": ["In finance, observing a stock price movement is an experiment — uncertain outcome, defined in advance.", "A clinical trial is an experiment. The framework is identical: uncertain outcome, defined sample space, probability model built on top."], "post": ["An experiment produces a result.", "Which results are possible?", "This is the first question."], "trap": null}, {"id": "sample_space", "intro": "Which outcomes are possible? All of them? Are we sure we have thought of all of them?", "title": "Sample Space", "section": "The sample space", "pre": ["An experiment produces a result.", "Which results are possible?", "This is the first question."], "anteroom": ["Possible results are called <strong>sample outcomes</strong>, denoted $\\omega$.", "The set of all possible outcomes is the <strong>sample space</strong>: $\\Omega = \\{\\,\\omega_1,\\,\\omega_2,\\,\\ldots\\,\\}$.", "Every outcome that can occur must appear in $\\Omega$.", "No outcome may be omitted."], "members": ["$\\Omega$ is the universal set for the experiment — exhaustive and mutually exclusive at the outcome level.", "For a die: $\\Omega = \\{1,2,3,4,5,6\\}$. For a coin: $\\Omega = \\{H, T\\}$. For Blackjack: $\\Omega = \\{\\text{Win}, \\text{Lose}, \\text{Push}\\}$.", "The sample space must be defined before events, the sigma-algebra, or probabilities can be constructed."], "r197a": ["Before you assign any probabilities, you need to know what could happen. Write it all down. That is your sample space.", "The crucial requirement: do not leave anything out. Every possibility must be there.", "Aubrey's sample space last October was $\\Omega = \\{\\text{Win}\\}$. What actually happened was not in it. That is a specification error — one of the most common mistakes I see."], "counting": ["Specification errors — incomplete sample spaces — produce models that fail in ways not anticipated.", "In 2008, probability models used in finance had not included certain tail outcomes in their sample spaces. The events occurred anyway."], "post": ["Last October, my sample space contained one outcome.", "$\\Omega = \\{\\text{Win}\\}$.", "Proof by wishful thinking."], "trap": null}, {"id": "events", "intro": "We have outcomes. Now we want to ask questions about them. Which outcomes qualify?", "title": "Event", "section": "Events", "pre": ["Having established what can happen,", "the document now asks which happenings are of interest.", "These are called events."], "anteroom": ["An <strong>event</strong> is any subset of the sample space.", "If $\\Omega = \\{1,2,3,4,5,6\\}$, then $A = \\{2,4,6\\}$ is an event. So is $B = \\{5,6\\}$.", "The empty set $\\emptyset$ and $\\Omega$ itself are also events.", "We assign probabilities to events."], "members": ["Formally, $A \\subseteq \\Omega$ is an event if $A \\in \\mathcal{F}$, where $\\mathcal{F}$ is the sigma-algebra.", "The event $\\Omega$ is certain. The event $\\emptyset$ is impossible.", "Individual outcomes are events: $\\{\\omega\\} \\in \\mathcal{F}$ for finite $\\Omega$."], "r197a": ["An event is a collection of outcomes you care about. Not always the exact outcome — sometimes you want to know: did I win? Was it even?", "Rolling an even number is an event: outcomes 2, 4, and 6. You assign probability to the event, not to each outcome separately.", "Probability is assigned to events. That is what the probability measure does — it takes an event and returns a number."], "counting": ["In practice, events are the things being measured: default or no default, recession or growth, above threshold or below.", "You rarely care about the exact outcome. You care about whether something happened. That is the event."], "post": ["The event that something happens is $\\Omega$ itself.", "The event that I make a fortune at Gambler's Ruin is also an event.", "Its probability remains, for the moment, pending."], "trap": null}, {"id": "sigma_algebra", "intro": "Once we have outcomes, we have events. Once we have events — what do we have?", "title": "The Sigma-Algebra", "section": "The sigma-algebra", "pre": ["Outcomes can be collected into sets — each such set is an event.", "What is to stop us from collecting events in a similar manner?", "The collection of all events also has a name: the sigma-algebra, $\\mathcal{F}$.", "Or a sigma-field. Same thing."], "anteroom": ["Once an experiment takes place, we gain information about which events occurred — not just the outcome itself.", "For a coin toss, $\\Omega = \\{H, T\\}$. Knowing the outcome tells us about all events: $\\emptyset$, $\\{H\\}$, $\\{T\\}$, $\\{H,T\\}$.", "The collection of all such events is called a <strong>sigma-algebra</strong>, denoted $\\mathcal{F}$.", "Together, $\\Omega$ and $\\mathcal{F}$ form a <strong>measurable space</strong> $(\\Omega, \\mathcal{F})$."], "members": ["A sigma-algebra $\\mathcal{F}$ on $\\Omega$ satisfies: (i) $\\Omega \\in \\mathcal{F}$; (ii) if $A \\in \\mathcal{F}$ then $A^c \\in \\mathcal{F}$; (iii) $\\mathcal{F}$ is closed under countable unions.", "For finite $\\Omega$, $\\mathcal{F}$ is the power set $2^{|\\Omega|}$ — all subsets.", "The sigma-algebra determines which events are measurable — which events can be assigned a probability."], "r197a": ["This is the one that concerns students most. Here is the key insight: once you have defined your sample space, the sigma-algebra is already there.", "For a die with $\\Omega = \\{1,2,3,4,5,6\\}$, the events are all subsets — rolling even, rolling odd, rolling above 3, and so on. They follow from $\\Omega$.", "One less form to fill. I found this unexpected."], "counting": ["For finite sample spaces, the sigma-algebra is all subsets. No complications.", "The sigma-algebra becomes technically important for continuous distributions, where not every subset of $\\mathbb{R}$ is measurable. That is a matter for a later document."], "post": ["I see that once $\\Omega$ is defined, $\\mathcal{F}$ follows.", "The document is building a foundation.", "Each definition depends on the last.", "I find this either elegant or ominous.", "Possibly both."], "trap": null}, {"id": "mutual_exclusivity", "intro": "Can two things happen at once? Sometimes. Can they not happen at once? Also sometimes.", "title": "Mutual Exclusivity", "section": "Mutual exclusivity", "pre": [], "anteroom": ["Two events are <strong>mutually exclusive</strong> if they cannot both occur on the same trial: $A \\cap B = \\emptyset$.", "Rolling an even number and rolling five are mutually exclusive.", "Rolling an even number and rolling greater than four are not — six belongs to both."], "members": ["Events $A_1, \\ldots, A_n$ are pairwise mutually exclusive if $A_i \\cap A_j = \\emptyset$ for all $i \\neq j$.", "This is a property of the events themselves, not of their probabilities.", "Mutual exclusivity is required for Axiom 3: countable additivity applies only to non-overlapping events."], "r197a": ["Mutually exclusive means they cannot both happen at the same time. Win and lose in blackjack — you cannot do both.", "Here is what confuses students every time: mutually exclusive is not the same as independent. They are completely different concepts.", "Mutual exclusivity is about overlap. Independence is about information. Different departments."], "counting": ["Mutual exclusivity matters when adding probabilities. For non-overlapping events: $P(A \\cup B) = P(A) + P(B)$.", "For overlapping events the formula requires a correction: $P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$. Forgetting the correction is a common error."], "post": ["A single hand of Blackjack.", "The outcomes are: win, lose, push.", "All three are pairwise mutually exclusive.", "This, I note, is the correct version of my original sample space.", "$\\Omega = \\{\\text{Win},\\,\\text{Lose},\\,\\text{Push}\\}$.", "I have updated the file.", "Independence will appear in a subsequent document. It must be handled by a different department. I have submitted the relevant form."], "trap": null}, {"id": "probability_measure", "intro": "We have the space. We have the events. Now we need a number. How do we assign it?", "title": "Probability Measure", "section": "Probability defined", "pre": ["The document states what a probability is.", "Not informally. Formally. I had been awaiting this.", "I already know what probability feels like.", "A weight. A sense of how likely.", "The events of October felt unlikely. They happened anyway.", "Feeling is not a number.", "The document requires a number."], "anteroom": ["Let $(\\Omega, \\mathcal{F})$ be a measurable space.", "A <strong>probability measure</strong> is a function $P : \\mathcal{F} \\rightarrow \\mathbb{R}$ that assigns to each event $A \\in \\mathcal{F}$ a real number $P(A)$.", "$P(A)$ is interpreted as the probability that event $A$ occurs.", "A function qualifies as a probability measure if and only if it satisfies three axioms."], "members": ["The probability measure $P$ completes the probability space $(\\Omega, \\mathcal{F}, P)$.", "$P$ is a set function: domain $\\mathcal{F}$, codomain $[0,1] \\subset \\mathbb{R}$.", "Not every function from $\\mathcal{F}$ to $\\mathbb{R}$ qualifies. The three axioms are the necessary and sufficient conditions."], "r197a": ["The probability measure is the function that actually assigns numbers to events. Everything built so far — sample space, events, sigma-algebra — is the domain of this function.", "Now we define the function itself. And the key point: not just any function works. It must satisfy three conditions.", "Those three conditions are the axioms. They are simpler than you might expect."], "counting": ["Every probability distribution you will encounter — normal, binomial, Poisson — is a probability measure.", "The axioms determine what counts as a valid distribution. Any function on $(\\Omega, \\mathcal{F})$ satisfying the axioms is a legitimate probability measure."], "post": ["Three axioms.", "Not twelve. Not a paragraph. Three.", "Kolmogorov stated them in 1933.", "They have not been revised.", "No appeal has been lodged."], "trap": null}, {"id": "axiom1", "intro": "Can a probability be negative? What would that even mean?", "title": "Axiom 1 — Non-negativity", "section": "Axiom 1", "pre": ["The first axiom concerns sign.", "Probabilities cannot be negative."], "anteroom": ["For all events $A \\in \\mathcal{F}$: $P(A) \\geq 0$.", "Probabilities cannot be negative.", "Zero means the event is impossible.", "Below zero is meaningless."], "members": ["Non-negativity ensures $P$ maps into $[0, \\infty)$.", "Combined with normalisation it restricts $P(A) \\in [0, 1]$ for all $A$.", "A negative probability has no interpretation — there is no state less probable than impossible."], "r197a": ["Probabilities cannot be negative. Zero means impossible. Below zero has no meaning.", "Aubrey assigned $-0.3$ to the event: lose. He checked it twice. It was wrong twice. The correction is on file.", "When I see negative probabilities in student work, something has gone wrong earlier — a misspecified model, a computational error. The axiom is a diagnostic."], "counting": ["In practice, a negative probability from a model signals a specification error that must be corrected before the model is used.", "The axiom also implies $P(\\emptyset) = 0$: the impossible event has probability zero. This follows as a consequence, not an assumption."], "post": ["In my preliminary calculations last October,", "I assigned a negative probability to the event: lose.", "The value was $-0.3$.", "I checked it twice.", "It was wrong twice.", "A correction is on file."], "trap": "axiom1"}, {"id": "axiom2", "intro": "Something must happen. How does that constrain our numbers?", "title": "Axiom 2 — Normalisation", "section": "Axiom 2", "pre": ["The second axiom concerns totality."], "anteroom": ["The probability of the entire sample space is one: $P(\\Omega) = 1$.", "Not $0.94$. Not $1.06$. Not $100$. Exactly one.", "One of the outcomes in $\\Omega$ must occur. The probability of that certainty is one."], "members": ["Normalisation calibrates the scale of $P$: certainty is assigned value $1$, impossibility is assigned $0$.", "Combined with non-negativity: $0 \\leq P(A) \\leq 1$ for all $A \\in \\mathcal{F}$.", "It distinguishes a probability measure from an arbitrary positive measure. The scale is fixed."], "r197a": ["Everything has to add up to 1. If your probabilities sum to less than 1, you have left something out. If they sum to more, you have double-counted or made an error.", "Aubrey's summed to 0.94. He lost six percent of reality. It is a basic error but I see it regularly.", "Usually it happens because an outcome is forgotten — especially a none-of-the-above category. In Aubrey's case: not being admitted."], "counting": ["Violated when a model omits possible outcomes from the sample space.", "In survey design, response options must be exhaustive. Probabilities summing to less than 1 mean a possible response has been omitted."], "post": ["When I summed my preliminary probability assignments,", "the total was $0.94$.", "I had apparently lost six percent of reality.", "A basic error.", "I was briefly a beginner."], "trap": "axiom2"}, {"id": "axiom3", "intro": "When events do not overlap, how do we add their probabilities?", "title": "Axiom 3 — Countable Additivity", "section": "Axiom 3", "pre": ["The third axiom concerns additivity.", "When events cannot overlap, the probability that one or the other occurs", "is simply the sum of their individual probabilities.", "No correction. No adjustment. Just addition."], "anteroom": ["For any countable collection of mutually exclusive events $A_1, A_2, \\ldots \\in \\mathcal{F}$:", "$$P\\!\\left(\\bigcup_{i=1}^{\\infty} A_i\\right) = \\sum_{i=1}^{\\infty} P(A_i)$$", "Non-overlapping events: their probabilities add exactly."], "members": ["Countable additivity extends finite additivity to countably infinite collections.", "This extension is what separates modern probability theory from finite combinatorics.", "It enables probability to be defined on continuous spaces as limits of finite sums."], "r197a": ["If events do not overlap, you can just add their probabilities. That is it.", "Win, Lose, Push are mutually exclusive. So $P(\\text{Win or Lose or Push}) = P(\\text{Win}) + P(\\text{Lose}) + P(\\text{Push})$. No correction.", "The word countable is doing a lot of work. It says this extends to infinitely many events — as long as they do not overlap. That extension is what makes continuous distributions possible."], "counting": ["Countable additivity is the foundation of integration in probability theory.", "The probability that a continuous random variable falls in an interval is computed as an integral — the limit of sums of probabilities over infinitely many non-overlapping events. This axiom makes that possible."], "post": ["This is the axiom that does the most work.", "It is also the axiom most frequently misunderstood", "by those who believe they have already satisfied it.", "I was one of those.", "You may be thinking: are three axioms really enough?", "Three statements, and that is all?", "Yes.", "Everything else follows. The triple $(\\Omega, \\mathcal{F}, P)$ is called a probability space."], "trap": null}];
+const C = [{"id": "uncertainty", "intro": "What is uncertainty? A feeling of unease? Can it be measured?", "title": "Quantifying Uncertainty", "section": "The Preface", "pre": [], "anteroom": ["Uncertainty is not just a feeling — not just an unease about what might happen.", "It can be measured. A <strong>measure</strong> assigns a number to something.", "Probability is a <strong>measure</strong> — a function that maps sets of outcomes to real numbers.", "A probability quantifies the chance of occurrence of each set of outcomes."], "members": ["Let $(\\Omega, \\mathcal{F})$ be a measurable space.", "A probability measure is a function $P: \\mathcal{F} \\rightarrow \\mathbb{R}$ that assigns to each event $A \\in \\mathcal{F}$ a real number $P(A)$.", "Not every such function qualifies — it must satisfy three axioms.", "The axioms are the conditions. They are coming."], "r197a": ["You want to put a number on how likely things are. That is all probability is, at its core.", "The sets, the functions, the measures — that is just making the intuition precise enough to build a theory on top of.", "Without the precision you have a feeling. With it you have mathematics. The axioms are worth absorbing."], "counting": ["Insurance actuaries assign probabilities to outcomes — fire, flood, theft — and price policies accordingly. A miscalibrated measure can fail a company.", "Every quantitative model in economics and finance is built on a probability measure. This framework is not abstract. It is the foundation."], "post": ["This sounds straightforward.", "It is not always straightforward.", "I speak from experience."], "trap": null}, {"id": "experiment", "intro": "Something happens. Or it might happen. Or it might not. What exactly is that?", "title": "Experiment", "section": "Experiments", "pre": ["The document introduces the concept of an experiment.", "Not, as I had assumed, something conducted in a laboratory with a white coat."], "anteroom": ["An <strong>experiment</strong> is any phenomenon inherently characterised by uncertainty.", "Tossing a coin is an experiment. Rolling a die is an experiment.", "Presenting oneself at the casino is an experiment.", "An experiment produces a result. The sample space defines which results are possible."], "members": ["Formally, an experiment is a procedure that generates exactly one outcome $\\omega$ from a defined sample space $\\Omega$.", "The outcome is not determined in advance.", "Without a well-defined experiment there is no sample space, no events, no probability measure."], "r197a": ["Experiment does not mean lab coat and test tubes. It just means: something happens, you do not know what will happen before it happens.", "Tossing a coin. Rolling a die. Going to the casino. All experiments. The uncertainty is the point.", "If you already know the outcome, there is nothing to assign probability to. The uncertainty is what probability theory is for."], "counting": ["In finance, observing a stock price movement is an experiment — uncertain outcome, defined in advance.", "A clinical trial is an experiment. The framework is identical: uncertain outcome, defined sample space, probability model built on top."], "post": ["An experiment produces a result.", "Which results are possible?", "This is the first question."], "trap": null}, {"id": "sample_space", "intro": "Which outcomes are possible? All of them? Are we sure we have thought of all of them?", "title": "Sample Space", "section": "The sample space", "pre": ["An experiment produces a result.", "Which results are possible?", "This is the first question."], "anteroom": ["Possible results are called <strong>sample outcomes</strong>, denoted $\\omega$.", "The set of all possible outcomes is the <strong>sample space</strong>: $\\Omega = \\{\\,\\omega_1,\\,\\omega_2,\\,\\ldots\\,\\}$.", "Every outcome that can occur must appear in $\\Omega$.", "No outcome may be omitted."], "members": ["$\\Omega$ is the universal set for the experiment — exhaustive and mutually exclusive at the outcome level.", "For a die: $\\Omega = \\{1,2,3,4,5,6\\}$. For a coin: $\\Omega = \\{H, T\\}$. For Blackjack: $\\Omega = \\{\\text{Win}, \\text{Lose}, \\text{Push}\\}$.", "The sample space must be defined before events, the sigma-algebra, or probabilities can be constructed."], "r197a": ["Before you assign any probabilities, you need to know what could happen. Write it all down. That is your sample space.", "The crucial requirement: do not leave anything out. Every possibility must be there.", "Aubrey's sample space last October was $\\Omega = \\{\\text{Win}\\}$. What actually happened was not in it. That is a specification error — one of the most common mistakes I see."], "counting": ["Specification errors — incomplete sample spaces — produce models that fail in ways not anticipated.", "In 2008, probability models used in finance had not included certain tail outcomes in their sample spaces. The events occurred anyway."], "post": ["Last October, my sample space contained one outcome.", "$\\Omega = \\{\\text{Win}\\}$.", "Proof by wishful thinking."], "trap": null}, {"id": "events", "intro": "We have outcomes. Now we want to ask questions about them. Which outcomes qualify?", "title": "Event", "section": "Events", "pre": ["Having established what can happen,", "the document now asks which happenings are of interest.", "These are called events."], "anteroom": ["An <strong>event</strong> is any subset of the sample space.", "If $\\Omega = \\{1,2,3,4,5,6\\}$, then $A = \\{2,4,6\\}$ is an event. So is $B = \\{5,6\\}$.", "The empty set $\\emptyset$ and $\\Omega$ itself are also events.", "We assign probabilities to events."], "members": ["Formally, $A \\subseteq \\Omega$ is an event if $A \\in \\mathcal{F}$, where $\\mathcal{F}$ is the sigma-algebra.", "The event $\\Omega$ is certain. The event $\\emptyset$ is impossible.", "Individual outcomes are events: $\\{\\omega\\} \\in \\mathcal{F}$ for finite $\\Omega$."], "r197a": ["An event is a collection of outcomes you care about. Not always the exact outcome — sometimes you want to know: did I win? Was it even?", "Rolling an even number is an event: outcomes 2, 4, and 6. You assign probability to the event, not to each outcome separately.", "Probability is assigned to events. That is what the probability measure does — it takes an event and returns a number."], "counting": ["In practice, events are the things being measured: default or no default, recession or growth, above threshold or below.", "You rarely care about the exact outcome. You care about whether something happened. That is the event."], "post": ["The event that something happens is $\\Omega$ itself.", "The event that I make a fortune at Gambler's Ruin is also an event.", "Its probability remains, for the moment, pending."], "trap": null}, {"id": "sigma_algebra", "intro": "Once we have outcomes, we have events. Once we have events — what do we have?", "title": "The Sigma-Algebra", "section": "The sigma-algebra", "pre": ["Outcomes can be collected into sets — each such set is an event.", "What is to stop us from collecting events in a similar manner?", "The collection of all events also has a name: the sigma-algebra, $\\mathcal{F}$.", "Or a sigma-field. Same thing."], "anteroom": ["Once an experiment takes place, we gain information about which events occurred — not just the outcome itself.", "For a coin toss, $\\Omega = \\{H, T\\}$. Knowing the outcome tells us about all events: $\\emptyset$, $\\{H\\}$, $\\{T\\}$, $\\{H,T\\}$.", "The collection of all such events is called a <strong>sigma-algebra</strong>, denoted $\\mathcal{F}$.", "Together, $\\Omega$ and $\\mathcal{F}$ form a <strong>measurable space</strong> $(\\Omega, \\mathcal{F})$."], "members": ["A sigma-algebra $\\mathcal{F}$ on $\\Omega$ satisfies: (i) $\\Omega \\in \\mathcal{F}$; (ii) if $A \\in \\mathcal{F}$ then $A^c \\in \\mathcal{F}$; (iii) $\\mathcal{F}$ is closed under countable unions.", "For finite $\\Omega$, $\\mathcal{F}$ is the power set $2^{|\\Omega|}$ — all subsets.", "The sigma-algebra determines which events are measurable — which events can be assigned a probability."], "r197a": ["This is the one that concerns students most. Here is the key insight: once you have defined your sample space, the sigma-algebra is already there.", "For a die with $\\Omega = \\{1,2,3,4,5,6\\}$, the events are all subsets — rolling even, rolling odd, rolling above 3, and so on. They follow from $\\Omega$.", "One less form to fill. I found this unexpected."], "counting": ["For finite sample spaces, the sigma-algebra is all subsets. No complications.", "The sigma-algebra becomes technically important for continuous distributions, where not every subset of $\\mathbb{R}$ is measurable. That is a matter for a later document."], "post": ["I see that once $\\Omega$ is defined, $\\mathcal{F}$ follows.", "The document is building a foundation.", "Each definition depends on the last.", "I find this either elegant or ominous.", "Possibly both."], "trap": null}, {"id": "mutual_exclusivity", "intro": "Can two things happen at once? Sometimes. Can they not happen at once? Also sometimes.", "title": "Mutual Exclusivity", "section": "Mutual exclusivity", "pre": [], "anteroom": ["Two events are <strong>mutually exclusive</strong> if they cannot both occur on the same trial: $A \\cap B = \\emptyset$.", "Rolling an even number and rolling five are mutually exclusive.", "Rolling an even number and rolling greater than four are not — six belongs to both."], "members": ["Events $A_1, \\ldots, A_n$ are pairwise mutually exclusive if $A_i \\cap A_j = \\emptyset$ for all $i \\neq j$.", "This is a property of the events themselves, not of their probabilities.", "Mutual exclusivity is required for Axiom 3: countable additivity applies only to non-overlapping events."], "r197a": ["Mutually exclusive means they cannot both happen at the same time. Win and lose in blackjack — you cannot do both.", "Here is what confuses students every time: mutually exclusive is not the same as independent. They are completely different concepts.", "Mutual exclusivity is about overlap. Independence is about information. Different departments."], "counting": ["Mutual exclusivity matters when adding probabilities. For non-overlapping events: $P(A \\cup B) = P(A) + P(B)$.", "For overlapping events the formula requires a correction: $P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$. Forgetting the correction is a common error."], "post": ["A single hand of Blackjack.", "The outcomes are: win, lose, push.", "All three are pairwise mutually exclusive.", "This, I note, is the correct version of my original sample space.", "$\\Omega = \\{\\text{Win},\\,\\text{Lose},\\,\\text{Push}\\}$.", "I have updated the file.", "Independence will appear in a subsequent document. It must be handled by a different department. I have submitted the relevant form."], "trap": null}, {"id": "probability_measure", "intro": "We have the space. We have the events. Now we need a number. How do we assign it?", "title": "Probability Measure", "section": "Probability defined", "pre": ["The document states what a probability is.", "Not informally. Formally. I had been awaiting this.", "I already know what probability feels like.", "A weight. A sense of how likely.", "The events of October felt unlikely. They happened anyway.", "Feeling is not a number.", "The document requires a number."], "anteroom": ["Let $(\\Omega, \\mathcal{F})$ be a measurable space.", "A <strong>probability measure</strong> is a function $P : \\mathcal{F} \\rightarrow \\mathbb{R}$ that assigns to each event $A \\in \\mathcal{F}$ a real number $P(A)$.", "$P(A)$ is interpreted as the probability that event $A$ occurs.", "A function qualifies as a probability measure if and only if it satisfies three axioms."], "members": ["The probability measure $P$ completes the probability space $(\\Omega, \\mathcal{F}, P)$.", "$P$ is a set function: domain $\\mathcal{F}$, codomain $[0,1] \\subset \\mathbb{R}$.", "Not every function from $\\mathcal{F}$ to $\\mathbb{R}$ qualifies. The three axioms are the necessary and sufficient conditions."], "r197a": ["The probability measure is the function that actually assigns numbers to events. Everything built so far — sample space, events, sigma-algebra — is the domain of this function.", "Now we define the function itself. And the key point: not just any function works. It must satisfy three conditions.", "Those three conditions are the axioms. They are simpler than you might expect."], "counting": ["Every probability distribution you will encounter — normal, binomial, Poisson — is a probability measure.", "The axioms determine what counts as a valid distribution. Any function on $(\\Omega, \\mathcal{F})$ satisfying the axioms is a legitimate probability measure."], "post": ["Three axioms.", "Not twelve. Not a paragraph. Three.", "Kolmogorov stated them in 1933.", "They have not been revised.", "No appeal has been lodged."], "trap": null}, {"id": "axiom1", "intro": "Can a probability be negative? What would that even mean?", "title": "Axiom 1 — Non-negativity", "section": "Axiom 1", "pre": ["The first axiom concerns sign.", "Probabilities cannot be negative."], "anteroom": ["For all events $A \\in \\mathcal{F}$: $P(A) \\geq 0$.", "Probabilities cannot be negative.", "Zero means the event is impossible.", "Below zero is meaningless."], "members": ["Non-negativity ensures $P$ maps into $[0, \\infty)$.", "Combined with normalisation it restricts $P(A) \\in [0, 1]$ for all $A$.", "A negative probability has no interpretation — there is no state less probable than impossible."], "r197a": ["Probabilities cannot be negative. Zero means impossible. Below zero has no meaning.", "Aubrey assigned $-0.3$ to the event: lose. He checked it twice. It was wrong twice. The correction is on file.", "When I see negative probabilities in student work, something has gone wrong earlier — a misspecified model, a computational error. The axiom is a diagnostic."], "counting": ["In practice, a negative probability from a model signals a specification error that must be corrected before the model is used.", "The axiom also implies $P(\\emptyset) = 0$: the impossible event has probability zero. This follows as a consequence, not an assumption."], "post": ["In my preliminary calculations last October,", "I assigned a negative probability to the event: lose.", "The value was $-0.3$.", "I checked it twice.", "It was wrong twice.", "A correction is on file."], "trap": "axiom1"}, {"id": "axiom2", "intro": "Something must happen. How does that constrain our numbers?", "title": "Axiom 2 — Normalisation", "section": "Axiom 2", "pre": ["The second axiom concerns totality."], "anteroom": ["The probability of the entire sample space is one: $P(\\Omega) = 1$.", "Not $0.94$. Not $1.06$. Not $100$. Exactly one.", "One of the outcomes in $\\Omega$ must occur. The probability of that certainty is one."], "members": ["Normalisation calibrates the scale of $P$: certainty is assigned value $1$, impossibility is assigned $0$.", "Combined with non-negativity: $0 \\leq P(A) \\leq 1$ for all $A \\in \\mathcal{F}$.", "It distinguishes a probability measure from an arbitrary positive measure. The scale is fixed."], "r197a": ["Everything has to add up to 1. If your probabilities sum to less than 1, you have left something out. If they sum to more, you have double-counted or made an error.", "Aubrey's summed to 0.94. He lost six percent of reality. It is a basic error but I see it regularly.", "Usually it happens because an outcome is forgotten — especially a none-of-the-above category. In Aubrey's case: not being admitted."], "counting": ["Violated when a model omits possible outcomes from the sample space.", "In survey design, response options must be exhaustive. Probabilities summing to less than 1 mean a possible response has been omitted."], "post": ["When I summed my preliminary probability assignments,", "the total was $0.94$.", "I had apparently lost six percent of reality.", "A basic error.", "I was briefly a beginner."], "trap": "axiom2"}, {"id": "axiom3", "intro": "When events do not overlap, how do we add their probabilities?", "title": "Axiom 3 — Countable Additivity", "section": "Axiom 3", "pre": ["The third axiom concerns additivity.", "When events cannot overlap, the probability that one or the other occurs", "is simply the sum of their individual probabilities.", "No correction. No adjustment. Just addition."], "anteroom": ["For any countable collection of mutually exclusive events $A_1, A_2, \\ldots \\in \\mathcal{F}$:", "$$P\\!\\left(\\bigcup_{i=1}^{\\infty} A_i\\right) = \\sum_{i=1}^{\\infty} P(A_i)$$", "Non-overlapping events: their probabilities add exactly."], "members": ["Countable additivity extends finite additivity to countably infinite collections.", "This extension is what separates modern probability theory from finite combinatorics.", "It enables probability to be defined on continuous spaces as limits of finite sums."], "r197a": ["If events do not overlap, you can just add their probabilities. That is it.", "Win, Lose, Push are mutually exclusive. So $P(\\text{Win or Lose or Push}) = P(\\text{Win}) + P(\\text{Lose}) + P(\\text{Push})$. No correction.", "The word countable is doing a lot of work. It says this extends to infinitely many events — as long as they do not overlap. That extension is what makes continuous distributions possible."], "counting": ["Countable additivity is the foundation of integration in probability theory.", "The probability that a continuous random variable falls in an interval is computed as an integral — the limit of sums of probabilities over infinitely many non-overlapping events. This axiom makes that possible."], "post": ["This is the axiom that does the most work.", "It is also the axiom most frequently misunderstood", "by those who believe they have already satisfied it.", "I was one of those.", "You may be thinking: are three axioms really enough?", "Three statements, and that is all?", "Yes.", "Everything else follows. The triple $(\\Omega, \\mathcal{F}, P)$ is called a probability space."], "trap": null}];
 const KEYS = ['anteroom','r197a','members','counting'];
 const S = {dos:{}};
 C.forEach(c=>{ S.dos[c.id]={anteroom:false,r197a:false,members:false,counting:false,qc:false,absorbed:false,errors:[]}; });
@@ -262,7 +413,7 @@ const sc=document.getElementById('scene');
 let ct=null;
 var _history=[];
 
-function show(html,choices){
+function show(html,choices,footer){
   _history.push({html:html,choices:choices||[]});
   if(_history.length>50) _history.shift();
   updateBackBtn();
@@ -298,6 +449,7 @@ function show(html,choices){
     bb.appendChild(n);
     n._lines=Array.from(n.querySelectorAll('p'));
   });
+  if(footer){ var ft=document.createElement('div'); ft.className='scene-footer'; ft.innerHTML=footer; p.appendChild(ft); }
   sc.appendChild(p);
   p.classList.add('vis');
   rm(p);
@@ -358,13 +510,45 @@ function ds(id,r){if(S.dos[id])S.dos[id][r]=true;rd();}
 function da(id){if(S.dos[id])S.dos[id].absorbed=true;rd();}
 function de(id,t){if(S.dos[id])S.dos[id].errors.push(t);rd();}
 function rd(){
-  const el=document.getElementById('drows');el.innerHTML='';
-  C.forEach((c,idx)=>{
+  const el=document.getElementById('drows');
+  if(!el) return;
+  el.innerHTML='';
+
+  C.forEach(function(c,idx){
     const d=S.dos[c.id];
-    const row=document.createElement('div');row.className='drow';
-    const rooms=[d.anteroom?'A':'·',d.r197a?'R':'·',d.members?'M':'·',d.counting?'C':'·'].join(' ');
-    row.innerHTML='<span class="dc'+(d.absorbed?' on':'')+'" style="cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px" onclick="hub('+idx+')" title="Jump to '+c.title+'">'+c.title+'</span><span class="dr">'+rooms+'</span>';
-    if(d.errors.length){const e=document.createElement('span');e.className='de';e.textContent='['+d.errors.length+' correction'+(d.errors.length>1?'s':'')+' on file]';row.appendChild(e);}
+    const row=document.createElement('div');
+    row.className='drow';
+
+    // Row number
+    const num=document.createElement('span');
+    num.style.cssText='font-family:Special Elite,monospace;font-size:9px;color:rgba(26,22,16,.3);letter-spacing:.1em;width:20px;flex-shrink:0';
+    num.textContent=(idx+1<10?'0':'')+(idx+1);
+
+    // Concept title — typed, not clickable
+    const title=document.createElement('span');
+    title.style.cssText='font-family:Special Elite,monospace;font-size:11px;letter-spacing:.06em;color:#1A1610;flex:1;padding:0 10px';
+    title.textContent=c.title.toUpperCase();
+
+    // Stamps
+    const stamps=document.createElement('span');
+    stamps.style.cssText='display:flex;gap:4px;align-items:center;flex-shrink:0';
+    ['r197a','anteroom','members','counting','qc'].forEach(function(k){
+      stamps.innerHTML+=stampSVG(k,d,14);
+    });
+
+    row.appendChild(num);
+    row.appendChild(title);
+    row.appendChild(stamps);
+
+    // Corrections — below the row
+    if(d.errors.length){
+      const e=document.createElement('div');
+      e.style.cssText='font-family:Special Elite,monospace;font-size:8px;letter-spacing:.08em;color:rgba(139,26,26,.7);padding:2px 0 4px 30px';
+      e.textContent=d.errors.length+' correction'+(d.errors.length>1?'s':'')+' on file';
+      el.appendChild(row);
+      el.appendChild(e);
+      return;
+    }
     el.appendChild(row);
   });
 }
@@ -372,18 +556,19 @@ rd();
 
 // HUB
 function hub(idx){
+  setFloorLabel('First Floor');
   const c=C[idx],d=S.dos[c.id];
   const intro=c.intro||'';
   show(
     '<div class="inotice">The Institute — First Floor — '+c.section+'</div>'+
     (intro?'<div class="narration"><p>'+intro+'</p></div>':'')+
     '<div class="room-grid" style="grid-template-columns:1fr 1fr 1fr">'+
-      '<button class="rbtn'+(d.r197a?' done':'')+'" onclick="roomgo('+idx+',1)"><div class="rl">Verbal</div><div class="rn">Intuition</div></button>'+
-      '<button class="rbtn'+(d.anteroom?' done':'')+'" onclick="roomgo('+idx+',0)"><div class="rl">Foundation</div><div class="rn">Basic</div></button>'+
-      '<button class="rbtn'+(d.members?' done':'')+'" onclick="roomgo('+idx+',2)"><div class="rl">Advanced</div><div class="rn">Algebra</div></button>'+
-      '<button class="rbtn'+(d.counting?' done':'')+'" onclick="roomgo('+idx+',3)"><div class="rl">Real World</div><div class="rn">Application</div></button>'+
-      (getQC(c.id)?'<button class="rbtn'+(d.qc?' done':'')+'" onclick="showQCForm('+idx+',null)"><div class="rl">Self-Test</div><div class="rn">Problem</div></button>':'<button class="rbtn" style="opacity:.25;cursor:default"><div class="rl">Self-Test</div><div class="rn">Problem</div></button>')+
-      '<button class="rbtn" onclick="officeHour('+idx+')"><div class="rl">The Bureaucrat</div><div class="rn">Room 197A</div></button>'+
+      '<button class="rbtn" onclick="roomgo('+idx+',1)">'+stampSVG('r197a',d,20)+'<div class="rl">Intuition</div></button>'+
+      '<button class="rbtn" onclick="roomgo('+idx+',0)">'+stampSVG('anteroom',d,20)+'<div class="rl">Basic</div></button>'+
+      '<button class="rbtn" onclick="roomgo('+idx+',2)">'+stampSVG('members',d,20)+'<div class="rl">Advanced</div></button>'+
+      '<button class="rbtn" onclick="roomgo('+idx+',3)">'+stampSVG('counting',d,20)+'<div class="rl">Application</div></button>'+
+      (getQC(c.id)?'<button class="rbtn" onclick="showQCForm('+idx+',null)">'+stampSVG('qc',d,20)+'<div class="rl">Assessment</div></button>':'<button class="rbtn" style="opacity:.25;cursor:default"><div class="rl">Assessment</div></button>')+
+      '<button class="rbtn" onclick="officeHour('+idx+')" style="flex-direction:row;gap:14px;min-height:50px"><div style="font-size:22px;line-height:1">∴</div><div class="rl">Room 197A</div></button>'+
     '</div>'+
 
     (d.anteroom?
@@ -403,9 +588,9 @@ function roomgo(idx,ri){
   } else if(which==='r197a'){
     inner='<div class="rheader">The Bureaucrat — Room 197A</div><div class="ragvir">'+c.r197a.map(x=>'<p>'+x+'</p>').join('')+'</div>';
   } else if(which==='members'){
-    inner='<div class="rheader">Advanced — Algebra</div><div class="card"><div class="card-title">'+c.title+'</div><ul>'+c.members.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
+    inner='<div class="rheader">Advanced</div><div class="card"><div class="card-title">'+c.title+'</div><ul>'+c.members.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
   } else if(which==='counting'){
-    inner='<div class="rheader">Real World — Application</div><div class="rcontent">'+c.counting.map(x=>'<p>'+x+'</p>').join('')+'</div>';
+    inner='<div class="rheader">Application</div><div class="rcontent">'+c.counting.map(x=>'<p>'+x+'</p>').join('')+'</div>';
   }
   show('<button class="bbtn" onclick="hub('+idx+')">&#8592; Back</button>'+inner,
     [{l:'Back → Rooms',f:()=>hub(idx)}]);
@@ -420,6 +605,7 @@ function cdone(idx){
 }
 
 function postnav(idx){
+  setFloorLabel('First Floor');
   const c=C[idx];
   const q=getQC(c.id);
   const nxt=idx+1<C.length?()=>prenav(idx+1):apply;
@@ -461,6 +647,9 @@ function postnav(idx){
 
 function prenav(idx){
   const c=C[idx];
+  // Ensure floor label is correct and clickable
+  var lbl=document.getElementById('floor-label');
+  setFloorLabel('First Floor');
   if(c.pre&&c.pre.length){
     show('<div class="inotice">The Institute — First Floor — '+c.section+'</div><div class="narration">'+c.pre.map(p=>'<p>'+p+'</p>').join('')+'</div>',
       [{l:'Continue',f:()=>hub(idx)}]);
@@ -470,7 +659,7 @@ function prenav(idx){
 // TRAPS
 function trap1(){
   show(
-    '<div class="inotice">The Institute — First Floor — A correction required</div>'+
+    '<div class="inotice">The Institute — The Stairwell — A correction required</div>'+
     '<div class="narration"><p>Before the correction is filed.</p><p>Last October, you assigned a probability to the event: <em>lose</em>.</p><p>Enter the value you assigned.</p></div>'+
     '<div style="margin:1.5vh 0"><input class="tinput" id="t1v" type="number" step="0.1" placeholder="0.0"></div>'+
     '<button class="tsub" onclick="ct1()">Submit</button>'+
@@ -542,7 +731,7 @@ function apply(){
   const choices=[{l:'Watch Episode 1 →',f:()=>{window.location.href='episode1.html';}}];
   if(!allDone){const fi=C.findIndex(c=>!S.dos[c.id].absorbed);choices.push({l:'Return to rooms',f:()=>prenav(fi)});}
   show(
-    '<div class="inotice">The Institute — Ground Floor — Application</div>'+
+    '<div class="inotice">The Institute — First Floor — Application</div>'+
     '<div class="narration">'+body+'</div>'+
     '<div class="narrator">Aubrey Squeakwell was not, as yet, at the casino.<br>But he had absorbed the three axioms.<br><br>Probably.</div>',
     choices
@@ -561,7 +750,8 @@ function s0(){
     '<p>I am a mouse. I think it. Therefore, I must be.</p>'+
     '<p>The facts are on file.</p>'+
     '</div>',
-    [{l:'Continue',f:s0b}]
+    [{l:'Continue',f:s0b},{l:'Ascend to the First Floor →',f:cutscene1}],
+  '<div class="dossier-wrap-s"><div class="dossier-back-s"></div><div class="dossier-front-s"><div class="dossier-tab-s"><span>The Institute</span></div><div class="dossier-lbl-s"><div class="dlbl-row"><span class="dlbl-key">Candidate</span><span class="dlbl-val">Squeakwell, A. (BSc)</span></div><div class="dlbl-row"><span class="dlbl-key">Reference</span><span class="dlbl-val">AS/001/F1</span></div><div class="dlbl-row"><span class="dlbl-key">Status</span><span class="dlbl-val">In Progress</span></div></div><div class="dossier-int-s"><div class="d-empty-line"></div><div class="d-empty-line"></div><div class="d-empty-line"></div><div class="d-empty-stamp">Empty</div></div><div class="dossier-ref-s">Form DS/1 &middot; Absorption Record</div></div></div><div class="dossier-shadow-s"></div>'
   );
 }
 function s0b(){
@@ -574,37 +764,38 @@ function s0b(){
     '<p>I was informed that I lacked the necessary framework.</p>'+
     '<p>The framework is the condition of entry.</p>'+
     '</div>',
-    [{l:'Continue',f:s0c}]
+    [{l:'Continue',f:s0c},{l:'Ascend to the First Floor →',f:cutscene1}],
+  '<div class="dossier-wrap-s"><div class="dossier-back-s"></div><div class="dossier-front-s"><div class="dossier-tab-s"><span>The Institute</span></div><div class="dossier-lbl-s"><div class="dlbl-row"><span class="dlbl-key">Candidate</span><span class="dlbl-val">Squeakwell, A. (BSc)</span></div><div class="dlbl-row"><span class="dlbl-key">Reference</span><span class="dlbl-val">AS/001/F1</span></div><div class="dlbl-row"><span class="dlbl-key">Status</span><span class="dlbl-val">In Progress</span></div></div><div class="dossier-int-s"><div class="d-empty-line"></div><div class="d-empty-line"></div><div class="d-empty-line"></div><div class="d-empty-stamp">Empty</div></div><div class="dossier-ref-s">Form DS/1 &middot; Absorption Record</div></div></div><div class="dossier-shadow-s"></div>'
   );
 }
 function s0c(){
   show(
     '<div class="narration">'+
-    '<p>I enquired. I was referred to a document.</p>'+
-    '<p>The document was authored by A.N.\u00a0Kolmogorov.</p>'+
-    '<p>In 1933.</p>'+
-    '<p>There is no forwarding address.</p>'+
-    '<p>The document contains three axioms. The mathematical word for requirements.</p>'+
-    '<p>I am told I must absorb them.</p>'+
-    '<p>I am not yet sure whether this means I must understand them or embody them.</p>'+
-    '<p>The distinction, I suspect, will matter.</p>'+
+    '<p>I enquired.</p>'+
+    '<p>I was handed a dossier.</p>'+
+    '<p>It was empty.</p>'+
+    '<p>I was told to fill it.</p>'+
+    '<p>I asked with what.</p>'+
+    '<p>The question was noted with interest and filed.</p>'+
     '</div>',
-    [{l:'Continue',f:s0d}]
+    [{l:'Continue',f:s0d},{l:'Ascend to the First Floor →',f:cutscene1}],
+  '<div class="dossier-wrap-s"><div class="dossier-back-s"></div><div class="dossier-front-s"><div class="dossier-tab-s"><span>The Institute</span></div><div class="dossier-lbl-s"><div class="dlbl-row"><span class="dlbl-key">Candidate</span><span class="dlbl-val">Squeakwell, A. (BSc)</span></div><div class="dlbl-row"><span class="dlbl-key">Reference</span><span class="dlbl-val">AS/001/F1</span></div><div class="dlbl-row"><span class="dlbl-key">Status</span><span class="dlbl-val">In Progress</span></div></div><div class="dossier-int-s"><div class="d-empty-line"></div><div class="d-empty-line"></div><div class="d-empty-line"></div><div class="d-empty-stamp">Empty</div></div><div class="dossier-ref-s">Form DS/1 &middot; Absorption Record</div></div></div><div class="dossier-shadow-s"></div>'
   );
 }
 function s0d(){
   show(
     '<div class="narration">'+
-    '<p>The casino\u2019s name?</p>'+
-    '<p>Gambler\u2019s Ruin.</p>'+
-    '<p>A warning, or a formality. I have not yet decided.</p>'+
-    '<p>I intend to absorb the axioms.</p>'+
+    '<p>The casino across the road is called Gambler\u2019s Ruin.</p>'+
+    '<p>The lights are always on.</p>'+
+    '<p>I have been here since October.</p>'+
+    '<p>The dossier remains empty.</p>'+
+    '<p>Uncertainty, I am told, plays a significant role in what comes next.</p>'+
+    '<p>I find this plausible.</p>'+
     '<p>The plan is foolproof.</p>'+
-    '<p>I have unfinished business at the casino.</p>'+
-    '<p>Next time, I will be prepared.</p>'+
     '<p>Probably.</p>'+
     '</div>',
-    [{l:'Continue',f:()=>prenav(0)}]
+    [{l:'Ascend to the First Floor →',f:cutscene1}],
+  '<div class="dossier-wrap-s"><div class="dossier-back-s"></div><div class="dossier-front-s"><div class="dossier-tab-s"><span>The Institute</span></div><div class="dossier-lbl-s"><div class="dlbl-row"><span class="dlbl-key">Candidate</span><span class="dlbl-val">Squeakwell, A. (BSc)</span></div><div class="dlbl-row"><span class="dlbl-key">Reference</span><span class="dlbl-val">AS/001/F1</span></div><div class="dlbl-row"><span class="dlbl-key">Status</span><span class="dlbl-val">In Progress</span></div></div><div class="dossier-int-s"><div class="d-empty-line"></div><div class="d-empty-line"></div><div class="d-empty-line"></div><div class="d-empty-stamp">Empty</div></div><div class="dossier-ref-s">Form DS/1 &middot; Absorption Record</div></div></div><div class="dossier-shadow-s"></div>'
   );
 }
 function s4(){show('<div class="narration"><p>The Institute occupies a building adjacent to Gambler’s Ruin.</p><p>The casino is visible from the first floor windows — across a courtyard, behind glass doors that do not open from this side.</p><p>The first floor houses four rooms. Each contains a different version of the same knowledge.</p><p>Aubrey was not told which to enter first. He assumed there was a correct order. He is less certain of this now.</p></div>',[{l:'Go to the first floor',f:()=>prenav(0)}]);}
@@ -666,7 +857,9 @@ function getQC(conceptId){
   return QC.find(function(q){ return q.id===conceptId; });
 }
 
-function showQCForm(idx, onComplete){
+function showQCForm(idx,onComplete){
+  setFloorLabel('First Floor');
+  const c=C[idx];
   const q=getQC(C[idx].id);
   if(!q) { onComplete(); return; }
   const nxt=onComplete||(idx+1<C.length?()=>prenav(idx+1):apply);
@@ -919,11 +1112,21 @@ function buildMap(){
     title.textContent=c.title;
 
     var pips=document.createElement('div');
-    pips.style.cssText='display:flex;gap:5px;';
-    ['anteroom','r197a','members','counting','qc'].forEach(function(k){
-      var p=document.createElement('div');
-      p.style.cssText='width:9px;height:9px;border:1px solid rgba(26,22,16,'+(d[k]?'.6':'.2')+');background:'+(d[k]?'rgba(26,22,16,.55)':'none')+';';
-      pips.appendChild(p);
+    pips.style.cssText='display:flex;gap:6px;align-items:center;margin-top:3px;';
+    // Stamps: r197a=circle, anteroom=triangle, members=square, counting=inv-triangle, qc=A
+    var stampDefs=[
+      {k:'r197a',   svg:'<circle cx="8" cy="8" r="6" fill="'+(d.r197a   ?'#1A3A5C':'none')+'" stroke="#1A3A5C" stroke-width="1.5" opacity="'+(d.r197a   ?'1':'.18')+'"/>'},
+      {k:'anteroom',svg:'<polygon points="8,2 15,14 1,14" fill="'+(d.anteroom?'#1C3A38':'none')+'" stroke="#1C3A38" stroke-width="1.5" stroke-linejoin="round" opacity="'+(d.anteroom?'1':'.18')+'"/>'},
+      {k:'members', svg:'<rect x="1" y="1" width="14" height="14" fill="'+(d.members ?'#1A1610':'none')+'" stroke="#1A1610" stroke-width="1.5" opacity="'+(d.members ?'1':'.18')+'"/>'},
+      {k:'counting',svg:'<polygon points="1,2 15,2 8,14" fill="'+(d.counting?'#8B6414':'none')+'" stroke="#8B6414" stroke-width="1.5" stroke-linejoin="round" opacity="'+(d.counting?'1':'.18')+'"/>'},
+      {k:'qc',      svg:'<text x="8" y="13" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#8B1A1A" opacity="'+(d.qc?'1':'.18')+'">A</text>'}
+    ];
+    stampDefs.forEach(function(sd){
+      var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+      svg.setAttribute('width','16'); svg.setAttribute('height','16');
+      svg.setAttribute('viewBox','0 0 16 16');
+      svg.innerHTML=sd.svg;
+      pips.appendChild(svg);
     });
 
     box.appendChild(rnum);
@@ -984,12 +1187,12 @@ function officeHour(idx){
   // Build dossier context for system prompt
   var qc=getQC(c.id);
   var visitedRooms=[];
-  if(d.anteroom) visitedRooms.push('Foundation');
+  if(d.anteroom) visitedRooms.push('Basic');
   if(d.r197a)    visitedRooms.push('Intuition');
   if(d.members)  visitedRooms.push('Advanced');
   if(d.counting) visitedRooms.push('Application');
   var skippedRooms=[];
-  if(!d.anteroom) skippedRooms.push('Foundation');
+  if(!d.anteroom) skippedRooms.push('Basic');
   if(!d.members)  skippedRooms.push('Advanced');
   if(!d.counting) skippedRooms.push('Application');
 
@@ -1137,6 +1340,11 @@ function ohScroll(){
 
 
 function cutscene1(){
+  // Update title bar to First Floor
+  var lbl=document.getElementById('floor-label');
+  setFloorLabel('First Floor');
+  var mb=document.getElementById('map-btn'); if(mb) mb.style.display='block';
+
   show(
     '<div class="cutscene-page">'+
       '<div class="cutscene-header">'+
@@ -1160,10 +1368,901 @@ function cutscene1(){
 }
 
 function floor1arrival(){
+  setFloorLabel('First Floor');
+  var wm=document.getElementById('header-wordmark');
+  var hn=document.getElementById('header-notice');
+  if(wm) wm.style.display='none';
+  if(hn) hn.style.display='block';
+  var lbl=document.getElementById('floor-label');
+  if(lbl){ lbl.style.cursor='default'; lbl.title=''; lbl.onclick=null; }
   show(
     '<div class="narration"><p>The first floor corridor.</p></div>',
-    [{l:'Open the document',f:()=>prenav(0)}]
+    [
+      {l:'Go to Room 1', f:()=>prenav(0)},
+      {l:'Find floor plan →', f:function(){ triggerMapAnim(); }},
+      {l:'Review conversation with the Cleaner', f:cutscene1}
+    ]
   );
+}
+
+function cdone(idx){
+  da(C[idx].id);
+  const trap=C[idx].trap;
+  if(trap==='axiom1'){trap1();return;}
+  if(trap==='axiom2'){trap2();return;}
+  postnav(idx);
+}
+
+function postnav(idx){
+  setFloorLabel('First Floor');
+  const c=C[idx];
+  const q=getQC(c.id);
+  const nxt=idx+1<C.length?()=>prenav(idx+1):apply;
+  const lbl=idx+1<C.length?'Continue →':'File the application →';
+  const attempted=S.dos[c.id].qc || !q; // unlocked if attempted OR no QC exists
+
+  if(!attempted){
+    // Self-test not yet attempted — show gate scene
+    show(
+      '<div class="inotice">The Institute — First Floor — '+c.section+'</div>'+
+      '<div class="narration">'+
+        '<p>Before proceeding, the Institute requires a response.</p>'+
+        '<p>Form '+q.form+' is on the desk.</p>'+
+        '<p>It need not be correct. It must be attempted.</p>'+
+      '</div>',
+      [
+        {l:'Attempt Form '+q.form, f:function(){ showQCForm(idx, function(){ postnav(idx); }); }},
+        {l:'Skip — return to rooms', f:function(){ hub(idx); }}
+      ]
+    );
+    return;
+  }
+
+  // Self-test attempted (or no QC) — show POST synthesis
+  var choices=[];
+  choices.push({l:lbl, f:nxt});
+  choices.push({l:'Return to rooms', f:function(){ hub(idx); }});
+
+  if(c.post&&c.post.length){
+    show(
+      '<div class="inotice">The Institute — First Floor — '+c.section+'</div>'+
+      '<div class="narration">'+c.post.map(p=>'<p>'+p+'</p>').join('')+'</div>',
+      choices
+    );
+  } else {
+    nxt();
+  }
+}
+
+function prenav(idx){
+  const c=C[idx];
+  // Ensure floor label is correct and clickable
+  var lbl=document.getElementById('floor-label');
+  setFloorLabel('First Floor');
+  if(c.pre&&c.pre.length){
+    show('<div class="inotice">The Institute — First Floor — '+c.section+'</div><div class="narration">'+c.pre.map(p=>'<p>'+p+'</p>').join('')+'</div>',
+      [{l:'Continue',f:()=>hub(idx)}]);
+  } else { hub(idx); }
+}
+
+// TRAPS
+function trap1(){
+  show(
+    '<div class="inotice">The Institute — The Stairwell — A correction required</div>'+
+    '<div class="narration"><p>Before the correction is filed.</p><p>Last October, you assigned a probability to the event: <em>lose</em>.</p><p>Enter the value you assigned.</p></div>'+
+    '<div style="margin:1.5vh 0"><input class="tinput" id="t1v" type="number" step="0.1" placeholder="0.0"></div>'+
+    '<button class="tsub" onclick="ct1()">Submit</button>'+
+    '<div class="tres" id="t1r"></div>'+
+    '<div id="t1c" style="display:none;margin-top:2vh"><div class="choices"><button class="choice" onclick="postnav(7)">File the correction and continue →</button></div></div>',
+    []
+  );
+}
+function ct1(){
+  const v=parseFloat(document.getElementById('t1v').value);
+  const r=document.getElementById('t1r'),c=document.getElementById('t1c');
+  if(isNaN(v)){r.textContent='A value is required.';return;}
+  if(v<0){de('axiom1','P(Lose) = '+v+' — negative probability.');r.className='tres wrong';r.innerHTML='The value is negative. $P(A) \geq 0$ for all $A$. A probability of '+v+' has no meaning.<br><br>Aubrey made this exact error. The value was $-0.3$. A correction is on file.';}
+  else if(v===0){de('axiom1','P(Lose) = 0 — event assigned zero probability.');r.className='tres wrong';r.innerHTML='$P(\text{Lose}) = 0$ means the event is impossible. Losing at Blackjack is possible. A correction may be required.';}
+  else if(v>1){de('axiom1','P(Lose) = '+v+' — exceeds 1.');r.className='tres wrong';r.innerHTML='The value exceeds 1. We will return to this when Axiom 2 is absorbed.';}
+  else{r.className='tres right';r.innerHTML='$P(\text{Lose}) = '+v+'$. The axiom is satisfied for this event.';}
+  c.style.display='block';rm(r);
+}
+
+function trap2(){
+  show(
+    '<div class="inotice">The Institute — First Floor — A calculation</div>'+
+    '<div class="narration"><p>The correct sample space for a hand of Blackjack:</p><p>$\Omega = \{\,\text{Win},\,\text{Lose},\,\text{Push}\,\}$</p><p>Assign probabilities to each outcome. Axiom 2 requires they sum to exactly one.</p></div>'+
+    '<div style="margin:1.5vh 0">'+
+      '<div class="trow"><span class="tlabel">$P(\text{Win})$</span><input class="tinput" id="t2w" type="number" step="0.01" min="0" max="1" placeholder="0.00"></div>'+
+      '<div class="trow"><span class="tlabel">$P(\text{Lose})$</span><input class="tinput" id="t2l" type="number" step="0.01" min="0" max="1" placeholder="0.00"></div>'+
+      '<div class="trow"><span class="tlabel">$P(\text{Push})$</span><input class="tinput" id="t2p" type="number" step="0.01" min="0" max="1" placeholder="0.00"></div>'+
+    '</div>'+
+    '<button class="tsub" onclick="ct2()">Calculate total</button>'+
+    '<div class="tres" id="t2r" style="margin-top:1.5vh"></div>'+
+    '<div id="t2c" style="display:none;margin-top:2vh"><div class="choices"><button class="choice" onclick="postnav(8)">Continue →</button></div></div>',
+    []
+  );
+  setTimeout(()=>rm(sc),200);
+}
+function ct2(){
+  const w=parseFloat(document.getElementById('t2w').value)||0;
+  const l=parseFloat(document.getElementById('t2l').value)||0;
+  const p=parseFloat(document.getElementById('t2p').value)||0;
+  const s=Math.round((w+l+p)*1000)/1000;
+  const r=document.getElementById('t2r'),c=document.getElementById('t2c');
+  if(w<0||l<0||p<0){de('axiom2','Negative probability assigned.');r.className='tres wrong';r.textContent='One or more values is negative. Axiom 1 is violated.';c.style.display='block';return;}
+  if(Math.abs(s-1)<0.001){r.className='tres right';r.textContent='Total: '+s+'. Exactly one. Axiom 2 is satisfied.';}
+  else if(s<1){const lost=Math.round((1-s)*100);de('axiom2','Probabilities sum to '+s+' — '+lost+'% missing.');r.className='tres wrong';r.innerHTML='Total: '+s+'. You have lost '+lost+'% of reality. $P(\Omega) = 1$.';}
+  else{de('axiom2','Probabilities sum to '+s+' — exceeds 1.');r.className='tres wrong';r.innerHTML='Total: '+s+'. This exceeds 1. $P(\Omega) = 1$.';}
+  c.style.display='block';rm(r);
+}
+
+// APPLICATION
+function apply(){
+  const allDone=C.every(c=>S.dos[c.id].absorbed);
+  const errs=C.reduce((n,c)=>n+S.dos[c.id].errors.length,0);
+  const vis=C.reduce((n,c)=>{const d=S.dos[c.id];return n+(d.anteroom?1:0)+(d.r197a?1:0)+(d.members?1:0)+(d.counting?1:0);},0);
+  const pct=Math.round(vis/(C.length*4)*100);
+  let body='<p>Three axioms.</p><p>Non-negativity. Normalisation. Countable Additivity.</p><p>Without them, there is no probability.</p><p>Without probability, there is no casino.</p>';
+  if(!allDone){body+='<p>Not all concepts have been absorbed. The application cannot yet be filed.</p>';}
+  else {
+    var instMsg='';
+    if(_qcCorrect>=9){instMsg='<p>The Institute has reviewed the dossier. The application is recommended without reservation.</p>';}
+    else if(_qcCorrect>=7){instMsg='<p>The Institute has reviewed the dossier. The application is commended.</p>';}
+    else if(_qcCorrect>=5){instMsg='<p>The Institute notes the dossier is proceeding satisfactorily.</p>';}
+    else if(_qcCorrect>=3){instMsg='<p>The Institute has noted the dossier with interest. Several corrections remain on file.</p>';}
+    else if(_qcCorrect>=1){instMsg='<p>The Institute notes the dossier is under review. Corrections are on file.</p>';}
+    else{instMsg='<p>The Institute notes the dossier. The application is filed. The casino will be in touch.</p>';}
+    body+=instMsg;
+    body+='<p>I have notified the casino. I am awaiting a response.</p>';
+  }
+  body+='<p style="font-size:.8em;color:rgba(212,168,67,.3);margin-top:1.5vh">You visited '+vis+' of '+(C.length*4)+' rooms ('+pct+'%).</p>';
+  const choices=[{l:'Watch Episode 1 →',f:()=>{window.location.href='episode1.html';}}];
+  if(!allDone){const fi=C.findIndex(c=>!S.dos[c.id].absorbed);choices.push({l:'Return to rooms',f:()=>prenav(fi)});}
+  show(
+    '<div class="inotice">The Institute — First Floor — Application</div>'+
+    '<div class="narration">'+body+'</div>'+
+    '<div class="narrator">Aubrey Squeakwell was not, as yet, at the casino.<br>But he had absorbed the three axioms.<br><br>Probably.</div>',
+    choices
+  );
+}
+
+// OPENING
+function s0(){
+  const ss=document.getElementById("startscreen");
+  if(ss)ss.style.display="none";
+  show(
+    '<div class="narration">'+
+    '<p>Allow me to introduce myself.</p>'+
+    '<p>I am Aubrey Squeakwell, BSc.</p>'+
+    '<p>The BSc is in Wine and Cheese.</p>'+
+    '<p>I am a mouse. I think it. Therefore, I must be.</p>'+
+    '<p>The facts are on file.</p>'+
+    '</div>',
+    [{l:'Continue',f:s0b},{l:'Ascend to the First Floor →',f:cutscene1}],
+  '<div class="dossier-wrap-s"><div class="dossier-back-s"></div><div class="dossier-front-s"><div class="dossier-tab-s"><span>The Institute</span></div><div class="dossier-lbl-s"><div class="dlbl-row"><span class="dlbl-key">Candidate</span><span class="dlbl-val">Squeakwell, A. (BSc)</span></div><div class="dlbl-row"><span class="dlbl-key">Reference</span><span class="dlbl-val">AS/001/F1</span></div><div class="dlbl-row"><span class="dlbl-key">Status</span><span class="dlbl-val">In Progress</span></div></div><div class="dossier-int-s"><div class="d-empty-line"></div><div class="d-empty-line"></div><div class="d-empty-line"></div><div class="d-empty-stamp">Empty</div></div><div class="dossier-ref-s">Form DS/1 &middot; Absorption Record</div></div></div><div class="dossier-shadow-s"></div>'
+  );
+}
+function s0b(){
+  show(
+    '<div class="narration">'+
+    '<p>Last October, I decided to make a fortune.</p>'+
+    '<p>I had a plan.</p>'+
+    '<p>To go to the casino.</p>'+
+    '<p>I was not admitted.</p>'+
+    '<p>I was informed that I lacked the necessary framework.</p>'+
+    '<p>The framework is the condition of entry.</p>'+
+    '</div>',
+    [{l:'Continue',f:s0c},{l:'Ascend to the First Floor →',f:cutscene1}],
+  '<div class="dossier-wrap-s"><div class="dossier-back-s"></div><div class="dossier-front-s"><div class="dossier-tab-s"><span>The Institute</span></div><div class="dossier-lbl-s"><div class="dlbl-row"><span class="dlbl-key">Candidate</span><span class="dlbl-val">Squeakwell, A. (BSc)</span></div><div class="dlbl-row"><span class="dlbl-key">Reference</span><span class="dlbl-val">AS/001/F1</span></div><div class="dlbl-row"><span class="dlbl-key">Status</span><span class="dlbl-val">In Progress</span></div></div><div class="dossier-int-s"><div class="d-empty-line"></div><div class="d-empty-line"></div><div class="d-empty-line"></div><div class="d-empty-stamp">Empty</div></div><div class="dossier-ref-s">Form DS/1 &middot; Absorption Record</div></div></div><div class="dossier-shadow-s"></div>'
+  );
+}
+function s0c(){
+  show(
+    '<div class="narration">'+
+    '<p>I enquired.</p>'+
+    '<p>I was handed a dossier.</p>'+
+    '<p>It was empty.</p>'+
+    '<p>I was told to fill it.</p>'+
+    '<p>I asked with what.</p>'+
+    '<p>The question was noted with interest and filed.</p>'+
+    '</div>',
+    [{l:'Continue',f:s0d},{l:'Ascend to the First Floor →',f:cutscene1}],
+  '<div class="dossier-wrap-s"><div class="dossier-back-s"></div><div class="dossier-front-s"><div class="dossier-tab-s"><span>The Institute</span></div><div class="dossier-lbl-s"><div class="dlbl-row"><span class="dlbl-key">Candidate</span><span class="dlbl-val">Squeakwell, A. (BSc)</span></div><div class="dlbl-row"><span class="dlbl-key">Reference</span><span class="dlbl-val">AS/001/F1</span></div><div class="dlbl-row"><span class="dlbl-key">Status</span><span class="dlbl-val">In Progress</span></div></div><div class="dossier-int-s"><div class="d-empty-line"></div><div class="d-empty-line"></div><div class="d-empty-line"></div><div class="d-empty-stamp">Empty</div></div><div class="dossier-ref-s">Form DS/1 &middot; Absorption Record</div></div></div><div class="dossier-shadow-s"></div>'
+  );
+}
+function s0d(){
+  show(
+    '<div class="narration">'+
+    '<p>The casino across the road is called Gambler\u2019s Ruin.</p>'+
+    '<p>The lights are always on.</p>'+
+    '<p>I have been here since October.</p>'+
+    '<p>The dossier remains empty.</p>'+
+    '<p>Uncertainty, I am told, plays a significant role in what comes next.</p>'+
+    '<p>I find this plausible.</p>'+
+    '<p>The plan is foolproof.</p>'+
+    '<p>Probably.</p>'+
+    '</div>',
+    [{l:'Ascend to the First Floor →',f:cutscene1}],
+  '<div class="dossier-wrap-s"><div class="dossier-back-s"></div><div class="dossier-front-s"><div class="dossier-tab-s"><span>The Institute</span></div><div class="dossier-lbl-s"><div class="dlbl-row"><span class="dlbl-key">Candidate</span><span class="dlbl-val">Squeakwell, A. (BSc)</span></div><div class="dlbl-row"><span class="dlbl-key">Reference</span><span class="dlbl-val">AS/001/F1</span></div><div class="dlbl-row"><span class="dlbl-key">Status</span><span class="dlbl-val">In Progress</span></div></div><div class="dossier-int-s"><div class="d-empty-line"></div><div class="d-empty-line"></div><div class="d-empty-line"></div><div class="d-empty-stamp">Empty</div></div><div class="dossier-ref-s">Form DS/1 &middot; Absorption Record</div></div></div><div class="dossier-shadow-s"></div>'
+  );
+}
+function s4(){show('<div class="narration"><p>The Institute occupies a building adjacent to Gambler’s Ruin.</p><p>The casino is visible from the first floor windows — across a courtyard, behind glass doors that do not open from this side.</p><p>The first floor houses four rooms. Each contains a different version of the same knowledge.</p><p>Aubrey was not told which to enter first. He assumed there was a correct order. He is less certain of this now.</p></div>',[{l:'Go to the first floor',f:()=>prenav(0)}]);}
+
+
+
+// ── GRAIN ──────────────────────────────────────────────────────────
+(function(){
+  var cv=document.createElement('canvas');
+  cv.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.18';
+  document.body.appendChild(cv);
+  var gx=cv.getContext('2d');
+  function rsz(){cv.width=innerWidth;cv.height=innerHeight;}
+  rsz();
+  window.addEventListener('resize',rsz);
+  (function gr(){
+    var w=cv.width,ht=cv.height,id=gx.createImageData(w,ht),d=id.data;
+    for(var i=0;i<d.length;i+=4){var v=Math.random()*18;d[i]=d[i+1]=d[i+2]=v;d[i+3]=Math.random()*12;}
+    gx.putImageData(id,0,0);
+    requestAnimationFrame(gr);
+  })();
+})();
+
+
+
+// ── INSTITUTE STATUS ───────────────────────────────────────────────
+var _qcCorrect=0;
+var _qcTotal=0;
+
+function updateStatus(){
+  var el=document.getElementById('inst-status');
+  if(!el) return;
+  var statuses=[
+    'In Progress',
+    'Under Review',
+    'Noted with Interest',
+    'Proceeding Satisfactorily',
+    'Proceeding Satisfactorily',
+    'Commended',
+    'Commended',
+    'Highly Commended',
+    'Highly Commended',
+    'Application Recommended',
+    'Application Recommended'
+  ];
+  el.textContent=statuses[Math.min(_qcCorrect, statuses.length-1)];
+}
+
+function recordQCResult(correct){
+  _qcTotal++;
+  if(correct) _qcCorrect++;
+  updateStatus();
+}
+
+// ── QC FORMS ──────────────────────────────────────────────────────
+
+
+function getQC(conceptId){
+  return QC.find(function(q){ return q.id===conceptId; });
+}
+
+function showQCForm(idx,onComplete){
+  setFloorLabel('First Floor');
+  const c=C[idx];
+  const q=getQC(C[idx].id);
+  if(!q) { onComplete(); return; }
+  const nxt=onComplete||(idx+1<C.length?()=>prenav(idx+1):apply);
+
+  var inner='';
+  inner+='<div class="qc-form">';
+  inner+='<div class="qc-stamp">Form '+q.form+' — '+q.concept+'</div>';
+  inner+='<div class="qc-note">This form must be completed before proceeding.</div>';
+  inner+='<div class="qc-question">'+q.question+'</div>';
+
+  if(q.type==='mcq'){
+    inner+='<div class="qc-options">';
+    q.options.forEach(function(opt,i){
+      inner+='<button class="qc-opt" onclick="handleQC('+idx+','+i+','+JSON.stringify(onComplete===nxt)+')">'+opt+'</button>';
+    });
+    inner+='</div>';
+  } else {
+    inner+='<div class="qc-input-row">';
+    inner+='<input class="qc-input" id="qc-ans" type="text" placeholder="Enter answer">';
+    inner+='<button class="qc-submit" onclick="handleQCInput('+idx+','+JSON.stringify(onComplete===nxt)+')">Submit</button>';
+    inner+='</div>';
+  }
+  inner+='<div class="qc-feedback" id="qc-fb"></div>';
+  inner+='</div>';
+
+  show(
+    '<div class="inotice">The Institute — First Floor — Form '+q.form+'</div>'+inner,
+    []
+  );
+}
+
+function handleQC(idx, chosen, goNext){
+  const q=getQC(C[idx].id);
+  const fb=document.getElementById('qc-fb');
+  const nxt=idx+1<C.length?()=>prenav(idx+1):apply;
+  if(chosen===q.correct){
+    fb.className='qc-feedback qc-right';
+    fb.textContent=q.correct_msg;
+    recordQCResult(true);
+    S.dos[C[idx].id].qc=true; rd();
+  } else {
+    fb.className='qc-feedback qc-wrong';
+    fb.textContent=q.wrong_msgs[chosen]||'Incorrect. A correction is on file.';
+    de(C[idx].id,'QC/'+q.form+': incorrect response.');
+    recordQCResult(false);
+  }
+  // Disable options
+
+  // Add continue button
+  setTimeout(function(){
+    var btn=document.createElement('button');
+    btn.className='choice';
+    btn.textContent='Acknowledged. Continue →';
+    btn.onclick=nxt;
+    document.getElementById('qc-fb').after(btn);
+  }, 600);
+}
+
+function handleQCInput(idx, goNext){
+  const q=getQC(C[idx].id);
+  const fb=document.getElementById('qc-fb');
+  const nxt=idx+1<C.length?()=>prenav(idx+1):apply;
+  const raw=document.getElementById('qc-ans').value.trim();
+  const val=parseFloat(raw);
+  var correct=false;
+  if(q.correct===0.5 && (val===0.5||raw==='1/2')) correct=true;
+  else if(q.correct===0.2 && (val===0.2||raw==='1/5')) correct=true;
+  else if(q.correct===0.8 && (val===0.8||raw==='4/5')) correct=true;
+  else if(Math.abs(val-q.correct)<0.001) correct=true;
+  if(correct){
+    fb.className='qc-feedback qc-right';
+    fb.textContent=q.correct_msg;
+    recordQCResult(true);
+    S.dos[C[idx].id].qc=true; rd();
+  } else {
+    fb.className='qc-feedback qc-wrong';
+    fb.textContent=q.wrong_msg||'Incorrect. A correction is on file.';
+    de(C[idx].id,'QC/'+q.form+': incorrect response.');
+    recordQCResult(false);
+  }
+
+  setTimeout(function(){
+    var btn=document.createElement('button');
+    btn.className='choice';
+    btn.textContent='Acknowledged. Continue →';
+    btn.onclick=nxt;
+    document.getElementById('qc-fb').after(btn);
+  }, 600);
+}
+
+
+// ── AUDIO — ported from episode player ───────────────────────────
+var _AC=null,_mg=null,_padI=0,_audioOn=false;
+var _CHORDS=[[196,246.9,329.6],[164.8,220,293.7],[185,246.9,311.1],[196,261.6,329.6]];
+
+function initAudio(){
+  if(_AC) return;
+  try{
+    _AC=new(window.AudioContext||window.webkitAudioContext)();
+    var co=_AC.createDynamicsCompressor();
+    co.threshold.value=-20;co.ratio.value=4;co.connect(_AC.destination);
+    _mg=_AC.createGain();_mg.gain.value=0;_mg.connect(co);
+    _schedulePad();_scheduleMel();_scheduleTick();
+  } catch(e){ console.log('Audio unavailable'); }
+}
+
+function _tone(f,t,dur,v){
+  var o=_AC.createOscillator(),g=_AC.createGain();
+  o.type='sine';o.frequency.value=f;
+  g.gain.setValueAtTime(0,t);
+  g.gain.linearRampToValueAtTime(v,t+.35);
+  g.gain.linearRampToValueAtTime(v*.8,t+dur-.6);
+  g.gain.linearRampToValueAtTime(0,t+dur);
+  o.connect(g);g.connect(_mg);o.start(t);o.stop(t+dur+.1);
+}
+
+function _schedulePad(){
+  if(!_AC) return;
+  if(_audioOn) _CHORDS[_padI%4].forEach(function(f){ _tone(f,_AC.currentTime,12,.018); });
+  _padI++;
+  setTimeout(_schedulePad,10400);
+}
+
+function _scheduleMel(){
+  if(!_AC) return;
+  if(_audioOn){
+    var M=[
+      [{f:659,d:1.4},{f:587,d:.9},{f:523,d:2}],
+      [{f:784,d:1.6},{f:698,d:2.1}],
+      [{f:523,d:.9},{f:587,d:1},{f:659,d:1.8}]
+    ];
+    var fr=M[Math.floor(Math.random()*3)];
+    var t=_AC.currentTime+.2;
+    fr.forEach(function(n){
+      var o=_AC.createOscillator(),g=_AC.createGain();
+      o.type='sine';o.frequency.value=n.f;
+      g.gain.setValueAtTime(0,t);
+      g.gain.linearRampToValueAtTime(.008,t+.1);
+      g.gain.exponentialRampToValueAtTime(.0001,t+n.d);
+      o.connect(g);g.connect(_mg);o.start(t);o.stop(t+n.d+.1);
+      t+=n.d+.08;
+    });
+  }
+  setTimeout(_scheduleMel,(15+Math.random()*14)*1000);
+}
+
+function _scheduleTick(){
+  if(!_AC){ setTimeout(_scheduleTick,1620+Math.random()*180); return; }
+  if(_audioOn){
+    [[880,.002],[698,.0015]].forEach(function(p,i){
+      var d=i*.9,o=_AC.createOscillator(),g=_AC.createGain();
+      o.type='sine';o.frequency.value=p[0];
+      g.gain.setValueAtTime(p[1],_AC.currentTime+d);
+      g.gain.exponentialRampToValueAtTime(.0001,_AC.currentTime+d+.09);
+      o.connect(g);g.connect(_mg);
+      o.start(_AC.currentTime+d);o.stop(_AC.currentTime+d+.12);
+    });
+  }
+  setTimeout(_scheduleTick,1620+Math.random()*180);
+}
+
+function toggleSound(){
+  initAudio();
+  if(!_AC) return;
+  _audioOn=!_audioOn;
+  var sl=document.getElementById('sound-label');
+  if(_audioOn){
+    if(_AC.state==='suspended') _AC.resume();
+    _mg.gain.setTargetAtTime(0.24,_AC.currentTime,.3);
+    // Kick off pad immediately so first chord plays now
+    if(_audioOn) _CHORDS[_padI%4].forEach(function(f){ _tone(f,_AC.currentTime+0.1,12,.018); });
+    _padI++;
+    sl.querySelectorAll('line').forEach(function(l){l.style.display='';});
+    sl.style.opacity='0.9';
+  } else {
+    _mg.gain.setTargetAtTime(0,_AC.currentTime,.3);
+    sl.querySelectorAll('line').forEach(function(l){l.style.display='none';});
+    sl.style.opacity='0.4';
+  }
+}
+
+function updateBackBtn(){
+  var btn=document.getElementById('back-btn');
+  if(btn) btn.style.visibility=_history.length>1?'visible':'hidden';
+}
+
+function goBack(){
+  if(_history.length<=1) return;
+  _history.pop(); // remove current
+  var prev=_history.pop(); // get previous (show() will re-push it)
+  show(prev.html, prev.choices);
+}
+
+
+function openMap(){
+  buildMap();
+  var o=document.getElementById('map-overlay');
+  o.style.cssText='display:flex;position:fixed;inset:0;background:rgba(26,22,16,.6);z-index:200;align-items:center;justify-content:center';
+}
+function closeMap(){
+  document.getElementById('map-overlay').style.display='none';
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape') closeMap();
+});
+function buildMap(){
+  var currentIdx=-1;
+  if(_history.length>0){
+    var last=_history[_history.length-1].html||'';
+    for(var ci=0;ci<C.length;ci++){
+      if(last.indexOf(C[ci].section)>-1){currentIdx=ci;break;}
+    }
+  }
+
+  var panel=document.getElementById('map-grid');
+  panel.innerHTML='';
+  panel.style.cssText='display:grid;grid-template-columns:1fr 40px 1fr;gap:0;';
+
+  // Left column rooms 1-5, corridor, right column rooms 6-10
+  var leftCol=document.createElement('div');
+  leftCol.style.cssText='display:flex;flex-direction:column;gap:1px;';
+
+  var corridor=document.createElement('div');
+  corridor.style.cssText='background:rgba(26,22,16,.07);border-left:1px solid rgba(26,22,16,.3);border-right:1px solid rgba(26,22,16,.3);display:flex;align-items:center;justify-content:center;';
+  var corrLabel=document.createElement('div');
+  corrLabel.style.cssText='font-family:monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(26,22,16,.35);writing-mode:vertical-rl;transform:rotate(180deg);';
+  corrLabel.textContent='Corridor — First Floor';
+  corridor.appendChild(corrLabel);
+
+  var rightCol=document.createElement('div');
+  rightCol.style.cssText='display:flex;flex-direction:column;gap:1px;';
+
+  function makeRoom(idx){
+    var c=C[idx], d=S.dos[c.id];
+    var isCurrent=(idx===currentIdx);
+    var box=document.createElement('div');
+    box.style.cssText='background:'+(d.absorbed?'rgba(26,22,16,.07)':'#F2EDD7')+
+      ';border:'+(isCurrent?'2px solid rgba(180,130,30,.8)':'1px solid rgba(26,22,16,.25)')+
+      ';padding:14px 14px 10px;cursor:pointer;transition:background .15s;position:relative;flex:1;';
+    box.onmouseover=function(){this.style.background='rgba(180,130,30,.08)';};
+    box.onmouseout=function(){var f=d.absorbed?'rgba(26,22,16,.07)':'#F2EDD7';this.style.background=f;};
+    box.onclick=(function(i){return function(){closeMap();hub(i);};})(idx);
+
+    var rnum=document.createElement('div');
+    rnum.style.cssText='font-family:monospace;font-size:9px;letter-spacing:.12em;color:rgba(26,22,16,.35);margin-bottom:4px;';
+    rnum.textContent=(idx<9?'0':'')+(idx+1);
+
+    var title=document.createElement('div');
+    title.style.cssText='font-family:monospace;font-size:14px;color:rgba(26,22,16,.9);line-height:1.3;margin-bottom:10px;font-weight:bold;';
+    title.textContent=c.title;
+
+    var pips=document.createElement('div');
+    pips.style.cssText='display:flex;gap:6px;align-items:center;margin-top:3px;';
+    // Stamps: r197a=circle, anteroom=triangle, members=square, counting=inv-triangle, qc=A
+    var stampDefs=[
+      {k:'r197a',   svg:'<circle cx="8" cy="8" r="6" fill="'+(d.r197a   ?'#1A3A5C':'none')+'" stroke="#1A3A5C" stroke-width="1.5" opacity="'+(d.r197a   ?'1':'.18')+'"/>'},
+      {k:'anteroom',svg:'<polygon points="8,2 15,14 1,14" fill="'+(d.anteroom?'#1C3A38':'none')+'" stroke="#1C3A38" stroke-width="1.5" stroke-linejoin="round" opacity="'+(d.anteroom?'1':'.18')+'"/>'},
+      {k:'members', svg:'<rect x="1" y="1" width="14" height="14" fill="'+(d.members ?'#1A1610':'none')+'" stroke="#1A1610" stroke-width="1.5" opacity="'+(d.members ?'1':'.18')+'"/>'},
+      {k:'counting',svg:'<polygon points="1,2 15,2 8,14" fill="'+(d.counting?'#8B6414':'none')+'" stroke="#8B6414" stroke-width="1.5" stroke-linejoin="round" opacity="'+(d.counting?'1':'.18')+'"/>'},
+      {k:'qc',      svg:'<text x="8" y="13" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#8B1A1A" opacity="'+(d.qc?'1':'.18')+'">A</text>'}
+    ];
+    stampDefs.forEach(function(sd){
+      var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+      svg.setAttribute('width','16'); svg.setAttribute('height','16');
+      svg.setAttribute('viewBox','0 0 16 16');
+      svg.innerHTML=sd.svg;
+      pips.appendChild(svg);
+    });
+
+    box.appendChild(rnum);
+    box.appendChild(title);
+    box.appendChild(pips);
+
+    if(isCurrent){
+      var marker=document.createElement('div');
+      marker.style.cssText='font-family:monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(180,130,30,.9);margin-top:6px;';
+      marker.textContent='You are here';
+      box.appendChild(marker);
+    }
+    if(d.absorbed){
+      var tick=document.createElement('div');
+      tick.style.cssText='position:absolute;top:10px;right:10px;font-size:14px;color:rgba(26,22,16,.35);';
+      tick.textContent='✓';
+      box.appendChild(tick);
+    }
+    return box;
+  }
+
+  for(var i=0;i<5;i++) leftCol.appendChild(makeRoom(i));
+  for(var j=5;j<10;j++) rightCol.appendChild(makeRoom(j));
+
+  panel.appendChild(leftCol);
+  panel.appendChild(corridor);
+  panel.appendChild(rightCol);
+}
+
+
+// ── OFFICE HOUR AI ────────────────────────────────────────────────
+var _ohHistory=[];
+var _ohIdx=-1;
+var _ohThinking=false;
+
+function officeHour(idx){
+  const c=C[idx], d=S.dos[c.id];
+  ds(c.id,'r197a');
+
+  // GATE — self-test must be attempted first
+  if(!d.qc){
+    show(
+      '<div class="inotice">The Bureaucrat — Room 197A</div>'+
+      '<div class="narration">'+
+        '<p>The Bureaucrat has reviewed the file.</p>'+
+        '<p>Form '+getQC(c.id).form+' has not been submitted.</p>'+
+        '<p>The Bureaucrat does not conduct examinations on unsubmitted work.</p>'+
+        '<p>Complete the form. Return.  &#9633;</p>'+
+      '</div>',
+      [
+        {l:'Attempt Form '+getQC(c.id).form, f:function(){ showQCForm(idx, function(){ officeHour(idx); }); }},
+        {l:'← Back → Rooms', f:function(){ hub(idx); }}
+      ]
+    );
+    return;
+  }
+
+  // Build dossier context for system prompt
+  var qc=getQC(c.id);
+  var visitedRooms=[];
+  if(d.anteroom) visitedRooms.push('Basic');
+  if(d.r197a)    visitedRooms.push('Intuition');
+  if(d.members)  visitedRooms.push('Advanced');
+  if(d.counting) visitedRooms.push('Application');
+  var skippedRooms=[];
+  if(!d.anteroom) skippedRooms.push('Basic');
+  if(!d.members)  skippedRooms.push('Advanced');
+  if(!d.counting) skippedRooms.push('Application');
+
+  var qcResult = d.errors.some(function(e){ return e.indexOf('QC') > -1; }) ? 'incorrect' : 'correct';
+  var errCount = d.errors.length;
+
+  // Opening line based on dossier state
+  var opening='';
+  if(qcResult==='incorrect' && skippedRooms.length>0){
+    opening='The dossier notes an incorrect response on Form '+qc.form+'. Several rooms were not visited. We will begin with the error.';
+  } else if(qcResult==='incorrect'){
+    opening='A correction has been filed. Form '+qc.form+' was submitted with an incorrect response. Walk me through your reasoning.';
+  } else if(skippedRooms.length>1){
+    opening='The self-test was completed correctly. However, '+skippedRooms.join(' and ')+' were not visited. I have questions about those areas.';
+  } else if(skippedRooms.length===1){
+    opening='The answer was correct. The '+skippedRooms[0]+' room was not visited. That concerns me slightly. Let us proceed.';
+  } else {
+    opening='The dossier is in order. The self-test was completed correctly. I have one question.';
+  }
+
+  // System prompt — dossier aware
+  var ctx='';
+  ctx+='The candidate is Aubrey Squeakwell, BSc (Wine and Cheese). ';
+  ctx+='Concept under review: '+c.title+'. ';
+  ctx+='Rooms visited: '+(visitedRooms.length>0?visitedRooms.join(', '):'none')+'. ';
+  ctx+='Rooms not visited: '+(skippedRooms.length>0?skippedRooms.join(', '):'none')+'. ';
+  ctx+='Self-test (Form '+qc.form+'): '+qcResult+'. ';
+  if(errCount>0) ctx+='Corrections on file: '+errCount+'. ';
+  ctx+='Rhetorical question posed at the hub: '+c.intro+'. ';
+  if(c.post&&c.post.length) ctx+='Post-synthesis text the candidate has read: '+c.post.join(' ')+'. ';
+  if(qc) ctx+='Self-test question: '+qc.question+' Correct answer: '+qc.correct_msg+'. ';
+
+  window._ohSystemPrompt =
+    'You are the Bureaucrat, the examiner in Room 197A at the Institute. '+
+    'You have read the candidate dossier. You speak with authority. '+
+    'You are not unkind. You are not warm. You are precise. '+
+    'You are Socratic — you ask questions rather than give answers. '+
+    'You probe where the dossier shows weakness: incorrect self-test answers, skipped rooms, gaps in reasoning. '+
+    'You do not praise correct answers — you probe deeper. '+
+    'When the candidate is lost, give a hint not an answer. '+
+    'Keep responses to two or three sentences maximum. One question per response. No bullet points. No lists. '+
+    'You are examining Aubrey Squeakwell. He intends to enter a casino. The framework is the condition of entry. '+
+    'DOSSIER SUMMARY: '+ctx;
+
+  // _ohHistory initialised with opening
+  _ohHistory=[{role:'assistant', content:opening}];
+  _ohIdx=idx;
+
+  show(
+    '<div class="inotice">The Bureaucrat — Room 197A — '+c.section+'</div>'+
+    '<div id="oh-wrap">'+
+      '<div id="oh-messages"></div>'+
+      '<div id="oh-input-row">'+
+        '<input id="oh-input" type="text" placeholder="Type your response...">'+
+        '<button id="oh-send" onclick="ohSend()">Send</button>'+
+      '</div>'+
+    '</div>',
+    [{l:'← Back → Rooms', f:function(){hub(idx);}}]
+  );
+
+  // Wire enter key
+  setTimeout(function(){
+    var inp=document.getElementById('oh-input');
+    if(inp) inp.addEventListener('keydown',function(e){ if(e.key==='Enter') ohSend(); });
+  },200);
+  // Show opening line
+  setTimeout(function(){
+    ohAddMessage('ragvir', opening);
+  }, 400);
+}
+
+function getOHOpening(id){
+  var openings = {
+    'uncertainty':    'You\'ve just read about probability as a measure. In your own words — what does it mean to measure something?',
+    'experiment':     'The material defines an experiment formally. But how would you explain to someone why a coin toss qualifies as an experiment, and a calculation does not?',
+    'sample_space':   'You\'ve seen the definition of a sample space. What would go wrong if we omitted an outcome from Ω?',
+    'events':         'An event is a subset of the sample space. Can you give me an example where two events overlap — and tell me what that overlap means?',
+    'sigma_algebra':  'Ω is the set of outcomes. ℱ is the collection of events. Why do we need both? What would be missing if we only had Ω?',
+    'mutual_exclusivity': 'Two events are mutually exclusive. What precisely does that mean — and what does it not mean?',
+    'probability_measure': 'We have a measurable space (Ω, ℱ). Why isn\'t any function from ℱ to ℝ a valid probability measure?',
+    'axiom1':         'Axiom 1 says P(A) ≥ 0 for all events A. What would it mean for a probability to be negative? Is it simply inconvenient, or is it something deeper?',
+    'axiom2':         'P(Ω) = 1. Why exactly 1? What breaks if we set P(Ω) = 100?',
+    'axiom3':         'Countable additivity. Walk me through why the word “countable” is there. What happens with uncountably many events?'
+  };
+  return openings[id] || 'You\'ve studied '+id+'. What is the key idea, in one sentence?';
+}
+
+async function ohSend(){
+  if(_ohThinking) return;
+  var input=document.getElementById('oh-input');
+  if(!input) return;
+  var text=input.value.trim();
+  if(!text) return;
+  input.value='';
+
+  ohAddMessage('student', text);
+  _ohHistory.push({role:'user', content:text});
+
+  _ohThinking=true;
+  var thinkEl=document.createElement('div');
+  thinkEl.className='oh-msg ragvir oh-thinking';
+  thinkEl.textContent='…';
+  document.getElementById('oh-messages').appendChild(thinkEl);
+  ohScroll();
+
+  try {
+    var messages=[{role:'user',content:'Begin the office hour session.'},
+                  {role:'assistant',content:_ohHistory[0].content}]
+                  .concat(_ohHistory.slice(1));
+
+    var res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:window._ohSystemPrompt,
+        messages:messages
+      })
+    });
+    var data=await res.json();
+    var reply=data.content&&data.content[0]&&data.content[0].text||'I\'m afraid I didn\'t catch that. Could you rephrase?';
+    thinkEl.remove();
+    ohAddMessage('ragvir', reply);
+    _ohHistory.push({role:'assistant', content:reply});
+  } catch(e) {
+    thinkEl.remove();
+    ohAddMessage('ragvir','The connection appears to have lapsed. Please try again.');
+  }
+  _ohThinking=false;
+}
+
+function ohAddMessage(role, text){
+  var el=document.createElement('div');
+  el.className='oh-msg '+role;
+  el.textContent=text;
+  var msgs=document.getElementById('oh-messages');
+  if(msgs){ msgs.appendChild(el); ohScroll(); }
+}
+
+function ohScroll(){
+  var msgs=document.getElementById('oh-messages');
+  if(msgs) msgs.scrollTop=msgs.scrollHeight;
+}
+
+
+function cutscene1(){
+  // Update title bar to First Floor
+  var lbl=document.getElementById('floor-label');
+  setFloorLabel('First Floor');
+  var mb=document.getElementById('map-btn'); if(mb) mb.style.display='block';
+
+  show(
+    '<div class="cutscene-page">'+
+      '<div class="cutscene-header">'+
+        '<span class="cutscene-label">The Institute  □</span>'+
+        '<span class="cutscene-loc">First Floor Corridor</span>'+
+      '</div>'+
+      '<div>'+
+        '<p class="cs-dir">The Cleaner passed through the first floor corridor with a mop. She did not look up.</p>'+
+        '<p class="cs-speech">“I am uncertain about —” said Aubrey.</p>'+
+        '<p class="cs-dir">She stopped. Still did not look up.</p>'+
+        '<p class="cs-speech">“About what?” said the Cleaner.</p>'+
+        '<p class="cs-speech">“That,” said Aubrey, “is rather the question.”</p>'+
+        '<p class="cs-speech">“And how uncertain are you?”</p>'+
+        '<p class="cs-dir">He had not thought about it in those terms. He looked at the empty dossier in his hand.</p>'+
+        '<p class="cs-speech">“I don’t know.”</p>'+
+        '<p class="cs-dir">The Cleaner resumed moving.</p>'+
+        '<p class="cs-speech">“Then you have two problems. Not one.”  □</p>'+
+      '</div>',
+    [{l:'Continue →',f:floor1arrival}]
+  );
+}
+
+function floor1arrival(){
+  // Update title bar to First Floor
+  var lbl=document.getElementById('floor-label');
+  if(lbl){
+    lbl.textContent='First Floor';
+    lbl.style.cursor='pointer';
+    lbl.title='Opening cut scene';
+    lbl.onclick=function(){ cutscene1(); };
+  }
+  show(
+    '<div class="narration">'+'<p>The first floor corridor.</p>'+'<div style="margin-top:20px;position:relative;display:inline-block">'+'<div style="position:absolute;top:-6px;left:16px;width:10px;height:10px;background:radial-gradient(circle at 35% 35%,#E8C84A,#B8860B);border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.5);z-index:2"></div>'+'<div style="background:#EDE4C8;border:1px solid rgba(26,22,16,.2);padding:16px 20px 14px;max-width:380px;position:relative;transform:rotate(-0.8deg);box-shadow:1px 2px 8px rgba(0,0,0,.3),3px 3px 16px rgba(0,0,0,.15);overflow:hidden">'+'<div style="position:absolute;inset:0;background-image:repeating-linear-gradient(to bottom,transparent,transparent 27px,rgba(26,22,16,.07) 27px,rgba(26,22,16,.07) 28px);background-position:0 22px;pointer-events:none"></div>'+'<div style="font-family:Special Elite,monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(26,22,16,.38);margin-bottom:10px;position:relative;z-index:1">Notice — The Institute</div>'+'<div style="font-family:Georgia,serif;font-size:16px;line-height:1.8;color:#1A1610;font-style:italic;position:relative;z-index:1;margin-bottom:10px">The theory of probability as a mathematical discipline can and should be developed from axioms.</div>'+'<div style="font-family:Special Elite,monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:rgba(26,22,16,.4);text-align:right;position:relative;z-index:1">— A.N. Kolmogorov, 1933</div>'+'</div>'+'<div style="height:6px;background:radial-gradient(ellipse,rgba(0,0,0,.2) 0%,rgba(0,0,0,0) 100%);margin:1px 8px 0;border-radius:50%"></div>'+'</div>'+'</div>',
+    [
+      {l:'Go to Room 1', f:()=>prenav(0)},
+      {l:'Find floor plan →', f:function(){ triggerMapAnim(); }},
+      {l:'Review conversation with the Cleaner', f:cutscene1}
+    ]
+  
+  );
+}
+
+
+
+
+
+
+function showMapHint(){
+  var ov=document.getElementById('map-overlay');
+  if(!ov){ ov=document.createElement('div'); ov.id='map-overlay'; ov.style.cssText='display:flex;position:fixed;inset:0;background:rgba(26,22,16,.6);z-index:200;align-items:center;justify-content:center'; ov.onclick=function(e){if(e.target===ov)ov.style.display='none';}; document.body.appendChild(ov); }
+  var p=document.createElement('div');
+  p.style.cssText='background:var(--paper);max-width:420px;width:90%;padding:32px 36px;box-shadow:0 4px 32px rgba(0,0,0,.4)';
+  var n=document.createElement('div'); n.className='inotice'; n.textContent='Floor Plan';
+  var b=document.createElement('div'); b.className='narration';
+  b.innerHTML='<p>The floor plan is available at any time.</p><p>Click the map icon at the top right of the page to open it.</p><p>Visited rooms are marked. The current room is highlighted in amber.</p>';
+  var f=document.createElement('div'); f.style.cssText='margin-top:20px;text-align:right';
+  var btn=document.createElement('button'); btn.className='choice-btn'; btn.textContent='Close';
+  btn.onclick=function(){ov.style.display='none';};
+  f.appendChild(btn); p.appendChild(n); p.appendChild(b); p.appendChild(f);
+  ov.innerHTML=''; ov.appendChild(p); ov.style.display='flex';
+}
+
+
+function triggerMapAnim(){
+  var btn = document.getElementById('map-btn');
+  if(!btn) return;
+  // Scroll header into view
+  btn.scrollIntoView({behavior:'smooth', block:'nearest'});
+  // Add pulse ring — remove and re-add to restart animation
+  btn.classList.remove('map-btn-pulse','map-btn-glow');
+  void btn.offsetWidth; // reflow
+  btn.classList.add('map-btn-pulse');
+  // Repeat pulse for 9 seconds (7 pulses x 1.3s each)
+  var pulseCount=0;
+  var pulseInterval=setInterval(function(){
+    pulseCount++;
+    btn.classList.remove('map-btn-pulse');
+    void btn.offsetWidth;
+    if(pulseCount<7){ btn.classList.add('map-btn-pulse'); }
+    else {
+      clearInterval(pulseInterval);
+      btn.classList.add('map-btn-glow');
+      setTimeout(function(){ btn.classList.remove('map-btn-glow'); }, 9000);
+    }
+  }, 1300);
+}
+
+
+function setFloorLabel(txt){
+  var lbl=document.getElementById('floor-label');
+  if(!lbl) return;
+  lbl.textContent = txt || 'First Floor';
+  lbl.style.cursor = 'pointer';
+  lbl.title = 'First Floor';
+  lbl.onclick = floor1arrival;
+  var dp=document.getElementById('dossier');
+  if(dp) dp.style.display='block';
+  var wm=document.getElementById('header-wordmark');
+  var hn=document.getElementById('header-notice');
+  if(wm) wm.style.display='none';
+  if(hn) hn.style.display='block';
+}
+
+
+function resetToStairwell(){
+  var lbl=document.getElementById('floor-label');
+  if(lbl){ lbl.textContent='The Stairwell'; lbl.style.cursor='pointer'; lbl.title='Return to The Stairwell'; lbl.onclick=resetToStairwell; }
+  var mb=document.getElementById('map-btn');
+  if(mb) mb.style.display='none';
+  var wm=document.getElementById('header-wordmark');
+  var hn=document.getElementById('header-notice');
+  if(wm) wm.style.display='';
+  if(hn) hn.style.display='none';
+  s0();
+}
+
+
+function stampSVG(room, d, size){
+  var s = typeof size==='number' ? size : (size==='sm' ? 20 : 16);
+  var visited = d[room];
+  var op = '1';
+  var svgs = {
+    'r197a':    '<circle cx="'+s/2+'" cy="'+s/2+'" r="'+(s/2-2)+'" fill="'+(visited?'#1A3A5C':'none')+'" stroke="#1A3A5C" stroke-width="1.5" opacity="'+op+'"/>',
+    'anteroom': '<polygon points="'+s/2+',2 '+(s-1)+','+(s-1)+' 1,'+(s-1)+'" fill="'+(visited?'#1C3A38':'none')+'" stroke="#1C3A38" stroke-width="1.5" stroke-linejoin="round" opacity="'+op+'"/>',
+    'members':  '<rect x="2" y="2" width="'+(s-4)+'" height="'+(s-4)+'" fill="'+(visited?'#1A1610':'none')+'" stroke="#1A1610" stroke-width="1.5" opacity="'+op+'"/>',
+    'counting': '<polygon points="1,2 '+(s-1)+',2 '+s/2+','+(s-1)+'" fill="'+(visited?'#8B6414':'none')+'" stroke="#8B6414" stroke-width="1.5" stroke-linejoin="round" opacity="'+op+'"/>',
+    'qc':       '<text x="'+s/2+'" y="'+(s-3)+'" text-anchor="middle" font-family="monospace" font-size="'+(s-4)+'" font-weight="bold" fill="#8B1A1A" opacity="'+op+'">A</text>'
+  };
+  return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 '+s+' '+s+'" style="display:block;margin:0 auto">'+svgs[room]+'</svg>';
 }
 
 s0();
