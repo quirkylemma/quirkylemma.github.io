@@ -170,10 +170,10 @@ html,body{background:#B8B0A0;font-family:'IM Fell English',Georgia,serif;font-si
 .cutscene-page{
   background:linear-gradient(160deg,#FAFAF7 0%,#F5F2EC 100%);
   padding:32px 40px 28px;
-  width:100%;
+  width:88%;
   position:relative;
   transform:rotate(-0.5deg);
-  margin:20px 0 0;
+  margin:20px auto 0;
   box-shadow:
     0 1px 3px rgba(0,0,0,.08),
     2px 4px 16px rgba(0,0,0,.12),
@@ -295,7 +295,7 @@ html,body{background:#B8B0A0;font-family:'IM Fell English',Georgia,serif;font-si
 /* HEADER PINNED NOTICE */
 .pinned-notice{position:relative;padding-top:6px;flex:1;margin-right:24px}
 .notice-pin{position:absolute;top:-2px;left:8px;width:9px;height:9px;background:radial-gradient(circle at 35% 35%,#E8C84A,#B8860B);border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.4),0 0 0 1px rgba(0,0,0,.1);z-index:3}
-.notice-card{background:linear-gradient(150deg,#EDE8D0 0%,#E8E0C8 100%);border:1px solid rgba(26,22,16,.18);padding:9px 14px 8px;position:relative;transform:rotate(-0.6deg);transform-origin:12px 0;box-shadow:1px 1px 0 rgba(0,0,0,.06),2px 2px 6px rgba(0,0,0,.18),3px 4px 14px rgba(0,0,0,.1)}
+.notice-card{background:linear-gradient(150deg,#EDE8D0 0%,#E8E0C8 100%);border:1px solid rgba(26,22,16,.18);padding:9px 14px 8px;position:relative;transform:rotate(-0.6deg);transform-origin:12px 0;box-shadow:1px 1px 0 rgba(0,0,0,.06),2px 2px 6px rgba(0,0,0,.18),3px 4px 14px rgba(0,0,0,.1);width:88%}
 .notice-card::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(to bottom,transparent,transparent 20px,rgba(26,22,16,.07) 20px,rgba(26,22,16,.07) 21px);background-position:0 17px;pointer-events:none}
 .notice-card::after{content:'';position:absolute;bottom:0;right:0;width:16px;height:16px;background:linear-gradient(135deg,transparent 50%,rgba(0,0,0,.05) 50%)}
 .notice-hdr{font-family:'Special Elite',monospace;font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:rgba(26,22,16,.35);margin-bottom:5px;position:relative;z-index:1}
@@ -1340,6 +1340,10 @@ function ohScroll(){
 
 
 function cutscene1(){
+  var wm=document.getElementById('header-wordmark');
+  var hn=document.getElementById('header-notice');
+  if(wm) wm.style.display='';
+  if(hn) hn.style.display='none';
   // Update title bar to First Floor
   var lbl=document.getElementById('floor-label');
   setFloorLabel('First Floor');
