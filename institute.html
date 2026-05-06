@@ -69,6 +69,21 @@ body{
   animation:amb-breathe 6s ease-in-out infinite, amb-flicker 8s ease-in-out infinite;
 }
 @keyframes amb-breathe{0%,100%{opacity:.7;}45%{opacity:1;}46%{opacity:.6;}47%{opacity:.9;}}
+/* WINDOW */
+#window-wide{width:min(560px,88%);flex-shrink:0;margin-bottom:clamp(18px,3vh,32px);margin-left:auto;margin-right:auto;display:block;}
+.winw-frame{background:#1A1C14;padding:5px 5px 0;box-shadow:0 6px 28px rgba(0,0,0,.75),inset 0 0 0 1px rgba(255,255,255,.055),inset 2px 2px 4px rgba(0,0,0,.4);}
+.winw-glass{height:clamp(90px,16vh,150px);position:relative;overflow:hidden;background:#04050C;}
+.winw-rain{position:absolute;inset:0;z-index:4;pointer-events:none;}
+.winw-bar-v{position:absolute;top:0;bottom:0;width:5px;background:linear-gradient(90deg,#181A12 0%,#222418 50%,#181A12 100%);border-left:1px solid rgba(0,0,0,.4);border-right:1px solid rgba(255,255,255,.04);z-index:5;margin-left:-2.5px;}
+.winw-bar-h{position:absolute;top:50%;left:0;right:0;height:5px;background:linear-gradient(180deg,#222418 0%,#1A1C12 100%);border-top:1px solid rgba(255,255,255,.04);border-bottom:1px solid rgba(0,0,0,.4);z-index:5;margin-top:-2.5px;}
+.winw-glare{position:absolute;top:3%;left:2%;width:30%;height:46%;background:linear-gradient(135deg,rgba(255,255,255,.022) 0%,transparent 60%);z-index:6;pointer-events:none;}
+.winw-sill{height:6px;background:linear-gradient(180deg,#222418 0%,#181A10 100%);border-top:1px solid rgba(0,0,0,.5);box-shadow:0 2px 8px rgba(0,0,0,.45);}
+@keyframes sign-breathe{0%,100%{opacity:.8;}45%{opacity:1;}46%{opacity:.65;}47%{opacity:.95;}}
+@keyframes sign-flicker{0%,91%,100%{opacity:1;}92.5%{opacity:.15;}93%{opacity:1;}95.4%{opacity:.3;}95.8%{opacity:1;}97.3%{opacity:.08;}97.6%{opacity:.9;}97.9%{opacity:.08;}98.2%{opacity:1;}}
+@keyframes sign-ruin{0%,59%,100%{opacity:1;}60.6%{opacity:.08;}61.2%{opacity:1;}80.4%{opacity:.35;}80.8%{opacity:1;}}
+.sign-group{animation:sign-breathe 6s ease-in-out infinite;}
+.sign-amb  {animation:sign-breathe 6s ease-in-out infinite,sign-flicker 8s ease-in-out infinite;}
+.sign-ruin {animation:sign-breathe 6s ease-in-out infinite,sign-ruin 11s ease-in-out infinite 1.4s;}
 @keyframes amb-flicker{0%,91%,100%{opacity:1;}92.5%{opacity:.08;}93%{opacity:1;}95.4%{opacity:.3;}95.8%{opacity:1;}97.3%{opacity:.06;}97.6%{opacity:.85;}97.9%{opacity:.06;}98.2%{opacity:1;}}
 
 /* CONTENT */
@@ -263,6 +278,85 @@ body{
 
   <div id="content">
 
+    <!-- Window -->
+    <div id="window-wide"><div class="winw-frame"><div class="winw-glass">
+      <svg viewBox="0 0 400 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;display:block">
+        <defs>
+          <linearGradient id="ww-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#03040A"/><stop offset="100%" stop-color="#06070F"/></linearGradient>
+          <linearGradient id="ww-st"  x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#09090F"/><stop offset="100%" stop-color="#0D0E1A"/></linearGradient>
+          <linearGradient id="sg-sh"  x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(0,0,0,.4)"/><stop offset="20%" stop-color="rgba(0,0,0,.1)"/><stop offset="80%" stop-color="rgba(0,0,0,.1)"/><stop offset="100%" stop-color="rgba(0,0,0,.5)"/></linearGradient>
+        </defs>
+        <rect width="400" height="100" fill="url(#ww-sky)"/>
+        <rect x="0"  y="40" width="55"  height="60" fill="#0C0E1A"/>
+        <rect x="5"  y="45" width="10"  height="7"  fill="rgba(255,240,150,.06)"/>
+        <rect x="20" y="45" width="10"  height="7"  fill="rgba(255,240,150,.09)"/>
+        <rect x="35" y="45" width="10"  height="7"  fill="rgba(255,240,150,.04)"/>
+        <rect x="5"  y="57" width="10"  height="7"  fill="rgba(255,240,150,.08)"/>
+        <rect x="20" y="57" width="10"  height="7"  fill="rgba(255,240,150,.05)"/>
+        <rect x="35" y="57" width="10"  height="7"  fill="rgba(255,240,150,.07)"/>
+        <rect x="5"  y="69" width="10"  height="7"  fill="rgba(255,240,150,.05)"/>
+        <rect x="20" y="69" width="10"  height="7"  fill="rgba(255,240,150,.08)"/>
+        <rect x="35" y="69" width="10"  height="7"  fill="rgba(255,240,150,.03)"/>
+        <rect x="50" y="8"  width="300" height="80" fill="#14162A"/>
+        <rect x="46" y="4"  width="308" height="7"  fill="#1C1E30"/>
+        <rect x="44" y="3"  width="312" height="2"  fill="#22243A"/>
+        <rect x="46" y="10" width="308" height="1"  fill="rgba(0,0,0,.4)"/>
+        <line x1="50" y1="62" x2="350" y2="62" stroke="rgba(255,255,255,.022)" stroke-width=".6"/>
+        <line x1="50" y1="76" x2="350" y2="76" stroke="rgba(255,255,255,.018)" stroke-width=".6"/>
+        <rect x="55"  y="14" width="11" height="8" fill="rgba(255,240,150,.08)"/>
+        <rect x="70"  y="14" width="11" height="8" fill="rgba(255,240,150,.05)"/>
+        <rect x="55"  y="26" width="11" height="8" fill="rgba(255,240,150,.10)"/>
+        <rect x="70"  y="26" width="11" height="8" fill="rgba(0,0,0,0)"/>
+        <rect x="55"  y="38" width="11" height="8" fill="rgba(255,240,150,.06)"/>
+        <rect x="70"  y="38" width="11" height="8" fill="rgba(255,240,150,.09)"/>
+        <rect x="55"  y="50" width="11" height="8" fill="rgba(255,240,150,.04)"/>
+        <rect x="70"  y="50" width="11" height="8" fill="rgba(255,240,150,.07)"/>
+        <rect x="321" y="14" width="11" height="8" fill="rgba(255,240,150,.07)"/>
+        <rect x="336" y="14" width="11" height="8" fill="rgba(255,240,150,.04)"/>
+        <rect x="321" y="26" width="11" height="8" fill="rgba(0,0,0,0)"/>
+        <rect x="336" y="26" width="11" height="8" fill="rgba(255,240,150,.09)"/>
+        <rect x="321" y="38" width="11" height="8" fill="rgba(255,240,150,.08)"/>
+        <rect x="336" y="38" width="11" height="8" fill="rgba(255,240,150,.05)"/>
+        <rect x="321" y="50" width="11" height="8" fill="rgba(255,240,150,.06)"/>
+        <rect x="336" y="50" width="11" height="8" fill="rgba(255,240,150,.10)"/>
+        <rect x="182" y="65" width="36" height="23" rx="1" fill="none" stroke="rgba(255,220,100,.18)" stroke-width=".8"/>
+        <rect x="183" y="66" width="16" height="21" fill="rgba(255,220,100,.04)"/>
+        <rect x="201" y="66" width="16" height="21" fill="rgba(255,220,100,.06)"/>
+        <line x1="200" y1="66" x2="200" y2="87" stroke="rgba(255,220,100,.20)" stroke-width=".6"/>
+        <line x1="195" y1="76" x2="198" y2="76" stroke="rgba(255,220,100,.35)" stroke-width="1"/>
+        <line x1="202" y1="76" x2="205" y2="76" stroke="rgba(255,220,100,.35)" stroke-width="1"/>
+        <rect x="183" y="66" width="33" height="21" fill="rgba(255,200,80,.03)"/>
+        <rect x="178" y="87" width="44" height="2"  fill="rgba(255,220,100,.10)" rx=".5"/>
+        <g class="sign-group">
+          <rect x="98" y="14" width="205" height="43" rx="2" fill="#030208"/>
+          <rect x="98" y="14" width="205" height="43" rx="2" fill="none" stroke="rgba(200,160,30,.38)" stroke-width="1.5"/>
+          <rect x="102" y="18" width="197" height="35" rx="1.5" fill="none" stroke="rgba(200,160,30,.14)" stroke-width=".7"/>
+          <rect x="98" y="14" width="205" height="43" rx="2" fill="url(#sg-sh)"/>
+          <circle cx="106" cy="17" r="1.6" fill="rgba(255,220,80,.75)"/><circle cx="115" cy="17" r="1.6" fill="rgba(255,180,60,.40)"/><circle cx="124" cy="17" r="1.6" fill="rgba(255,220,80,.80)"/><circle cx="133" cy="17" r="1.6" fill="rgba(255,180,60,.60)"/><circle cx="142" cy="17" r="1.6" fill="rgba(255,220,80,.00)"/><circle cx="151" cy="17" r="1.6" fill="rgba(255,180,60,.70)"/><circle cx="160" cy="17" r="1.6" fill="rgba(255,220,80,.85)"/><circle cx="169" cy="17" r="1.6" fill="rgba(255,180,60,.30)"/><circle cx="178" cy="17" r="1.6" fill="rgba(255,220,80,.75)"/><circle cx="187" cy="17" r="1.6" fill="rgba(255,180,60,.55)"/><circle cx="196" cy="17" r="1.6" fill="rgba(255,220,80,.80)"/><circle cx="205" cy="17" r="1.6" fill="rgba(255,180,60,.00)"/><circle cx="214" cy="17" r="1.6" fill="rgba(255,220,80,.70)"/><circle cx="223" cy="17" r="1.6" fill="rgba(255,180,60,.65)"/><circle cx="232" cy="17" r="1.6" fill="rgba(255,220,80,.85)"/><circle cx="241" cy="17" r="1.6" fill="rgba(255,180,60,.45)"/><circle cx="250" cy="17" r="1.6" fill="rgba(255,220,80,.70)"/><circle cx="259" cy="17" r="1.6" fill="rgba(255,180,60,.20)"/><circle cx="268" cy="17" r="1.6" fill="rgba(255,220,80,.80)"/><circle cx="277" cy="17" r="1.6" fill="rgba(255,180,60,.60)"/><circle cx="286" cy="17" r="1.6" fill="rgba(255,220,80,.75)"/><circle cx="295" cy="17" r="1.6" fill="rgba(255,180,60,.50)"/>
+          <circle cx="106" cy="54" r="1.6" fill="rgba(255,220,80,.65)"/><circle cx="115" cy="54" r="1.6" fill="rgba(255,180,60,.80)"/><circle cx="124" cy="54" r="1.6" fill="rgba(255,220,80,.50)"/><circle cx="133" cy="54" r="1.6" fill="rgba(255,180,60,.00)"/><circle cx="142" cy="54" r="1.6" fill="rgba(255,220,80,.85)"/><circle cx="151" cy="54" r="1.6" fill="rgba(255,180,60,.60)"/><circle cx="160" cy="54" r="1.6" fill="rgba(255,220,80,.70)"/><circle cx="169" cy="54" r="1.6" fill="rgba(255,180,60,.80)"/><circle cx="178" cy="54" r="1.6" fill="rgba(255,220,80,.40)"/><circle cx="187" cy="54" r="1.6" fill="rgba(255,180,60,.70)"/><circle cx="196" cy="54" r="1.6" fill="rgba(255,220,80,.85)"/><circle cx="205" cy="54" r="1.6" fill="rgba(255,180,60,.55)"/><circle cx="214" cy="54" r="1.6" fill="rgba(255,220,80,.00)"/><circle cx="223" cy="54" r="1.6" fill="rgba(255,180,60,.75)"/><circle cx="232" cy="54" r="1.6" fill="rgba(255,220,80,.60)"/><circle cx="241" cy="54" r="1.6" fill="rgba(255,180,60,.80)"/><circle cx="250" cy="54" r="1.6" fill="rgba(255,220,80,.50)"/><circle cx="259" cy="54" r="1.6" fill="rgba(255,180,60,.65)"/><circle cx="268" cy="54" r="1.6" fill="rgba(255,220,80,.75)"/><circle cx="277" cy="54" r="1.6" fill="rgba(255,180,60,.00)"/><circle cx="286" cy="54" r="1.6" fill="rgba(255,220,80,.70)"/><circle cx="295" cy="54" r="1.6" fill="rgba(255,180,60,.60)"/>
+          <circle cx="101" cy="22" r="1.6" fill="rgba(255,220,80,.70)"/><circle cx="101" cy="31" r="1.6" fill="rgba(255,180,60,.45)"/><circle cx="101" cy="40" r="1.6" fill="rgba(255,220,80,.80)"/><circle cx="101" cy="49" r="1.6" fill="rgba(255,180,60,.20)"/>
+          <circle cx="300" cy="22" r="1.6" fill="rgba(255,220,80,.60)"/><circle cx="300" cy="31" r="1.6" fill="rgba(255,180,60,.80)"/><circle cx="300" cy="40" r="1.6" fill="rgba(255,220,80,.00)"/><circle cx="300" cy="49" r="1.6" fill="rgba(255,180,60,.65)"/>
+          <rect x="98" y="14" width="205" height="43" rx="2" fill="rgba(255,180,40,.025)"/>
+          <ellipse cx="200" cy="30" rx="79" ry="8"  fill="rgba(255,140,0,.10)"  class="sign-amb"/>
+          <ellipse cx="200" cy="44" rx="62" ry="10" fill="rgba(220,20,20,.12)"  class="sign-ruin"/>
+          <text x="200" y="33" text-anchor="middle" font-family="'Special Elite',monospace" font-size="10.5" letter-spacing="2.2" fill="#FFAA30" class="sign-amb">GAMBLER'S</text>
+          <text x="200" y="49" text-anchor="middle" font-family="'Special Elite',monospace" font-size="16"   letter-spacing="6"   fill="#FF2828" class="sign-ruin">RUIN</text>
+        </g>
+        <ellipse cx="200" cy="93" rx="55" ry="5" fill="rgba(255,120,0,.14)"/>
+        <ellipse cx="200" cy="97" rx="38" ry="3" fill="rgba(220,20,20,.09)"/>
+        <rect x="0" y="88" width="400" height="12" fill="url(#ww-st)"/>
+        <rect x="0" y="88" width="400" height="1.5" fill="#111220"/>
+        <rect x="160" y="93" width="14" height="2" fill="rgba(255,255,255,.04)" rx=".5"/>
+        <rect x="182" y="93" width="14" height="2" fill="rgba(255,255,255,.04)" rx=".5"/>
+        <rect x="204" y="93" width="14" height="2" fill="rgba(255,255,255,.04)" rx=".5"/>
+      </svg>
+      <div class="winw-bar-v" style="left:33.3%"></div>
+      <div class="winw-bar-v" style="left:66.6%"></div>
+      <div class="winw-bar-h"></div>
+      <canvas class="winw-rain" id="rain-canvas"></canvas>
+      <div class="winw-glare"></div>
+    </div><div class="winw-sill"></div></div></div>
+
     <!-- Blackboard -->
     <div class="bb-wrap">
       <div class="bb-frame">
@@ -357,6 +451,8 @@ body{
 </div>
 
 <script>
+
+
 // Grain
 const c=document.getElementById('grain');
 const ctx=c.getContext('2d');
