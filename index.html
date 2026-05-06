@@ -158,27 +158,25 @@ body {
 
 /* CTA — gold, no inversion, links to worlds */
 .h-cta-row { display: flex; align-items: baseline; }
-.h-ctal {
-  flex: 1;
-  text-align: right;
-  padding-right: 6px;
+.h-ctal { display: none; }
+.h-ctar { display: none; }
+.h-cta-single {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
 }
-.h-ctar {
-  flex: 1;
-  text-align: left;
-  padding-left: 6px;
-}
-.h-ctal a, .h-ctar a {
+.h-cta-single a {
   font-family: 'Cormorant SC', Georgia, serif;
-  font-size: clamp(22px, 2.4vw, 30px);
+  font-size: clamp(20px, 2.2vw, 26px);
   font-weight: 300;
   color: var(--gold);
   text-decoration: none;
-  border-bottom: 1px solid rgba(184,134,11,.4);
-  padding-bottom: 3px;
+  border: 1px solid rgba(184,134,11,.4);
+  padding: 6px 24px;
+  letter-spacing: .04em;
 }
-.h-ctal a:hover,
-.h-ctar a:hover { border-color: var(--gold); }
+.h-cta-single a:hover { border-color: var(--gold); }
 
 /* Scroll chevron — split, bouncing */
 .h-chevron {
@@ -619,8 +617,7 @@ footer {
       <div class="h-tagr">The rigour is real.</div>
     </div>
     <div class="h-cta-row">
-      <div class="h-ctal"><a href="#worlds">Enter</a></div>
-      <div class="h-ctar"><a href="#worlds">Worlds</a></div>
+      <div class="h-cta-single"><a href="#worlds">Enter&nbsp;Worlds</a></div>
     </div>
   </div>
 
