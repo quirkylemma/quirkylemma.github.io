@@ -4,431 +4,311 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>The Institute — Probability Foundations</title>
-<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@300;400&family=EB+Garamond:ital,wght@0,400;1,400&family=Special+Elite&display=swap" rel="stylesheet">
 <style>
-
-/* =============================================
-   RESET
-   ============================================= */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-/* =============================================
-   COLOUR SYSTEM
-   ============================================= */
-:root {
-  --paper:      #F2EDD7;
-  --paper-dark: #EDE8D0;
-  --ink:        #1A1610;
-  --ink-mid:    #3A3020;
-  --ink-faint:  #7A7060;
-  --board:      #1C2A1C;
-  --board-edge: #243824;
-  --chalk:      #F0E8C0;
-  --teal:       #1C3A38;
-  --gold:       #B8860B;
-  --red:        #8B1A1A;
-  --rule:       rgba(26,22,16,.15);
-  --rule-heavy: rgba(26,22,16,.45);
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --wall:#252D1C;--wall-hi:#303D22;--wall-lo:#181E10;
+  --board-bg:#0A1108;
+  --chalk:#EEE8C4;
+  --gold:#C8A020;
+  --paper:#F4F0DC;--paper-2:#EDE8CC;
+  --ink:#1C1810;--ink-mid:#3C3020;--ink-f:#8A7A58;
+  --teal:#1C3A38;
+  --red:#8B1A1A;
+  --rule:rgba(28,24,16,.12);
+  --bar-h:56px;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+html{height:100%;}
+body{
+  min-height:100%;background:#1A1A14;
+  font-family:'EB Garamond',Georgia,serif;
+  color:var(--ink);
 }
 
-/* =============================================
-   BASE
-   ============================================= */
-body {
-  background: #B8B0A0;
-  font-family: 'IM Fell English', Georgia, serif;
-  color: var(--ink);
-  min-height: 100vh;
+/* GRAIN */
+#grain{position:fixed;inset:0;pointer-events:none;z-index:998;opacity:.06;mix-blend-mode:overlay;}
+
+/* VIEWPORT */
+#viewport{
+  max-width:740px;width:100%;margin:0 auto;
+  position:relative;min-height:100vh;
+  background:
+    radial-gradient(ellipse at 50% -10%,rgba(255,252,210,.06) 0%,transparent 55%),
+    linear-gradient(180deg,transparent 55%,rgba(0,0,0,.55) 85%,rgba(0,0,0,.85) 100%),
+    radial-gradient(ellipse at 50% 50%,transparent 30%,rgba(0,0,0,.3) 100%),
+    linear-gradient(170deg,var(--wall-hi) 0%,var(--wall) 45%,var(--wall-lo) 100%);
+  box-shadow:0 0 0 1px rgba(0,0,0,.3),4px 4px 40px rgba(0,0,0,.5);
+  overflow:hidden;
+  padding-bottom:calc(var(--bar-h) + 40px);
 }
 
-/* =============================================
-   PAGE WRAPPER
-   ============================================= */
-#wrap {
-  max-width: 740px;
-  margin: 0 auto;
-  background: var(--paper);
-  min-height: 100vh;
-  padding: 0 0 100px;
-  box-shadow: 0 0 0 1px rgba(0,0,0,.18), 4px 4px 24px rgba(0,0,0,.22);
+/* Wall texture lines */
+#viewport::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(0,0,0,.05) 0,rgba(0,0,0,.05) 1px,transparent 1px,transparent 48px),
+    repeating-linear-gradient(90deg,rgba(0,0,0,.03) 0,rgba(0,0,0,.03) 1px,transparent 1px,transparent 80px);
 }
 
-/* =============================================
-   HEADER
-   ============================================= */
-#header {
-  border-bottom: 3px double var(--rule-heavy);
-  padding: 20px 40px 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-.hd-left {
-  font-family: 'Special Elite', monospace;
-  font-size: 11px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--ink-mid);
-  line-height: 2;
-}
-.hd-left strong {
-  display: block;
-  font-size: 15px;
-  letter-spacing: .08em;
-  color: var(--ink);
-  margin-bottom: 2px;
-}
-.hd-right {
-  text-align: right;
-  font-family: 'Special Elite', monospace;
-  font-size: 11px;
-  color: var(--ink-faint);
-  line-height: 2.1;
-}
-.hd-stamp {
-  display: inline-block;
-  margin-top: 5px;
-  border: 2px solid var(--red);
-  color: var(--red);
-  font-family: 'Special Elite', monospace;
-  font-size: 9px;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  padding: 3px 12px;
-  transform: rotate(-1.5deg);
-  opacity: .8;
-  animation: stamp-in .4s cubic-bezier(0.16,1,0.3,1) .3s both;
-}
-@keyframes stamp-in {
-  from { opacity: 0; transform: rotate(-1.5deg) scale(1.15); }
-  to   { opacity: .8; transform: rotate(-1.5deg) scale(1); }
+/* Ceiling light */
+#viewport::after{
+  content:'';position:absolute;top:0;left:20%;right:20%;height:2px;
+  background:rgba(255,252,210,.18);
+  box-shadow:0 0 18px 4px rgba(255,252,210,.10),0 0 60px 16px rgba(255,252,210,.04);
+  z-index:1;
 }
 
-/* =============================================
-   TITLE BAR
-   ============================================= */
-#title-bar {
-  background: var(--ink);
-  color: var(--paper);
-  padding: 10px 40px;
-  font-family: 'Special Elite', monospace;
-  font-size: 12px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* AMBIENT NEON */
+#ambient{
+  position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:
+    radial-gradient(ellipse at 50% 8%,rgba(255,120,0,.08) 0%,transparent 50%),
+    radial-gradient(ellipse at 50% 11%,rgba(220,20,20,.05) 0%,transparent 38%);
+  animation:amb-breathe 6s ease-in-out infinite, amb-flicker 8s ease-in-out infinite;
 }
-.tb-ref {
-  font-size: 9px;
-  letter-spacing: .12em;
-  opacity: .3;
+@keyframes amb-breathe{0%,100%{opacity:.7;}45%{opacity:1;}46%{opacity:.6;}47%{opacity:.9;}}
+@keyframes amb-flicker{0%,91%,100%{opacity:1;}92.5%{opacity:.08;}93%{opacity:1;}95.4%{opacity:.3;}95.8%{opacity:1;}97.3%{opacity:.06;}97.6%{opacity:.85;}97.9%{opacity:.06;}98.2%{opacity:1;}}
+
+/* CONTENT */
+#content{position:relative;z-index:10;padding:clamp(28px,5vh,56px) clamp(20px,4vw,48px) 0;}
+
+/* BLACKBOARD */
+.bb-wrap{
+  position:relative;margin-bottom:clamp(24px,4vh,40px);
+}
+.bb-frame{
+  background:linear-gradient(150deg,#2C1E0A 0%,#1E1206 30%,#281A08 70%,#2C1E0A 100%);
+  box-shadow:
+    0 6px 0 rgba(0,0,0,.55),0 8px 18px rgba(0,0,0,.65),0 14px 40px rgba(0,0,0,.4),
+    inset 0 1px 0 rgba(255,255,255,.05),inset 0 0 0 1px rgba(0,0,0,.6),
+    inset 0 0 80px rgba(0,0,0,.6),inset 60px 0 80px rgba(0,0,0,.25),inset -60px 0 80px rgba(0,0,0,.25);
+}
+.bb{
+  background:var(--board-bg);
+  padding:clamp(18px,3vh,32px) clamp(22px,3.5vw,44px);
+  min-height:80px;
+}
+.bb-tray{
+  height:8px;
+  background:linear-gradient(180deg,#1C1408 0%,#120E04 100%);
+  border-top:1px solid rgba(0,0,0,.6);
+  display:flex;align-items:center;padding:0 clamp(12px,2vw,20px);gap:8px;
+}
+.cp{height:3px;border-radius:2px;background:linear-gradient(90deg,rgba(238,232,192,.18),rgba(238,232,192,.42),rgba(238,232,192,.18));}
+.chalk-text{
+  font-family:'Special Elite',monospace;
+  font-size:clamp(15px,2.2vw,22px);
+  line-height:1.95;color:var(--chalk);
+  text-shadow:0 0 16px rgba(238,232,192,.12);
+}
+.chalk-text p{margin-bottom:.35em;}
+.chalk-text p:last-child{margin-bottom:0;}
+
+/* DOCUMENT */
+.doc-outer{position:relative;margin-bottom:6px;}
+.doc-shadow{
+  position:absolute;bottom:-5px;left:6px;right:-6px;top:5px;
+  background:var(--paper-2);border:1px solid rgba(26,22,16,.06);
+}
+.doc{
+  position:relative;z-index:1;
+  background:linear-gradient(160deg,#FAFAF7 0%,#F5F2EC 100%);
+  border:1px solid rgba(26,22,16,.08);
+  padding:clamp(20px,3vh,30px) clamp(22px,3.5vw,36px);
+  transform:rotate(-.4deg);
+  box-shadow:0 1px 3px rgba(0,0,0,.07),2px 4px 16px rgba(0,0,0,.1),4px 8px 28px rgba(0,0,0,.07);
+}
+.doc-head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  border-bottom:1.5px solid var(--teal);
+  padding-bottom:8px;margin-bottom:18px;
+}
+.doc-label{font-family:'Special Elite',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8A8070;}
+.doc-loc{font-size:12px;color:#8A8070;font-style:italic;}
+.doc p{font-size:clamp(15px,1.6vw,17px);line-height:1.9;color:#3D3828;margin-bottom:.85em;}
+.doc p:last-child{margin-bottom:0;color:var(--ink);}
+.doc-foot{width:75%;height:8px;background:radial-gradient(ellipse,rgba(0,0,0,.1) 0%,transparent 70%);border-radius:50%;margin:4px auto 0;}
+
+/* LEDGER */
+.ledger-head{
+  font-family:'Special Elite',monospace;font-size:9px;
+  letter-spacing:.22em;text-transform:uppercase;color:rgba(238,232,192,.3);
+  border-bottom:1px dotted rgba(238,232,192,.12);
+  padding-bottom:7px;margin-bottom:0;margin-top:clamp(20px,3vh,32px);
+}
+.floor-row{
+  display:flex;align-items:center;
+  padding:clamp(11px,1.6vh,16px) 0;
+  border-bottom:1px dotted rgba(238,232,192,.1);
+  text-decoration:none;color:inherit;
+  transition:background .14s,padding .14s var(--ease);
+}
+.floor-row.available:hover{
+  background:rgba(200,160,32,.04);
+  padding-left:10px;padding-right:10px;
+  margin:0 -10px;
+}
+.floor-row.locked{opacity:.2;cursor:default;}
+.floor-row.ellipsis{opacity:.15;cursor:default;justify-content:center;}
+.floor-row.casino-row{border-bottom:none;margin-top:10px;opacity:.25;cursor:default;}
+.fl-num{
+  font-family:'Special Elite',monospace;font-size:10px;
+  letter-spacing:.14em;color:rgba(238,232,192,.35);
+  width:110px;flex-shrink:0;
+}
+.fl-title{
+  flex:1;
+  font-family:'Cormorant SC',Georgia,serif;
+  font-size:clamp(16px,2vw,21px);font-weight:300;
+  color:rgba(238,232,192,.75);line-height:1.3;
+}
+.fl-title.dim{color:rgba(238,232,192,.2);}
+.fl-sub{
+  display:block;font-family:'Special Elite',monospace;
+  font-size:8px;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(238,232,192,.28);margin-top:3px;
+}
+.fl-tag{
+  font-family:'Special Elite',monospace;font-size:9px;
+  letter-spacing:.16em;text-transform:uppercase;flex-shrink:0;
+}
+.fl-tag.available{color:var(--gold);border:1px solid rgba(200,160,32,.5);padding:3px 10px;}
+.fl-tag.dim{color:rgba(238,232,192,.2);}
+.fl-tag.casino{color:rgba(238,232,192,.2);border:1px solid rgba(238,232,192,.15);padding:3px 10px;}
+.ellipsis-dots{
+  font-family:'Special Elite',monospace;font-size:9px;
+  letter-spacing:.3em;color:rgba(238,232,192,.2);text-transform:uppercase;
 }
 
-/* =============================================
-   BLACKBOARD
-   ============================================= */
-#blackboard {
-  background: var(--board);
-  padding: 30px 48px;
-  box-shadow: inset 0 0 80px rgba(0,0,0,.55);
-  border-top: 5px solid var(--board-edge);
-  border-bottom: 5px solid var(--board-edge);
-}
-.chalk {
-  font-family: 'Special Elite', monospace;
-  font-size: 18px;
-  line-height: 2.1;
-  color: var(--chalk);
-  text-shadow: 0 0 8px rgba(240,232,192,.1);
-}
-.chalk p { margin-bottom: .5em; }
-.chalk p:last-child { margin-bottom: 0; }
-
-/* =============================================
-   CONTENT AREA
-   ============================================= */
-#content { padding: 32px 40px 0; }
-
-/* =============================================
-   CUT SCENE DOCUMENT
-   ============================================= */
-.doc-wrap {
-  position: relative;
-  width: 88%;
-  margin: 0 auto 4px;
-}
-.doc-shadow {
-  position: absolute;
-  bottom: -6px; left: 8px; right: -8px; top: 6px;
-  background: var(--paper-dark);
-  z-index: 0;
-}
-.doc-paper {
-  position: relative;
-  z-index: 1;
-  background: linear-gradient(160deg, #FAFAF7 0%, #F5F2EC 100%);
-  border: 1px solid rgba(26,22,16,.08);
-  padding: 26px 32px;
-  transform: rotate(-.5deg);
-  box-shadow: 0 1px 3px rgba(0,0,0,.07), 2px 4px 16px rgba(0,0,0,.1), 4px 8px 28px rgba(0,0,0,.07);
-}
-.doc-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  border-bottom: 1.5px solid var(--teal);
-  padding-bottom: 9px;
-  margin-bottom: 20px;
-}
-.doc-label {
-  font-family: 'Special Elite', monospace;
-  font-size: 10px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: #8A8070;
-}
-.doc-loc {
-  font-size: 12px;
-  color: #8A8070;
-  font-style: italic;
-}
-.doc-body p {
-  font-size: 16px;
-  line-height: 1.85;
-  color: #3D3828;
-  margin-bottom: .9em;
-}
-.doc-body p:last-child {
-  color: var(--ink);
-  margin-bottom: 0;
-}
-.doc-foot {
-  width: 75%;
-  height: 8px;
-  background: radial-gradient(ellipse, rgba(0,0,0,.12) 0%, transparent 70%);
-  border-radius: 50%;
-  margin: 3px auto 0;
+/* FORM FOOT */
+.form-foot{
+  border-top:1px solid rgba(238,232,192,.07);
+  margin-top:10px;padding:10px 0;
+  display:flex;justify-content:space-between;
+  font-family:'Special Elite',monospace;font-size:8px;
+  letter-spacing:.1em;color:rgba(238,232,192,.15);text-transform:uppercase;
 }
 
-/* =============================================
-   FLOOR LEDGER
-   ============================================= */
-.ledger-label {
-  font-family: 'Special Elite', monospace;
-  font-size: 9px;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  border-bottom: 1px dotted rgba(26,22,16,.2);
-  padding-bottom: 7px;
-  margin-top: 24px;
+/* NAV FOOTER — brass toolbar matching the game */
+#nav-footer{
+  position:fixed;bottom:0;left:0;right:0;
+  height:var(--bar-h);
+  background:linear-gradient(180deg,#221808 0%,#1A1206 30%,#141008 100%);
+  border-top:1px solid rgba(200,160,32,.18);
+  z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(14px,2.5vw,28px);
+  gap:8px;
 }
-.floor-row {
-  display: flex;
-  align-items: center;
-  padding: 13px 0;
-  border-bottom: 1px dotted var(--rule);
-  text-decoration: none;
-  color: inherit;
-  transition: background .14s;
+/* Brass rail */
+#nav-footer::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,#2A1E08 0%,#6A5020 20%,#8A7030 50%,#6A5020 80%,#2A1E08 100%);
 }
-.floor-row.available:hover {
-  background: rgba(26,22,16,.03);
-  margin: 0 -8px;
-  padding: 13px 8px;
+.nf-btn{
+  background:none;border:1px solid rgba(200,160,32,.25);
+  color:rgba(200,160,32,.55);
+  font-family:'Special Elite',monospace;font-size:10px;
+  letter-spacing:.14em;text-transform:uppercase;
+  padding:8px 16px;cursor:pointer;text-decoration:none;
+  transition:border-color .15s,color .15s;white-space:nowrap;
 }
-.floor-row.locked {
-  opacity: .3;
-  cursor: default;
-}
-.floor-row.ellipsis {
-  opacity: .2;
-  cursor: default;
-  justify-content: center;
-  border-bottom: 1px dotted var(--rule);
-}
-.floor-row.casino-row {
-  border-top: none;
-  border-bottom: none;
-  margin-top: 10px;
-  opacity: .32;
-  cursor: default;
-}
-.fl-num {
-  font-family: 'Special Elite', monospace;
-  font-size: 10px;
-  letter-spacing: .14em;
-  color: var(--ink-faint);
-  width: 110px;
-  flex-shrink: 0;
-}
-.fl-title {
-  flex: 1;
-  font-size: 18px;
-  color: var(--ink);
-  line-height: 1.3;
-}
-.fl-sub {
-  display: block;
-  font-family: 'Special Elite', monospace;
-  font-size: 8px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  margin-top: 3px;
-}
-.fl-title.dim { color: var(--ink-faint); }
-.fl-tag {
-  font-family: 'Special Elite', monospace;
-  font-size: 9px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  flex-shrink: 0;
-}
-.fl-tag.available {
-  color: var(--gold);
-  border: 1px solid var(--gold);
-  padding: 3px 10px;
-}
-.fl-tag.dim { color: var(--ink-faint); }
-.fl-tag.casino {
-  color: var(--ink);
-  border: 1px solid rgba(26,22,16,.4);
-  padding: 3px 10px;
-}
-.ellipsis-dots {
-  font-family: 'Special Elite', monospace;
-  font-size: 9px;
-  letter-spacing: .3em;
-  color: var(--ink-faint);
-  text-transform: uppercase;
+.nf-btn:hover{border-color:rgba(200,160,32,.7);color:rgba(200,160,32,.9);}
+.nf-mid{
+  font-family:'Special Elite',monospace;font-size:9px;
+  letter-spacing:.2em;color:rgba(200,160,32,.18);text-transform:uppercase;
+  text-align:center;flex:1;
 }
 
-/* =============================================
-   FORM SMALL PRINT
-   ============================================= */
-.form-foot {
-  border-top: 1px solid var(--rule);
-  margin-top: 10px;
-  padding: 10px 0;
-  display: flex;
-  justify-content: space-between;
-  font-family: 'Special Elite', monospace;
-  font-size: 8px;
-  letter-spacing: .1em;
-  color: rgba(26,22,16,.22);
-  text-transform: uppercase;
+/* STAMP ANIMATION */
+.hd-stamp{
+  display:inline-block;
+  border:2px solid rgba(139,26,26,.7);
+  color:rgba(139,26,26,.8);
+  font-family:'Special Elite',monospace;font-size:9px;
+  letter-spacing:.2em;text-transform:uppercase;
+  padding:3px 10px;
+  transform:rotate(-1.5deg);
+  animation:stamp-in .4s var(--ease) .5s both;
+  float:right;margin-top:2px;
+}
+@keyframes stamp-in{
+  from{opacity:0;transform:rotate(-1.5deg) scale(1.2);}
+  to{opacity:1;transform:rotate(-1.5deg) scale(1);}
 }
 
-/* =============================================
-   NAVIGATION FOOTER
-   ============================================= */
-#nav-footer {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  background: var(--ink);
-  padding: 11px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 50;
-  gap: 8px;
+/* FORM HEADER on doc */
+.form-header{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  margin-bottom:6px;
 }
-.nf-btn {
-  background: none;
-  border: 1px solid rgba(242,237,215,.35);
-  color: rgba(242,237,215,.8);
-  font-family: 'Special Elite', monospace;
-  font-size: 11px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  padding: 8px 18px;
-  cursor: pointer;
-  text-decoration: none;
-  transition: border-color .15s, color .15s;
-  white-space: nowrap;
-}
-.nf-btn:hover { border-color: white; color: white; }
-.nf-mid {
-  font-family: 'Special Elite', monospace;
-  font-size: 9px;
-  letter-spacing: .14em;
-  color: rgba(242,237,215,.25);
-  text-transform: uppercase;
-  text-align: center;
-  flex: 1;
-}
+.fh-left{font-family:'Special Elite',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8A8070;line-height:1.9;}
+.fh-left strong{display:block;font-size:13px;letter-spacing:.06em;color:var(--ink);margin-bottom:1px;}
+.fh-right{font-family:'Special Elite',monospace;font-size:10px;color:#9A9080;text-align:right;line-height:1.9;}
 
-/* =============================================
-   MOBILE
-   ============================================= */
-@media (max-width: 500px) {
-  #header     { padding: 16px 24px 12px; }
-  #title-bar  { padding: 9px 24px; }
-  #blackboard { padding: 24px 28px; }
-  #content    { padding: 24px 24px 0; }
-  .nf-mid     { display: none; }
-  .nf-btn     { font-size: 10px; padding: 8px 12px; }
-  .form-foot  { flex-direction: column; gap: 4px; }
+@media(max-width:500px){
+  #content{padding:20px 20px 0;}
+  .fl-num{width:88px;}
+  .nf-mid{display:none;}
+  .nf-btn{font-size:9px;padding:7px 10px;}
 }
-
 </style>
 </head>
 <body>
+<canvas id="grain"></canvas>
+<div id="viewport">
+  <div id="ambient"></div>
 
-<div id="wrap">
-
-  <!-- ══ HEADER ══ -->
-  <div id="header">
-    <div class="hd-left">
-      <strong>The Institute</strong>
-      Form AS/001 &nbsp;&middot;&nbsp; Absorption Record
-    </div>
-    <div class="hd-right">
-      Candidate: Squeakwell, A. (BSc)<br>
-      Ref: AS/001/F1<br>
-      <span class="hd-stamp">In Progress</span>
-    </div>
-  </div>
-
-  <!-- ══ TITLE BAR ══ -->
-  <div id="title-bar">
-    <span>Ground Floor</span>
-    <span class="tb-ref">AS/001/F1</span>
-  </div>
-
-  <!-- ══ BLACKBOARD ══ -->
-  <div id="blackboard">
-    <div class="chalk">
-      <p>I am Aubrey Squeakwell, BSc.</p>
-      <p>I am here because I intend to be somewhere else. &nbsp;&#9633;</p>
-    </div>
-  </div>
-
-  <!-- ══ CONTENT ══ -->
   <div id="content">
 
-    <!-- Cut scene document -->
-    <div class="doc-wrap">
+    <!-- Blackboard -->
+    <div class="bb-wrap">
+      <div class="bb-frame">
+        <div class="bb">
+          <div class="chalk-text">
+            <p>I am Aubrey Squeakwell, BSc.</p>
+            <p>I am here because I intend to be somewhere else. &nbsp;&#9633;</p>
+          </div>
+        </div>
+        <div class="bb-tray">
+          <div class="cp" style="width:clamp(28px,4vw,44px)"></div>
+          <div class="cp" style="width:clamp(18px,2.5vw,28px)"></div>
+          <div class="cp" style="width:clamp(34px,5vw,52px)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Document -->
+    <div class="doc-outer">
       <div class="doc-shadow"></div>
-      <div class="doc-paper">
-        <div class="doc-header">
+      <div class="doc">
+        <div class="form-header">
+          <div class="fh-left">
+            <strong>The Institute</strong>
+            Form AS/001 &nbsp;&middot;&nbsp; Absorption Record
+          </div>
+          <div class="fh-right">
+            Candidate: Squeakwell, A. (BSc)<br>
+            Ref: AS/001/F1<br>
+            <span class="hd-stamp">In Progress</span>
+          </div>
+        </div>
+        <div class="doc-head" style="margin-top:14px;">
           <span class="doc-label">The Institute &nbsp;&#9633;</span>
           <span class="doc-loc">Ground Floor</span>
         </div>
-        <div class="doc-body">
-          <p>The lights of the casino are on.</p>
-          <p>On the other side of the road, in relative darkness, stands the Institute. It is a building of uncertain provenance, constructed during the 1980s. Its style suggests the architect had strong feelings about concrete. It houses ten floors.</p>
-          <p>Candidate Squeakwell stands on the ground floor of the Institute. He is there to file his application for entry to the casino. The requisite framework for entry is mathematical. It is available on the floors above. The floors of the Institute are to be visited in order. Or not.</p>
-          <p>The casino is called Gambler's Ruin. Its lights are always on. Several applications have been filed at the Institute. None have been successful yet.</p>
-        </div>
+        <p>The lights of the casino are on.</p>
+        <p>On the other side of the road, in relative darkness, stands the Institute. It is a building of uncertain provenance, constructed during the 1980s. Its style suggests the architect had strong feelings about concrete. It houses ten floors.</p>
+        <p>Candidate Squeakwell stands on the ground floor of the Institute. He is there to file his application for entry to the casino. The requisite framework for entry is mathematical. It is available on the floors above.</p>
+        <p>The casino is called Gambler's Ruin. Its lights are always on. Several applications have been filed at the Institute. None have been successful yet.</p>
       </div>
     </div>
     <div class="doc-foot"></div>
 
     <!-- Floor ledger -->
-    <div class="ledger-label">Select to enter</div>
+    <div class="ledger-head">Select to enter</div>
 
     <a class="floor-row available" href="episode1-game.html">
       <div class="fl-num">First Floor</div>
@@ -461,7 +341,6 @@ body {
       <div class="fl-tag casino">Locked</div>
     </div>
 
-    <!-- Form small print -->
     <div class="form-foot">
       <span>Form AS/001 &middot; The Institute &middot; Ground Floor</span>
       <span>Issued under authority of the Institute &middot; Not transferable</span>
@@ -470,12 +349,26 @@ body {
   </div>
 </div>
 
-<!-- ══ NAVIGATION FOOTER ══ -->
+<!-- Nav footer — brass toolbar -->
 <div id="nav-footer">
   <a class="nf-btn" href="index.html">&#8592; Quirky Lemma</a>
   <div class="nf-mid">The Institute</div>
   <a class="nf-btn" href="episode1-game.html">Enter First Floor &#8594;</a>
 </div>
 
+<script>
+// Grain
+const c=document.getElementById('grain');
+const ctx=c.getContext('2d');
+function resize(){ c.width=window.innerWidth; c.height=window.innerHeight; }
+function grain(){
+  const id=ctx.createImageData(c.width,c.height);
+  const d=id.data;
+  for(let i=0;i<d.length;i+=4){ const v=Math.random()*255|0; d[i]=d[i+1]=d[i+2]=v; d[i+3]=255; }
+  ctx.putImageData(id,0,0);
+  requestAnimationFrame(grain);
+}
+resize(); window.addEventListener('resize',resize); grain();
+</script>
 </body>
 </html>
