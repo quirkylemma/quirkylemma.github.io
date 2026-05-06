@@ -38,6 +38,7 @@ body{min-height:100%;overflow-x:hidden;background:#B8B0A0;font-family:'EB Garamo
     linear-gradient(180deg,transparent 55%,rgba(0,0,0,.55) 85%,rgba(0,0,0,.85) 100%),
     radial-gradient(ellipse at 50% 50%,transparent 30%,rgba(0,0,0,.35) 100%),
     linear-gradient(170deg,var(--wall-hi) 0%,var(--wall) 45%,var(--wall-lo) 100%);
+  transition:background .6s ease;
 }
 #room::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.06) 0,rgba(0,0,0,.06) 1px,transparent 1px,transparent 48px),repeating-linear-gradient(90deg,rgba(0,0,0,.04) 0,rgba(0,0,0,.04) 1px,transparent 1px,transparent 80px);}
 #room::after{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;background:rgba(255,252,210,.22);box-shadow:0 0 18px 4px rgba(255,252,210,.12),0 0 60px 16px rgba(255,252,210,.05);}
@@ -57,7 +58,7 @@ body{min-height:100%;overflow-x:hidden;background:#B8B0A0;font-family:'EB Garamo
 @keyframes amb-flicker{0%,91%,100%{opacity:1;}92.5%{opacity:.08;}93%{opacity:1;}95.4%{opacity:.3;}95.8%{opacity:1;}97.3%{opacity:.06;}97.6%{opacity:.85;}97.9%{opacity:.06;}98.2%{opacity:1;}}
 body.lamp-left  #ambient{animation:none!important;opacity:1!important;background:radial-gradient(ellipse at 8%  0%,rgba(255,252,215,.40) 0%,transparent 62%),radial-gradient(ellipse at 8%  6%,rgba(255,252,215,.18) 0%,transparent 48%),radial-gradient(ellipse at 50% 50%,rgba(0,0,0,.06) 0%,transparent 100%);}
 body.lamp-right #ambient{animation:none!important;opacity:1!important;background:radial-gradient(ellipse at 92% 0%,rgba(255,252,215,.40) 0%,transparent 62%),radial-gradient(ellipse at 92% 6%,rgba(255,252,215,.18) 0%,transparent 48%),radial-gradient(ellipse at 50% 50%,rgba(0,0,0,.06) 0%,transparent 100%);}
-body.lamp-left.lamp-right #ambient{background:radial-gradient(ellipse at 8%  0%,rgba(255,252,215,.40) 0%,transparent 58%),radial-gradient(ellipse at 92% 0%,rgba(255,252,215,.40) 0%,transparent 58%),radial-gradient(ellipse at 50% 10%,rgba(255,252,215,.14) 0%,transparent 55%),radial-gradient(ellipse at 50% 50%,rgba(0,0,0,.06) 0%,transparent 100%);}
+body.lamp-left.lamp-right #ambient{animation:none!important;opacity:1!important;background:radial-gradient(ellipse at 8%  0%,rgba(255,252,215,.40) 0%,transparent 58%),radial-gradient(ellipse at 92% 0%,rgba(255,252,215,.40) 0%,transparent 58%),radial-gradient(ellipse at 50% 10%,rgba(255,252,215,.14) 0%,transparent 55%),radial-gradient(ellipse at 50% 50%,rgba(0,0,0,.06) 0%,transparent 100%);}
 body.lamp-left  .sign-group,body.lamp-left  .sign-amb,body.lamp-left  .sign-ruin,body.lamp-left  #ambient,
 body.lamp-right .sign-group,body.lamp-right .sign-amb,body.lamp-right .sign-ruin,body.lamp-right #ambient{animation-play-state:paused!important;}
 @keyframes sign-breathe{0%,100%{opacity:.8;}45%{opacity:1;}46%{opacity:.65;}47%{opacity:.95;}}
@@ -70,6 +71,14 @@ body.lamp-right .sign-group,body.lamp-right .sign-amb,body.lamp-right .sign-ruin
 /* DESK LAMP WARM WASH */
 body.desk-lamp-on #toolbar{background:radial-gradient(ellipse at 50% 50%,rgba(220,175,50,.28) 0%,rgba(190,150,35,.14) 45%,transparent 75%),linear-gradient(180deg,#2A1C08 0%,#221408 8%,#1C1006 40%,#181008 85%,#120C04 100%);transition:background .5s ease;}
 body.desk-lamp-on #toolbar::before{background:linear-gradient(90deg,#2C1E08 0%,#3A2C0A 15%,#5A4418 35%,#8A7030 50%,#9A8038 55%,#8A7030 60%,#5A4418 75%,#3A2C0A 88%,#2C1E08 100%);}
+/* Desk lamp also warms the lower room — pool of light spreading upward from the desk */
+body.desk-lamp-on #room{background:
+  radial-gradient(ellipse at 50% 110%,rgba(220,170,40,.18) 0%,rgba(180,130,20,.08) 30%,transparent 60%),
+  radial-gradient(ellipse at 50% -10%,rgba(255,252,210,.07) 0%,transparent 55%),
+  linear-gradient(180deg,transparent 55%,rgba(0,0,0,.55) 85%,rgba(0,0,0,.85) 100%),
+  radial-gradient(ellipse at 50% 50%,transparent 30%,rgba(0,0,0,.35) 100%),
+  linear-gradient(170deg,var(--wall-hi) 0%,var(--wall) 45%,var(--wall-lo) 100%);
+  transition:background .6s ease;}
 
 /* WALL LAMPS */
 #wall-lamp-left,#wall-lamp{position:absolute;top:0;width:clamp(18px,2.5vw,30px);z-index:2;display:flex;flex-direction:column;align-items:center;cursor:pointer;}
@@ -177,15 +186,15 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
     inset 0 0 0 1px rgba(0,0,0,.4);
 }
 .room-btn{
-  width:clamp(36px,5.5vw,52px);
-  height:clamp(40px,6vh,52px);
+  width:clamp(26px,3.8vw,36px);
+  height:clamp(30px,4.5vh,38px);
   border-radius:0;
   border-right:1px solid #2A2418;
   font-family:'Cormorant SC',Georgia,serif;
-  font-size:clamp(11px,1.3vw,13px);font-weight:600;letter-spacing:.04em;
+  font-size:clamp(9px,1vw,11px);font-weight:600;letter-spacing:.04em;
   cursor:pointer;
   display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
-  padding-bottom:7px;
+  padding-bottom:5px;
   transition:background .18s;position:relative;border-top:none;border-left:none;border-bottom:none;
   background:linear-gradient(180deg,#252018 0%,#1A1810 100%);
   color:rgba(200,165,60,.45);
@@ -196,8 +205,8 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 .room-btn::before{
   content:'';
   position:absolute;
-  top:8px;left:50%;transform:translateX(-50%);
-  width:9px;height:9px;border-radius:50%;
+  top:5px;left:50%;transform:translateX(-50%);
+  width:7px;height:7px;border-radius:50%;
   background:radial-gradient(circle at 35% 30%,#B89020,#6A4E0A);
   box-shadow:0 1px 2px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,220,80,.2);
   transition:background .18s,box-shadow .18s;
@@ -329,17 +338,15 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 .ti:hover .ti-lbl{color:rgba(238,232,192,.75);}
 .ti.active .ti-lbl{color:var(--gold);}
 .ti-sep{flex:1;border:none;border-left:1px solid rgba(255,255,255,.04);margin:0 clamp(4px,.6vw,8px);height:60%;align-self:center;}
+
+
+
 #ti-vdesk{
   position:absolute;left:50%;transform:translateX(-50%);
   display:flex;flex-direction:column;align-items:center;gap:2px;
   pointer-events:none;
 }
-.ti-vdesk-v{
-  font-family:'Cormorant SC',Georgia,serif;
-  font-size:clamp(11px,1.6vw,16px);font-weight:300;
-  color:rgba(200,160,32,.7);
-  line-height:1;letter-spacing:.04em;
-}
+
 .ti-vdesk-lbl{
   font-family:monospace;
   font-size:7px;letter-spacing:.14em;text-transform:uppercase;
@@ -541,7 +548,7 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 @media(max-width:600px){
   #board-content{padding-left:clamp(62px,9.5vw,104px);padding-right:clamp(88px,13vw,148px);padding-top:22px;}
   #chalk{font-size:14px;}.bc{font-size:16px;}
-  .room-btn{width:clamp(28px,8.5vw,36px);height:clamp(28px,5vh,34px);font-size:11px;padding-bottom:4px;}
+  .room-btn{width:clamp(20px,6vw,26px);height:clamp(22px,4vh,28px);font-size:9px;padding-bottom:3px;}
   .room-btn::before{display:none;}
 }
 </style>
@@ -576,6 +583,19 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
       </div>
     </div>
     <div class="pp-foot" id="pp-foot" style="display:none"><div id="scene-footer"></div></div>
+  </div>
+</div>
+
+<!-- RESET CONFIRMATION -->
+<div id="reset-overlay" style="display:none;position:fixed;inset:0;background:rgba(4,6,3,.9);z-index:300;align-items:center;justify-content:center;backdrop-filter:blur(4px)">
+  <div style="background:#1A1208;border:1px solid rgba(238,232,192,.12);border-top:2px solid #8B1A1A;width:min(420px,92vw);padding:28px 32px 24px;box-shadow:0 24px 72px rgba(0,0,0,.8)">
+    <div style="font-family:monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(238,232,192,.35);margin-bottom:16px">The Institute — Warning</div>
+    <div style="font-family:'EB Garamond',Georgia,serif;font-size:18px;line-height:1.7;color:rgba(238,232,192,.8);margin-bottom:20px">This will clear the dossier entirely. All assessments, all records, all corrections on file. The application will be withdrawn.<br><br>Type <span style="font-family:monospace;color:#C8A020;letter-spacing:.08em">BEGIN AGAIN</span> to confirm.</div>
+    <input id="reset-input" type="text" placeholder="Type BEGIN AGAIN to confirm" style="width:100%;background:rgba(0,0,0,.3);border:none;border-bottom:1px solid rgba(238,232,192,.25);color:rgba(238,232,192,.8);font-family:monospace;font-size:13px;letter-spacing:.08em;padding:8px 0;outline:none;margin-bottom:20px">
+    <div style="display:flex;gap:12px;justify-content:flex-end">
+      <button onclick="closeResetModal()" style="background:none;border:1px solid rgba(238,232,192,.18);color:rgba(238,232,192,.38);font-family:monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:7px 16px;cursor:pointer;transition:all .14s" onmouseover="this.style.color='rgba(238,232,192,.8)';this.style.borderColor='rgba(238,232,192,.45)'" onmouseout="this.style.color='rgba(238,232,192,.38)';this.style.borderColor='rgba(238,232,192,.18)'">Cancel</button>
+      <button id="reset-confirm-btn" onclick="doReset()" style="background:rgba(139,26,26,.2);border:1px solid rgba(139,26,26,.4);color:rgba(200,80,80,.45);font-family:monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:7px 16px;cursor:pointer;transition:all .14s" disabled>Begin Again</button>
+    </div>
   </div>
 </div>
 
@@ -743,18 +763,11 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
         <button class="flyup-item exam-item" id="flyup-exam" onclick="openExamFromToolbar()">Examination</button>
       </div>
     </div>
-    <button class="ti" id="ti-map" onclick="openMap()" title="Floor Plan" style="display:none">
-      <svg width="22" height="19" viewBox="0 0 22 19" fill="none"><rect x="1.5" y="1.5" width="8.5" height="7" rx=".5" stroke="rgba(238,232,192,.45)" stroke-width="1.3"/><rect x="12" y="1.5" width="8.5" height="7" rx=".5" stroke="rgba(238,232,192,.45)" stroke-width="1.3"/><rect x="1.5" y="10.5" width="8.5" height="7" rx=".5" stroke="rgba(238,232,192,.45)" stroke-width="1.3"/><rect x="12" y="10.5" width="8.5" height="7" rx=".5" stroke="rgba(238,232,192,.45)" stroke-width="1.3"/></svg>
-      <span class="ti-lbl">Map</span>
-    </button>
     <div class="ti-sep"></div>
-    <div id="ti-vdesk">
-      <span class="ti-vdesk-v">V</span>
-      <span class="ti-vdesk-lbl">Visitors<br>Desk</span>
-    </div>
+
     <button class="ti" id="ti-sound" onclick="toggleSound()">
       <svg id="sound-label" width="20" height="17" viewBox="0 0 22 18" style="opacity:.45"><rect x="0" y="5" width="5" height="8" fill="rgba(238,232,192,.8)"/><polygon points="5,5 11,0 11,18 5,13" fill="rgba(238,232,192,.8)"/><line x1="13" y1="4" x2="13" y2="14" stroke="rgba(238,232,192,.8)" stroke-width="1.5"/><line x1="16" y1="1" x2="16" y2="17" stroke="rgba(238,232,192,.8)" stroke-width="1.5"/><line x1="19" y1="4" x2="19" y2="14" stroke="rgba(238,232,192,.8)" stroke-width="1.5"/></svg>
-      <span class="ti-lbl">Sound</span>
+      <span class="ti-lbl" id="sound-lbl">Sound</span>
     </button>
     <button class="ti" onclick="confirmReset()">
       <svg width="20" height="19" viewBox="0 0 20 20" fill="none"><path d="M10 3.5 A6.5 6.5 0 1 1 4 13.5" stroke="rgba(238,232,192,.45)" stroke-width="1.4" stroke-linecap="round"/><polygon points="3,10.5 3,14.5 7,12.5" fill="rgba(238,232,192,.45)"/></svg>
@@ -766,7 +779,7 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
     </a>
     <!-- Banker's lamp — base sits on brass rail -->
     <div id="desk-lamp-stand" onclick="toggleDeskLamp()" onmouseenter="chalkHint('Click to see narrative excerpts.')" onmouseleave="chalkRestore()"
-         style="position:absolute;left:calc(clamp(366px,56vw,526px) + (100% - clamp(366px,56vw,526px)) / 2 - clamp(14px,2.25vw,26px));bottom:var(--bar-h);
+         style="position:absolute;right:clamp(52px,8vw,80px);bottom:var(--bar-h);
                 width:clamp(28px,4.5vw,52px);z-index:25;cursor:pointer;overflow:visible;display:flex;align-items:flex-end;">
       <svg viewBox="0 0 200 480" width="100%" style="display:block;overflow:visible" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -1114,10 +1127,14 @@ function docPopup(title, panes, tabLabels) {
   var vp=$id('doc-viewport'); if(vp) _ro.observe(vp); else { setTimeout(docInitSlider,80); setTimeout(docInitSlider,320); }
 }
 
-function closePopup(){ var o=$id('popup-overlay'); if(o) o.classList.remove('open'); }
+function closePopup(){
+  var o=$id('popup-overlay'); if(o) o.classList.remove('open');
+  if(_postPopupBoard){ var fn=_postPopupBoard; _postPopupBoard=null; setTimeout(fn,80); }
+}
 
 // ── DOC SLIDER ──
 var _docIdx=0;
+var _postPopupBoard=null;
 function docInitSlider(){
   var vp=$id('doc-viewport'), track=$id('doc-track'); if(!vp||!track) return;
   var h=vp.offsetHeight||parseInt(getComputedStyle(vp).height)||320;
@@ -1139,7 +1156,12 @@ function docSwitchTab(idx){
 }
 
 // ── LOCATION ──
-function setFloorLabel(label){ var fl=$id('floor-label'); if(fl) fl.textContent=label||''; var fs=$id('floor-sublabel'); if(fs) fs.textContent=''; }
+function setFloorLabel(label){
+  var fl=$id('floor-label'); if(fl) fl.textContent=label||'';
+  var fs=$id('floor-sublabel'); if(fs) fs.textContent='';
+
+}
+function setStatusRoom(text){}
 
 // ── BOARD SCROLL INDICATORS ──
 function updateBoardMore(){
@@ -1176,7 +1198,6 @@ function setToolbar(mode){
   function show(id,v){ var el=$id(id); if(el) el.style.display=v?'flex':'none'; }
   var onFloor=(mode==='corridor'||mode==='room');
   show('ti-dossier', onFloor);
-  show('ti-map',     onFloor);
   show('ti-study-wrap', mode==='room');
 }
 
@@ -1286,10 +1307,10 @@ function closeMap(){
 
 // ── STAIRWELL ──
 function s0(){
-  _inRoom=-1; setFloorLabel('The Stairwell'); setToolbar('stairwell'); closePopup(); buildRoomCircles(false);
+  navLampOff(); _inRoom=-1; setFloorLabel('The Stairwell'); setToolbar('stairwell'); closePopup(); buildRoomCircles(false); setStatusRoom('');
   if(localStorage.getItem('ql_s1_visited')){
     board(['The dossier is where I left it.','The casino remains across the road.','The lights are still on.'],
-      [{l:'Ascend to the First Floor \u2192',f:cutscene1},{l:'Begin from the Beginning',f:s0_intro}]);
+      [{l:'Ascend to the First Floor \u2192',f:corridor},{l:'Begin from the Beginning',f:s0_intro}]);
     return;
   }
   localStorage.setItem('ql_s1_visited','1'); s0_intro();
@@ -1314,7 +1335,7 @@ function s0d(){
 
 // ── CUTSCENE ──
 function cutscene1(){
-  _inRoom=-1; buildRoomCircles(false); localStorage.setItem('ql_floor1_visited','1');
+  navLampOff(); _inRoom=-1; buildRoomCircles(false); localStorage.setItem('ql_floor1_visited','1');
   setFloorLabel('First Floor — Landing'); setToolbar('corridor');
   awardExcerpt('cleaner_scene');
   board(['The Cleaner passed through.','She said something.','It was, unfortunately, correct.'],[{l:'Enter the corridor →',f:function(){ closePopup(); corridor(); }}]);
@@ -1341,7 +1362,7 @@ function cutscene1(){
 
 // ── CORRIDOR ──
 function corridor(){
-  _inRoom=-1; setFloorLabel('First Floor — Corridor'); setToolbar('corridor'); buildRoomCircles(true);
+  navLampOff(); _inRoom=-1; setFloorLabel('First Floor — Corridor'); setToolbar('corridor'); buildRoomCircles(true);
   if(typeof triggerMapAnim==='function'&&!localStorage.getItem('ql_map_shown')){ localStorage.setItem('ql_map_shown','1'); setTimeout(triggerMapAnim,1200); }
   updateDossier();
   var assessed=C.filter(function(c){ return S.rooms[c.id].assessed; }).length;
@@ -1363,9 +1384,10 @@ function corridor(){
 
 // ── ROOMS ──
 function enterRoom(idx){
-  _inRoom=idx; var c=C[idx]; var r=S.rooms[c.id];
+  navLampOff(); _inRoom=idx; var c=C[idx]; var r=S.rooms[c.id];
   var roomNum = (idx+1 < 10 ? '0' : '') + (idx+1);
   setFloorLabel(roomNum + ' \u2014 ' + c.title); setToolbar('room'); updateDossier(); updateRoomFlyup(); buildRoomCircles(true);
+  var visited=[r.desk?'Bookcase':null,r.archive?'Bureau':null].filter(Boolean); setStatusRoom(visited.length?visited.join(' · '):r.assessed?'Assessed':'Not yet visited');
   var firstVisit=!r.desk&&!r.archive&&!r.window&&!r.assessed;
   var lines=firstVisit&&c.aubrey_enter?c.aubrey_enter.split('\n').filter(function(l){ return l.trim(); }):[c.title+'.'];
   board(lines,[{l:'Return to corridor',f:corridor}]);
@@ -1373,15 +1395,15 @@ function enterRoom(idx){
 
 function deskPanel(idx){
   var c=C[idx]; var r=S.rooms[c.id]; r.desk=true; updateDossier(); saveState();
-  if(c.aubrey_desk){ var lines=c.aubrey_desk.split('\n').filter(function(l){ return l.trim(); }); board(lines,[{l:'Return to room',f:function(){ enterRoom(idx); }}]); }
   docPopup(c.title,[renderPanelContent(c.r197a),renderPanelContent(c.anteroom),renderPanelContent(c.members)],['Lower Shelf','Middle Shelf','Upper Shelf']);
+  if(c.aubrey_desk) _postPopupBoard=(function(d,i){ return function(){ var lines=d.split('\n').filter(function(l){ return l.trim(); }); board(lines,[{l:'Return to room',f:function(){ enterRoom(i); }}]); }; })(c.aubrey_desk,idx);
 }
 
 function roomPanel(idx,panel){
   var c=C[idx]; var r=S.rooms[c.id]; r[panel]=true; updateDossier(); saveState();
   var field=panel==='archive'?c.aubrey_archive:c.aubrey_window;
-  if(field){ var lines=field.split('\n').filter(function(l){ return l.trim(); }); board(lines,[{l:'Return to room',f:function(){ enterRoom(idx); }}]); }
   if(panel==='archive') tablePopup(c.title+' \u2014 Bureau', renderPanelContent(c.counting), renderPanelContent(c.post||[]));
+  if(field) _postPopupBoard=(function(f,i){ return function(){ var lines=f.split('\n').filter(function(l){ return l.trim(); }); board(lines,[{l:'Return to room',f:function(){ enterRoom(i); }}]); }; })(field,idx);
 }
 
 // ── EXAMINATION ──
@@ -1403,7 +1425,7 @@ function examAnswer(idx,chosen){
   var lines=[];
   if(correct&&c.aubrey_post_correct) lines=c.aubrey_post_correct.split('\n').filter(function(l){ return l.trim(); });
   else if(!correct&&c.aubrey_post_wrong&&c.aubrey_post_wrong[chosen]) lines=c.aubrey_post_wrong[chosen].split('\n').filter(function(l){ return l.trim(); });
-  if(lines.length) board(lines,[]);
+  if(lines.length) board(lines,[{l:'Return to room',f:function(){ closePopup(); enterRoom(idx); }}]);
   var feedback=correct?'<div class="exam-concluded-b">'+q.correct_msg+'</div>':'<div class="exam-reply-b">'+(q.wrong_msgs[chosen]||'Incorrect.')+'</div>';
   popup('The Examination \u2014 '+c.title,'<div class="exam-wrap-b"><div class="exam-q-b">'+q.question+'</div>'+feedback+'</div>',
     [{l:'Return to room',f:function(){ closePopup(); enterRoom(idx); }},{l:'Return to corridor',f:function(){ closePopup(); corridor(); }}]);
@@ -1413,7 +1435,8 @@ function examAnswer(idx,chosen){
 var _ohThinking=false, _ohHistory=[], _clerkInitialised=false;
 function fullClerk(){
   var ds=buildFullDossierSummary();
-  if(!_clerkInitialised){ _ohHistory=[{role:'assistant',content:buildClerkOpening()}]; _clerkInitialised=true; }
+  var opening=buildClerkOpening();
+  if(!_clerkInitialised||_ohHistory.length===0){ _ohHistory=[{role:'assistant',content:opening}]; _clerkInitialised=true; }
   window._clerkSystemPrompt='You are the Clerk in Room 197A at the Institute. You have read the candidate\u2019s full dossier across all ten concepts. You speak with authority. You are precise, not warm. You are Socratic. You probe gaps. You do not give answers. You ask one question per response. Two to three sentences maximum. DOSSIER: '+ds;
   popup('Room 197A \u2014 The Clerk',
     '<div id="oh-wrap"><div id="oh-messages"></div><div id="oh-input-row"><input id="oh-input" type="text" placeholder="Type your response..."><button id="oh-send" onclick="clerkSend()">Send</button></div></div>',
@@ -1454,7 +1477,7 @@ function cleanerReturn(){
   var assessed=C.filter(function(c){ return S.rooms[c.id].assessed; }).length;
   var quality=C.filter(function(c){ return S.rooms[c.id].quality==='good'; }).length;
   var answer=quality>=8?'Considerably less uncertain than before.':quality>=5?'Less uncertain. On several of the more important questions.':quality>=3?'Somewhat less uncertain. The framework is in place, at least in outline.':assessed>=5?'About as uncertain as before. But now I have a name for it.':'I still don\u2019t know. But I\u2019ve filed the paperwork.';
-  board(['The Cleaner passed through again on her way back.','\u201cAnd how uncertain are you?\u201d','\u201c'+answer+'\u201d'],[{l:'Return to corridor',f:corridor}]);
+  board(['The Cleaner passed through again on her way back.','\u201cAnd how uncertain are you?\u201d','\u201c'+answer+'\u201d'],[]);
   popup('The Cleaner Returns',
     '<div class="excerpt-page">'+
     '<div class="excerpt-head"><span class="excerpt-label">The Institute \u25a1</span><span class="excerpt-ref">First Floor \u2014 Corridor</span></div>'+
@@ -1472,7 +1495,7 @@ function cleanerReturn(){
 
 // ── LETTER ──
 async function generateLetter(){
-  setFloorLabel('First Floor');
+  setFloorLabel('First Floor — Application');
   board(['The application has been filed.','The Institute has forwarded the dossier to the casino.','A response is expected.'],[],
     '<div class="letter-wrap"><div class="letter-shadow"></div><div class="letter-paper">'+
     '<div class="letter-header"><span class="letter-label">Gambler\u2019s Ruin \u25a1</span><span class="letter-label">For the attention of: Squeakwell, A.</span></div>'+
@@ -1497,7 +1520,34 @@ async function generateLetter(){
   }
 }
 
-function confirmReset(){ if(confirm('Reset your progress? This will clear your dossier and return to the beginning.')){ localStorage.clear(); Object.keys(S.rooms).forEach(function(id){ S.rooms[id]={desk:false,archive:false,window:false,exam:false,assessed:false,quality:null,gaps:[],examHistory:[]}; }); location.reload(); } }
+function confirmReset(){
+  _ohHistory=[]; _clerkInitialised=false;
+  var overlay=$id('reset-overlay');
+  if(!overlay) return;
+  var inp=$id('reset-input'); if(inp){ inp.value=''; }
+  var btn=$id('reset-confirm-btn'); if(btn){ btn.disabled=true; btn.style.color='rgba(200,80,80,.45)'; btn.style.borderColor='rgba(139,26,26,.4)'; }
+  overlay.style.display='flex';
+  setTimeout(function(){ var i=$id('reset-input'); if(i) i.focus(); },100);
+}
+function closeResetModal(){
+  var overlay=$id('reset-overlay'); if(overlay) overlay.style.display='none';
+}
+function doReset(){
+  var inp=$id('reset-input');
+  if(!inp||inp.value.trim().toUpperCase()!=='BEGIN AGAIN') return;
+  localStorage.clear();
+  Object.keys(S.rooms).forEach(function(id){ S.rooms[id]={desk:false,archive:false,window:false,exam:false,assessed:false,quality:null,gaps:[],examHistory:[]}; });
+  location.reload();
+}
+// Wire up input to enable/disable confirm button
+document.addEventListener('DOMContentLoaded', function(){
+  var inp=$id('reset-input');
+  if(inp) inp.addEventListener('input',function(){
+    var btn=$id('reset-confirm-btn');
+    var match=inp.value.trim().toUpperCase()==='BEGIN AGAIN';
+    if(btn){ btn.disabled=!match; btn.style.color=match?'rgba(200,80,80,.9)':'rgba(200,80,80,.45)'; btn.style.borderColor=match?'rgba(200,80,80,.65)':'rgba(139,26,26,.4)'; }
+  });
+});
 function goToCorridorOrStairwell(){ if(localStorage.getItem('ql_floor1_visited')){ corridor(); }else{ s0(); } }
 
 // ── STAMPS / DOSSIER TRACKING ──
@@ -1625,9 +1675,21 @@ function buildClerkOpening(){
 
 // ── LAMPS ──
 var _deskLamp=false;
-var _lampLeft=false,_lampRight=false;
-function toggleLampLeft() { _lampLeft=!_lampLeft;  document.body.classList.toggle('lamp-left', _lampLeft); }
-function toggleLampRight(){ _lampRight=!_lampRight; document.body.classList.toggle('lamp-right',_lampRight); }
+var _lampLeft  = localStorage.getItem('ql_lamp_left')  === '1';
+var _lampRight = localStorage.getItem('ql_lamp_right') === '1';
+// Apply persisted lamp state on load
+if(_lampLeft)  document.body.classList.add('lamp-left');
+if(_lampRight) document.body.classList.add('lamp-right');
+function toggleLampLeft(){
+  _lampLeft=!_lampLeft;
+  document.body.classList.toggle('lamp-left',_lampLeft);
+  try{ localStorage.setItem('ql_lamp_left',_lampLeft?'1':'0'); }catch(e){}
+}
+function toggleLampRight(){
+  _lampRight=!_lampRight;
+  document.body.classList.toggle('lamp-right',_lampRight);
+  try{ localStorage.setItem('ql_lamp_right',_lampRight?'1':'0'); }catch(e){}
+}
 
 // ── AUDIO ──
 var _AC=null,_mg=null,_padI=0,_audioOn=false;
@@ -1649,14 +1711,17 @@ function toggleSound(){
   initAudio(); if(!_AC) return;
   _audioOn=!_audioOn;
   var sl=$id('sound-label');
+  var lbl=$id('sound-lbl');
   if(_audioOn){
     if(_AC.state==='suspended') _AC.resume();
     _mg.gain.setTargetAtTime(0.24,_AC.currentTime,.3);
     _CHORDS[_padI%4].forEach(function(f){ _tone(f,_AC.currentTime+0.1,12,.018); }); _padI++;
     sl.querySelectorAll('line').forEach(function(l){ l.style.display=''; }); sl.style.opacity='0.9';
+    if(lbl) lbl.textContent='Sound';
   }else{
     _mg.gain.setTargetAtTime(0,_AC.currentTime,.3);
     sl.querySelectorAll('line').forEach(function(l){ l.style.display='none'; }); sl.style.opacity='0.4';
+    if(lbl) lbl.textContent='Sound';
   }
 }
 
@@ -1769,11 +1834,12 @@ var EXCERPTS = [
   },
 ];
 
-var _excerptRead = {};   // id → true if read this session
+var _excerptRead = (function(){
+  try{ var r=localStorage.getItem('ql_excerpts_read'); return r?JSON.parse(r):{}; }catch(e){ return {}; }
+})();
 var _excerptAwarded = []; // ids awarded in order
 
 function awardExcerpt(id) {
-  // Only award once
   if (_excerptAwarded.indexOf(id) !== -1) return;
   _excerptAwarded.push(id);
   updateLampState();
@@ -1786,39 +1852,76 @@ function _unreadCount() {
 function updateLampState() {
   var lamp = $id('desk-lamp-stand');
   if (!lamp) return;
-  if (_unreadCount() > 0) {
+  // Only pulse when lamp is OFF and there are unread excerpts
+  if (_unreadCount() > 0 && !_deskLamp) {
     lamp.classList.add('has-unread');
   } else {
     lamp.classList.remove('has-unread');
   }
 }
 
-var _prevLocation = null;
+// ── LAMP ──
+// Single toggle. On = lamp lit + excerpt menu on board.
+// Off = lamp unlit + board restored. Popup (excerpt view) closes automatically.
+// _lampBoardSnapshot captures board state at moment of lamp-on.
 
-function toggleDeskLamp() {
-  // If lamp is on — close and return
-  if (_deskLamp) {
-    lampOff();
-    closePopup();
-    if (_prevLocation) _prevLocation();
-    return;
-  }
-  // Lamp is off — open menu if excerpts available, otherwise just light up
-  if (_excerptAwarded.length > 0) {
-    _prevLocation = _inRoom >= 0
-      ? (function(i){ return function(){ enterRoom(i); }; })(_inRoom)
-      : (localStorage.getItem('ql_floor1_visited') ? corridor : s0);
-    openExcerptMenu();
-  }
+var _lampBoardSnapshot = null;
+
+function _lampOn() {
   _deskLamp = true;
   document.body.classList.add('desk-lamp-on');
-  var bulb=$id('wl-bulb-shape'),halo=$id('wl-halo'),rim=$id('wl-rim-glow');
+  updateLampState(); // stop pulsing — lamp is now on
+  var bulb=$id('wl-bulb-shape'), halo=$id('wl-halo'), rim=$id('wl-rim-glow');
   if(bulb) bulb.style.opacity='1';
   if(halo) halo.style.opacity='1';
-  if(rim)  rim.setAttribute('fill','rgba(255,190,50,.12)');
+  if(rim)  rim.style.fill='rgba(255,190,50,.12)';
+}
+
+function _lampOff() {
+  _deskLamp = false;
+  document.body.classList.remove('desk-lamp-on');
+  updateLampState(); // resume pulsing if still unread
+  var bulb=$id('wl-bulb-shape'), halo=$id('wl-halo'), rim=$id('wl-rim-glow');
+  if(bulb) bulb.style.opacity='0';
+  if(halo) halo.style.opacity='0';
+  if(rim)  rim.style.fill='rgba(255,190,50,.0)';
+}
+
+function navLampOff(){
+  if(!_deskLamp) return;
+  _deskLamp=false;
+  _lampBoardSnapshot=null;
+  _lampOff();
+}
+function toggleDeskLamp() {
+  if (_deskLamp) {
+    // Turn off — restore board, close any open excerpt popup
+    _lampOff();
+    closePopup();
+    // Restore board snapshot
+    if (_lampBoardSnapshot !== null) {
+      var chalk = $id('chalk'), choices = $id('choices');
+      if(chalk){ chalk.innerHTML = _lampBoardSnapshot.chalk; chalk.querySelectorAll('p').forEach(function(p){ p.style.opacity='1'; p.style.transition='none'; }); }
+      if(choices) choices.innerHTML = _lampBoardSnapshot.choices;
+      _lampBoardSnapshot = null;
+    }
+    return;
+  }
+  // Turn on — snapshot board, show excerpt menu
+  var chalk=$id('chalk'), choices=$id('choices');
+  _lampBoardSnapshot = {
+    chalk:   chalk   ? chalk.innerHTML   : '',
+    choices: choices ? choices.innerHTML : ''
+  };
+  _lampOn();
+  openExcerptMenu();
 }
 
 function openExcerptMenu() {
+  if (_excerptAwarded.length === 0) {
+    board(['Nothing under the lamp yet.'], []);
+    return;
+  }
   var ordered = _excerptAwarded.slice().reverse();
   var choices = ordered.map(function(id) {
     var ex = EXCERPTS.find(function(e){ return e.id === id; });
@@ -1829,37 +1932,28 @@ function openExcerptMenu() {
       f: (function(eid){ return function(){ openExcerpt(eid); }; })(id)
     };
   }).filter(Boolean);
-  board(['Under the lamp.', 'Several pages. Left there by someone.'], choices);
+  board(['Under the lamp.', 'Several pages.'], choices);
 }
 
 function openExcerpt(id) {
   var ex = EXCERPTS.find(function(e){ return e.id === id; });
   if (!ex) return;
   _excerptRead[id] = true;
+  try{ localStorage.setItem('ql_excerpts_read', JSON.stringify(_excerptRead)); }catch(e){}
   updateLampState();
-  var bodyHtml = '<div class="excerpt-page">' +
-    '<div class="excerpt-head">' +
-      '<span class="excerpt-label">The Institute \u25a1</span>' +
-      '<span class="excerpt-ref">' + ex.ref + '</span>' +
+  var bodyHtml =
+    '<div class="excerpt-page">' +
+      '<div class="excerpt-head"><span class="excerpt-label">The Institute \u25a1</span><span class="excerpt-ref">' + ex.ref + '</span></div>' +
+      '<div class="excerpt-body">' + ex.body.map(function(p){ return '<p>'+p+'</p>'; }).join('') + '</div>' +
     '</div>' +
-    '<div class="excerpt-body">' +
-      ex.body.map(function(p){ return '<p>' + p + '</p>'; }).join('') +
-    '</div>' +
-  '</div>' +
-  '<div class="excerpt-shadow"></div>';
+    '<div class="excerpt-shadow"></div>';
+  // ← in popup footer: one button back to menu
   popup(ex.title, bodyHtml,
-    [{ l: '\u2190\u2002Back to reading list', f: function(){ closePopup(); openExcerptMenu(); } }]
+    [{ l: '\u2190\u2002Reading list', f: function(){ closePopup(); openExcerptMenu(); } }]
   );
 }
 
-function lampOff() {
-  _deskLamp = false;
-  document.body.classList.remove('desk-lamp-on');
-  var bulb=$id('wl-bulb-shape'),halo=$id('wl-halo'),rim=$id('wl-rim-glow');
-  if(bulb) bulb.style.opacity='0';
-  if(halo) halo.style.opacity='0';
-  if(rim)  rim.setAttribute('fill','rgba(255,190,50,.0)');
-}
+function lampOff(){ _lampOff(); } // backward-compat alias
 
 // ── GO ──
 s0();
