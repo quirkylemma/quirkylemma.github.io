@@ -154,8 +154,14 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 /* BOARD STRIP */
 #board-strip{width:min(640px,92%);position:relative;z-index:10;margin-top:clamp(22px,3.5vh,38px);max-height:clamp(140px,28vh,260px);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:clamp(4px,.7vh,8px);}
 #board-strip::-webkit-scrollbar{width:0;}
-#loc{font-family:monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(238,232,192,.5);cursor:pointer;transition:color .2s;}
+#loc{font-family:monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(238,232,192,.5);cursor:pointer;transition:color .2s;display:inline-block;}
 #loc:hover{color:rgba(238,232,192,.85);}
+@keyframes loc-arrive{
+  0%  {opacity:0;transform:translateX(-22px);}
+  60% {opacity:1;transform:translateX(3px);}
+  100%{opacity:1;transform:translateX(0);}
+}
+#loc.arriving{animation:loc-arrive .55s var(--ease) forwards;}
 #choices{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(6px,1vh,11px);}
 .bc{font-family:'Cormorant SC',Georgia,serif;font-size:clamp(17px,2vw,24px);font-weight:300;color:rgba(200,160,32,.55);background:none;border:none;border-bottom:1px solid rgba(200,160,32,.16);padding-bottom:2px;cursor:pointer;letter-spacing:.02em;line-height:1;text-align:left;transition:color .3s var(--ease),border-color .3s var(--ease),padding-left .22s var(--ease);}
 .bc:hover{color:var(--gold);border-bottom-color:rgba(200,160,32,.55);padding-left:9px;}
@@ -163,65 +169,9 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 /* CORRIDOR / ROOM ITEMS */
 .corridor-progress{font-family:monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(238,232,192,.38);margin-bottom:clamp(6px,1vh,10px);}
 /* Flanking room circles */
-/* Room drawer strip — sits on top of toolbar, centred */
-.room-col{
-  position:absolute;
-  bottom:100%;
-  left:0;transform:none;
-  display:flex;flex-direction:row;
-  gap:0;
-  z-index:21;
-  pointer-events:auto;
-  /* Cabinet housing */
-  background:linear-gradient(180deg,#2A2418 0%,#1E1C12 100%);
-  border:1px solid #4A3C20;
-  border-bottom:none;
-  border-top:2px solid #6A5428;
-  outline:1px solid #1A1408;
-  outline-offset:2px;
-  padding:3px 3px 0;
-  box-shadow:
-    0 -3px 12px rgba(0,0,0,.5),
-    inset 0 1px 0 rgba(255,220,80,.08),
-    inset 0 0 0 1px rgba(0,0,0,.4);
-}
-.room-btn{
-  width:clamp(26px,3.8vw,36px);
-  height:clamp(30px,4.5vh,38px);
-  border-radius:0;
-  border-right:1px solid #2A2418;
-  font-family:'Cormorant SC',Georgia,serif;
-  font-size:clamp(9px,1vw,11px);font-weight:600;letter-spacing:.04em;
-  cursor:pointer;
-  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
-  padding-bottom:5px;
-  transition:background .18s;position:relative;border-top:none;border-left:none;border-bottom:none;
-  background:linear-gradient(180deg,#252018 0%,#1A1810 100%);
-  color:rgba(200,165,60,.45);
-}
-.room-btn:last-child{border-right:none;}
-.room-btn:hover{background:linear-gradient(180deg,#302A1C 0%,#22200E 100%);}
-/* Brass knob */
-.room-btn::before{
-  content:'';
-  position:absolute;
-  top:5px;left:50%;transform:translateX(-50%);
-  width:7px;height:7px;border-radius:50%;
-  background:radial-gradient(circle at 35% 30%,#B89020,#6A4E0A);
-  box-shadow:0 1px 2px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,220,80,.2);
-  transition:background .18s,box-shadow .18s;
-}
-
-.room-btn.visited{color:rgba(210,168,52,.7);}
-.room-btn.visited::before{background:radial-gradient(circle at 35% 30%,#D4A828,#8A6A10);box-shadow:0 1px 2px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,230,100,.3);}
-.room-btn.assessed{color:#C8A020;}
-.room-btn.assessed::before{background:radial-gradient(circle at 35% 30%,#F0C840,#B89020);box-shadow:0 1px 2px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,240,120,.4),0 0 5px rgba(200,160,32,.3);}
-
-.room-btn.current{color:#F0D060;background:linear-gradient(180deg,#2E2818 0%,#201E0C 100%);}
-.room-btn.current::before{background:radial-gradient(circle at 35% 30%,#FFE060,#C8A020);box-shadow:0 1px 3px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,248,160,.5),0 0 8px rgba(220,180,32,.45);}
-
-.corridor-actions{display:flex;flex-direction:column;}
-.corridor-action{background:transparent;border:none;padding:clamp(7px,.9vh,10px) 0;cursor:pointer;transition:padding-left .2s var(--ease);display:flex;align-items:center;gap:11px;width:100%;}
+/* Corridor actions */
+.corridor-actions{display:flex;flex-direction:column;align-items:flex-start;}
+.corridor-action{background:transparent;border:none;padding:clamp(7px,.9vh,10px) 0;cursor:pointer;transition:padding-left .2s var(--ease);display:flex;align-items:center;gap:11px;width:auto;}
 .corridor-action:hover{padding-left:6px;}
 
 .ca-b{display:flex;flex-direction:column;gap:1px;}
@@ -234,6 +184,12 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
   50%{filter:drop-shadow(0 0 10px rgba(220,175,50,.85)) drop-shadow(0 0 20px rgba(220,175,50,.35));}
 }
 #desk-lamp-stand.has-unread{animation:lamp-pulse 2s ease-in-out infinite;}
+@keyframes map-pulse{
+  0%,100%{box-shadow:none;color:rgba(238,232,192,.32);}
+  50%{box-shadow:0 0 10px rgba(238,232,192,.25),0 0 22px rgba(200,160,32,.2);color:rgba(238,232,192,.9);}
+}
+#ti-map.map-hint-active{animation:map-pulse 1s ease-in-out infinite;}
+#ti-study-wrap.map-hint-active{animation:map-pulse 1s ease-in-out infinite;}
 /* Excerpt document styles */
 .excerpt-page{background:linear-gradient(160deg,#FAFAF7 0%,#F5F2EC 100%);padding:28px 32px 24px;position:relative;transform:rotate(-.4deg);box-shadow:0 1px 3px rgba(0,0,0,.07),2px 4px 16px rgba(0,0,0,.1),4px 8px 28px rgba(0,0,0,.07);border:1px solid rgba(26,22,16,.08);}
 .excerpt-shadow{height:8px;background:radial-gradient(ellipse,rgba(0,0,0,.14) 0%,rgba(0,0,0,0) 70%);border-radius:50%;margin:0 20px;}
@@ -431,7 +387,7 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 /* Left column — three shelf-edge tabs stacked top-to-bottom */
 #doc-slider{
   flex-shrink:0;
-  width:clamp(80px,14vw,110px);
+  width:clamp(100px,18vw,140px);
   border-right:1px solid var(--rule);
   background:linear-gradient(90deg,var(--paper-2) 0%,var(--paper) 100%);
   display:flex;flex-direction:column;
@@ -440,14 +396,15 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 .doc-tab{
   flex:1;
   display:flex;align-items:center;justify-content:flex-start;
-  padding:0 0 0 12px;
-  font-family:monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  padding:0 0 0 16px;
+  font-family:monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
   color:rgba(28,24,16,.28);background:none;border:none;cursor:pointer;
   border-bottom:1px solid var(--rule);
   border-left:3px solid transparent;
   transition:color .2s,border-left-color .2s,background .2s;
-  text-align:left;line-height:1.3;
+  text-align:left;line-height:1.4;
   position:relative;
+  min-height:60px;
 }
 .doc-tab:last-child{border-bottom:none;}
 .doc-tab:hover{color:rgba(28,24,16,.55);background:rgba(28,24,16,.03);}
@@ -456,7 +413,6 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
   border-left-color:#1C3A38;
   background:var(--paper);
 }
-/* Shelf-edge notch on active tab */
 .doc-tab.active::after{
   content:'';
   position:absolute;right:-1px;top:25%;bottom:25%;
@@ -466,10 +422,10 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
   border-bottom:1px solid var(--rule);
 }
 
-/* Content viewport */
+/* Content viewport — horizontal scroll */
 #doc-viewport{flex:1;min-height:0;overflow:hidden;position:relative;height:clamp(280px,52vh,520px);}
-#doc-track{display:flex;flex-direction:column;width:100%;transition:transform .55s var(--ease);will-change:transform;}
-.doc-pane{flex-shrink:0;width:100%;overflow-y:auto;padding:10px 14px 16px;-webkit-overflow-scrolling:touch;}
+#doc-track{display:flex;flex-direction:row;height:100%;transition:transform .55s var(--ease);will-change:transform;}
+.doc-pane{flex-shrink:0;height:100%;overflow-y:auto;padding:10px 14px 16px;-webkit-overflow-scrolling:touch;}
 .doc-pane::-webkit-scrollbar{width:2px;}
 .doc-pane::-webkit-scrollbar-thumb{background:var(--rule);}
 .doc-empty{font-family:monospace;font-size:11px;letter-spacing:.14em;color:var(--ink-f);opacity:.5;text-align:center;padding:32px 0;font-style:italic;}
@@ -548,8 +504,6 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 @media(max-width:600px){
   #board-content{padding-left:clamp(62px,9.5vw,104px);padding-right:clamp(88px,13vw,148px);padding-top:22px;}
   #chalk{font-size:14px;}.bc{font-size:16px;}
-  .room-btn{width:clamp(20px,6vw,26px);height:clamp(22px,4vh,28px);font-size:13px;padding-bottom:3px;}
-  .room-btn::before{display:none;}
 }
 
 /* ── RESET MODAL ── parchment document floating on dark overlay */
@@ -861,7 +815,6 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 
   <!-- TOOLBAR -->
   <div id="toolbar">
-    <div id="room-col-left" class="room-col" style="display:none"></div>
     <button class="ti" id="ti-dossier" onclick="openDossier()" title="Dossier" style="display:none">
       <svg width="22" height="19" viewBox="0 0 22 19" fill="none"><rect x="1.5" y="5.5" width="19" height="12" rx="1" stroke="rgba(200,160,32,.7)" stroke-width="1.4"/><rect x="1.5" y="8.5" width="19" height="9" rx=".5" fill="rgba(200,160,32,.1)" stroke="rgba(200,160,32,.6)" stroke-width="1.4"/><rect x="4" y="2.5" width="7" height="4" rx="1 1 0 0" stroke="rgba(200,160,32,.6)" stroke-width="1.4"/><line x1="6.5" y1="12.5" x2="15.5" y2="12.5" stroke="rgba(200,160,32,.45)" stroke-width="1.1"/><line x1="6.5" y1="15" x2="12.5" y2="15" stroke="rgba(200,160,32,.32)" stroke-width="1"/></svg>
       <span class="ti-lbl">Dossier</span>
@@ -881,6 +834,16 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
         <button class="flyup-item exam-item" id="flyup-exam" onclick="openExamFromToolbar()">Examination</button>
       </div>
     </div>
+    <button class="ti" id="ti-map" onclick="openMap()" style="display:none">
+      <svg width="20" height="19" viewBox="0 0 20 19" fill="none">
+        <rect x="1.5" y="2.5" width="17" height="14" rx=".5" stroke="rgba(238,232,192,.45)" stroke-width="1.2"/>
+        <line x1="7"  y1="2.5" x2="7"  y2="16.5" stroke="rgba(238,232,192,.28)" stroke-width="1"/>
+        <line x1="13" y1="2.5" x2="13" y2="16.5" stroke="rgba(238,232,192,.28)" stroke-width="1"/>
+        <line x1="1.5" y1="7.5" x2="18.5" y2="7.5" stroke="rgba(238,232,192,.28)" stroke-width="1"/>
+        <line x1="1.5" y1="12" x2="18.5" y2="12"  stroke="rgba(238,232,192,.28)" stroke-width="1"/>
+      </svg>
+      <span class="ti-lbl">Map</span>
+    </button>
     <div class="ti-sep"></div>
 
     <button class="ti" id="ti-sound" onclick="toggleSound()">
@@ -1027,70 +990,70 @@ var C = [
       'A simple Monte Carlo demonstration: generate $N$ uniform random numbers in $[0,1]$. Assign each to an event based on cumulative probability thresholds. Count frequencies. As $N \\to \\infty$, the frequencies converge to the assigned probabilities — this is the empirical content of the axioms.',
       'The key observation: without the axioms, there is nothing to converge to. The axioms define the target. The simulation illustrates it. Neither replaces the other.'
     ],
-    aubrey_enter:'Uncertainty. I have been uncertain since October. This is apparently a room about it.',
+    aubrey_enter:'In October I told people I was one thousand percent certain I would win a fortune.\nI was also one hundred and ten percent committed to the plan.\nI described failure occurring with the chance that a snowball enjoys in hell.\nI have since been informed that none of these are probabilities.\nThe snowball in particular raises several technical objections.\nIs there a correct way to put a number on uncertainty?',
     aubrey_desk:'I read what was on the lower shelf. I understood it and stood up to leave. I hit my head on the upper shelf.',
     aubrey_archive:'People have been uncertain about outcomes for some time. They have found it useful to put a number on it. I have also been putting a number on it. Mine was wrong. Apparently there is a method.',
     aubrey_window:'I have looked at the window from several angles now. It looks the same from all of them.',
     aubrey_post_correct:'Yes. That is the one. I knew that one.',
     aubrey_post_wrong:['I was fairly sure about that. I have updated the file.','That is not the right answer. I have written it down anyway. For reference.','I see. Right. Yes.'] },
   { id:'experiment',         title:'Experiment',               section:'Experiments',          anteroom:[],members:[],counting:[],r197a:[],
-    aubrey_enter:'An experiment. In October I conducted one. I went to the casino. I was kicked out. The outcome was not in the set I had defined.',
+    aubrey_enter:'There is a correct way. Uncertainty is measured over the outcomes of an experiment.\nIn October I conducted one. I went to the casino.\nI was asked to leave before the experiment was complete.\nThe outcome was not in the set I had defined, which I now understand was the problem.\nAn experiment requires a well-defined set of outcomes before you conduct it, not after.\nWhat counts as well-defined?',
     aubrey_desk:'Repeatability. Well-defined set of outcomes. Not necessarily something you do in a lab with a white coat.',
     aubrey_archive:'Where do we find these experiments? The casino. The weather. A tin of mixed nuts. I have encountered several without knowing it.',
     aubrey_window:'Asking a psychic to draw a picture of something another psychic is thinking about does not qualify as an experiment. I did not know this was something people had tried.',
     aubrey_post_correct:'That is correct. I have been right before. Not recently, but before.',
     aubrey_post_wrong:['That is not correct. I was confident. This is a pattern I am beginning to recognise.','Incorrect. I have written it down. It joins the others.','I see. That one was not it either.'] },
   { id:'sample_space',       title:'Sample Space',             section:'The Sample Space',     anteroom:[],members:[],counting:[],r197a:[],
-    aubrey_enter:'The sample space. All possible outcomes, listed. I made a list in October. It had one item on it. Win. I have since been informed that this is not a proof.',
+    aubrey_enter:'An experiment has outcomes. All possible outcomes collected together form the sample space $\\Omega$.\nMy sample space in October was $\\Omega = \\{\\text{Win}\\}$.\nI had constructed it with considerable care and, I felt, admirable economy.\nIt transpires that a sample space must be exhaustive — every outcome that could occur must appear in it.\nIts elements must also be distinct and non-overlapping — only one can occur at a time.\nLose was not in my sample space. I have since added it.\nThe space feels different with it in there. Larger.\nWhat must $\\Omega$ contain to be valid?',
     aubrey_desk:'The desk concerns exhaustiveness. Every possible outcome must be on the list. I had one outcome on my list. It was not exhaustive.',
     aubrey_archive:'I have encountered several sample spaces without knowing it. A tin of mixed nuts. The casino. October.',
     aubrey_window:'My sample space had one element. This is called a certainty. I was certain about the wrong thing.',
     aubrey_post_correct:'Yes. All outcomes accounted for.',
     aubrey_post_wrong:['That sample space is not exhaustive. Something is missing.','Incorrect. The outcomes are not mutually exclusive.','I see. I left something off the list again.'] },
   { id:'events',             title:'Event',                    section:'Events',               anteroom:[],members:[],counting:[],r197a:[],
-    aubrey_enter:'An event is a subset of outcomes. I have been interested in one event since October. It has not occurred.',
+    aubrey_enter:'$\\Omega = \\{\\text{Win}, \\text{Lose}\\}$.\nThere may be further outcomes but those are the subject of a separate enquiry, currently unresolved.\nNow that I have a valid sample space I find I can ask questions about it.\nDid I win? Did I lose? Did I win and lose simultaneously, which would explain a great deal?\nThese questions correspond to subsets of $\\Omega$ and are called events.\nThe empty set is also an event. I have considerable experience of the empty set.\nCan I assign a probability to any subset I like, or are there constraints?',
     aubrey_desk:'An event can be empty. I have some experience of this.',
     aubrey_archive:'Will it rain. Will the patient recover. Will I be admitted. All events. Some have known probabilities. Mine does not yet.',
     aubrey_window:'I identified the event I am interested in. It is in the sample space. This is progress.',
     aubrey_post_correct:'Correct. That is a valid event.',
     aubrey_post_wrong:['That subset is not well defined.','Incorrect. That is not a subset of this space.','I see. Not every collection of outcomes qualifies.'] },
   { id:'sigma_algebra',      title:'The Sigma-Algebra',        section:'The Sigma-Algebra',    anteroom:[],members:[],counting:[],r197a:[],
-    aubrey_enter:'The sigma-algebra. A collection of events with properties. I did not know collections had properties. I have been collecting things without checking.',
+    aubrey_enter:'There are constraints.\nThe collection of valid events must contain $\\Omega$ itself, be closed under complementation, and be closed under countable unions.\nThis collection is called a sigma-algebra, denoted $\\mathcal{F}$.\n$\\Omega$ is the set of outcomes. $\\mathcal{F}$ is the set of questions I am permitted to ask about those outcomes.\nI had been asking questions without checking whether they were on the permitted list.\nThe Institute has a permitted list for everything. I have now seen the list. It is laminated.\nWhich questions does $\\mathcal{F}$ allow?',
     aubrey_desk:'There are rules about which collections are permissible. Not everything qualifies. I am beginning to notice a theme.',
     aubrey_archive:'Some questions cannot be asked. I have asked several of those.',
     aubrey_window:'I stood at the window. I was thinking about permissible questions. The window did not help.',
     aubrey_post_correct:'Correct. That collection satisfies the conditions.',
     aubrey_post_wrong:['Not closed under the required operations. Common error apparently.','Incorrect. The complement was not included.','I see. Not every collection qualifies. Mine did not.'] },
   { id:'mutual_exclusivity', title:'Mutual Exclusivity',       section:'Mutual Exclusivity',   anteroom:[],members:[],counting:[],r197a:[],
-    aubrey_enter:'Mutually exclusive events cannot both occur. I have wished for several mutually exclusive things simultaneously. I did not know that was the technical term for it.',
+    aubrey_enter:'When I constructed $\\Omega$ I noted that its elements must be distinct and non-overlapping. This property has a name.\nTwo events are mutually exclusive if they cannot both occur — their intersection is empty.\nWin and Lose are mutually exclusive.\nI cannot simultaneously win and lose, although in October I achieved a financial result that a reasonable person might describe as both.\nMutual exclusivity is a property of events generally, not just of outcomes in $\\Omega$. It extends into $\\mathcal{F}$ and has consequences for how probabilities combine.\nWhat are those consequences?',
     aubrey_desk:'Their intersection is empty. I have been living in an empty intersection since October.',
     aubrey_archive:'Either I get in or I don\u2019t. I have been treating this as negotiable. It is not negotiable.',
     aubrey_window:'I stood at the window. Win and Lose. Mutually exclusive. I had not listed Lose. This is on file.',
     aubrey_post_correct:'Correct. They cannot both occur.',
     aubrey_post_wrong:['Those events can occur simultaneously. Not mutually exclusive.','Incorrect. The intersection was not empty.','I see. I confused this with something else. It is on file.'] },
   { id:'probability_measure',title:'Probability Measure',      section:'Probability Defined',  anteroom:[],members:[],counting:[],r197a:[],
-    aubrey_enter:'The probability measure. A function that assigns numbers to events. I have been assigning numbers to events since October. There are apparently conditions.',
+    aubrey_enter:'A probability measure is a function $P$ that assigns numbers to events in $\\mathcal{F}$.\nNot any numbers.\nI had been assigning numbers to events since October under the impression that any number would do.\n$-0.3$ featured prominently. So did $1.7$, briefly, during a period I prefer not to discuss.\nA probability measure is a function of a very particular kind, with three conditions. They are called axioms.\nThe Institute is very fond of axioms.\nWhat must $P$ satisfy?',
     aubrey_desk:'The desk concerns what makes a probability measure legitimate. There are three conditions. I did not know about the three conditions. I have been violating them. Not all three. But some.',
     aubrey_archive:'A valid probability measure is the foundation of everything that follows. I have been building on an invalid one. This explains several things.',
     aubrey_window:'I stood at the window. I was thinking about the conditions. The view did not suggest any of them.',
     aubrey_post_correct:'Correct. That satisfies the conditions for a valid measure.',
     aubrey_post_wrong:['That does not satisfy the conditions. I am familiar with this situation.','Incorrect. The function is not well-defined on this space.','I see. Not every assignment of numbers qualifies. I knew that. I did not always act on it.'] },
   { id:'axiom1',             title:'Axiom 1 \u2014 Non-negativity',   section:'Axiom 1',      anteroom:[],members:[],counting:[],r197a:[],
-    aubrey_enter:'Axiom 1. No probability can be negative. I assigned a negative probability in October. The value was \u22120.3. I checked it twice. It was wrong twice.',
+    aubrey_enter:'The first axiom: $P(A) \\geq 0$ for all events $A$. No probability can be negative.\nI assigned $-0.3$ to the event Lose. I checked it twice. It was wrong twice.\nI have since checked it a third time as a precaution. It remains wrong.\nLikelihood has a floor and the floor is zero.\nI went below the floor with some confidence and considerable arithmetic and found nothing useful down there.\nWhy exactly is a negative probability impossible and not merely a bold creative choice?',
     aubrey_desk:'The desk concerns why probabilities cannot be negative. A probability measures how likely something is. Likelihood has a floor. The floor is zero. I went below the floor. This is on file.',
     aubrey_archive:'In practice a negative probability has no interpretation. It cannot be observed. It cannot be measured. It cannot be correct. Mine was \u22120.3. I was fairly confident about it at the time.',
     aubrey_window:'I stood at the window. Zero is the floor. I went below it. The correction is on file. It does not change what happened.',
     aubrey_post_correct:'Correct. Non-negative. That is the condition. I understand why now.',
     aubrey_post_wrong:['That value is negative. It violates Axiom 1. I have some experience of this.','Incorrect. A probability cannot be negative. I have noted this before. I am noting it again.','I see. Below zero. I know what that looks like. It is on file.'] },
   { id:'axiom2',             title:'Axiom 2 \u2014 Normalisation',    section:'Axiom 2',      anteroom:[],members:[],counting:[],r197a:[],
-    aubrey_enter:'Axiom 2. The probabilities must sum to 1. Mine summed to 0.94. I had apparently lost six percent of reality. I have filed a correction.',
+    aubrey_enter:'Probabilities cannot be negative.\nThe second axiom: $P(\\Omega) = 1$. Something must happen.\nThe total probability across all outcomes must equal exactly one. Mine summed to $0.94$.\nI had mislaid six percent of reality. I searched for it in my original workings.\nIt was Lose. It had been there the whole time, unassigned, waiting with the patience of something that knows it will eventually be found.\nA correction is on file.\nWhat goes wrong, precisely, when the probabilities do not sum to one?',
     aubrey_desk:'Everything must be accounted for. All outcomes. All of them. I left some out. Six percent of them. I did not notice at the time.',
     aubrey_archive:'In practice probabilities that do not sum to 1 indicate a missing outcome. Something has been left off the list. I left something off the list. I have been thinking about what it was.',
     aubrey_window:'I stood at the window. I was thinking about the missing six percent. It was an outcome I had not considered. I have considered it now. The list is more accurate. It is not more comfortable.',
     aubrey_post_correct:'Correct. The total is 1. Everything is accounted for.',
     aubrey_post_wrong:['That does not sum to 1. Something is missing. I know what that feels like.','Incorrect. Six percent is a common shortfall apparently. Or perhaps that is just me.','I see. The total was not 1. I have been there.'] },
   { id:'axiom3',             title:'Axiom 3 \u2014 Countable Additivity', section:'Axiom 3',  anteroom:[],members:[],counting:[],r197a:[],
-    aubrey_enter:'Axiom 3. When events do not overlap, their probabilities add. This is the last axiom. Three axioms. That is all it takes. I have violated all three.',
+    aubrey_enter:'Probabilities are non-negative and sum to one.\nThe third and final axiom: for mutually exclusive events, probabilities add.\n$P(A \\cup B) = P(A) + P(B)$ when $A \\cap B = \\emptyset$.\nThree axioms. That is the entire foundation of probability theory.\nI violated all three. Not simultaneously — rotationally, which I have been informed is no more permitted than the simultaneous version.\nThe probability space is now correctly specified. All corrections are on file.\nThe plan, I believe, remains sound.',
     aubrey_desk:'The desk concerns additivity. Mutually exclusive events. Their probabilities sum. This is the rule that makes calculation possible. I have been calculating without it. The results were not reliable.',
     aubrey_archive:'In practice additivity is what allows us to build up probabilities from small pieces. I have been working with the whole at once. This was ambitious. It was also wrong.',
     aubrey_window:'Three axioms. I have violated all three at various points. Two of the corrections are on file. The third I am still thinking about.',
@@ -1152,11 +1115,12 @@ function loadState(){
 function $id(id){ return document.getElementById(id); }
 loadState();
 function rm(el){ if(window.renderMathInElement) renderMathInElement(el,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false}); }
-function renderPanelContent(arr){
+function renderPanelContent(arr, label){
   var inner = (!arr||!arr.length)
     ? '<p style="font-family:monospace;font-size:11px;letter-spacing:.14em;color:#8A7A58;opacity:.5;text-align:center;padding:24px 0;font-style:italic">Content to be added.</p>'
     : arr.map(function(x){ return '<p>'+x+'</p>'; }).join('');
-  return '<div class="doc-obj-wrap"><div class="doc-obj-back"></div><div class="doc-obj">'+inner+'</div></div><div class="doc-obj-foot"></div>';
+  var head = label ? '<div class="doc-obj-head"><span class="doc-obj-label">'+label+'</span></div>' : '';
+  return '<div class="doc-obj-wrap"><div class="doc-obj-back"></div><div class="doc-obj">'+head+inner+'</div></div><div class="doc-obj-foot"></div>';
 }
 function getExam(id){ return EXAM.find(function(e){ return e.id===id; }); }
 
@@ -1196,7 +1160,6 @@ function board(lines, choices, extra) {
       delay+=len<20?850:len<50?1200:len<80?1600:1900;
     });
   }
-  if(extra){ var ex=document.createElement('div'); ex.style.width='100%'; ex.innerHTML=extra; choicesEl.appendChild(ex); }
   if(choices && choices.length){
     choices.forEach(function(c){
       var btn=document.createElement('button');
@@ -1204,6 +1167,7 @@ function board(lines, choices, extra) {
       choicesEl.appendChild(btn);
     });
   }
+  if(extra){ var ex=document.createElement('div'); ex.innerHTML=extra; choicesEl.appendChild(ex); }
   setTimeout(updateStripMore,50);
 }
 
@@ -1256,14 +1220,14 @@ var _docIdx=0;
 var _postPopupBoard=null;
 function docInitSlider(){
   var vp=$id('doc-viewport'), track=$id('doc-track'); if(!vp||!track) return;
-  var h=vp.offsetHeight||parseInt(getComputedStyle(vp).height)||320;
-  document.querySelectorAll('.doc-pane').forEach(function(p){ p.style.height=h+'px'; });
-  // Pane order in DOM: dp2(Upper)=0, dp1(Middle)=h, dp0(Lower)=2h
-  // idx 0=Lower → translate -2h (shift up to reveal bottom pane)
-  // idx 1=Middle → translate -h
-  // idx 2=Upper → translate 0
+  var w=vp.offsetWidth||parseInt(getComputedStyle(vp).width)||400;
+  document.querySelectorAll('.doc-pane').forEach(function(p){ p.style.width=w+'px'; });
+  // Pane DOM order: dp2(Upper)=0, dp1(Middle)=1, dp0(Lower)=2
+  // idx 0=Lower → pane index 2 → translate -2w
+  // idx 1=Middle → pane index 1 → translate -w
+  // idx 2=Upper → pane index 0 → translate 0
   var offsets=[2,1,0];
-  track.style.transform='translateY(-'+(offsets[_docIdx]*h)+'px)';
+  track.style.transform='translateX(-'+(offsets[_docIdx]*w)+'px)';
 }
 function docSwitchTab(idx){
   _docIdx=idx;
@@ -1278,7 +1242,11 @@ function docSwitchTab(idx){
 function setFloorLabel(label){
   var fl=$id('floor-label'); if(fl) fl.textContent=label||'';
   var fs=$id('floor-sublabel'); if(fs) fs.textContent='';
-
+  var loc=$id('loc'); if(!loc) return;
+  loc.classList.remove('arriving');
+  void loc.offsetWidth;
+  loc.classList.add('arriving');
+  loc.addEventListener('animationend',function(){ loc.classList.remove('arriving'); },{once:true});
 }
 function setStatusRoom(text){}
 
@@ -1318,6 +1286,7 @@ function setToolbar(mode){
   var onFloor=(mode==='corridor'||mode==='room');
   show('ti-dossier', onFloor);
   show('ti-study-wrap', mode==='room');
+  show('ti-map', onFloor);
 }
 
 function toggleStudyFlyup(e) {
@@ -1335,28 +1304,7 @@ document.addEventListener('click', function(e) {
   if (study && !study.contains(e.target)) closeStudyFlyup();
 });
 
-function buildRoomCircles(show){
-  var left=$id('room-col-left');
-  if(!left) return;
-  left.style.display=show?'flex':'none';
-  if(!show){ left.innerHTML=''; return; }
-  left.innerHTML='';
-  C.forEach(function(c,i){
-    var r=S.rooms[c.id];
-    var cls='room-btn';
-    if(i===_inRoom) cls+=' current';
-    else if(r.assessed) cls+=' assessed';
-    else if(r.desk||r.archive||r.window) cls+=' visited';
-    var btn=document.createElement('button');
-    btn.className=cls;
-    btn.textContent=(i+1<10?'0':'')+(i+1);
-    btn.title=c.title;
-    btn.onclick=(function(idx){ return function(){ closePopup(); closeStudyFlyup(); enterRoom(idx); }; })(i);
-    btn.addEventListener('mouseenter',(function(t,n){ return function(){ chalkHint(n+'<br>'+t); }; })(c.title, 'Room '+(i+1<10?'0':'')+(i+1)));
-    btn.addEventListener('mouseleave', chalkRestore);
-    left.appendChild(btn);
-  });
-}
+function buildRoomCircles(show){ /* room index removed */ }
 
 // ── HOVER LABELS ──
 var _chalkSnapshot = null;
@@ -1448,7 +1396,7 @@ function s0c(){
     [{l:'Continue',f:s0d}]);
 }
 function s0d(){
-  board(['The casino across the road is called Gambler\u2019s Ruin.','The lights are always on.','I have been here since October.','The dossier remains empty.','Uncertainty, I am told, plays a significant role in what comes next.','I find this plausible.','The plan is foolproof.','Probably.'],
+  board(['The casino across the road is called Gambler\u2019s Ruin.','The lights are always on.','I have been here since October.','The dossier remains empty.','Uncertainty, I am told, plays a significant role in what comes next.'],
     [{l:'Ascend to the First Floor \u2192',f:cutscene1}]);
 }
 
@@ -1494,8 +1442,9 @@ function corridor(){
   var qt=quotes[Math.floor(Math.random()*quotes.length)];
   var obs=allAssessed?'All ten rooms assessed. The application may now be filed.':assessed>0?assessed+' of 10 rooms assessed.':'';
   var doors='<div class="corridor-progress">'+obs+'</div><div class="corridor-actions">'+
-    '<button class="corridor-action" onmouseenter="chalkHint(\'Room 197A<br>Speak to the Clerk.\')" onmouseleave="chalkRestore()" onclick="fullClerk()"><div class="ca-b"><span class="ca-title">Room 197A</span></div></button>'+
-    '</div>';
+    '<button class="corridor-action" onmouseenter="chalkHint(\'Speak to the Clerk\')" onmouseleave="chalkRestore()" onclick="fullClerk()"><div class="ca-b"><span class="ca-title">Speak to the Clerk</span></div></button>'+
+    '</div>'+
+    '<div onmouseenter="var m=$id(\'ti-map\');if(m)m.classList.add(\'map-hint-active\');this.style.color=\'rgba(238,232,192,.7)\'" onmouseleave="var m=$id(\'ti-map\');if(m)m.classList.remove(\'map-hint-active\');this.style.color=\'rgba(238,232,192,.22)\'" onclick="openMap()" style="font-family:monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(238,232,192,.22);margin-top:clamp(10px,1.5vh,16px);cursor:pointer;transition:color .3s ease">Use the map to enter a room</div>';
   var choices=[];
   if(allAssessed) choices.push({l:'File the application \u2192',f:generateLetter});
   board(['\u201c'+qt.q+'\u201d','\u2014 '+qt.a],choices,doors);
@@ -1505,16 +1454,17 @@ function corridor(){
 function enterRoom(idx){
   navLampOff(); _inRoom=idx; var c=C[idx]; var r=S.rooms[c.id];
   var roomNum = (idx+1 < 10 ? '0' : '') + (idx+1);
-  setFloorLabel(roomNum + ' \u2014 ' + c.title); setToolbar('room'); updateDossier(); updateRoomFlyup(); buildRoomCircles(true);
+  setFloorLabel('Room ' + roomNum + ' \u2014 ' + c.title); setToolbar('room'); updateDossier(); updateRoomFlyup(); buildRoomCircles(false);
   var visited=[r.desk?'Bookcase':null,r.archive?'Bureau':null].filter(Boolean); setStatusRoom(visited.length?visited.join(' · '):r.assessed?'Assessed':'Not yet visited');
   var firstVisit=!r.desk&&!r.archive&&!r.window&&!r.assessed;
   var lines=firstVisit&&c.aubrey_enter?c.aubrey_enter.split('\n').filter(function(l){ return l.trim(); }):[c.title+'.'];
-  board(lines,[{l:'Return to corridor',f:corridor}]);
+  var studyHint='<div onmouseenter="var s=$id(\'ti-study-wrap\');if(s)s.classList.add(\'map-hint-active\');this.style.color=\'rgba(238,232,192,.7)\'" onmouseleave="var s=$id(\'ti-study-wrap\');if(s)s.classList.remove(\'map-hint-active\');this.style.color=\'rgba(238,232,192,.22)\'" onclick="toggleStudyFlyup(event)" style="font-family:monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(238,232,192,.22);margin-top:clamp(10px,1.5vh,16px);cursor:pointer;transition:color .3s ease">Study available documents.</div>';
+  board(lines,[{l:'Return to corridor',f:corridor}],studyHint);
 }
 
 function deskPanel(idx){
   var c=C[idx]; var r=S.rooms[c.id]; r.desk=true; updateDossier(); saveState();
-  docPopup(c.title,[renderPanelContent(c.r197a),renderPanelContent(c.anteroom),renderPanelContent(c.members)],['Lower Shelf','Middle Shelf','Upper Shelf']);
+  docPopup(c.title,[renderPanelContent(c.r197a,'Lower Shelf'),renderPanelContent(c.anteroom,'Middle Shelf'),renderPanelContent(c.members,'Upper Shelf')],['Lower Shelf','Middle Shelf','Upper Shelf']);
   if(c.aubrey_desk) _postPopupBoard=(function(d,i){ return function(){ var lines=d.split('\n').filter(function(l){ return l.trim(); }); board(lines,[{l:'Return to room',f:function(){ enterRoom(i); }}]); }; })(c.aubrey_desk,idx);
 }
 
