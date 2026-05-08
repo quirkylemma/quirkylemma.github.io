@@ -10,27 +10,30 @@
   onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@300;400&family=EB+Garamond:ital,wght@0,400;1,400&family=Special+Elite&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 <style>
+/* ── TOKENS ── */
 :root{
-  --chalk:#EEE8C4;--gold:#C8A020;
-  --wall:#252D1C;--wall-hi:#303D22;--wall-lo:#181E10;
+  --chalk:#EEE8C4; --gold:#C8A020;
+  --wall:#252D1C; --wall-hi:#303D22; --wall-lo:#181E10;
   --board-bg:#0A1108;
-  --paper:#F4F0DC;--paper-2:#EDE8CC;
-  --ink:#1C1810;--ink-mid:#3C3020;--ink-f:#8A7A58;
-  --rule:rgba(28,24,16,.12);
+  --paper:#F4F0DC; --paper-2:#EDE8CC;
+  --ink:#1C1810; --ink-mid:#3C3020; --ink-f:#8A7A58;
   --red:#8B1A1A;
+  --rule:rgba(28,24,16,.12);
   --bar-h:58px;
   --ease:cubic-bezier(0.16,1,0.3,1);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{height:100%;}
 body{min-height:100%;overflow-x:hidden;background:#B8B0A0;font-family:'EB Garamond',Georgia,serif;}
+
+/* ── GRAIN ── */
 #grain{position:fixed;inset:0;pointer-events:none;z-index:998;opacity:.07;mix-blend-mode:overlay;}
 
-/* VIEWPORT */
+/* ── VIEWPORT ── */
 #viewport{max-width:860px;width:100%;margin:0 auto;position:relative;min-height:100vh;background:var(--wall);box-shadow:0 0 0 1px rgba(0,0,0,.18),4px 4px 24px rgba(0,0,0,.22);overflow:hidden;}
 #page{position:relative;display:flex;flex-direction:column;z-index:1;min-height:100vh;}
 
-/* ROOM */
+/* ── ROOM ── */
 #room{
   position:absolute;inset:0;bottom:var(--bar-h);z-index:0;overflow:hidden;
   background:
@@ -46,8 +49,11 @@ body{min-height:100%;overflow-x:hidden;background:#B8B0A0;font-family:'EB Garamo
 #room::after{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;
   background:rgba(255,252,210,.22);
   box-shadow:0 0 18px 4px rgba(255,252,210,.12),0 0 60px 16px rgba(255,252,210,.05);}
+#room-ceil{position:absolute;top:0;left:20%;right:20%;height:2px;z-index:3;pointer-events:none;
+  background:rgba(255,252,210,.22);
+  box-shadow:0 0 18px 4px rgba(255,252,210,.12),0 0 60px 16px rgba(255,252,210,.05);}
 
-/* AMBIENT */
+/* ── AMBIENT ── */
 #ambient{
   position:absolute;inset:0;pointer-events:none;z-index:1;
   background:
@@ -63,8 +69,8 @@ body{min-height:100%;overflow-x:hidden;background:#B8B0A0;font-family:'EB Garamo
 body.lamp-left  #ambient{animation:none!important;opacity:1!important;background:radial-gradient(ellipse at 8%  0%,rgba(255,252,215,.40) 0%,transparent 62%),radial-gradient(ellipse at 8%  6%,rgba(255,252,215,.18) 0%,transparent 48%),radial-gradient(ellipse at 50% 50%,rgba(0,0,0,.06) 0%,transparent 100%);}
 body.lamp-right #ambient{animation:none!important;opacity:1!important;background:radial-gradient(ellipse at 92% 0%,rgba(255,252,215,.40) 0%,transparent 62%),radial-gradient(ellipse at 92% 6%,rgba(255,252,215,.18) 0%,transparent 48%),radial-gradient(ellipse at 50% 50%,rgba(0,0,0,.06) 0%,transparent 100%);}
 body.lamp-left.lamp-right #ambient{animation:none!important;opacity:1!important;background:radial-gradient(ellipse at 8%  0%,rgba(255,252,215,.40) 0%,transparent 58%),radial-gradient(ellipse at 92% 0%,rgba(255,252,215,.40) 0%,transparent 58%),radial-gradient(ellipse at 50% 10%,rgba(255,252,215,.14) 0%,transparent 55%),radial-gradient(ellipse at 50% 50%,rgba(0,0,0,.06) 0%,transparent 100%);}
-body.lamp-left  .sign-group,body.lamp-left  .sign-amb,body.lamp-left  .sign-ruin,body.lamp-left  #ambient,
-body.lamp-right .sign-group,body.lamp-right .sign-amb,body.lamp-right .sign-ruin,body.lamp-right #ambient{animation-play-state:paused!important;}
+body.lamp-left  .sign-group,body.lamp-left  .sign-amb,body.lamp-left  .sign-ruin,
+body.lamp-right .sign-group,body.lamp-right .sign-amb,body.lamp-right .sign-ruin{animation-play-state:paused!important;}
 @keyframes sign-breathe{0%,100%{opacity:.8;}45%{opacity:1;}46%{opacity:.65;}47%{opacity:.95;}}
 @keyframes sign-flicker{0%,91%,100%{opacity:1;}92.5%{opacity:.15;}93%{opacity:1;}95.4%{opacity:.3;}95.8%{opacity:1;}97.3%{opacity:.08;}97.6%{opacity:.9;}97.9%{opacity:.08;}98.2%{opacity:1;}}
 @keyframes sign-ruin{0%,59%,100%{opacity:1;}60.6%{opacity:.08;}61.2%{opacity:1;}80.4%{opacity:.35;}80.8%{opacity:1;}}
@@ -72,7 +78,7 @@ body.lamp-right .sign-group,body.lamp-right .sign-amb,body.lamp-right .sign-ruin
 .sign-amb  {animation:sign-breathe 6s ease-in-out infinite,sign-flicker 8s ease-in-out infinite;}
 .sign-ruin {animation:sign-breathe 6s ease-in-out infinite,sign-ruin 11s ease-in-out infinite 1.4s;}
 
-/* DESK LAMP */
+/* ── DESK LAMP ── */
 body.desk-lamp-on #toolbar{background:radial-gradient(ellipse at 50% 50%,rgba(220,175,50,.28) 0%,rgba(190,150,35,.14) 45%,transparent 75%),linear-gradient(180deg,#2A1C08 0%,#221408 8%,#1C1006 40%,#181008 85%,#120C04 100%);transition:background .5s ease;}
 body.desk-lamp-on #toolbar::before{background:linear-gradient(90deg,#2C1E08 0%,#3A2C0A 15%,#5A4418 35%,#8A7030 50%,#9A8038 55%,#8A7030 60%,#5A4418 75%,#3A2C0A 88%,#2C1E08 100%);}
 body.desk-lamp-on #room{background:
@@ -83,23 +89,35 @@ body.desk-lamp-on #room{background:
   linear-gradient(170deg,var(--wall-hi) 0%,var(--wall) 45%,var(--wall-lo) 100%);
   transition:background .6s ease;}
 
-/* WALL LAMPS */
-#wall-lamp-left,#wall-lamp{position:absolute;top:0;width:clamp(18px,2.5vw,30px);z-index:2;display:flex;flex-direction:column;align-items:center;cursor:pointer;}
+/* ── WALL LAMPS ── */
+#wall-lamp-left,#wall-lamp{position:absolute;top:0;width:clamp(18px,2.5vw,30px);z-index:2;display:flex;flex-direction:column;align-items:center;cursor:pointer;overflow:hidden;}
 #wall-lamp-left{left:clamp(16px,3vw,40px);}
 #wall-lamp{right:clamp(8px,2vw,24px);}
 #wall-lamp-left::before,#wall-lamp::before{content:'';width:4px;height:clamp(16px,3vh,28px);background:linear-gradient(90deg,#282A20 0%,#3A3C30 40%,#2A2C22 100%);border-left:1px solid rgba(0,0,0,.4);border-right:1px solid rgba(255,255,255,.04);flex-shrink:0;display:block;}
 .lamp-shade{width:100%;height:clamp(10px,1.8vh,18px);background:linear-gradient(180deg,#3A3828 0%,#2C2A20 60%,#1E1C16 100%);clip-path:polygon(10% 0%,90% 0%,100% 100%,0% 100%);box-shadow:0 2px 8px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.05);}
 .lamp-bulb{width:clamp(5px,.7vw,7px);height:clamp(5px,.7vw,7px);border-radius:50%;background:rgba(40,36,24,.8);margin-top:-1px;transition:background .6s ease,box-shadow .6s ease;}
 body.lamp-left  #wall-lamp-left .lamp-bulb,
-body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-shadow:0 0 4px rgba(255,248,200,.9),0 0 14px rgba(255,248,200,.5),0 0 36px rgba(255,248,200,.2);animation:bulb-flicker 8s ease-in-out infinite;}
+body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-shadow:0 0 4px rgba(255,248,200,.9),0 0 8px rgba(255,248,200,.4);animation:bulb-flicker 8s ease-in-out infinite;}
 @keyframes bulb-flicker{0%,88%,100%{opacity:1;}90%{opacity:.65;}92%{opacity:1;}94%{opacity:.5;}96%{opacity:1;}}
-.lamp-cone{position:absolute;top:100%;left:50%;transform:translateX(-50%);width:clamp(80px,14vw,160px);height:clamp(60px,12vh,120px);background:radial-gradient(ellipse at 50% 0%,rgba(255,248,200,.06) 0%,transparent 70%);pointer-events:none;}
+.lamp-cone{position:absolute;top:100%;left:50%;transform:translateX(-50%);width:clamp(80px,14vw,160px);height:clamp(60px,12vh,120px);background:radial-gradient(ellipse at 50% 0%,rgba(255,248,200,.06) 0%,transparent 70%);pointer-events:none;overflow:hidden;}
 
-/* BOARD CONTENT */
+/* ── ROOM TINTS ── */
+body.room-0 #room{background:linear-gradient(170deg,#2A2510 0%,#1E1A0C 45%,#141008 100%);}
+body.room-1 #room{background:linear-gradient(170deg,#1E2520 0%,#161C18 45%,#0C1210 100%);}
+body.room-2 #room{background:linear-gradient(170deg,#181E2C 0%,#101420 45%,#080C18 100%);}
+body.room-3 #room{background:linear-gradient(170deg,#221A14 0%,#181210 45%,#100C0A 100%);}
+body.room-4 #room{background:linear-gradient(170deg,#241818 0%,#1A1010 45%,#120808 100%);}
+body.room-5 #room{background:linear-gradient(170deg,#181E24 0%,#10141A 45%,#080C12 100%);}
+body.room-6 #room{background:linear-gradient(170deg,#201808 0%,#181006 45%,#100A04 100%);}
+body.room-7 #room{background:linear-gradient(170deg,#141E18 0%,#0C1610 45%,#060E08 100%);}
+body.room-8 #room{background:linear-gradient(170deg,#181A20 0%,#10121A 45%,#080A12 100%);}
+body.room-9 #room{background:linear-gradient(170deg,#0E0E10 0%,#0A0A0C 45%,#060608 100%);}
+
+/* ── BOARD CONTENT ── */
 #board-content{flex:1;min-height:0;position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:clamp(16px,3vh,32px) clamp(16px,3vw,32px) clamp(8px,1.5vh,16px);pointer-events:none;}
-#board-content > *{pointer-events:auto;}
+#board-content>*{pointer-events:auto;}
 
-/* WINDOW */
+/* ── WINDOW ── */
 #window-wide{width:min(387px,60%);flex-shrink:0;margin-bottom:clamp(18px,3vh,32px);}
 .winw-frame{background:#1A1C14;padding:5px 5px 0;box-shadow:0 6px 28px rgba(0,0,0,.75),inset 0 0 0 1px rgba(255,255,255,.055),inset 2px 2px 4px rgba(0,0,0,.4);}
 .winw-glass{height:clamp(90px,16vh,150px);position:relative;overflow:hidden;background:#04050C;}
@@ -108,19 +126,22 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 .winw-bar-h{position:absolute;top:50%;left:0;right:0;height:5px;background:linear-gradient(180deg,#222418 0%,#1A1C12 100%);border-top:1px solid rgba(255,255,255,.04);border-bottom:1px solid rgba(0,0,0,.4);z-index:5;margin-top:-2.5px;}
 .winw-glare{position:absolute;top:3%;left:2%;width:30%;height:46%;background:linear-gradient(135deg,rgba(255,255,255,.022) 0%,transparent 60%);z-index:6;pointer-events:none;}
 .winw-sill{height:6px;background:linear-gradient(180deg,#222418 0%,#181A10 100%);border-top:1px solid rgba(0,0,0,.5);box-shadow:0 2px 8px rgba(0,0,0,.45);}
+#window-lampfog{position:absolute;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at 40% 60%,rgba(255,220,140,.07) 0%,transparent 65%);opacity:0;transition:opacity 1.2s ease;}
+body.desk-lamp-on #window-lampfog{opacity:1;}
+#window-condensation{position:absolute;inset:0;z-index:5;pointer-events:none;}
 
-/* BLACKBOARD */
+/* ── BLACKBOARD ── */
 #blackboard-zone{position:relative;z-index:10;width:min(640px,92%);flex-shrink:0;}
 #bb-frame{
   position:relative;overflow:hidden;
   background:linear-gradient(150deg,#2C1E0A 0%,#1E1206 30%,#281A08 70%,#2C1E0A 100%);
-  box-shadow:
-    0 6px 0 rgba(0,0,0,.55),0 8px 18px rgba(0,0,0,.65),0 14px 40px rgba(0,0,0,.4),
+  box-shadow:0 6px 0 rgba(0,0,0,.55),0 8px 18px rgba(0,0,0,.65),0 14px 40px rgba(0,0,0,.4),
     inset 0 1px 0 rgba(255,255,255,.05),inset 0 0 0 1px rgba(0,0,0,.6),
-    inset 0 0 80px rgba(0,0,0,.6),inset 0 0 30px rgba(0,0,0,.35),
-    inset 60px 0 80px rgba(0,0,0,.25),inset -60px 0 80px rgba(0,0,0,.25);
+    inset 0 0 80px rgba(0,0,0,.6),inset 60px 0 80px rgba(0,0,0,.25),inset -60px 0 80px rgba(0,0,0,.25);
+  transition:opacity .4s ease;
 }
 #bb-frame::before{content:'';position:absolute;inset:-3px;pointer-events:none;z-index:10;box-shadow:inset 0 3px 6px rgba(0,0,0,.4),inset 3px 0 6px rgba(0,0,0,.25),inset -3px 0 6px rgba(0,0,0,.25);}
+#bb-frame.transitioning{opacity:.45;}
 #bb{
   background-color:var(--board-bg);
   padding:clamp(14px,2.5vh,28px) clamp(18px,3vw,40px);
@@ -137,7 +158,12 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 #bb-tray{height:clamp(6px,.9vw,9px);background:linear-gradient(180deg,#1C1408 0%,#120E04 100%);border-top:1px solid rgba(0,0,0,.6);display:flex;align-items:center;padding:0 clamp(10px,1.5vw,18px);gap:7px;position:relative;overflow:visible;}
 .cp{height:3px;border-radius:2px;background:linear-gradient(90deg,rgba(238,232,192,.22),rgba(238,232,192,.46),rgba(238,232,192,.22));}
 
-/* SCROLL CHEVRONS */
+/* ── BLACKBOARD ERASE ── */
+#bb-erase{position:absolute;inset:0;z-index:5;pointer-events:none;background:rgba(238,232,192,.06);opacity:0;transform:translateX(-100%);}
+#bb-erase.wiping{animation:bb-wipe .55s var(--ease) forwards;}
+@keyframes bb-wipe{0%{opacity:.7;transform:translateX(-100%);}60%{opacity:.5;}100%{opacity:0;transform:translateX(100%);}}
+
+/* ── SCROLL CHEVRONS ── */
 #bb-more,#bb-less,#strip-more,#strip-less{position:absolute;right:-22px;display:flex;flex-direction:column;align-items:center;gap:3px;opacity:0;transition:opacity .4s ease;pointer-events:auto;cursor:pointer;z-index:15;}
 #bb-more{top:50%;transform:translateY(20px);}
 #bb-less{top:50%;transform:translateY(-36px);}
@@ -151,100 +177,34 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 @keyframes chev{0%,100%{transform:rotate(45deg) translate(0,0);opacity:.9;}50%{transform:rotate(45deg) translate(2px,2px);opacity:.4;}}
 @keyframes chev-up{0%,100%{transform:rotate(-135deg) translate(0,0);opacity:.9;}50%{transform:rotate(-135deg) translate(2px,2px);opacity:.4;}}
 
-/* BOARD STRIP */
+/* ── BOARD STRIP ── */
 #board-strip{width:min(640px,92%);position:relative;z-index:10;margin-top:clamp(22px,3.5vh,38px);max-height:clamp(140px,28vh,260px);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:clamp(4px,.7vh,8px);}
 #board-strip::-webkit-scrollbar{width:0;}
-
-/* FLOOR LABEL */
 #loc{font-family:monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(238,232,192,.5);cursor:pointer;transition:color .2s;display:inline-block;}
 #loc:hover{color:rgba(238,232,192,.85);}
-@keyframes loc-arrive{
-  0%  {opacity:0;transform:translateX(-22px);}
-  60% {opacity:1;transform:translateX(3px);}
-  100%{opacity:1;transform:translateX(0);}
-}
+@keyframes loc-arrive{0%{opacity:0;transform:translateX(-22px);}60%{opacity:1;transform:translateX(3px);}100%{opacity:1;transform:translateX(0);}}
 #loc.arriving{animation:loc-arrive .55s var(--ease) forwards;}
-
 #choices{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(6px,1vh,11px);}
 .bc{font-family:'Cormorant SC',Georgia,serif;font-size:clamp(17px,2vw,24px);font-weight:300;color:rgba(200,160,32,.55);background:none;border:none;border-bottom:1px solid rgba(200,160,32,.16);padding-bottom:2px;cursor:pointer;letter-spacing:.02em;line-height:1;text-align:left;transition:color .3s var(--ease),border-color .3s var(--ease),padding-left .22s var(--ease);}
 .bc:hover{color:var(--gold);border-bottom-color:rgba(200,160,32,.55);padding-left:9px;}
+@keyframes bc-rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.bc.rising{animation:bc-rise .4s var(--ease) forwards;}
 
-/* CORRIDOR */
+/* ── CORRIDOR ── */
 .corridor-progress{font-family:monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(238,232,192,.38);margin-bottom:clamp(6px,1vh,10px);}
-.corridor-actions{display:flex;flex-direction:column;align-items:flex-start;}
 .corridor-action{background:transparent;border:none;padding:clamp(7px,.9vh,10px) 0;cursor:pointer;transition:padding-left .2s var(--ease);display:flex;align-items:center;gap:11px;width:auto;}
 .corridor-action:hover{padding-left:6px;}
-.ca-b{display:flex;flex-direction:column;gap:1px;}
 .ca-title{font-family:'Cormorant SC',Georgia,serif;font-size:clamp(15px,1.8vw,20px);font-weight:300;color:rgba(200,160,32,.55);line-height:1.2;border-bottom:1px solid rgba(200,160,32,.16);padding-bottom:2px;transition:color .3s var(--ease),border-color .3s var(--ease);}
 .corridor-action:hover .ca-title{color:var(--gold);border-bottom-color:rgba(200,160,32,.55);}
 
-/* LAMP PULSE */
-@keyframes lamp-pulse{
-  0%,100%{filter:drop-shadow(0 0 0px rgba(220,175,50,0));}
-  50%{filter:drop-shadow(0 0 10px rgba(220,175,50,.85)) drop-shadow(0 0 20px rgba(220,175,50,.35));}
-}
-#desk-lamp-stand.has-unread{animation:lamp-pulse 2s ease-in-out infinite;}
-
-/* HINT PULSE — map and study buttons */
-@keyframes hint-pulse{
-  0%,100%{box-shadow:none;color:rgba(238,232,192,.32);}
-  50%{box-shadow:0 0 10px rgba(238,232,192,.25),0 0 22px rgba(200,160,32,.2);color:rgba(238,232,192,.9);}
-}
-#ti-map.map-hint-active,#ti-study-wrap.map-hint-active{animation:hint-pulse 1s ease-in-out infinite;}
-
-/* EXCERPT */
-.excerpt-page{background:linear-gradient(160deg,#FAFAF7 0%,#F5F2EC 100%);padding:28px 32px 24px;position:relative;transform:rotate(-.4deg);box-shadow:0 1px 3px rgba(0,0,0,.07),2px 4px 16px rgba(0,0,0,.1),4px 8px 28px rgba(0,0,0,.07);border:1px solid rgba(26,22,16,.08);}
-.excerpt-shadow{height:8px;background:radial-gradient(ellipse,rgba(0,0,0,.14) 0%,rgba(0,0,0,0) 70%);border-radius:50%;margin:0 20px;}
-.excerpt-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid #1C3A38;padding-bottom:8px;margin-bottom:18px;}
-.excerpt-label{font-family:monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8A8070;}
-.excerpt-ref{font-size:12px;color:#8A8070;font-style:italic;}
-.excerpt-body p{font-size:16px;line-height:1.9;color:#3D3828;margin-bottom:.85em;}
-.excerpt-body p:last-child{margin-bottom:0;}
-
-/* CUTSCENE */
-.cs-dir{font-size:clamp(14px,1.5vw,16px);line-height:1.85;color:var(--ink-mid);margin-bottom:.7em;}
-.cs-speech{font-size:clamp(14px,1.5vw,16px);line-height:1.85;color:var(--ink);margin-bottom:.7em;padding-left:14px;}
-
-/* 3D DOCUMENT OBJECT */
-.doc-obj-wrap{position:relative;margin:6px 2px 14px;}
-.doc-obj-back{position:absolute;bottom:-5px;left:6px;right:-6px;top:5px;background:var(--paper-2);border:1px solid rgba(26,22,16,.07);}
-.doc-obj{position:relative;z-index:1;background:linear-gradient(160deg,#FAFAF7 0%,#F5F2EC 100%);border:1px solid rgba(26,22,16,.08);padding:22px 26px 20px;transform:rotate(-.4deg);box-shadow:0 1px 3px rgba(0,0,0,.07),2px 4px 16px rgba(0,0,0,.1),4px 8px 28px rgba(0,0,0,.07);}
-.doc-obj-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid #1C3A38;padding-bottom:8px;margin-bottom:18px;}
-.doc-obj-label{font-family:monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8A8070;}
-.doc-obj-foot{width:75%;height:8px;background:radial-gradient(ellipse,rgba(0,0,0,.12) 0%,transparent 70%);border-radius:50%;margin:3px auto 0;}
-.doc-obj p{font-size:16px;line-height:1.9;color:#3D3828;margin-bottom:.85em;}
-.doc-obj p:last-child{margin-bottom:0;}
-
-/* MANILA ENVELOPE */
-.manila-wrap{position:relative;margin:8px 4px 14px;}
-.manila-back{position:absolute;bottom:-5px;left:5px;right:-5px;top:5px;background:linear-gradient(135deg,#B8920A 0%,#9A780C 100%);border:1px solid rgba(0,0,0,.2);}
-.manila{position:relative;z-index:1;background:linear-gradient(160deg,#D4A830 0%,#C49020 60%,#B07C10 100%);border:1px solid rgba(0,0,0,.22);padding:38px 16px 14px;transform:rotate(-.3deg);box-shadow:0 2px 8px rgba(0,0,0,.18),2px 4px 18px rgba(0,0,0,.14);overflow:visible;}
-.manila::before{content:'';position:absolute;top:0;left:0;right:0;height:38px;background:linear-gradient(170deg,#C89018 0%,#B07808 100%);clip-path:polygon(0 0,100% 0,100% 55%,50% 100%,0 55%);border-bottom:1px solid rgba(0,0,0,.15);}
-.manila-clasp{position:absolute;top:32px;left:50%;transform:translateX(-50%);width:14px;height:8px;background:radial-gradient(ellipse at 50% 30%,#E8C84A,#B8920A);border-radius:50%;border:1px solid rgba(0,0,0,.3);box-shadow:0 1px 3px rgba(0,0,0,.4);z-index:2;}
-.manila-inner{background:linear-gradient(160deg,#FAF6E8 0%,#F0E8D0 100%);padding:14px 16px;border:1px solid rgba(0,0,0,.08);position:relative;}
-.manila-inner::after{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(to bottom,transparent,transparent 22px,rgba(26,22,16,.045) 22px,rgba(26,22,16,.045) 23px);background-position:0 18px;pointer-events:none;}
-.manila-foot{width:80%;height:6px;background:radial-gradient(ellipse,rgba(0,0,0,.16) 0%,transparent 70%);border-radius:50%;margin:3px auto 0;}
-.drow-m{display:flex;align-items:center;padding:5px 0;border-bottom:1px solid rgba(26,22,16,.07);position:relative;z-index:1;}
-.drow-m:last-child{border-bottom:none;}
-
-/* BUREAU */
-.table-drawers{display:flex;flex-direction:column;height:clamp(280px,52vh,500px);}
-.drawer-tabs{display:flex;flex-shrink:0;border-bottom:1px solid var(--rule);background:var(--paper);}
-.drawer-tab{flex:1;padding:9px 0;font-family:monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(28,24,16,.28);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;margin-bottom:-1px;}
-.drawer-tab.active{color:#7A5500;border-bottom-color:#7A5500;}
-.drawer-tab:first-child.active{color:#1C3A38;border-bottom-color:#1C3A38;}
-.drawer-viewport{flex:1;overflow:hidden;position:relative;}
-.drawer-track{display:flex;height:100%;transition:transform .38s var(--ease);will-change:transform;}
-.drawer-pane{flex-shrink:0;height:100%;overflow-y:auto;padding:10px 14px 16px;-webkit-overflow-scrolling:touch;}
-.drawer-pane::-webkit-scrollbar{width:2px;}
-.drawer-pane::-webkit-scrollbar-thumb{background:var(--rule);}
-
-/* TOOLBAR */
-#toolbar{flex-shrink:0;height:var(--bar-h);position:sticky;bottom:0;
+/* ── TOOLBAR ── */
+#toolbar{
+  flex-shrink:0;height:var(--bar-h);position:sticky;bottom:0;
   background:linear-gradient(180deg,#2A1C08 0%,#221408 8%,#1C1006 40%,#181008 85%,#120C04 100%);
   border-top:3px solid #4A3412;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.09),inset 0 2px 0 rgba(255,255,255,.04),0 -8px 32px rgba(0,0,0,.7),0 -2px 8px rgba(0,0,0,.5);
-  display:flex;align-items:center;padding:0 clamp(8px,2vw,20px);z-index:20;overflow:visible;position:relative;}
+  display:flex;align-items:center;padding:0 clamp(8px,2vw,20px);z-index:20;overflow:visible;position:relative;
+}
 #toolbar::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#2C1E08 0%,#5A4018 15%,#7A5C28 35%,#6A4E20 50%,#7A5C28 65%,#5A4018 85%,#2C1E08 100%);}
 .ti{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:0 clamp(7px,1.1vw,14px);height:100%;background:none;border:none;cursor:pointer;border-radius:0;border-right:1px solid rgba(255,255,255,.04);transition:opacity .15s;flex-shrink:0;text-decoration:none;position:relative;}
 .ti:first-child{border-left:1px solid rgba(255,255,255,.04);}
@@ -255,7 +215,25 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 .ti:hover .ti-lbl{color:rgba(238,232,192,.75);}
 .ti-sep{flex:1;border:none;border-left:1px solid rgba(255,255,255,.04);margin:0 clamp(4px,.6vw,8px);height:60%;align-self:center;}
 
-/* STUDY FLYUP */
+/* ── ROOM PLAQUE ── */
+#room-plaque{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:15;display:none;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;}
+#room-plaque.visible{display:flex;}
+.plaque-body{
+  background:linear-gradient(160deg,#C8A030 0%,#A07820 60%,#886010 100%);
+  border:1px solid rgba(0,0,0,.35);
+  box-shadow:0 2px 6px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,220,80,.3),inset 0 -1px 0 rgba(0,0,0,.2);
+  padding:6px 10px 7px;
+  min-width:clamp(60px,10vw,100px);
+  position:relative;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;
+}
+.plaque-body::before{content:'';position:absolute;inset:2px;border:1px solid rgba(0,0,0,.2);pointer-events:none;}
+.plaque-num{font-family:monospace;font-size:9px;letter-spacing:.22em;padding-left:.22em;text-transform:uppercase;color:rgba(28,18,4,.55);display:block;width:100%;text-align:center;line-height:1.4;}
+@keyframes plaque-drop{0%{transform:translateY(-12px);opacity:0;}60%{transform:translateY(3px);opacity:1;}80%{transform:translateY(-1px);}100%{transform:translateY(0);opacity:1;}}
+#room-plaque.dropping .plaque-body{animation:plaque-drop .45s var(--ease) forwards;}
+
+/* ── STUDY FLYUP ── */
 #ti-study-wrap{position:relative;}
 #ti-study-flyup{position:absolute;bottom:calc(100% + 2px);left:50%;transform:translateX(-50%);background:linear-gradient(180deg,#221408 0%,#1A1006 100%);border:1px solid rgba(238,232,192,.12);border-bottom:2px solid #4A3412;min-width:130px;z-index:200;display:none;flex-direction:column;box-shadow:0 -8px 24px rgba(0,0,0,.6);}
 #ti-study-flyup.open{display:flex;}
@@ -267,7 +245,16 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 .flyup-item.exam-item.done{color:rgba(200,160,32,.55);}
 .flyup-item.exam-item.done:hover{color:var(--gold);}
 
-/* POPUP */
+/* ── LAMP PULSE ── */
+@keyframes lamp-pulse{0%,100%{filter:drop-shadow(0 0 0px rgba(220,175,50,0));}50%{filter:drop-shadow(0 0 10px rgba(220,175,50,.85)) drop-shadow(0 0 20px rgba(220,175,50,.35));}}
+#desk-lamp-stand.has-unread{animation:lamp-pulse 2s ease-in-out infinite;}
+
+/* ── HINT PULSE ── */
+@keyframes hint-pulse{0%,100%{box-shadow:none;color:rgba(238,232,192,.32);}50%{box-shadow:0 0 10px rgba(238,232,192,.25),0 0 22px rgba(200,160,32,.2);color:rgba(238,232,192,.9);}}
+#ti-map.map-hint-active,#ti-study-wrap.map-hint-active{animation:hint-pulse 1s ease-in-out infinite;}
+
+
+/* ── POPUP ── */
 #popup-overlay{position:fixed;inset:0;background:rgba(4,6,3,.86);z-index:100;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);opacity:0;transition:opacity .28s ease;pointer-events:none;}
 #popup-overlay.open{opacity:1;pointer-events:auto;}
 #popup-panel{position:relative;max-height:88vh;display:flex;flex-direction:column;transform:translateY(12px);transition:transform .32s var(--ease);overflow:hidden;}
@@ -292,7 +279,7 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 .parchment .pp-foot{background:var(--paper);}
 .dark .pp-foot{background:#1C2018;}
 
-/* BOOKCASE */
+/* ── BOOKCASE ── */
 #pp-doc-inner{display:flex;flex-direction:row;flex:1;min-height:0;}
 #doc-slider{flex-shrink:0;width:clamp(100px,18vw,140px);border-right:1px solid var(--rule);background:linear-gradient(90deg,var(--paper-2) 0%,var(--paper) 100%);display:flex;flex-direction:column;user-select:none;}
 .doc-tab{flex:1;display:flex;align-items:center;justify-content:flex-start;padding:0 0 0 16px;font-family:monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(28,24,16,.28);background:none;border:none;cursor:pointer;border-bottom:1px solid var(--rule);border-left:3px solid transparent;transition:color .2s,border-left-color .2s,background .2s;text-align:left;line-height:1.4;position:relative;min-height:60px;}
@@ -300,21 +287,8 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 .doc-tab:hover{color:rgba(28,24,16,.55);background:rgba(28,24,16,.03);}
 .doc-tab.active{color:#1C3A38;border-left-color:#1C3A38;background:var(--paper);}
 .doc-tab.active::after{content:'';position:absolute;right:-1px;top:25%;bottom:25%;width:2px;background:var(--paper);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);}
-@keyframes tab-flash{
-  0%  {background:var(--paper);border-left-color:#1C3A38;}
-  25% {background:rgba(28,58,56,.12);border-left-color:#2A6A60;}
-  100%{background:var(--paper);border-left-color:#1C3A38;}
-}
+@keyframes tab-flash{0%{background:var(--paper);border-left-color:#1C3A38;}25%{background:rgba(28,58,56,.12);border-left-color:#2A6A60;}100%{background:var(--paper);border-left-color:#1C3A38;}}
 .doc-tab.active.flashing{animation:tab-flash .4s ease forwards;}
-
-/* Dossier stamp drop-in */
-@keyframes stamp-drop{
-  0%  {opacity:0;transform:rotate(-3deg) scale(1.4);}
-  55% {opacity:1;transform:rotate(1deg)  scale(0.94);}
-  75% {transform:rotate(-.5deg) scale(1.02);}
-  100%{transform:rotate(0deg)   scale(1);opacity:1;}
-}
-.stamp-assessed-new{animation:stamp-drop .45s var(--ease) forwards;}
 #doc-viewport{flex:1;min-height:0;overflow:hidden;position:relative;height:clamp(280px,52vh,520px);}
 #doc-track{display:flex;flex-direction:row;height:100%;transition:transform .55s var(--ease);will-change:transform;}
 .doc-pane{flex-shrink:0;height:100%;overflow-y:auto;padding:10px 14px 16px;-webkit-overflow-scrolling:touch;}
@@ -322,28 +296,64 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 .doc-pane::-webkit-scrollbar-thumb{background:var(--rule);}
 .doc-empty{font-family:monospace;font-size:11px;letter-spacing:.14em;color:var(--ink-f);opacity:.5;text-align:center;padding:32px 0;font-style:italic;}
 
-/* POPUP CONTENT */
+/* ── BUREAU ── */
+.table-drawers{display:flex;flex-direction:column;height:clamp(280px,52vh,500px);}
+.drawer-tabs{display:flex;flex-shrink:0;border-bottom:1px solid var(--rule);background:var(--paper);}
+.drawer-tab{flex:1;padding:9px 0;font-family:monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(28,24,16,.28);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;margin-bottom:-1px;}
+.drawer-tab.active{color:#7A5500;border-bottom-color:#7A5500;}
+.drawer-tab:first-child.active{color:#1C3A38;border-bottom-color:#1C3A38;}
+.drawer-viewport{flex:1;overflow:hidden;position:relative;}
+.drawer-track{display:flex;height:100%;transition:transform .38s var(--ease);will-change:transform;}
+.drawer-pane{flex-shrink:0;height:100%;overflow-y:auto;padding:10px 14px 16px;-webkit-overflow-scrolling:touch;}
+.drawer-pane::-webkit-scrollbar{width:2px;}
+.drawer-pane::-webkit-scrollbar-thumb{background:var(--rule);}
+
+/* ── 3D DOC OBJECT ── */
+.doc-obj-wrap{position:relative;margin:6px 2px 14px;}
+.doc-obj-back{position:absolute;bottom:-5px;left:6px;right:-6px;top:5px;background:var(--paper-2);border:1px solid rgba(26,22,16,.07);}
+.doc-obj{position:relative;z-index:1;background:linear-gradient(160deg,#FAFAF7 0%,#F5F2EC 100%);border:1px solid rgba(26,22,16,.08);padding:22px 26px 20px;transform:rotate(-.4deg);box-shadow:0 1px 3px rgba(0,0,0,.07),2px 4px 16px rgba(0,0,0,.1),4px 8px 28px rgba(0,0,0,.07);}
+.doc-obj-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid #1C3A38;padding-bottom:8px;margin-bottom:18px;}
+.doc-obj-label{font-family:monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8A8070;}
+.doc-obj-foot{width:75%;height:8px;background:radial-gradient(ellipse,rgba(0,0,0,.12) 0%,transparent 70%);border-radius:50%;margin:3px auto 0;}
+.doc-obj p{font-size:clamp(16px,1.8vw,19px);line-height:1.9;color:#3D3828;margin-bottom:.85em;}
+.doc-obj p:last-child{margin-bottom:0;}
+
+/* ── MANILA ENVELOPE ── */
+.manila-wrap{position:relative;margin:8px 4px 14px;}
+.manila-back{position:absolute;bottom:-5px;left:5px;right:-5px;top:5px;background:linear-gradient(135deg,#B8920A 0%,#9A780C 100%);border:1px solid rgba(0,0,0,.2);}
+.manila{position:relative;z-index:1;background:linear-gradient(160deg,#D4A830 0%,#C49020 60%,#B07C10 100%);border:1px solid rgba(0,0,0,.22);padding:38px 16px 14px;transform:rotate(-.3deg);box-shadow:0 2px 8px rgba(0,0,0,.18),2px 4px 18px rgba(0,0,0,.14);overflow:visible;}
+.manila::before{content:'';position:absolute;top:0;left:0;right:0;height:38px;background:linear-gradient(170deg,#C89018 0%,#B07808 100%);clip-path:polygon(0 0,100% 0,100% 55%,50% 100%,0 55%);border-bottom:1px solid rgba(0,0,0,.15);}
+.manila-clasp{position:absolute;top:32px;left:50%;transform:translateX(-50%);width:14px;height:8px;background:radial-gradient(ellipse at 50% 30%,#E8C84A,#B8920A);border-radius:50%;border:1px solid rgba(0,0,0,.3);box-shadow:0 1px 3px rgba(0,0,0,.4);z-index:2;}
+.manila-inner{background:linear-gradient(160deg,#FAF6E8 0%,#F0E8D0 100%);padding:14px 16px;border:1px solid rgba(0,0,0,.08);position:relative;}
+.manila-inner::after{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(to bottom,transparent,transparent 22px,rgba(26,22,16,.045) 22px,rgba(26,22,16,.045) 23px);background-position:0 18px;pointer-events:none;}
+.manila-foot{width:80%;height:6px;background:radial-gradient(ellipse,rgba(0,0,0,.16) 0%,transparent 70%);border-radius:50%;margin:3px auto 0;}
+.drow-m{display:flex;align-items:center;padding:5px 0;border-bottom:1px solid rgba(26,22,16,.07);position:relative;z-index:1;}
+.drow-m:last-child{border-bottom:none;}
+
+/* ── POPUP CONTENT ── */
 .choices{display:flex;flex-direction:column;}
 .choice{background:transparent;border:none;border-top:1px solid var(--rule);color:var(--ink);font-family:'EB Garamond',Georgia,serif;font-size:clamp(16px,1.7vw,18px);padding:clamp(10px,1.3vh,13px) 0;text-align:left;cursor:pointer;transition:padding-left .22s var(--ease),color .14s;line-height:1.5;display:flex;align-items:baseline;gap:10px;width:100%;}
 .choice:last-child{border-bottom:1px solid var(--rule);}
 .choice:hover{padding-left:10px;}
 .choice::before{content:"□";font-size:11px;color:var(--ink-f);flex-shrink:0;}
 .choice:hover::before{content:"▸";color:var(--ink);}
+
+/* ── EXAM ── */
 .exam-wrap-b{border-top:1px solid rgba(139,26,26,.18);padding-top:2px;}
 .exam-header-b{font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#8B1A1A;opacity:.7;padding:9px 0 7px;}
-.exam-q-b{font-family:'Courier Prime',monospace;font-size:clamp(16px,1.5vw,17px);line-height:1.8;color:var(--ink);padding:0 0 12px;border-bottom:1px solid var(--rule);}
+.exam-q-b{font-family:'Courier Prime',monospace;font-size:clamp(17px,1.7vw,19px);line-height:1.8;color:var(--ink);padding:0 0 12px;border-bottom:1px solid var(--rule);}
 .exam-opts-b{display:flex;flex-direction:column;}
-.exam-opt-b{display:flex;align-items:baseline;gap:10px;padding:clamp(9px,1.2vh,12px) 0;border-bottom:1px solid var(--rule);font-family:'Courier Prime',monospace;font-size:clamp(16px,1.5vw,17px);color:var(--ink);cursor:pointer;transition:padding-left .2s var(--ease);width:100%;background:transparent;border-left:none;border-right:none;}
+.exam-opt-b{display:flex;align-items:baseline;gap:10px;padding:clamp(9px,1.2vh,12px) 0;border-bottom:1px solid var(--rule);font-family:'Courier Prime',monospace;font-size:clamp(17px,1.7vw,19px);color:var(--ink);cursor:pointer;transition:padding-left .2s var(--ease);width:100%;background:transparent;border-left:none;border-right:none;}
 .exam-opt-b:last-child{border-bottom:none;}
 .exam-opt-b:hover{padding-left:8px;}
 .opt-label{color:var(--ink-f);flex-shrink:0;min-width:18px;}
-.exam-reply-b{font-family:'Courier Prime',monospace;font-size:clamp(14px,1.4vw,16px);line-height:1.8;color:var(--ink-mid);margin:10px 0;padding-left:12px;border-left:2px solid rgba(28,24,16,.18);}
-.exam-concluded-b{font-family:'Courier Prime',monospace;font-size:clamp(14px,1.4vw,16px);line-height:1.8;color:var(--ink-mid);margin:10px 0;padding-left:12px;border-left:2px solid var(--gold);}
+.exam-reply-b{font-family:'Courier Prime',monospace;font-size:clamp(16px,1.6vw,18px);line-height:1.8;color:var(--ink-mid);margin:10px 0;padding-left:12px;border-left:2px solid rgba(28,24,16,.18);}
+.exam-concluded-b{font-family:'Courier Prime',monospace;font-size:clamp(16px,1.6vw,18px);line-height:1.8;color:var(--ink-mid);margin:10px 0;padding-left:12px;border-left:2px solid var(--gold);}
 .exam-skip{font-family:monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-f);opacity:.4;margin:5px 0 0;text-align:right;}
 .exam-skip a{text-decoration:none;color:inherit;cursor:pointer;}
 .exam-skip a:hover{opacity:1;}
 
-/* CLERK */
+/* ── CLERK ── */
 #oh-wrap{display:flex;flex-direction:column;height:220px;}
 #oh-messages{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px 0;}
 .oh-msg{max-width:92%;line-height:1.65;font-size:clamp(16px,1.5vw,17px);font-family:'EB Garamond',Georgia,serif;}
@@ -359,7 +369,7 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 #oh-send{background:transparent;border:none;border-bottom:1px solid var(--ink-f);color:var(--ink-f);font-family:monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:4px 0 4px 12px;cursor:pointer;transition:all .14s;}
 #oh-send:hover{color:var(--ink);border-bottom-color:var(--ink);}
 
-/* LETTER */
+/* ── LETTER ── */
 .letter-wrap{position:relative;margin:4px 0;}
 .letter-shadow{position:absolute;bottom:-3px;left:3px;right:-3px;top:3px;background:rgba(28,24,16,.1);z-index:0;}
 .letter-paper{position:relative;z-index:1;background:var(--paper-2);border-top:2px solid #1C3A38;padding:14px 16px;transform:rotate(-.15deg);box-shadow:0 1px 4px rgba(0,0,0,.08);}
@@ -369,7 +379,18 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 .letter-body p{margin-bottom:.7em;}
 .letter-thinking{font-family:monospace;font-size:11px;letter-spacing:.12em;color:var(--ink-f);opacity:.35;font-style:italic;text-align:center;padding:18px 0;}
 
-/* RESET MODAL */
+/* ── EXCERPT ── */
+.excerpt-page{background:linear-gradient(160deg,#FAFAF7 0%,#F5F2EC 100%);padding:28px 32px 24px;position:relative;transform:rotate(-.4deg);box-shadow:0 1px 3px rgba(0,0,0,.07),2px 4px 16px rgba(0,0,0,.1),4px 8px 28px rgba(0,0,0,.07);border:1px solid rgba(26,22,16,.08);}
+.excerpt-shadow{height:8px;background:radial-gradient(ellipse,rgba(0,0,0,.14) 0%,rgba(0,0,0,0) 70%);border-radius:50%;margin:0 20px;}
+.excerpt-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid #1C3A38;padding-bottom:8px;margin-bottom:18px;}
+.excerpt-label{font-family:monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8A8070;}
+.excerpt-ref{font-size:12px;color:#8A8070;font-style:italic;}
+.excerpt-body p{font-size:16px;line-height:1.9;color:#3D3828;margin-bottom:.85em;}
+.excerpt-body p:last-child{margin-bottom:0;}
+.cs-dir{font-size:clamp(14px,1.5vw,16px);line-height:1.85;color:var(--ink-mid);margin-bottom:.7em;}
+.cs-speech{font-size:clamp(14px,1.5vw,16px);line-height:1.85;color:var(--ink);margin-bottom:.7em;padding-left:14px;}
+
+/* ── RESET MODAL ── */
 #reset-overlay{display:none;position:fixed;inset:0;background:rgba(4,6,3,.88);z-index:300;align-items:center;justify-content:center;backdrop-filter:blur(3px);}
 .reset-doc-outer{position:relative;width:min(420px,92vw);}
 .reset-doc-shadow{position:absolute;bottom:-5px;left:6px;right:-6px;top:5px;background:var(--paper-2);border:1px solid rgba(26,22,16,.06);}
@@ -392,6 +413,16 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 .reset-confirm.armed{background:rgba(139,26,26,.14);border-color:rgba(139,26,26,.7);color:rgba(160,30,30,.95);}
 .reset-doc-foot{width:60%;height:7px;background:radial-gradient(ellipse,rgba(0,0,0,.08) 0%,transparent 70%);border-radius:50%;margin:3px auto 0;}
 
+/* ── MAP ── */
+#map-overlay{display:none;position:fixed;inset:0;background:rgba(0,6,20,.92);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+
+/* ── STAMP ANIMATION ── */
+@keyframes stamp-drop{0%{opacity:0;transform:rotate(-3deg) scale(1.4);}55%{opacity:1;transform:rotate(1deg) scale(0.94);}75%{transform:rotate(-.5deg) scale(1.02);}100%{transform:rotate(0deg) scale(1);opacity:1;}}
+.stamp-assessed-new{animation:stamp-drop .45s var(--ease) forwards;}
+
+
+
+/* ── MOBILE ── */
 @media(max-width:600px){
   #board-content{padding-left:clamp(62px,9.5vw,104px);padding-right:clamp(88px,13vw,148px);padding-top:22px;}
   #chalk{font-size:14px;}
@@ -435,7 +466,7 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
     <div class="reset-doc-shadow"></div>
     <div class="reset-doc">
       <div class="reset-doc-head">
-        <span class="reset-doc-label">The Institute &nbsp;&#9633;&nbsp; Warning</span>
+        <span class="reset-doc-label">The Institute &#9633; Warning</span>
         <span class="reset-doc-ref">Form AS/000 &middot; Withdrawal</span>
       </div>
       <div class="reset-doc-body">
@@ -453,11 +484,11 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 </div>
 
 <!-- MAP -->
-<div id="map-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,6,20,.92);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px)" onclick="if(event.target===this)closeMap()">
+<div id="map-overlay" onclick="if(event.target===this)closeMap()">
   <div id="map-panel" style="position:relative;width:min(860px,95vw);max-height:88vh;overflow:hidden;background:#0A1628;border:1px solid rgba(160,200,255,.2);box-shadow:0 0 0 1px rgba(80,140,255,.08),0 24px 72px rgba(0,0,10,.9),inset 0 0 120px rgba(0,20,60,.6);">
     <div style="position:absolute;inset:0;pointer-events:none;opacity:.12;background-image:repeating-linear-gradient(0deg,rgba(140,190,255,1) 0,rgba(140,190,255,1) 1px,transparent 1px,transparent 32px),repeating-linear-gradient(90deg,rgba(140,190,255,1) 0,rgba(140,190,255,1) 1px,transparent 1px,transparent 32px);"></div>
     <div style="padding:12px 18px 10px;border-bottom:1px solid rgba(140,190,255,.15);display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1">
-      <span style="font-family:monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(180,220,255,.7)">Floor Plan — First Floor</span>
+      <span style="font-family:monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(180,220,255,.7)">Floor Plan &mdash; First Floor</span>
       <button onclick="closeMap()" style="background:none;border:1px solid rgba(180,220,255,.25);cursor:pointer;font-family:monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(180,220,255,.5);padding:4px 8px;transition:all .15s" onmouseover="this.style.color='rgba(255,255,255,.9)';this.style.borderColor='rgba(180,220,255,.7)'" onmouseout="this.style.color='rgba(180,220,255,.5)';this.style.borderColor='rgba(180,220,255,.25)'">Close &#215;</button>
     </div>
     <div id="map-grid" style="padding:14px 18px 18px;overflow-y:auto;max-height:72vh;position:relative;z-index:1"></div>
@@ -467,6 +498,7 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 <div id="viewport"><div id="page">
 
   <div id="room">
+    <div id="room-ceil"></div>
     <div id="wall-lamp-left" onclick="toggleLampLeft()"><div class="lamp-shade"></div><div class="lamp-bulb"></div><div class="lamp-cone"></div></div>
     <div id="wall-lamp" onclick="toggleLampRight()"><div class="lamp-shade"></div><div class="lamp-bulb"></div><div class="lamp-cone"></div></div>
     <div id="ambient"></div>
@@ -474,6 +506,7 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
 
   <div id="board-content">
 
+    <!-- Window -->
     <div id="window-wide"><div class="winw-frame"><div class="winw-glass">
       <svg viewBox="0 0 400 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;display:block">
         <defs>
@@ -483,32 +516,32 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
         </defs>
         <rect width="400" height="100" fill="url(#ww-sky)"/>
         <g id="pw-bg">
-          <rect x="0"  y="40" width="55"  height="60" fill="#0C0E1A"/>
-          <rect x="5"  y="45" width="10"  height="7"  fill="rgba(255,240,150,.06)"/>
-          <rect x="20" y="45" width="10"  height="7"  fill="rgba(255,240,150,.09)"/>
-          <rect x="35" y="45" width="10"  height="7"  fill="rgba(255,240,150,.04)"/>
-          <rect x="5"  y="57" width="10"  height="7"  fill="rgba(255,240,150,.08)"/>
-          <rect x="20" y="57" width="10"  height="7"  fill="rgba(255,240,150,.05)"/>
-          <rect x="35" y="57" width="10"  height="7"  fill="rgba(255,240,150,.07)"/>
-          <rect x="5"  y="69" width="10"  height="7"  fill="rgba(255,240,150,.05)"/>
-          <rect x="20" y="69" width="10"  height="7"  fill="rgba(255,240,150,.08)"/>
-          <rect x="35" y="69" width="10"  height="7"  fill="rgba(255,240,150,.03)"/>
+          <rect x="0" y="40" width="55" height="60" fill="#0C0E1A"/>
+          <rect x="5" y="45" width="10" height="7" fill="rgba(255,240,150,.06)"/>
+          <rect x="20" y="45" width="10" height="7" fill="rgba(255,240,150,.09)"/>
+          <rect x="35" y="45" width="10" height="7" fill="rgba(255,240,150,.04)"/>
+          <rect x="5" y="57" width="10" height="7" fill="rgba(255,240,150,.08)"/>
+          <rect x="20" y="57" width="10" height="7" fill="rgba(255,240,150,.05)"/>
+          <rect x="35" y="57" width="10" height="7" fill="rgba(255,240,150,.07)"/>
+          <rect x="5" y="69" width="10" height="7" fill="rgba(255,240,150,.05)"/>
+          <rect x="20" y="69" width="10" height="7" fill="rgba(255,240,150,.08)"/>
+          <rect x="35" y="69" width="10" height="7" fill="rgba(255,240,150,.03)"/>
         </g>
         <g id="pw-mid">
-          <rect x="50" y="8"  width="300" height="80" fill="#14162A"/>
-          <rect x="46" y="4"  width="308" height="7"  fill="#1C1E30"/>
-          <rect x="44" y="3"  width="312" height="2"  fill="#22243A"/>
-          <rect x="46" y="10" width="308" height="1"  fill="rgba(0,0,0,.4)"/>
+          <rect x="50" y="8" width="300" height="80" fill="#14162A"/>
+          <rect x="46" y="4" width="308" height="7" fill="#1C1E30"/>
+          <rect x="44" y="3" width="312" height="2" fill="#22243A"/>
+          <rect x="46" y="10" width="308" height="1" fill="rgba(0,0,0,.4)"/>
           <line x1="50" y1="62" x2="350" y2="62" stroke="rgba(255,255,255,.022)" stroke-width=".6"/>
           <line x1="50" y1="76" x2="350" y2="76" stroke="rgba(255,255,255,.018)" stroke-width=".6"/>
-          <rect x="55"  y="14" width="11" height="8" fill="rgba(255,240,150,.08)"/>
-          <rect x="70"  y="14" width="11" height="8" fill="rgba(255,240,150,.05)"/>
-          <rect x="55"  y="26" width="11" height="8" fill="rgba(255,240,150,.10)"/>
-          <rect x="70"  y="26" width="11" height="8" fill="rgba(0,0,0,0)"/>
-          <rect x="55"  y="38" width="11" height="8" fill="rgba(255,240,150,.06)"/>
-          <rect x="70"  y="38" width="11" height="8" fill="rgba(255,240,150,.09)"/>
-          <rect x="55"  y="50" width="11" height="8" fill="rgba(255,240,150,.04)"/>
-          <rect x="70"  y="50" width="11" height="8" fill="rgba(255,240,150,.07)"/>
+          <rect x="55" y="14" width="11" height="8" fill="rgba(255,240,150,.08)"/>
+          <rect x="70" y="14" width="11" height="8" fill="rgba(255,240,150,.05)"/>
+          <rect x="55" y="26" width="11" height="8" fill="rgba(255,240,150,.10)"/>
+          <rect x="70" y="26" width="11" height="8" fill="rgba(0,0,0,0)"/>
+          <rect x="55" y="38" width="11" height="8" fill="rgba(255,240,150,.06)"/>
+          <rect x="70" y="38" width="11" height="8" fill="rgba(255,240,150,.09)"/>
+          <rect x="55" y="50" width="11" height="8" fill="rgba(255,240,150,.04)"/>
+          <rect x="70" y="50" width="11" height="8" fill="rgba(255,240,150,.07)"/>
           <rect x="321" y="14" width="11" height="8" fill="rgba(255,240,150,.07)"/>
           <rect x="336" y="14" width="11" height="8" fill="rgba(255,240,150,.04)"/>
           <rect x="321" y="26" width="11" height="8" fill="rgba(0,0,0,0)"/>
@@ -524,7 +557,7 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
           <line x1="195" y1="76" x2="198" y2="76" stroke="rgba(255,220,100,.35)" stroke-width="1"/>
           <line x1="202" y1="76" x2="205" y2="76" stroke="rgba(255,220,100,.35)" stroke-width="1"/>
           <rect x="183" y="66" width="33" height="21" fill="rgba(255,200,80,.03)"/>
-          <rect x="178" y="87" width="44" height="2"  fill="rgba(255,220,100,.10)" rx=".5"/>
+          <rect x="178" y="87" width="44" height="2" fill="rgba(255,220,100,.10)" rx=".5"/>
           <g class="sign-group">
             <rect x="98" y="14" width="205" height="43" rx="2" fill="#030208"/>
             <rect x="98" y="14" width="205" height="43" rx="2" fill="none" stroke="rgba(200,160,30,.38)" stroke-width="1.5"/>
@@ -535,10 +568,10 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
             <circle cx="101" cy="22" r="1.6" fill="rgba(255,220,80,.70)"/><circle cx="101" cy="31" r="1.6" fill="rgba(255,180,60,.45)"/><circle cx="101" cy="40" r="1.6" fill="rgba(255,220,80,.80)"/><circle cx="101" cy="49" r="1.6" fill="rgba(255,180,60,.20)"/>
             <circle cx="300" cy="22" r="1.6" fill="rgba(255,220,80,.60)"/><circle cx="300" cy="31" r="1.6" fill="rgba(255,180,60,.80)"/><circle cx="300" cy="40" r="1.6" fill="rgba(255,220,80,.00)"/><circle cx="300" cy="49" r="1.6" fill="rgba(255,180,60,.65)"/>
             <rect x="98" y="14" width="205" height="43" rx="2" fill="rgba(255,180,40,.025)"/>
-            <ellipse cx="200" cy="30" rx="79" ry="8"  fill="rgba(255,140,0,.10)"  class="sign-amb"/>
-            <ellipse cx="200" cy="44" rx="62" ry="10" fill="rgba(220,20,20,.12)"  class="sign-ruin"/>
+            <ellipse cx="200" cy="30" rx="79" ry="8" fill="rgba(255,140,0,.10)" class="sign-amb"/>
+            <ellipse cx="200" cy="44" rx="62" ry="10" fill="rgba(220,20,20,.12)" class="sign-ruin"/>
             <text x="200" y="33" text-anchor="middle" font-family="'Special Elite',monospace" font-size="10.5" letter-spacing="2.2" fill="#FFAA30" class="sign-amb">GAMBLER'S</text>
-            <text x="200" y="49" text-anchor="middle" font-family="'Special Elite',monospace" font-size="16"   letter-spacing="6"   fill="#FF2828" class="sign-ruin">RUIN</text>
+            <text x="200" y="49" text-anchor="middle" font-family="'Special Elite',monospace" font-size="16" letter-spacing="6" fill="#FF2828" class="sign-ruin">RUIN</text>
           </g>
         </g>
         <g id="pw-fg">
@@ -555,18 +588,24 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
       <div class="winw-bar-v" style="left:66.6%"></div>
       <div class="winw-bar-h"></div>
       <canvas class="winw-rain" id="rain-canvas"></canvas>
+      <canvas id="window-leaves" style="position:absolute;inset:0;z-index:3;pointer-events:none;"></canvas>
+      <canvas id="window-puddles" style="position:absolute;bottom:0;left:0;right:0;height:20%;z-index:3;pointer-events:none;"></canvas>
+      <div id="window-condensation"></div>
+      <div id="window-lampfog"></div>
       <div class="winw-glare"></div>
     </div><div class="winw-sill"></div></div></div>
 
+    <!-- Blackboard -->
     <div id="blackboard-zone">
       <div id="bb-frame">
+        <div id="bb-erase"></div>
         <div id="bb"><div id="chalk"></div></div>
         <div id="bb-tray">
           <div class="cp" style="width:26px"></div>
           <div class="cp" style="width:14px;opacity:.4"></div>
           <div class="cp" style="width:20px;opacity:.55"></div>
           <div class="cp" style="width:10px;opacity:.28;margin-left:auto"></div>
-          <canvas id="chalk-dust" style="position:absolute;inset:0;pointer-events:none;z-index:5;opacity:.7;"></canvas>
+
         </div>
       </div>
       <div id="bb-less"><span></span><span></span></div>
@@ -576,7 +615,7 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
     <div style="position:relative;width:min(640px,92%);align-self:center;">
       <div id="board-strip">
         <div id="loc" onclick="goToCorridorOrStairwell()">
-          <span id="floor-label">The Stairwell</span><span id="floor-sublabel"></span>
+          <span id="floor-label">The Stairwell</span>
         </div>
         <div id="choices"></div>
       </div>
@@ -584,19 +623,43 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
       <div id="strip-more"><span></span><span></span></div>
     </div>
 
-  </div>
+  </div><!-- /board-content -->
 
+  <!-- Toolbar -->
   <div id="toolbar">
+
+    <!-- Clock — dead centre -->
+    <div id="toolbar-clock" onclick="toggleClock()"
+         style="position:absolute;left:50%;transform:translateX(-50%);z-index:15;cursor:pointer;display:flex;align-items:center;justify-content:center;height:var(--bar-h);">
+      <div style="position:relative;background:linear-gradient(180deg,#1A1206 0%,#0E0A04 100%);border:1px solid rgba(200,160,32,.45);border-top:1px solid rgba(200,160,32,.7);border-bottom:1px solid rgba(200,160,32,.25);box-shadow:0 0 0 1px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,220,80,.07);padding:5px 10px;display:flex;align-items:center;justify-content:center;">
+        <div style="position:absolute;top:3px;left:3px;width:5px;height:5px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#E8C840,#8A6010);box-shadow:0 1px 2px rgba(0,0,0,.6);"></div>
+        <div style="position:absolute;top:3px;right:3px;width:5px;height:5px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#E8C840,#8A6010);box-shadow:0 1px 2px rgba(0,0,0,.6);"></div>
+        <div style="position:absolute;bottom:3px;left:3px;width:5px;height:5px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#E8C840,#8A6010);box-shadow:0 1px 2px rgba(0,0,0,.6);"></div>
+        <div style="position:absolute;bottom:3px;right:3px;width:5px;height:5px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#E8C840,#8A6010);box-shadow:0 1px 2px rgba(0,0,0,.6);"></div>
+        <div style="background:#1A2010;border:1px solid #2A3A18;padding:3px 6px;">
+          <div id="lcd-time" style="font-family:'Courier Prime',monospace;font-size:16px;font-weight:700;color:#7ABF30;text-shadow:0 0 6px rgba(120,200,40,.6),0 0 2px rgba(120,200,40,.4);letter-spacing:.12em;line-height:1;white-space:nowrap;">00:00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Room plaque — also dead centre, shown in rooms -->
+    <div id="room-plaque"><div class="plaque-body"><span class="plaque-num" id="plaque-num"></span></div></div>
+
+    <!-- Left buttons -->
     <button class="ti" id="ti-dossier" onclick="openDossier()" style="display:none">
       <svg width="22" height="19" viewBox="0 0 22 19" fill="none"><rect x="1.5" y="5.5" width="19" height="12" rx="1" stroke="rgba(200,160,32,.7)" stroke-width="1.4"/><rect x="1.5" y="8.5" width="19" height="9" rx=".5" fill="rgba(200,160,32,.1)" stroke="rgba(200,160,32,.6)" stroke-width="1.4"/><rect x="4" y="2.5" width="7" height="4" rx="1 1 0 0" stroke="rgba(200,160,32,.6)" stroke-width="1.4"/><line x1="6.5" y1="12.5" x2="15.5" y2="12.5" stroke="rgba(200,160,32,.45)" stroke-width="1.1"/><line x1="6.5" y1="15" x2="12.5" y2="15" stroke="rgba(200,160,32,.32)" stroke-width="1"/></svg>
       <span class="ti-lbl">Dossier</span>
     </button>
-    <div id="ti-study-wrap" style="position:relative;display:none;flex-direction:column;align-items:center;justify-content:center;">
+    <button class="ti" id="ti-map" onclick="openMap()" style="display:none">
+      <svg width="20" height="19" viewBox="0 0 20 19" fill="none"><rect x="1.5" y="2.5" width="17" height="14" rx=".5" stroke="rgba(238,232,192,.45)" stroke-width="1.2"/><line x1="7" y1="2.5" x2="7" y2="16.5" stroke="rgba(238,232,192,.28)" stroke-width="1"/><line x1="13" y1="2.5" x2="13" y2="16.5" stroke="rgba(238,232,192,.28)" stroke-width="1"/><line x1="1.5" y1="7.5" x2="18.5" y2="7.5" stroke="rgba(238,232,192,.28)" stroke-width="1"/><line x1="1.5" y1="12" x2="18.5" y2="12" stroke="rgba(238,232,192,.28)" stroke-width="1"/></svg>
+      <span class="ti-lbl">Map</span>
+    </button>
+    <div id="ti-study-wrap" style="display:none;flex-direction:column;align-items:center;justify-content:center;">
       <button class="ti" style="height:var(--bar-h);border:none;" onclick="toggleStudyFlyup(event)">
         <svg width="22" height="19" viewBox="0 0 22 19" fill="none">
-          <rect x="2"  y="13" width="18" height="4" rx=".4" fill="rgba(238,232,192,.12)" stroke="rgba(238,232,192,.45)" stroke-width="1.2"/>
-          <rect x="3"  y="8"  width="14" height="4" rx=".4" fill="rgba(238,232,192,.09)" stroke="rgba(238,232,192,.35)" stroke-width="1.1"/>
-          <rect x="4"  y="3"  width="10" height="4" rx=".4" fill="rgba(238,232,192,.06)" stroke="rgba(238,232,192,.28)" stroke-width="1.1"/>
+          <rect x="2" y="13" width="18" height="4" rx=".4" fill="rgba(238,232,192,.12)" stroke="rgba(238,232,192,.45)" stroke-width="1.2"/>
+          <rect x="3" y="8" width="14" height="4" rx=".4" fill="rgba(238,232,192,.09)" stroke="rgba(238,232,192,.35)" stroke-width="1.1"/>
+          <rect x="4" y="3" width="10" height="4" rx=".4" fill="rgba(238,232,192,.06)" stroke="rgba(238,232,192,.28)" stroke-width="1.1"/>
         </svg>
         <span class="ti-lbl">Study</span>
       </button>
@@ -606,17 +669,10 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
         <button class="flyup-item exam-item" id="flyup-exam" onclick="openExamFromToolbar()">Examination</button>
       </div>
     </div>
-    <button class="ti" id="ti-map" onclick="openMap()" style="display:none">
-      <svg width="20" height="19" viewBox="0 0 20 19" fill="none">
-        <rect x="1.5" y="2.5" width="17" height="14" rx=".5" stroke="rgba(238,232,192,.45)" stroke-width="1.2"/>
-        <line x1="7"  y1="2.5" x2="7"  y2="16.5" stroke="rgba(238,232,192,.28)" stroke-width="1"/>
-        <line x1="13" y1="2.5" x2="13" y2="16.5" stroke="rgba(238,232,192,.28)" stroke-width="1"/>
-        <line x1="1.5" y1="7.5" x2="18.5" y2="7.5" stroke="rgba(238,232,192,.28)" stroke-width="1"/>
-        <line x1="1.5" y1="12" x2="18.5" y2="12"  stroke="rgba(238,232,192,.28)" stroke-width="1"/>
-      </svg>
-      <span class="ti-lbl">Map</span>
-    </button>
+
     <div class="ti-sep"></div>
+
+    <!-- Right buttons -->
     <button class="ti" id="ti-sound" onclick="toggleSound()">
       <svg id="sound-label" width="20" height="17" viewBox="0 0 22 18" style="opacity:.45"><rect x="0" y="5" width="5" height="8" fill="rgba(238,232,192,.8)"/><polygon points="5,5 11,0 11,18 5,13" fill="rgba(238,232,192,.8)"/><line x1="13" y1="4" x2="13" y2="14" stroke="rgba(238,232,192,.8)" stroke-width="1.5"/><line x1="16" y1="1" x2="16" y2="17" stroke="rgba(238,232,192,.8)" stroke-width="1.5"/><line x1="19" y1="4" x2="19" y2="14" stroke="rgba(238,232,192,.8)" stroke-width="1.5"/></svg>
       <span class="ti-lbl" id="sound-lbl">Sound</span>
@@ -629,66 +685,61 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
       <svg width="20" height="19" viewBox="0 0 20 20" fill="none"><path d="M8 4 L3 4 L3 16 L8 16" stroke="rgba(238,232,192,.45)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><line x1="8" y1="10" x2="17" y2="10" stroke="rgba(238,232,192,.45)" stroke-width="1.4" stroke-linecap="round"/><polyline points="14,7 17,10 14,13" stroke="rgba(238,232,192,.45)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="ti-lbl">Exit</span>
     </a>
+
+    <!-- Desk lamp -->
     <div id="desk-lamp-stand" onclick="toggleDeskLamp()"
-         style="position:absolute;right:clamp(52px,8vw,80px);bottom:var(--bar-h);width:clamp(28px,4.5vw,52px);z-index:25;cursor:pointer;overflow:visible;display:flex;align-items:flex-end;">
-      <svg viewBox="0 0 200 480" width="100%" style="display:block;overflow:visible" xmlns="http://www.w3.org/2000/svg">
+         style="position:absolute;right:clamp(52px,8vw,80px);bottom:var(--bar-h);width:clamp(28px,4.5vw,52px);z-index:25;cursor:pointer;display:flex;align-items:flex-end;overflow:hidden;">
+      <svg viewBox="0 0 200 480" width="100%" style="display:block;" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="wl-br1" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#2A1E06"/><stop offset="30%" stop-color="#8A7028"/><stop offset="55%" stop-color="#A07830"/><stop offset="75%" stop-color="#7A6020"/><stop offset="100%" stop-color="#2A1E06"/></linearGradient>
           <linearGradient id="wl-br2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#2A1E06"/><stop offset="40%" stop-color="#7A6020"/><stop offset="60%" stop-color="#8A7028"/><stop offset="100%" stop-color="#2A1E06"/></linearGradient>
           <linearGradient id="wl-gsh" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3A9030"/><stop offset="40%" stop-color="#2A7422"/><stop offset="80%" stop-color="#1C5416"/><stop offset="100%" stop-color="#143C10"/></linearGradient>
           <radialGradient id="wl-gbulb" cx="50%" cy="35%" r="55%"><stop offset="0%" stop-color="#FFFCE0"/><stop offset="35%" stop-color="#FFE060"/><stop offset="75%" stop-color="#D08018"/><stop offset="100%" stop-color="#906010"/></radialGradient>
-          <radialGradient id="wl-ghalo" cx="50%" cy="30%" r="60%"><stop offset="0%" stop-color="rgba(255,230,80,.20)"/><stop offset="100%" stop-color="rgba(255,180,30,0)"/></radialGradient>
-          <clipPath id="wl-bclip"><rect x="0" y="268" width="200" height="220"/></clipPath>
+          <clipPath id="wl-bclip"><rect x="60" y="230" width="80" height="60"/></clipPath>
         </defs>
+        <!-- base — contained within viewBox width -->
         <path d="M72 462 Q58 472 60 482" fill="none" stroke="#0A0A0A" stroke-width="3.5" stroke-linecap="round"/>
-        <ellipse cx="100" cy="476" rx="80" ry="13" fill="#120E02" stroke="#0A0800" stroke-width="1"/>
-        <ellipse cx="100" cy="469" rx="72" ry="9"  fill="url(#wl-br1)" stroke="#2A1E06" stroke-width="1.2"/>
-        <ellipse cx="100" cy="464" rx="60" ry="7"  fill="url(#wl-br2)" stroke="#3A2A08" stroke-width=".8"/>
-        <ellipse cx="100" cy="459" rx="46" ry="5"  fill="#6A5218" stroke="#4A3810" stroke-width=".8"/>
-        <ellipse cx="100" cy="456" rx="33" ry="3.5" fill="#7A6220" stroke="#5A4A14" stroke-width=".6"/>
-        <ellipse cx="100" cy="464" rx="60" ry="7"  fill="none" stroke="rgba(255,255,255,.05)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <ellipse cx="100" cy="472" rx="60" ry="8" fill="#120E02" stroke="#0A0800" stroke-width="1"/>
+        <ellipse cx="100" cy="467" rx="52" ry="6" fill="url(#wl-br1)" stroke="#2A1E06" stroke-width="1.2"/>
+        <ellipse cx="100" cy="463" rx="42" ry="5" fill="url(#wl-br2)" stroke="#3A2A08" stroke-width=".8"/>
+        <ellipse cx="100" cy="459" rx="32" ry="4" fill="#6A5218" stroke="#4A3810" stroke-width=".8"/>
+        <ellipse cx="100" cy="456" rx="22" ry="3" fill="#7A6220" stroke="#5A4A14" stroke-width=".6"/>
+        <!-- stem -->
         <path d="M100 452 C98 422 62 392 60 352 C58 312 138 278 140 242 C142 210 108 284 100 270" fill="none" stroke="#2A1E04" stroke-width="14" stroke-linecap="round"/>
         <path d="M100 452 C98 422 62 392 60 352 C58 312 138 278 140 242 C142 210 108 284 100 270" fill="none" stroke="url(#wl-br2)" stroke-width="10" stroke-linecap="round"/>
-        <path d="M98  452 C96 422 60 392 58 352 C56 312 136 277 138 241 C140 209 106 283  98 269" fill="none" stroke="rgba(255,255,255,.10)" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M98 452 C96 422 60 392 58 352 C56 312 136 277 138 241 C140 209 106 283 98 269" fill="none" stroke="rgba(255,255,255,.10)" stroke-width="3.5" stroke-linecap="round"/>
+        <!-- joint -->
         <rect x="96" y="262" width="8" height="12" rx="2" fill="url(#wl-br2)"/>
         <circle cx="100" cy="260" r="8" fill="#6A5218" stroke="#4A3810" stroke-width="1"/>
         <circle cx="100" cy="260" r="5" fill="#7A6220"/>
+        <!-- bulb — clipped tightly -->
         <g clip-path="url(#wl-bclip)">
-          <ellipse cx="100" cy="264" rx="28" ry="24" fill="url(#wl-ghalo)" id="wl-halo" style="opacity:0;transition:opacity .5s ease"/>
           <ellipse cx="100" cy="256" rx="14" ry="18" fill="url(#wl-gbulb)" id="wl-bulb-shape" stroke="rgba(180,120,10,.25)" stroke-width=".8" style="opacity:0;transition:opacity .5s ease"/>
         </g>
+        <!-- shade -->
         <path d="M4 265 Q10 200 100 186 Q190 200 196 265 Q188 265 100 274 Q12 265 4 265Z" fill="rgba(0,0,0,.28)"/>
-        <path d="M2 262 Q8 196 100 182 Q192 196 198 262 Q188 262 100 272 Q12 262 2 262Z"  fill="url(#wl-gsh)"/>
+        <path d="M2 262 Q8 196 100 182 Q192 196 198 262 Q188 262 100 272 Q12 262 2 262Z" fill="url(#wl-gsh)"/>
         <path d="M2 262 Q8 196 50 190 Q22 206 12 234 Q6 250 2 262Z" fill="rgba(0,0,0,.20)"/>
         <path d="M28 220 Q64 194 100 190 Q136 194 166 210 Q132 198 100 196 Q68 198 28 220Z" fill="rgba(255,255,255,.13)"/>
-        <path d="M42 208 Q72 192 100 190 Q128 192 152 203" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="4" stroke-linecap="round"/>
-        <path d="M62 194 Q58 224 54 268" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1.2"/>
-        <path d="M84 188 Q82 220 80 268" fill="none" stroke="rgba(255,255,255,.03)" stroke-width="1.2"/>
-        <path d="M100 186 Q100 219 100 268" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1.2"/>
-        <path d="M116 188 Q118 220 120 268" fill="none" stroke="rgba(255,255,255,.03)" stroke-width="1.2"/>
-        <path d="M138 194 Q142 224 146 268" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1.2"/>
-        <ellipse cx="100" cy="262" rx="98" ry="9" id="wl-rim-glow" fill="rgba(255,190,50,.0)" style="transition:fill .5s ease"/>
+        <!-- shade rim -->
         <ellipse cx="100" cy="262" rx="98" ry="9" fill="none" stroke="#7A6018" stroke-width="2.5"/>
         <path d="M2 262 Q8 196 100 182 Q192 196 198 262" fill="none" stroke="#5A4812" stroke-width="2" stroke-linecap="round"/>
+        <!-- chain links -->
         <ellipse cx="100" cy="272" rx="2.2" ry="3.5" fill="none" stroke="#8A7228" stroke-width="1.3"/>
         <ellipse cx="100" cy="279" rx="3.5" ry="2.2" fill="none" stroke="#7A6220" stroke-width="1.3"/>
         <ellipse cx="100" cy="286" rx="2.2" ry="3.5" fill="none" stroke="#8A7228" stroke-width="1.3"/>
         <ellipse cx="100" cy="293" rx="3.5" ry="2.2" fill="none" stroke="#7A6220" stroke-width="1.3"/>
         <ellipse cx="100" cy="300" rx="2.2" ry="3.5" fill="none" stroke="#8A7228" stroke-width="1.3"/>
         <ellipse cx="100" cy="307" rx="3.5" ry="2.2" fill="none" stroke="#7A6220" stroke-width="1.3"/>
-        <ellipse cx="100" cy="314" rx="2.2" ry="3.5" fill="none" stroke="#8A7228" stroke-width="1.3"/>
-        <ellipse cx="100" cy="321" rx="3.5" ry="2.2" fill="none" stroke="#7A6220" stroke-width="1.3"/>
-        <ellipse cx="100" cy="328" rx="2.2" ry="3.5" fill="none" stroke="#8A7228" stroke-width="1.3"/>
-        <ellipse cx="100" cy="335" rx="3.5" ry="2.2" fill="none" stroke="#7A6220" stroke-width="1.3"/>
-        <ellipse cx="100" cy="342" rx="2.2" ry="3.5" fill="none" stroke="#8A7228" stroke-width="1.3"/>
-        <ellipse cx="100" cy="349" rx="3.5" ry="2.2" fill="none" stroke="#7A6220" stroke-width="1.3"/>
         <circle cx="100" cy="357" r="5.5" fill="#8A7228" stroke="#5A4A14" stroke-width="1"/>
         <circle cx="100" cy="357" r="2.5" fill="#6A5618"/>
       </svg>
     </div>
-  </div>
 
-</div></div>
+
+  </div><!-- /toolbar -->
+
+</div></div><!-- /page /viewport -->
 
 <script>
 document.querySelectorAll('#doc-slider .doc-tab').forEach(function(tab,i){
@@ -719,24 +770,16 @@ document.addEventListener('DOMContentLoaded',function(){
 var C = [
   { id:'uncertainty', title:'Quantifying Uncertainty', section:'The Preface',
     r197a:[
-      'Before October, Aubrey had one probability in his model. It was assigned to the event <em>Win</em>. The value was 1. This is called certainty. It is not always warranted.',
-      'Uncertainty is the condition of not knowing what will happen. It is also, it turns out, measurable. This is the surprising part. A feeling can be given a number.',
-      'The number must satisfy certain conditions. It cannot be negative. It cannot exceed 1. If you list every possible outcome, the numbers must add to exactly 1. These are not suggestions.',
-      'Aubrey\'s numbers did not add to 1. They added to 0.94. Six percent of reality was unaccounted for. The correction is on file.'
+      'Uncertainty is not a feeling. Scientific method cannot rely on instinct. We need to talk about uncertain phenomena formally. But before we can do so, we need to know what we are uncertain about and how uncertain we are.',
+      'The Cleaner asked Aubrey what he was uncertain about and how uncertain he was about it. He did not know. These were his two problems. The third problem was that he had not asked himself these questions at all.'
     ],
     anteroom:[
-      'An <strong>experiment</strong> is any process whose outcome is uncertain. Tossing a coin is an experiment. Entering a casino is an experiment. Filing a form and waiting is an experiment.',
-      'The <strong>sample space</strong> $\\Omega$ is the set of all possible outcomes. It must be exhaustive — every outcome that could occur must appear in $\\Omega$. It must also be mutually exclusive — no two outcomes can occur simultaneously.',
-      'An <strong>event</strong> $A$ is any subset of $\\Omega$. We assign probabilities to events, not to individual outcomes directly.',
-      'The <strong>probability measure</strong> $P$ is a function from events to numbers. It must satisfy three axioms: $P(A) \\geq 0$ for all events $A$; $P(\\Omega) = 1$; and if $A$ and $B$ are mutually exclusive, $P(A \\cup B) = P(A) + P(B)$.',
-      'These three axioms — due to Kolmogorov, 1933 — are the entire foundation of probability theory. Everything else follows from them.'
+      'Probability theory is the scientific discipline that expresses uncertainty in mathematical terms. It allows us to reason precisely about phenomena whose outcomes we cannot know in advance — from the toss of a coin to the outcome of a clinical trial. Without it, our ability to draw conclusions from data has nothing to build on. In other words, statistical theory needs a foundation.',
+      'Just as statistical theory builds upon the foundation of probability theory, probability theory in turn builds upon set theory, which is where our studies begin. What we are uncertain about will be collected and organised into sets. How uncertain we are will be expressed as numbers mapped onto those sets.'
     ],
     members:[
-      'Formally, a <strong>probability space</strong> is a triple $(\\Omega, \\mathcal{F}, P)$. The sample space $\\Omega$ is any non-empty set. The <strong>sigma-algebra</strong> $\\mathcal{F}$ is a collection of subsets of $\\Omega$ that is closed under complementation and countable unions. The measure $P: \\mathcal{F} \\to [0,1]$ assigns probabilities.',
-      'Why do we need $\\mathcal{F}$ as well as $\\Omega$? Because not every subset of an uncountable space can be assigned a consistent probability. The sigma-algebra specifies precisely which subsets are <em>measurable</em> — i.e., which questions are well-posed.',
-      'The three Kolmogorov axioms in formal terms: (i) $P(A) \\geq 0$ for all $A \\in \\mathcal{F}$; (ii) $P(\\Omega) = 1$; (iii) for any countable sequence of pairwise disjoint events $\\{A_i\\}$, $P\\left(\\bigcup_i A_i\\right) = \\sum_i P(A_i)$.',
-      'From these axioms, several results follow immediately. $P(\\emptyset) = 0$. $P(A^c) = 1 - P(A)$. $P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$. The last is the inclusion-exclusion principle in its simplest form.',
-      'A sigma-algebra on a finite set $\\Omega$ is simply the power set $2^\\Omega$ — all subsets. The structure only becomes non-trivial in the continuous case, which is where measure theory earns its name.'
+      'For most of human history, probability was intuitive — a judgement, not a calculation. It was not until 1933 that Andrey Kolmogorov placed probability theory on a rigorous mathematical foundation. His contribution was a masterpiece of mathematical economy when he published <em>Grundbegriffe der Wahrscheinlichkeitsrechnung</em> (Foundations of the Theory of Probability). In essence, Kolmogorov was able to show that three simple axioms are necessary and sufficient to define the way any and all probabilities must behave.',
+      'The power of formalisation is that it makes the rules explicit. Before Kolmogorov, it was possible to reason about probability while violating its own logic — assigning negative probabilities, or probabilities that did not sum correctly. After Kolmogorov, these errors have a name: axiom violations. The framework does not tell you what probabilities to assign. It tells you what any valid assignment must satisfy. Everything that follows in The Institute is a consequence of that.'
     ],
     counting:[
       'In <strong>insurance</strong>, the probability space models the occurrence of claims. $\\Omega$ is the set of possible claim events. Incomplete specification of $\\Omega$ — failing to include certain claim types — leads to systematic under-pricing.',
@@ -748,8 +791,8 @@ var C = [
       'A simple Monte Carlo demonstration: generate $N$ uniform random numbers in $[0,1]$. Assign each to an event based on cumulative probability thresholds. Count frequencies. As $N \\to \\infty$, the frequencies converge to the assigned probabilities — this is the empirical content of the axioms.',
       'The key observation: without the axioms, there is nothing to converge to. The axioms define the target. The simulation illustrates it. Neither replaces the other.'
     ],
-    aubrey_enter:'In October I told people I was one thousand percent certain I would win a fortune.\nI was also one hundred and ten percent committed to the plan.\nI described failure occurring with the chance that a snowball enjoys in hell.\nI have since been informed that none of these are probabilities.\nThe snowball in particular raises several technical objections.\nIs there a correct way to put a number on uncertainty?',
-    aubrey_desk:'I read what was on the lower shelf. I understood it and stood up to leave. I hit my head on the upper shelf.',
+    aubrey_enter:'In October I told people I was one thousand percent certain I would win a fortune.\nI have since been informed that this is not a probability.\nIs there a correct way to put a number on uncertainty?',
+    aubrey_desk:'I read what was on the lower shelf. I understood it and stood up to leave. I hit my head on the upper shelf.\nI am not sure whether it is my head that hurts more or my brain.',
     aubrey_archive:'People have been uncertain about outcomes for some time. They have found it useful to put a number on it. I have also been putting a number on it. Mine was wrong. Apparently there is a method.',
     aubrey_window:'I have looked at the window from several angles now. It looks the same from all of them.',
     aubrey_post_correct:'Yes. That is the one. I knew that one.',
@@ -758,7 +801,7 @@ var C = [
     aubrey_enter:'There is a correct way. Uncertainty is measured over the outcomes of an experiment.\nIn October I conducted one. I went to the casino.\nI was asked to leave before the experiment was complete.\nThe outcome was not in the set I had defined, which I now understand was the problem.\nAn experiment requires a well-defined set of outcomes before you conduct it, not after.\nWhat counts as well-defined?',
     aubrey_desk:'Repeatability. Well-defined set of outcomes. Not necessarily something you do in a lab with a white coat.',
     aubrey_archive:'Where do we find these experiments? The casino. The weather. A tin of mixed nuts. I have encountered several without knowing it.',
-    aubrey_window:'Asking a psychic to draw a picture of something another psychic is thinking about does not qualify as an experiment. I did not know this was something people had tried.',
+    aubrey_window:'',
     aubrey_post_correct:'That is correct. I have been right before. Not recently, but before.',
     aubrey_post_wrong:['That is not correct. I was confident. This is a pattern I am beginning to recognise.','Incorrect. I have written it down. It joins the others.','I see. That one was not it either.'] },
   { id:'sample_space', title:'Sample Space', section:'The Sample Space', anteroom:[],members:[],counting:[],r197a:[],post:[],
@@ -785,7 +828,7 @@ var C = [
   { id:'mutual_exclusivity', title:'Mutual Exclusivity', section:'Mutual Exclusivity', anteroom:[],members:[],counting:[],r197a:[],post:[],
     aubrey_enter:'When I constructed $\\Omega$ I noted that its elements must be distinct and non-overlapping. This property has a name.\nTwo events are mutually exclusive if they cannot both occur — their intersection is empty.\nWin and Lose are mutually exclusive.\nI cannot simultaneously win and lose, although in October I achieved a financial result that a reasonable person might describe as both.\nMutual exclusivity is a property of events generally, not just of outcomes in $\\Omega$. It extends into $\\mathcal{F}$ and has consequences for how probabilities combine.\nWhat are those consequences?',
     aubrey_desk:'Their intersection is empty. I have been living in an empty intersection since October.',
-    aubrey_archive:'Either I get in or I don\u2019t. I have been treating this as negotiable. It is not negotiable.',
+    aubrey_archive:'Either I get in or I don\'t. I have been treating this as negotiable. It is not negotiable.',
     aubrey_window:'I stood at the window. Win and Lose. Mutually exclusive. I had not listed Lose. This is on file.',
     aubrey_post_correct:'Correct. They cannot both occur.',
     aubrey_post_wrong:['Those events can occur simultaneously. Not mutually exclusive.','Incorrect. The intersection was not empty.','I see. I confused this with something else. It is on file.'] },
@@ -798,7 +841,7 @@ var C = [
     aubrey_post_wrong:['That does not satisfy the conditions. I am familiar with this situation.','Incorrect. The function is not well-defined on this space.','I see. Not every assignment of numbers qualifies. I knew that. I did not always act on it.'] },
   { id:'axiom1', title:'Axiom 1 \u2014 Non-negativity', section:'Axiom 1', anteroom:[],members:[],counting:[],r197a:[],post:[],
     aubrey_enter:'The first axiom: $P(A) \\geq 0$ for all events $A$. No probability can be negative.\nI assigned $-0.3$ to the event Lose. I checked it twice. It was wrong twice.\nI have since checked it a third time as a precaution. It remains wrong.\nLikelihood has a floor and the floor is zero.\nI went below the floor with some confidence and considerable arithmetic and found nothing useful down there.\nWhy exactly is a negative probability impossible and not merely a bold creative choice?',
-    aubrey_desk:'The desk concerns why probabilities cannot be negative. A probability measures how likely something is. Likelihood has a floor. The floor is zero. I went below the floor. This is on file.',
+    aubrey_desk:'The desk concerns why probabilities cannot be negative. A probability measures how unlikely something is. Likelihood has a floor. The floor is zero. I went below the floor. This is on file.',
     aubrey_archive:'In practice a negative probability has no interpretation. It cannot be observed. It cannot be measured. It cannot be correct. Mine was \u22120.3. I was fairly confident about it at the time.',
     aubrey_window:'I stood at the window. Zero is the floor. I went below it. The correction is on file. It does not change what happened.',
     aubrey_post_correct:'Correct. Non-negative. That is the condition. I understand why now.',
@@ -834,11 +877,8 @@ var EXAM = [
 
 // ── STATE ──
 var S = { rooms:{} };
-C.forEach(function(c){
-  S.rooms[c.id] = { desk:false, archive:false, window:false, assessed:false, quality:null, gaps:[], examHistory:[] };
-});
+C.forEach(function(c){ S.rooms[c.id]={ desk:false, archive:false, window:false, assessed:false, quality:null, gaps:[], examHistory:[] }; });
 var _inRoom = -1;
-
 function saveState(){ try{ localStorage.setItem('ql_state', JSON.stringify(S)); }catch(e){} }
 function loadState(){
   try{
@@ -847,7 +887,6 @@ function loadState(){
     if(saved && saved.rooms) C.forEach(function(c){ if(saved.rooms[c.id]) Object.assign(S.rooms[c.id], saved.rooms[c.id]); });
   }catch(e){}
 }
-
 function $id(id){ return document.getElementById(id); }
 loadState();
 function rm(el){ if(window.renderMathInElement) renderMathInElement(el,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false}); }
@@ -865,12 +904,20 @@ function getExam(id){ return EXAM.find(function(e){ return e.id===id; }); }
 var _chalkSnapshot = null;
 var _postPopupBoard = null;
 
-function board(lines, choices, extra) {
+function board(lines, choices, extra, _noErase) {
   var chalkEl=$id('chalk'), choicesEl=$id('choices');
   if(!chalkEl||!choicesEl) return;
+  // Erase animation only for navigation, not lamp overlay
+  if(!_noErase){
+    var hasContent = chalkEl.textContent.trim().length > 0;
+    if(hasContent){
+      var er=$id('bb-erase'); if(er){ er.classList.remove('wiping'); void er.offsetWidth; er.classList.add('wiping'); }
+    }
+  }
   chalkEl.innerHTML=''; choicesEl.innerHTML=''; closePopup();
   _chalkSnapshot = null;
   var bc=$id('board-content'); if(bc) bc.scrollTop=0;
+  var bbEl=$id('bb'); if(bbEl) bbEl.scrollTop=0;
 
   if(lines && lines.length){
     var els=lines.map(function(txt){
@@ -885,7 +932,7 @@ function board(lines, choices, extra) {
     var delay=280;
     els.forEach(function(el,i){
       var t=setTimeout(function(){
-        requestAnimationFrame(function(){ requestAnimationFrame(function(){ el.style.opacity='1'; if(typeof _chalkDust!=='undefined') _chalkDust.spawn(); }); });
+        requestAnimationFrame(function(){ requestAnimationFrame(function(){ el.style.opacity='1'; }); });
         if(i===els.length-1){
           var sq=document.createElement('span');
           sq.style.cssText='margin-left:5px;opacity:0;transition:opacity .45s;font-size:.75em;color:rgba(238,232,192,.3)';
@@ -901,9 +948,10 @@ function board(lines, choices, extra) {
     });
   }
   if(choices && choices.length){
-    choices.forEach(function(c){
+    choices.forEach(function(c,i){
       var btn=document.createElement('button');
-      btn.className='bc'; btn.innerHTML=c.l; btn.onclick=c.f;
+      btn.className='bc rising'; btn.style.animationDelay=(i*80)+'ms';
+      btn.innerHTML=c.l; btn.onclick=c.f;
       choicesEl.appendChild(btn);
     });
   }
@@ -953,14 +1001,12 @@ function closePopup(){
   if(_postPopupBoard){ var fn=_postPopupBoard; _postPopupBoard=null; setTimeout(fn,80); }
 }
 
-// ── BOOKCASE SLIDER (horizontal) ──
+// ── BOOKCASE SLIDER ──
 var _docIdx=0;
 function docInitSlider(){
   var vp=$id('doc-viewport'), track=$id('doc-track'); if(!vp||!track) return;
   var w=vp.offsetWidth||parseInt(getComputedStyle(vp).width)||400;
   document.querySelectorAll('.doc-pane').forEach(function(p){ p.style.width=w+'px'; });
-  // DOM order: dp2(Upper)=0, dp1(Middle)=1, dp0(Lower)=2
-  // idx 0=Lower → translate -2w, idx 1=Middle → -w, idx 2=Upper → 0
   var offsets=[2,1,0];
   track.style.transform='translateX(-'+(offsets[_docIdx]*w)+'px)';
 }
@@ -970,9 +1016,7 @@ function docSwitchTab(idx){
   document.querySelectorAll('#doc-slider .doc-tab').forEach(function(t,i){
     t.classList.toggle('active', rev[i]===idx);
     if(rev[i]===idx){
-      t.classList.remove('flashing');
-      void t.offsetWidth;
-      t.classList.add('flashing');
+      t.classList.remove('flashing'); void t.offsetWidth; t.classList.add('flashing');
       t.addEventListener('animationend',function(){ t.classList.remove('flashing'); },{once:true});
     }
   });
@@ -983,11 +1027,8 @@ function docSwitchTab(idx){
 // ── FLOOR LABEL ──
 function setFloorLabel(label){
   var fl=$id('floor-label'); if(fl) fl.textContent=label||'';
-  var fs=$id('floor-sublabel'); if(fs) fs.textContent='';
   var loc=$id('loc'); if(!loc) return;
-  loc.classList.remove('arriving');
-  void loc.offsetWidth;
-  loc.classList.add('arriving');
+  loc.classList.remove('arriving'); void loc.offsetWidth; loc.classList.add('arriving');
   loc.addEventListener('animationend',function(){ loc.classList.remove('arriving'); },{once:true});
 }
 
@@ -1028,6 +1069,11 @@ function setToolbar(mode){
   show('ti-dossier', onFloor);
   show('ti-study-wrap', mode==='room');
   show('ti-map', onFloor);
+  // Show clock in all modes, hide room plaque unless in room
+  var plaque=$id('room-plaque');
+  var clock=$id('toolbar-clock');
+  if(plaque) plaque.classList.toggle('visible', mode==='room');
+  if(clock) clock.style.display = mode==='room' ? 'none' : 'flex';
 }
 
 function toggleStudyFlyup(e) {
@@ -1093,8 +1139,6 @@ function stampSVG(key,r,size){
   return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 '+s+' '+s+'" style="display:block;flex-shrink:0;opacity:'+(filled?1:.18)+'">'+shapes[key]+'</svg>';
 }
 
-function updateDossier(){ /* stamps updated on openDossier */ }
-
 // ── MAP ──
 function openMap(){
   buildMap();
@@ -1142,7 +1186,9 @@ function buildMap(){
 
 // ── STAIRWELL ──
 function s0(){
-  navLampOff(); _inRoom=-1; setFloorLabel('The Stairwell'); setToolbar('stairwell'); closePopup();
+  navLampOff(); _inRoom=-1;
+  document.body.className=''; // clear room tints
+  setFloorLabel('The Stairwell'); setToolbar('stairwell'); closePopup();
   if(localStorage.getItem('ql_s1_visited')){
     board(['The dossier is where I left it.','The casino remains across the road.','The lights are still on.'],
       [{l:'Ascend to the First Floor \u2192',f:corridor},{l:'Begin from the Beginning',f:s0_intro}]);
@@ -1169,7 +1215,9 @@ function s0d(){
 
 // ── CUTSCENE ──
 function cutscene1(){
-  navLampOff(); _inRoom=-1; localStorage.setItem('ql_floor1_visited','1');
+  navLampOff(); _inRoom=-1;
+  document.body.className='';
+  localStorage.setItem('ql_floor1_visited','1');
   setFloorLabel('First Floor \u2014 Landing'); setToolbar('corridor');
   awardExcerpt('cleaner_scene');
   board(['The Cleaner passed through.','She said something.','It was, unfortunately, correct.'],[{l:'Enter the corridor \u2192',f:function(){ closePopup(); corridor(); }}]);
@@ -1193,7 +1241,9 @@ function cutscene1(){
 
 // ── CORRIDOR ──
 function corridor(){
-  navLampOff(); _inRoom=-1; setFloorLabel('First Floor \u2014 Corridor'); setToolbar('corridor');
+  navLampOff(); _inRoom=-1;
+  document.body.className='';
+  setFloorLabel('First Floor \u2014 Corridor'); setToolbar('corridor');
   awardExcerpt('cleaner_scene');
   var assessed=C.filter(function(c){ return S.rooms[c.id].assessed; }).length;
   var allAssessed=assessed===C.length;
@@ -1204,18 +1254,18 @@ function corridor(){
     {q:'Probability theory is nothing but common sense reduced to calculation.',a:'Laplace'},
     {q:'At any moment there is only a fine layer between the trivial and the impossible. Mathematical discoveries are made in this layer.',a:'A.N. Kolmogorov'},
     {q:'The art of conjecture is the art of evaluating as exactly as possible the probabilities of things.',a:'Jakob Bernoulli, Ars Conjectandi, 1713'},
-    {q:'The sample space must contain all possible outcomes. Mine contained one.',a:'Aubrey Squeakwell, BSc'},
+    {q:'The sample space must contain all possible outcomes. Mine contained one. Win.',a:'Aubrey Squeakwell, BSc'},
     {q:'The lights are always on. I have taken this as encouragement.',a:'Aubrey Squeakwell, BSc'},
     {q:'The candidate\u2019s compliance remains partial.',a:'The Notary'},
-    {q:'It is not the first application of this kind. It will not be the last.',a:'The Archivist'},
+    {q:'Candidate Squeakwell\u2019s is not the first application of this kind. It will not be the last.',a:'The Archivist'},
   ];
   var qt=quotes[Math.floor(Math.random()*quotes.length)];
   var obs=allAssessed?'All ten rooms assessed. The application may now be filed.':assessed>0?assessed+' of 10 rooms assessed.':'';
   var doors=
     '<div class="corridor-progress">'+obs+'</div>'+
-    '<div class="corridor-actions">'+
+    '<div style="display:flex;flex-direction:column;align-items:flex-start;">'+
       '<button class="corridor-action" onmouseenter="chalkHint(\'Speak to the Clerk\')" onmouseleave="chalkRestore()" onclick="fullClerk()">'+
-        '<div class="ca-b"><span class="ca-title">Speak to the Clerk</span></div>'+
+        '<div><span class="ca-title">Speak to the Clerk</span></div>'+
       '</button>'+
     '</div>'+
     '<div onmouseenter="var m=$id(\'ti-map\');if(m)m.classList.add(\'map-hint-active\');this.style.color=\'rgba(238,232,192,.7)\'" '+
@@ -1232,8 +1282,22 @@ function corridor(){
 // ── ROOMS ──
 function enterRoom(idx){
   navLampOff(); _inRoom=idx; var c=C[idx]; var r=S.rooms[c.id];
+  // Room tint
+  document.body.className='room-'+idx;
+  if(_lampLeft) document.body.classList.add('lamp-left');
+  if(_lampRight) document.body.classList.add('lamp-right');
+  if(_deskLamp) document.body.classList.add('desk-lamp-on');
   var roomNum=(idx+1<10?'0':'')+(idx+1);
   setFloorLabel('Room '+roomNum+' \u2014 '+c.title); setToolbar('room'); updateRoomFlyup();
+  // Plaque
+  var pNum=$id('plaque-num'); if(pNum){ pNum.textContent='Room '+roomNum; pNum.style.textAlign='center'; }
+  var plaque=$id('room-plaque');
+  if(plaque){ plaque.classList.remove('dropping'); void plaque.offsetWidth; plaque.classList.add('dropping'); }
+  // Hover hint on plaque
+  if(plaque){
+    plaque.onmouseenter=(function(title){ return function(){ chalkHint(title); }; })(c.title);
+    plaque.onmouseleave=chalkRestore;
+  }
   var lines=c.aubrey_enter?c.aubrey_enter.split('\n').filter(function(l){ return l.trim(); }):[c.title+'.'];
   var studyHint=
     '<div onmouseenter="var s=$id(\'ti-study-wrap\');if(s)s.classList.add(\'map-hint-active\');this.style.color=\'rgba(238,232,192,.7)\'" '+
@@ -1273,9 +1337,7 @@ function examAnswer(idx,chosen){
   var correct=(chosen===q.correct);
   if(!r.assessed) r.assessed=true;
   if(correct){ r.quality='good'; } else { if(!r.quality) r.quality='partial'; r.gaps.push(q.wrong_msgs[chosen]||'Incorrect response on '+c.title); }
-  saveState();
-  // Stamp animation — brief assessed mark blooms on the blackboard
-  spawnStampAnim();
+  saveState(); spawnStampAnim();
   var lines=[];
   if(correct&&c.aubrey_post_correct) lines=c.aubrey_post_correct.split('\n').filter(function(l){ return l.trim(); });
   else if(!correct&&c.aubrey_post_wrong&&c.aubrey_post_wrong[chosen]) lines=c.aubrey_post_wrong[chosen].split('\n').filter(function(l){ return l.trim(); });
@@ -1438,8 +1500,6 @@ var _excerptRead = (function(){
 var _excerptAwarded = (function(){
   try{ var r=localStorage.getItem('ql_excerpts_awarded'); return r?JSON.parse(r):[]; }catch(e){ return []; }
 })();
-
-// Initialise lamp state from persisted data
 setTimeout(updateLampState, 0);
 
 function awardExcerpt(id){
@@ -1458,13 +1518,11 @@ function updateLampState(){
 var _lampBoardSnapshot=null;
 function _lampOn(){
   _deskLamp=true; document.body.classList.add('desk-lamp-on'); updateLampState();
-  var bulb=$id('wl-bulb-shape'),halo=$id('wl-halo'),rim=$id('wl-rim-glow');
-  if(bulb) bulb.style.opacity='1'; if(halo) halo.style.opacity='1'; if(rim) rim.style.fill='rgba(255,190,50,.12)';
+  var bulb=$id('wl-bulb-shape'); if(bulb) bulb.style.opacity='1';
 }
 function _lampOff(){
   _deskLamp=false; document.body.classList.remove('desk-lamp-on'); updateLampState();
-  var bulb=$id('wl-bulb-shape'),halo=$id('wl-halo'),rim=$id('wl-rim-glow');
-  if(bulb) bulb.style.opacity='0'; if(halo) halo.style.opacity='0'; if(rim) rim.style.fill='rgba(255,190,50,.0)';
+  var bulb=$id('wl-bulb-shape'); if(bulb) bulb.style.opacity='0';
 }
 function navLampOff(){
   if(!_deskLamp) return; _deskLamp=false; _lampBoardSnapshot=null; _lampOff();
@@ -1486,13 +1544,13 @@ function toggleDeskLamp(){
 }
 
 function openExcerptMenu(){
-  if(_excerptAwarded.length===0){ board(['Nothing under the lamp yet.'],[],null); return; }
+  if(_excerptAwarded.length===0){ board(['Nothing under the lamp yet.'],[],null,true); return; }
   var ordered=_excerptAwarded.slice().reverse();
   var choices=ordered.map(function(id){
     var ex=EXCERPTS.find(function(e){ return e.id===id; }); if(!ex) return null;
     return { l:(!_excerptRead[id]?'\u25cf\u2002':'')+ex.title, f:(function(eid){ return function(){ openExcerpt(eid); }; })(id) };
   }).filter(Boolean);
-  board(['Under the lamp.','Several pages.'],choices);
+  board(['Under the lamp.','Several pages.'],choices,null,true);
 }
 
 function openExcerpt(id){
@@ -1533,6 +1591,26 @@ function switchDrawer(btn,idx){
   track.style.transform='translateX(-'+(idx*w)+'px)'; track.dataset.idx=idx;
   btn.parentElement.querySelectorAll('.drawer-tab').forEach(function(t){ t.classList.remove('active'); }); btn.classList.add('active');
 }
+
+// ── CLOCK ──
+var _clockOn = false;
+function toggleClock(){
+  _clockOn=!_clockOn;
+  var lcd=$id('lcd-time'); if(!lcd) return;
+  lcd.style.visibility=_clockOn?'visible':'hidden';
+}
+(function(){
+  function tick(){
+    if(!_clockOn) return;
+    var now=new Date(); var s=now.getSeconds(), h=now.getHours(), m=now.getMinutes();
+    var lcd=$id('lcd-time'); if(!lcd) return;
+    var hh=(h<10?'0':'')+h, mm=(m<10?'0':'')+m;
+    lcd.textContent=hh+(s%2===0?':':' ')+mm;
+  }
+  // Apply initial visibility state
+  setTimeout(function(){ var lcd=$id('lcd-time'); if(lcd) lcd.style.visibility=_clockOn?'visible':'hidden'; },0);
+  tick(); setInterval(tick,500);
+})();
 
 // ── AUDIO ──
 var _AC=null,_mg=null,_padI=0,_audioOn=false;
@@ -1594,114 +1672,119 @@ function toggleSound(){
   setTimeout(function(){ resize(); window.addEventListener('resize',resize); draw(); },400);
 })();
 
-// ── CHALK DUST ──
-var _chalkDust = (function(){
-  var cv, ctx, particles=[];
-  function init(){
-    cv=$id('chalk-dust'); if(!cv) return;
-    ctx=cv.getContext('2d');
-    resize();
-    window.addEventListener('resize', resize);
-    loop();
-  }
-  function resize(){
-    if(!cv) return;
-    var tray=$id('bb-tray'); if(!tray) return;
-    cv.width=tray.offsetWidth; cv.height=tray.offsetHeight+60;
-    cv.style.top='-60px'; cv.style.height=(tray.offsetHeight+60)+'px';
-  }
-  function spawn(){
-    if(!cv) return;
-    var n=6+Math.floor(Math.random()*6);
-    for(var i=0;i<n;i++){
-      particles.push({
-        x:Math.random()*cv.width,
-        y:-4,
-        vx:(Math.random()-.5)*.6,
-        vy:.3+Math.random()*.5,
-        r:.8+Math.random()*1.4,
-        life:1,
-        decay:.012+Math.random()*.018
-      });
-    }
-  }
-  function loop(){
-    if(!ctx||!cv) return;
-    ctx.clearRect(0,0,cv.width,cv.height);
-    for(var i=particles.length-1;i>=0;i--){
-      var p=particles[i];
-      p.x+=p.vx; p.y+=p.vy; p.vy+=.012; p.life-=p.decay;
-      if(p.life<=0){ particles.splice(i,1); continue; }
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle='rgba(238,232,192,'+p.life*.35+')';
-      ctx.fill();
-    }
-    requestAnimationFrame(loop);
-  }
-  setTimeout(init,600);
-  return { spawn: spawn };
-})();
-
-// ── LAMP MOTES ──
-(function(){
-  var cv, ctx, motes=[], active=false;
-  function init(){
-    var cone=document.querySelector('#desk-lamp-stand .lamp-cone');
-    if(!cone) return;
-    cv=document.createElement('canvas');
-    cv.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:.6;';
-    cone.appendChild(cv);
-    ctx=cv.getContext('2d');
-    resize();
-    spawnAll();
-    loop();
-  }
-  function resize(){ if(!cv||!cv.parentElement) return; cv.width=cv.offsetWidth||cv.parentElement.offsetWidth||60; cv.height=cv.offsetHeight||cv.parentElement.offsetHeight||80; }
-  function newMote(){ return { x:Math.random()*60, y:Math.random()*80, vx:(Math.random()-.5)*.08, vy:-.04-.06*Math.random(), r:.6+Math.random()*.8, life:Math.random(), decay:.0006+Math.random()*.0008 }; }
-  function spawnAll(){ for(var i=0;i<12;i++) motes.push(newMote()); }
-  function loop(){
-    if(!ctx||!cv) return;
-    ctx.clearRect(0,0,cv.width,cv.height);
-    active=document.body.classList.contains('desk-lamp-on');
-    if(active){
-      for(var i=0;i<motes.length;i++){
-        var m=motes[i];
-        m.x+=m.vx; m.y+=m.vy; m.life-=m.decay;
-        if(m.life<=0) motes[i]=newMote();
-        var fade=Math.sin(m.life*Math.PI);
-        ctx.beginPath(); ctx.arc(m.x*(cv.width/60),m.y*(cv.height/80),m.r,0,Math.PI*2);
-        ctx.fillStyle='rgba(255,240,160,'+fade*.18+')';
-        ctx.fill();
-      }
-    }
-    requestAnimationFrame(loop);
-  }
-  setTimeout(init,800);
-})();
-
 // ── STAMP ANIMATION ──
 function spawnStampAnim(){
   var bb=$id('bb'); if(!bb) return;
   var el=document.createElement('div');
   el.style.cssText='position:absolute;top:12px;right:16px;z-index:20;pointer-events:none;';
-  var s=20;
-  var c=s/2;
+  var s=20, c=s/2;
   el.innerHTML='<svg width="'+s+'" height="'+s+'" viewBox="0 0 '+s+' '+s+'" class="stamp-assessed-new" style="display:block;">'+
     '<polygon points="'+c+',2 '+(c+(s/2-2))+','+(s-2)+' '+(c+(s/4*.6))+','+(s*.62)+' '+(c-(s/4*.6))+','+(s*.62)+' '+(c-(s/2-2))+','+(s-2)+'" '+
     'fill="#8B1A1A" stroke="#8B1A1A" stroke-width="1.2" stroke-linejoin="round" opacity=".85"/>'+
     '</svg>';
-  bb.style.position='relative';
-  bb.appendChild(el);
-  setTimeout(function(){
-    el.style.transition='opacity .6s ease';
-    el.style.opacity='0';
-    setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); },700);
-  },1800);
+  bb.style.position='relative'; bb.appendChild(el);
+  setTimeout(function(){ el.style.transition='opacity .6s ease'; el.style.opacity='0'; setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); },700); },1800);
 }
 
-// ── GO ──
-s0();
+// ── WEATHER ──
+(function(){
+  var states=['clear','overcast','rain','storm'];
+  var durations={clear:[8,15],overcast:[5,10],rain:[6,12],storm:[3,6]};
+  var _state='clear', _intensity=0, _current=0, _wind=0;
+  var _nextChange=Date.now()+(3+Math.random()*5)*60000;
+
+  function randBetween(a,b){ return a+(b-a)*Math.random(); }
+  function lerp(a,b,t){ return a+(b-a)*Math.min(1,Math.max(0,t)); }
+
+  function nextState(){
+    var transitions={clear:['clear','overcast'],overcast:['clear','overcast','rain'],rain:['overcast','rain','storm'],storm:['rain','overcast']};
+    var opts=transitions[_state]; _state=opts[Math.floor(Math.random()*opts.length)];
+    var d=durations[_state]; _nextChange=Date.now()+randBetween(d[0],d[1])*60000;
+    _intensity=_state==='rain'?0.6:_state==='storm'?1:_state==='overcast'?0.2:0;
+    _wind=_state==='storm'?randBetween(0.3,0.8):_state==='rain'?randBetween(0.1,0.4):0;
+  }
+
+  setInterval(function(){
+    if(Date.now()>_nextChange) nextState();
+    _current=lerp(_current,_intensity,0.02);
+    updateRain(_current,_wind);
+    updateLeaves(_current,_wind);
+    updateCondensation(_current);
+    if(_state==='storm' && Math.random()<0.002) doLightning();
+  },100);
+
+  // Rain
+  var rainDrops=[], RAIN_N=80;
+  var rainCv=$id('rain-canvas');
+  var rainCtx=rainCv?rainCv.getContext('2d'):null;
+  function newRainDrop(rand,wind){
+    var w=(rainCv?rainCv.offsetWidth:200)||200, h=(rainCv?rainCv.offsetHeight:80)||80;
+    return {x:Math.random()*w,y:rand?Math.random()*h:-10,len:4+Math.random()*14,speed:.4+Math.random()*.9,op:.04+Math.random()*.10,dx:wind*(Math.random()-.3)*.3};
+  }
+  if(rainCv){ for(var i=0;i<RAIN_N;i++) rainDrops.push(newRainDrop(true,0)); }
+  function updateRain(intensity,wind){
+    if(!rainCtx||!rainCv) return;
+    rainCtx.clearRect(0,0,rainCv.width,rainCv.height);
+    if(intensity<0.05) return;
+    var count=Math.floor(intensity*RAIN_N);
+    for(var i=0;i<count;i++){
+      var d=rainDrops[i]; if(!d) continue;
+      rainCtx.beginPath(); rainCtx.moveTo(d.x,d.y); rainCtx.lineTo(d.x+d.dx*d.len,d.y+d.len);
+      rainCtx.strokeStyle='rgba(200,220,255,'+(d.op*intensity)+')'; rainCtx.lineWidth=0.8; rainCtx.stroke();
+      d.y+=d.speed*(0.5+intensity); d.x+=d.dx+wind*0.5;
+      if(d.y-d.len>rainCv.height||d.x<0||d.x>rainCv.width) rainDrops[i]=newRainDrop(false,wind);
+    }
+  }
+
+  // Leaves
+  var leafCv=$id('window-leaves');
+  var leafCtx=leafCv?leafCv.getContext('2d'):null;
+  var leaves=[];
+  function newLeaf(){ return {x:-20,y:Math.random()*((leafCv?leafCv.height:80)||80),vx:1+Math.random()*2,vy:(Math.random()-.5)*.5,r:2+Math.random()*3,life:1}; }
+  function updateLeaves(intensity,wind){
+    if(!leafCtx||!leafCv) return;
+    leafCtx.clearRect(0,0,leafCv.width,leafCv.height);
+    if(wind>0.2 && Math.random()<wind*0.02) leaves.push(newLeaf());
+    for(var i=leaves.length-1;i>=0;i--){
+      var l=leaves[i]; l.x+=l.vx*(1+wind*3); l.y+=l.vy+Math.sin(l.x*.05)*.5; l.life-=.005;
+      if(l.life<=0||l.x>leafCv.width){ leaves.splice(i,1); continue; }
+      leafCtx.beginPath(); leafCtx.ellipse(l.x,l.y,l.r,l.r*.6,l.x*.02,0,Math.PI*2);
+      leafCtx.fillStyle='rgba(60,90,30,'+l.life*.4+')'; leafCtx.fill();
+    }
+  }
+
+  // Condensation
+  var condEl=$id('window-condensation');
+  var condCv=null, condCtx=null, condBlobs=[];
+  function initCond(){
+    if(!condEl||condCv) return;
+    condCv=document.createElement('canvas');
+    condCv.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;';
+    condEl.appendChild(condCv);
+    condCtx=condCv.getContext('2d');
+    condCv.width=condEl.offsetWidth||200; condCv.height=condEl.offsetHeight||80;
+    for(var i=0;i<30;i++) condBlobs.push({x:Math.random()*condCv.width,y:Math.random()*condCv.height,r:1+Math.random()*4,opacity:0});
+  }
+  function updateCondensation(intensity){
+    if(!condCv){ initCond(); return; }
+    if(!condCtx) return;
+    condCtx.clearRect(0,0,condCv.width,condCv.height);
+    if(intensity<0.3) return;
+    var fog=(intensity-0.3)/0.7;
+    condBlobs.forEach(function(b){
+      b.opacity=Math.min(b.opacity+fog*.001, fog*.3);
+      condCtx.beginPath(); condCtx.arc(b.x,b.y,b.r,0,Math.PI*2);
+      condCtx.fillStyle='rgba(200,220,240,'+b.opacity+')'; condCtx.fill();
+    });
+  }
+
+  // Lightning
+  function doLightning(){
+    var glass=document.querySelector('.winw-glass'); if(!glass) return;
+    glass.style.transition='background .05s'; glass.style.background='rgba(220,230,255,.15)';
+    setTimeout(function(){ glass.style.background=''; glass.style.transition='background .3s'; },80);
+  }
+})();
 
 // ── DAY/NIGHT CYCLE ──
 (function(){
@@ -1709,13 +1792,11 @@ s0();
   var skyStops=[
     {t:0.00,sky:'#03040A',horizon:'#06070F',glow:1.0},
     {t:0.15,sky:'#06080F',horizon:'#090A16',glow:0.85},
-    {t:0.26,sky:'#0E1428',horizon:'#141830',glow:0.55},
-    {t:0.33,sky:'#18102A',horizon:'#3A1E14',glow:0.42},
-    {t:0.38,sky:'#1A1830',horizon:'#2A1C18',glow:0.35},
+    {t:0.28,sky:'#0E1428',horizon:'#141830',glow:0.55},
+    {t:0.38,sky:'#1A1830',horizon:'#201C38',glow:0.35},
     {t:0.48,sky:'#0E1830',horizon:'#121C38',glow:0.30},
     {t:0.58,sky:'#1A1428',horizon:'#1C1630',glow:0.45},
-    {t:0.65,sky:'#160C1A',horizon:'#3A1A10',glow:0.58},
-    {t:0.72,sky:'#100818',horizon:'#2A1008',glow:0.72},
+    {t:0.70,sky:'#120C1A',horizon:'#160E20',glow:0.65},
     {t:0.82,sky:'#080810',horizon:'#0C0A18',glow:0.85},
     {t:1.00,sky:'#03040A',horizon:'#06070F',glow:1.0},
   ];
@@ -1779,6 +1860,8 @@ s0();
   win.addEventListener('touchend',function(){ tgt.x=0;tgt.y=0;startTick(); });
 })();
 
+// ── GO ──
+s0();
 </script>
 </body>
 </html>
