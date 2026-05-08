@@ -896,7 +896,7 @@ body.lamp-right #wall-lamp      .lamp-bulb{background:rgba(255,252,200,1);box-sh
       <span class="ti-lbl">Exit</span>
     </a>
     <!-- Banker's lamp — base sits on brass rail -->
-    <div id="desk-lamp-stand" onclick="toggleDeskLamp()" onmouseenter="chalkHint('Click to see narrative excerpts.')" onmouseleave="chalkRestore()"
+    <div id="desk-lamp-stand" onclick="toggleDeskLamp()" 
          style="position:absolute;right:clamp(52px,8vw,80px);bottom:var(--bar-h);
                 width:clamp(28px,4.5vw,52px);z-index:25;cursor:pointer;overflow:visible;display:flex;align-items:flex-end;">
       <svg viewBox="0 0 200 480" width="100%" style="display:block;overflow:visible" xmlns="http://www.w3.org/2000/svg">
@@ -2087,12 +2087,14 @@ s0();
   var skyStops = [
     { t:0.00, sky:'#03040A', horizon:'#06070F', glow:1.0  },  // deep night
     { t:0.15, sky:'#06080F', horizon:'#090A16', glow:0.85 },  // late night
-    { t:0.28, sky:'#0E1428', horizon:'#141830', glow:0.55 },  // pre-dawn blue
-    { t:0.38, sky:'#1A1830', horizon:'#201C38', glow:0.35 },  // dawn — sign fades
+    { t:0.26, sky:'#0E1428', horizon:'#141830', glow:0.55 },  // pre-dawn blue
+    { t:0.33, sky:'#18102A', horizon:'#3A1E14', glow:0.42 },  // dawn warm — amber bleed on horizon
+    { t:0.38, sky:'#1A1830', horizon:'#2A1C18', glow:0.35 },  // dawn grey — sign nearly gone
     { t:0.48, sky:'#0E1830', horizon:'#121C38', glow:0.30 },  // blue morning
     { t:0.58, sky:'#1A1428', horizon:'#1C1630', glow:0.45 },  // afternoon grey
-    { t:0.70, sky:'#120C1A', horizon:'#160E20', glow:0.65 },  // dusk
-    { t:0.82, sky:'#080810', horizon:'#0C0A18', glow:0.85 },  // evening
+    { t:0.65, sky:'#160C1A', horizon:'#3A1A10', glow:0.58 },  // dusk warm — amber returns
+    { t:0.72, sky:'#100818', horizon:'#2A1008', glow:0.72 },  // dusk deep — rich warm dark
+    { t:0.82, sky:'#080810', horizon:'#0C0A18', glow:0.85 },  // evening — cooling back
     { t:1.00, sky:'#03040A', horizon:'#06070F', glow:1.0  },  // back to deep night
   ];
 
