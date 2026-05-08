@@ -232,7 +232,7 @@ body {
   border-top: 4px solid #1e2e1e;
   border-bottom: 4px solid #1e2e1e;
 }
-.method-inner { max-width: 680px; margin: 0 auto; text-align: center; }
+.method-inner { max-width: 620px; margin: 0 auto; text-align: left; }
 
 .method-eyebrow {
   font-family: 'Special Elite', monospace;
@@ -240,7 +240,8 @@ body {
   letter-spacing: .26em;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 44px;
+  margin-bottom: 36px;
+  text-align: center;
 }
 .method-main {
   font-family: 'Cormorant SC', Georgia, serif;
@@ -248,7 +249,8 @@ body {
   font-weight: 300;
   color: var(--w);
   line-height: 1.25;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
+  text-align: center;
 }
 .method-rule {
   width: 36px;
@@ -261,12 +263,13 @@ body {
   font-style: italic;
   font-size: clamp(18px, 1.9vw, 24px);
   color: var(--md);
-  line-height: 1.8;
-  margin-bottom: 28px;
+  line-height: 1.75;
+  margin-bottom: 24px;
+  text-align: center;
 }
 
 /* Pedagogy expand */
-.ped-wrap { margin-top: 52px; text-align: center; }
+.ped-wrap { margin-top: 48px; text-align: left; }
 .ped-btn {
   background: none;
   border: 1px solid var(--md);
@@ -285,8 +288,8 @@ body {
   overflow: hidden;
   max-height: 0;
   transition: max-height 1.1s cubic-bezier(0.16,1,0.3,1);
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   text-align: left;
 }
 .ped-body.open { max-height: 900px; }
@@ -302,9 +305,10 @@ body {
 .method-body {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-style: italic;
-  font-size: clamp(18px, 1.8vw, 22px);
+  font-size: clamp(17px, 1.7vw, 21px);
   color: var(--md);
-  line-height: 1.85;
+  line-height: 1.9;
+  text-align: left;
 }
 
 
@@ -555,8 +559,7 @@ footer {
 
   /* Stack and centre all hero content */
   .h-title-row,
-  .h-tag-row,
-  .h-cta-row { flex-direction: column; align-items: center; gap: 12px; }
+  .h-tag-row { flex-direction: column; align-items: center; gap: 12px; }
 
   .h-tl, .h-tr    { text-align: center; padding: 0; color: var(--w); }
   .h-tagl, .h-tagr { text-align: center; padding: 0; color: var(--md); }
@@ -643,8 +646,8 @@ footer {
 
     <div class="method-body rv" style="transition-delay:.36s">
       Statistics is routinely taught through invented scenarios — dice, urns, card games.
-      What is usually omitted is the acknowledgement that this is already world-building,
-      with rules, inhabitants, and a logic of its own.
+      Econometrics constructs environments where agents are rational, relationships are linear and errors follow instructions.
+      What is usually omitted is that this is already world-building — with rules, inhabitants, and a logic of its own.
       This project makes that acknowledgement explicit.
     </div>
 
@@ -749,7 +752,7 @@ footer {
   <div class="quote-inner">
     <div class="q-room rv">Room 197A</div>
     <div class="q-text rv" style="transition-delay:.1s">
-      Complexity is never the problem for my students. The problem is the gap between when a formula arrives on the page and the moment it becomes inevitable. These worlds exist in that gap.
+      Complexity is never the problem for my students. The problem is the gap between when a formula arrives on the page and the moment it becomes inevitable. The worlds I create exist in that very gap.
     </div>
     <div class="q-attr rv" style="transition-delay:.2s">&#8212;&ensp;Ragvir</div>
   </div>
