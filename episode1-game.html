@@ -1435,9 +1435,16 @@ function corridor(){
   var assessed=C.filter(function(c){ return S.rooms[c.id].assessed; }).length;
   var allAssessed=assessed===C.length;
   var quotes=[
-    {q:'The theory of probability as a mathematical discipline can and should be developed from axioms.',a:'A.N. Kolmogorov, 1933'},
-    {q:'Probability is expectation founded upon partial knowledge.',a:'George Boole'},
+    {q:'The theory of probability as a mathematical discipline can and should be developed from axioms in exactly the same way as geometry and algebra.',a:'A.N. Kolmogorov, 1933'},
     {q:'It is remarkable that a science which began with the consideration of games of chance should have become the most important object of human knowledge.',a:'Laplace'},
+    {q:'The most important questions of life are indeed, for the most part, really only problems of probability.',a:'Laplace'},
+    {q:'Probability theory is nothing but common sense reduced to calculation.',a:'Laplace'},
+    {q:'At any moment there is only a fine layer between the trivial and the impossible. Mathematical discoveries are made in this layer.',a:'A.N. Kolmogorov'},
+    {q:'The art of conjecture is the art of evaluating as exactly as possible the probabilities of things.',a:'Jakob Bernoulli, Ars Conjectandi, 1713'},
+    {q:'The sample space must contain all possible outcomes. Mine contained one.',a:'Aubrey Squeakwell, BSc'},
+    {q:'The lights are always on. I have taken this as encouragement.',a:'Aubrey Squeakwell, BSc'},
+    {q:'The candidate\u2019s compliance remains partial.',a:'The Notary'},
+    {q:'It is not the first application of this kind. It will not be the last.',a:'The Archivist'},
   ];
   var qt=quotes[Math.floor(Math.random()*quotes.length)];
   var obs=allAssessed?'All ten rooms assessed. The application may now be filed.':assessed>0?assessed+' of 10 rooms assessed.':'';
