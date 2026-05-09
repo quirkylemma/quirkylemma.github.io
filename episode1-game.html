@@ -762,6 +762,9 @@ document.addEventListener('DOMContentLoaded',function(){
     if(btn){ btn.disabled=!match; btn.classList.toggle('armed',match); }
     inp.classList.toggle('matched',match);
   });
+  if(inp) inp.addEventListener('keydown',function(e){
+    if(e.key==='Enter') doReset();
+  });
 });
 </script>
 
