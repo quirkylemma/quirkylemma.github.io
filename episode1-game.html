@@ -782,14 +782,13 @@ var C = [
       'The power of formalisation is that it makes the rules explicit. Before Kolmogorov, it was possible to reason about probability while violating its own logic — assigning negative probabilities, or probabilities that did not sum correctly. After Kolmogorov, these errors have a name: axiom violations. The framework does not tell you what probabilities to assign. It tells you what any valid assignment must satisfy. Everything that follows in The Institute is a consequence of that.'
     ],
     counting:[
-      'In <strong>insurance</strong>, the probability space models the occurrence of claims. $\\Omega$ is the set of possible claim events. Incomplete specification of $\\Omega$ — failing to include certain claim types — leads to systematic under-pricing.',
-      'In <strong>clinical trials</strong>, events are outcomes for patients: respond, partial response, no response, adverse event. The probability measure over these outcomes encodes what the trial is designed to estimate. An axiom violation here — probabilities that do not sum to 1 — would indicate an unaccounted outcome category.',
-      'In <strong>finance</strong>, the probability space models future states of the world. A derivative is priced as an expectation under a risk-neutral measure. The existence and uniqueness of such a measure is a deep result — but it begins with the axioms on this shelf.',
-      'In each case, the practical error is the same as Aubrey\'s: an incomplete sample space, or probabilities that do not sum to 1. In practice this means an event has been overlooked. In October, the overlooked event was <em>Lose</em>.'
-    ],
-    post:[
       'A simple Monte Carlo demonstration: generate $N$ uniform random numbers in $[0,1]$. Assign each to an event based on cumulative probability thresholds. Count frequencies. As $N \\to \\infty$, the frequencies converge to the assigned probabilities — this is the empirical content of the axioms.',
       'The key observation: without the axioms, there is nothing to converge to. The axioms define the target. The simulation illustrates it. Neither replaces the other.'
+    ],
+    post:[
+      'In 1768, the <em>Opera Omnia</em> of Gottfried Wilhelm Leibniz was published posthumously. Leibniz co-invented calculus, developed binary arithmetic, and made foundational contributions to logic and philosophy. He was one of the most formidable mathematical minds in history. That is what makes this example so interesting.',
+      'Leibniz listed combinations without regard to order — 21 possibilities in total. In his space, the combination "one five and one six" appears once, and so does "two sixes". He concluded both were equally probable. But if you take order into account, there are 36 equally likely outcomes — permutations, not combinations. The combination "one five and one six" can appear two ways: $(5,6)$ and $(6,5)$. The combination "two sixes" can only appear one way: $(6,6)$. The probabilities are not equal.',
+      'The error was in listing the set of all possible outcomes. Without a formal framework, there was no principle available to identify where the reasoning had failed. After Kolmogorov, first year BSc students get a better answer than Leibniz did. The right one.'
     ],
     aubrey_enter:'In October I told people I was one thousand percent certain I would win a fortune.\nI have since been informed that this is not a probability.\nIs there a correct way to put a number on uncertainty?',
     aubrey_desk:'I read what was on the lower shelf. I understood it and stood up to leave. I hit my head on the upper shelf.\nI am not sure whether it is my head that hurts more or my brain.',
