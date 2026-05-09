@@ -82,7 +82,7 @@ body.lamp-right .sign-group,body.lamp-right .sign-amb,body.lamp-right .sign-ruin
 body.desk-lamp-on #toolbar{background:radial-gradient(ellipse at 50% 50%,rgba(220,175,50,.28) 0%,rgba(190,150,35,.14) 45%,transparent 75%),linear-gradient(180deg,#2A1C08 0%,#221408 8%,#1C1006 40%,#181008 85%,#120C04 100%);transition:background .5s ease;}
 body.desk-lamp-on #toolbar::before{background:linear-gradient(90deg,#2C1E08 0%,#3A2C0A 15%,#5A4418 35%,#8A7030 50%,#9A8038 55%,#8A7030 60%,#5A4418 75%,#3A2C0A 88%,#2C1E08 100%);}
 body.desk-lamp-on #room{background:
-  radial-gradient(ellipse at 50% 110%,rgba(220,170,40,.18) 0%,rgba(180,130,20,.08) 30%,transparent 60%),
+  radial-gradient(ellipse 80% 45% at 50% 100%,rgba(220,170,40,.22) 0%,rgba(180,130,20,.10) 45%,transparent 100%),
   radial-gradient(ellipse at 50% -10%,rgba(255,252,210,.07) 0%,transparent 55%),
   linear-gradient(180deg,transparent 55%,rgba(0,0,0,.55) 85%,rgba(0,0,0,.85) 100%),
   radial-gradient(ellipse at 50% 50%,transparent 30%,rgba(0,0,0,.35) 100%),
@@ -251,7 +251,8 @@ body.desk-lamp-on #window-lampfog{opacity:1;}
 
 /* ── HINT PULSE ── */
 @keyframes hint-pulse{0%,100%{box-shadow:none;color:rgba(238,232,192,.32);}50%{box-shadow:0 0 10px rgba(238,232,192,.25),0 0 22px rgba(200,160,32,.2);color:rgba(238,232,192,.9);}}
-#ti-map.map-hint-active,#ti-study-wrap.map-hint-active{animation:hint-pulse 1s ease-in-out infinite;}
+#ti-map.map-hint-active{animation:hint-pulse 3.5s ease-in-out infinite;}
+#ti-study-wrap.map-hint-active{animation:hint-pulse 3.5s ease-in-out infinite;}
 
 
 /* ── POPUP ── */
@@ -615,7 +616,7 @@ body.desk-lamp-on #window-lampfog{opacity:1;}
       </div>
     </div>
 
-    <div style="position:relative;width:min(640px,92%);align-self:center;">
+    <div id="strip-wrap" style="position:relative;width:min(640px,92%);align-self:center;overflow:hidden;">
       <div id="board-strip">
         <div id="loc" onclick="goToCorridorOrStairwell()">
           <span id="floor-label">The Stairwell</span>
@@ -1157,6 +1158,8 @@ function setToolbar(mode){
   show('ti-dossier', onFloor);
   show('ti-study-wrap', mode==='room');
   show('ti-map', onFloor);
+  var tm=$id('ti-map'); if(tm) tm.classList.toggle('map-hint-active', mode==='corridor');
+  var ts=$id('ti-study-wrap'); if(ts) ts.classList.toggle('map-hint-active', mode==='room');
   // Show clock in all modes, hide room plaque unless in room
   var plaque=$id('room-plaque');
   var clock=$id('toolbar-clock');
@@ -1341,7 +1344,7 @@ function corridor(){
     {q:'The most important questions of life are indeed, for the most part, really only problems of probability.',a:'Laplace'},
     {q:'Probability theory is nothing but common sense reduced to calculation.',a:'Laplace'},
     {q:'At any moment there is only a fine layer between the trivial and the impossible. Mathematical discoveries are made in this layer.',a:'A.N. Kolmogorov'},
-    {q:'The art of conjecture is the art of evaluating as exactly as possible the probabilities of things.',a:'Jakob Bernoulli, Ars Conjectandi, 1713'},
+    {q:'The art of conjecture is the art of evaluating as exactly as possible the probabilities of things.',a:'Jakob Bernoulli'},
     {q:'The sample space must contain all possible outcomes. Mine contained one. Win.',a:'Aubrey Squeakwell, BSc'},
     {q:'The lights are always on. I have taken this as encouragement.',a:'Aubrey Squeakwell, BSc'},
     {q:'The candidate\u2019s compliance remains partial.',a:'The Notary'},
@@ -1356,8 +1359,8 @@ function corridor(){
         '<div><span class="ca-title">Speak to the Clerk</span></div>'+
       '</button>'+
     '</div>'+
-    '<div onmouseenter="var m=$id(\'ti-map\');if(m)m.classList.add(\'map-hint-active\');this.style.color=\'rgba(238,232,192,.7)\'" '+
-         'onmouseleave="var m=$id(\'ti-map\');if(m)m.classList.remove(\'map-hint-active\');this.style.color=\'rgba(238,232,192,.22)\'" '+
+    '<div onmouseenter="this.style.color=\'rgba(238,232,192,.7)\'" '+
+         'onmouseleave="this.style.color=\'rgba(238,232,192,.22)\'" '+
          'onclick="openMap()" '+
          'style="font-family:monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(238,232,192,.22);margin-top:clamp(10px,1.5vh,16px);cursor:pointer;transition:color .3s ease">'+
       'Use the map to enter a room'+
@@ -1376,7 +1379,7 @@ function enterRoom(idx){
   if(_lampRight) document.body.classList.add('lamp-right');
   if(_deskLamp) document.body.classList.add('desk-lamp-on');
   var roomNum=(idx+1<10?'0':'')+(idx+1);
-  setFloorLabel('Room '+roomNum+' \u2014 '+c.title); setToolbar('room'); updateRoomFlyup();
+  setFloorLabel(c.title); setToolbar('room'); updateRoomFlyup();
   // Plaque
   var pNum=$id('plaque-num'); if(pNum){ pNum.textContent='Room '+roomNum; pNum.style.textAlign='center'; }
   var plaque=$id('room-plaque');
@@ -1388,8 +1391,8 @@ function enterRoom(idx){
   }
   var lines=c.aubrey_enter?c.aubrey_enter.split('\n').filter(function(l){ return l.trim(); }):[c.title+'.'];
   var studyHint=
-    '<div onmouseenter="var s=$id(\'ti-study-wrap\');if(s)s.classList.add(\'map-hint-active\');this.style.color=\'rgba(238,232,192,.7)\'" '+
-         'onmouseleave="var s=$id(\'ti-study-wrap\');if(s)s.classList.remove(\'map-hint-active\');this.style.color=\'rgba(238,232,192,.22)\'" '+
+    '<div onmouseenter="this.style.color=\'rgba(238,232,192,.7)\'" '+
+         'onmouseleave="this.style.color=\'rgba(238,232,192,.22)\'" '+
          'onclick="toggleStudyFlyup(event)" '+
          'style="font-family:monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(238,232,192,.22);margin-top:clamp(10px,1.5vh,16px);cursor:pointer;transition:color .3s ease">'+
       'Study available documents.'+
