@@ -165,8 +165,8 @@ body.desk-lamp-on #window-lampfog{opacity:1;}
 
 /* ── SCROLL CHEVRONS ── */
 #bb-more,#bb-less,#strip-more,#strip-less{position:absolute;right:6px;display:flex;flex-direction:column;align-items:center;gap:3px;opacity:0;transition:opacity .4s ease;pointer-events:auto;cursor:pointer;z-index:15;}
-#bb-more{top:50%;transform:translateY(20px);}
-#bb-less{top:50%;transform:translateY(-36px);}
+#bb-more{bottom:clamp(22px,3vh,36px);}
+#bb-less{top:clamp(14px,2vh,28px);}
 #strip-more{bottom:4px;}
 #strip-less{top:4px;}
 #bb-more.visible,#bb-less.visible,#strip-more.visible,#strip-less.visible{opacity:1;}
@@ -603,6 +603,8 @@ body.desk-lamp-on #window-lampfog{opacity:1;}
       <div id="bb-frame">
         <div id="bb-erase"></div>
         <div id="bb"><div id="chalk"></div></div>
+        <div id="bb-less"><span></span><span></span></div>
+        <div id="bb-more"><span></span><span></span></div>
         <div id="bb-tray">
           <div class="cp" style="width:26px"></div>
           <div class="cp" style="width:14px;opacity:.4"></div>
@@ -611,8 +613,6 @@ body.desk-lamp-on #window-lampfog{opacity:1;}
 
         </div>
       </div>
-      <div id="bb-less"><span></span><span></span></div>
-      <div id="bb-more"><span></span><span></span></div>
     </div>
 
     <div style="position:relative;width:min(640px,92%);align-self:center;">
@@ -994,7 +994,21 @@ function board(lines, choices, extra, _noErase) {
       chalkEl.appendChild(p); return p;
     });
     var timers=[];
-    function skipAll(){ timers.forEach(clearTimeout); timers=[]; els.forEach(function(el){ el.style.transition='none'; el.style.opacity='1'; }); var bb=$id('bb'); if(bb){ bb.onclick=null; bb.style.cursor=''; } rm(chalkEl); _boardSkip=null; }
+    function skipAll(){
+      timers.forEach(clearTimeout); timers=[];
+      els.forEach(function(el){ el.style.transition='none'; el.style.opacity='1'; });
+      // ensure square is present on last element
+      var last=els[els.length-1];
+      if(last && !last.querySelector('.bb-sq')){
+        var sq=document.createElement('span');
+        sq.className='bb-sq';
+        sq.style.cssText='margin-left:5px;opacity:1;font-size:.75em;color:rgba(238,232,192,.3)';
+        sq.textContent='\u25a1'; last.appendChild(sq);
+      }
+      var bb=$id('bb'); if(bb){ bb.onclick=null; bb.style.cursor=''; }
+      rm(chalkEl); _boardSkip=null;
+      setTimeout(updateBoardMore,50);
+    }
     _boardSkip = skipAll;
     var bb=$id('bb');
     if(bb){ bb.onclick=skipAll; bb.style.cursor='pointer'; }
@@ -1004,6 +1018,7 @@ function board(lines, choices, extra, _noErase) {
         requestAnimationFrame(function(){ requestAnimationFrame(function(){ el.style.opacity='1'; }); });
         if(i===els.length-1){
           var sq=document.createElement('span');
+          sq.className='bb-sq';
           sq.style.cssText='margin-left:5px;opacity:0;transition:opacity .45s;font-size:.75em;color:rgba(238,232,192,.3)';
           sq.textContent='\u25a1'; el.appendChild(sq);
           setTimeout(function(){ sq.style.opacity='1'; },350);
