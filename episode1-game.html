@@ -164,21 +164,19 @@ body.desk-lamp-on #window-lampfog{opacity:1;}
 @keyframes bb-wipe{0%{opacity:.7;transform:translateX(-100%);}60%{opacity:.5;}100%{opacity:0;transform:translateX(100%);}}
 
 /* ── SCROLL CHEVRONS ── */
-#bb-more,#bb-less,#strip-more,#strip-less{position:absolute;right:6px;display:flex;flex-direction:column;align-items:center;gap:3px;opacity:0;transition:opacity .4s ease;pointer-events:auto;cursor:pointer;z-index:15;}
+#bb-more,#bb-less{position:absolute;right:6px;display:flex;flex-direction:column;align-items:center;gap:3px;opacity:0;transition:opacity .4s ease;pointer-events:auto;cursor:pointer;z-index:15;}
 #bb-more{bottom:clamp(22px,3vh,36px);}
 #bb-less{top:clamp(14px,2vh,28px);}
-#strip-more{bottom:4px;}
-#strip-less{top:4px;}
-#bb-more.visible,#bb-less.visible,#strip-more.visible,#strip-less.visible{opacity:1;}
-#bb-more span,#bb-less span,#strip-more span,#strip-less span{display:block;width:7px;height:7px;border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);animation:chev .9s ease-in-out infinite;}
-#bb-more span,#strip-more span{transform:rotate(45deg);}
-#bb-less span,#strip-less span{transform:rotate(-135deg);animation-name:chev-up;}
-#bb-more span:nth-child(2),#bb-less span:nth-child(2),#strip-more span:nth-child(2),#strip-less span:nth-child(2){animation-delay:.2s;opacity:.55;}
+#bb-more.visible,#bb-less.visible{opacity:1;}
+#bb-more span,#bb-less span{display:block;width:7px;height:7px;border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);animation:chev .9s ease-in-out infinite;}
+#bb-more span{transform:rotate(45deg);}
+#bb-less span{transform:rotate(-135deg);animation-name:chev-up;}
+#bb-more span:nth-child(2),#bb-less span:nth-child(2){animation-delay:.2s;opacity:.55;}
 @keyframes chev{0%,100%{transform:rotate(45deg) translate(0,0);opacity:.9;}50%{transform:rotate(45deg) translate(2px,2px);opacity:.4;}}
 @keyframes chev-up{0%,100%{transform:rotate(-135deg) translate(0,0);opacity:.9;}50%{transform:rotate(-135deg) translate(2px,2px);opacity:.4;}}
 
 /* ── BOARD STRIP ── */
-#board-strip{width:min(640px,92%);position:relative;z-index:10;margin-top:clamp(22px,3.5vh,38px);max-height:clamp(140px,28vh,260px);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:clamp(4px,.7vh,8px);}
+#board-strip{width:min(640px,92%);position:relative;z-index:10;margin-top:clamp(22px,3.5vh,38px);max-height:clamp(140px,28vh,260px);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:clamp(2px,.4vh,4px);}
 #board-strip::-webkit-scrollbar{width:0;}
 #loc{font-family:monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(238,232,192,.5);cursor:pointer;transition:color .2s;display:inline-block;}
 #loc:hover{color:rgba(238,232,192,.85);}
@@ -191,7 +189,7 @@ body.desk-lamp-on #window-lampfog{opacity:1;}
 .bc.rising{animation:bc-rise .4s var(--ease) forwards;}
 
 /* ── CORRIDOR ── */
-.corridor-progress{font-family:monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(238,232,192,.38);margin-bottom:clamp(6px,1vh,10px);}
+.corridor-progress{font-family:monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(238,232,192,.38);margin-bottom:clamp(3px,.5vh,6px);}
 .corridor-action{background:transparent;border:none;padding:clamp(7px,.9vh,10px) 0;cursor:pointer;transition:padding-left .2s var(--ease);display:flex;align-items:center;gap:11px;width:auto;}
 .corridor-action:hover{padding-left:6px;}
 .ca-title{font-family:'Cormorant SC',Georgia,serif;font-size:clamp(15px,1.8vw,20px);font-weight:300;color:rgba(200,160,32,.55);line-height:1.2;border-bottom:1px solid rgba(200,160,32,.16);padding-bottom:2px;transition:color .3s var(--ease),border-color .3s var(--ease);}
@@ -616,15 +614,13 @@ body.desk-lamp-on #window-lampfog{opacity:1;}
       </div>
     </div>
 
-    <div id="strip-wrap" style="position:relative;width:min(640px,92%);align-self:center;overflow:hidden;">
+    <div id="strip-wrap" style="position:relative;width:min(640px,92%);align-self:center;">
       <div id="board-strip">
         <div id="loc" onclick="goToCorridorOrStairwell()">
           <span id="floor-label">The Stairwell</span>
         </div>
         <div id="choices"></div>
       </div>
-      <div id="strip-less"><span></span><span></span></div>
-      <div id="strip-more"><span></span><span></span></div>
     </div>
 
   </div><!-- /board-content -->
@@ -1041,11 +1037,11 @@ function board(lines, choices, extra, _noErase) {
       var btn=document.createElement('button');
       btn.className='bc rising'; btn.style.animationDelay=(i*80)+'ms';
       btn.innerHTML=c.l; btn.onclick=(function(cf){ return function(){ if(_boardSkip){ var sk=_boardSkip; _boardSkip=null; sk(); } cf(); }; })(c.f);
+      if(c.hint){ btn.addEventListener('mouseenter',function(){ chalkHint(c.hint); }); btn.addEventListener('mouseleave',chalkRestore); }
       choicesEl.appendChild(btn);
     });
   }
   if(extra){ var ex=document.createElement('div'); ex.innerHTML=extra; choicesEl.appendChild(ex); }
-  setTimeout(updateStripMore,50);
 }
 
 // ── POPUP ──
@@ -1128,15 +1124,8 @@ function updateBoardMore(){
   if(more) more.classList.toggle('visible',ov && bb.scrollTop+bb.clientHeight<bb.scrollHeight-6);
   if(less) less.classList.toggle('visible',ov && bb.scrollTop>2);
 }
-function updateStripMore(){
-  var s=$id('board-strip'), more=$id('strip-more'), less=$id('strip-less'); if(!s) return;
-  var ov=s.scrollHeight>s.clientHeight+8;
-  if(more) more.classList.toggle('visible',ov && s.scrollTop+s.clientHeight<s.scrollHeight-6);
-  if(less) less.classList.toggle('visible',ov && s.scrollTop>2);
-}
 (function(){
   var bb=$id('bb'); if(bb) bb.addEventListener('scroll',updateBoardMore);
-  var st=$id('board-strip'); if(st) st.addEventListener('scroll',updateStripMore);
   function hookChev(moreId,lessId,scrollId,fn){
     var m=$id(moreId),l=$id(lessId),s=$id(scrollId); if(!s) return;
     var iv=null;
@@ -1147,7 +1136,6 @@ function updateStripMore(){
   }
   setTimeout(function(){
     hookChev('bb-more','bb-less','bb',updateBoardMore);
-    hookChev('strip-more','strip-less','board-strip',updateStripMore);
   },500);
 })();
 
@@ -1352,20 +1340,8 @@ function corridor(){
   ];
   var qt=quotes[Math.floor(Math.random()*quotes.length)];
   var obs=allAssessed?'All ten rooms assessed. The application may now be filed.':assessed>0?assessed+' of 10 rooms assessed.':'';
-  var doors=
-    '<div class="corridor-progress">'+obs+'</div>'+
-    '<div style="display:flex;flex-direction:column;align-items:flex-start;">'+
-      '<button class="corridor-action" onmouseenter="chalkHint(\'Speak to the Clerk\')" onmouseleave="chalkRestore()" onclick="fullClerk()">'+
-        '<div><span class="ca-title">Speak to the Clerk</span></div>'+
-      '</button>'+
-    '</div>'+
-    '<div onmouseenter="this.style.color=\'rgba(238,232,192,.7)\'" '+
-         'onmouseleave="this.style.color=\'rgba(238,232,192,.22)\'" '+
-         'onclick="openMap()" '+
-         'style="font-family:monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(238,232,192,.22);margin-top:clamp(10px,1.5vh,16px);cursor:pointer;transition:color .3s ease">'+
-      'Use the map to enter a room'+
-    '</div>';
-  var choices=[];
+  var doors=(obs ? '<div class="corridor-progress">'+obs+'</div>' : '');
+  var choices=[{l:'Speak to the Clerk',f:fullClerk,hint:'The Clerk\'s office is at the end of the corridor.'}];
   if(allAssessed) choices.push({l:'File the application \u2192',f:generateLetter});
   board(['\u201c'+qt.q+'\u201d','\u2014 '+qt.a],choices,doors);
 }
@@ -1390,14 +1366,7 @@ function enterRoom(idx){
     plaque.onmouseleave=chalkRestore;
   }
   var lines=c.aubrey_enter?c.aubrey_enter.split('\n').filter(function(l){ return l.trim(); }):[c.title+'.'];
-  var studyHint=
-    '<div onmouseenter="this.style.color=\'rgba(238,232,192,.7)\'" '+
-         'onmouseleave="this.style.color=\'rgba(238,232,192,.22)\'" '+
-         'onclick="toggleStudyFlyup(event)" '+
-         'style="font-family:monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(238,232,192,.22);margin-top:clamp(10px,1.5vh,16px);cursor:pointer;transition:color .3s ease">'+
-      'Study available documents.'+
-    '</div>';
-  board(lines,[{l:'Return to corridor',f:corridor}],studyHint);
+  board(lines,[{l:'Return to corridor',f:corridor}]);
 }
 
 function deskPanel(idx){
@@ -1706,14 +1675,20 @@ function toggleDeskLamp(){
     if(_lampBoardSnapshot!==null){
       var chalk=$id('chalk'),choices=$id('choices');
       if(chalk){ chalk.innerHTML=_lampBoardSnapshot.chalk; chalk.querySelectorAll('p').forEach(function(p){ p.style.opacity='1'; p.style.transition='none'; }); }
-      if(choices) choices.innerHTML=_lampBoardSnapshot.choices;
+      if(choices && _lampBoardSnapshot.choiceNodes){
+        choices.innerHTML='';
+        _lampBoardSnapshot.choiceNodes.forEach(function(n){ choices.appendChild(n); });
+      }
+      if(_lampBoardSnapshot.label) setFloorLabel(_lampBoardSnapshot.label);
       _lampBoardSnapshot=null;
     }
     return;
   }
   var chalk=$id('chalk'),choices=$id('choices');
-  _lampBoardSnapshot={chalk:chalk?chalk.innerHTML:'',choices:choices?choices.innerHTML:''};
-  _lampOn(); openExcerptMenu();
+  var fl=$id('floor-label');
+  var nodes=choices?Array.from(choices.childNodes):[];
+  _lampBoardSnapshot={chalk:chalk?chalk.innerHTML:'',choiceNodes:nodes,label:fl?fl.textContent:''};
+  _lampOn(); setFloorLabel('Desk Lamp \u2014 On'); openExcerptMenu();
 }
 
 function openExcerptMenu(){
