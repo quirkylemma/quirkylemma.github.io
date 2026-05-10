@@ -231,28 +231,90 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 }
 .np-shelf-btn:hover { color: rgba(200,160,32,.65); }
 .np-shelf-btn.active { color: rgba(200,160,32,.85); border-bottom-color: rgba(200,160,32,.55); }
-#np-body {
-  font-family: 'Libertinus', KaTeX_Main, Georgia, serif;
-  font-size: clamp(15px,1.7vw,18px);
-  line-height: 1.9;
-  color: rgba(240,235,205,.82);
+/* ── NODE POPUP ── */
+.np-shelf-btn {
+  background:none; border:none; border-bottom:2px solid transparent;
+  color:rgba(240,235,205,.38); font-family:'Inter',system-ui,sans-serif;
+  font-weight:400; font-size:12px; letter-spacing:.04em;
+  padding:12px 20px 10px; cursor:pointer; transition:color .15s,border-color .15s;
 }
-#np-body p {
+.np-shelf-btn:hover { color:rgba(240,235,205,.7); }
+.np-shelf-btn.active { color:rgba(240,235,205,.92); border-bottom-color:rgba(200,160,32,.6); }
+#np-body {
+  font-family: 'Inter',system-ui,sans-serif;
+  font-size: clamp(16px,1.8vw,19px);
+  line-height: 1.95;
+  color: rgba(240,235,205,.88);
+  font-weight: 400;
+}
+/* doc card — paper inside dark popup */
+.doc-card {
+  background: linear-gradient(160deg, #FAFAF7 0%, #F4F1EA 100%);
+  border: 1px solid rgba(26,22,16,.09);
+  box-shadow: 0 2px 8px rgba(0,0,0,.18), 4px 6px 24px rgba(0,0,0,.14);
+  padding: clamp(24px,3vh,36px) clamp(24px,3.5vw,40px) clamp(28px,4vh,44px);
+  position: relative;
+  color: #2C2618;
+}
+.doc-card::before {
+  content: '';
+  position: absolute;
+  bottom: -5px; left: 7px; right: -7px; top: 5px;
+  background: #EDE8CC;
+  border: 1px solid rgba(26,22,16,.05);
+  z-index: -1;
+}
+.doc-card p {
+  font-size: clamp(15px,1.65vw,18px);
+  line-height: 1.95;
+  color: #2C2618;
   margin-bottom: 1.4em;
 }
-#np-body p:first-child { margin-top: 0; }
+.doc-card p:first-child { margin-top: 0; }
+.doc-card p:last-child { margin-bottom: 0; }
+.doc-card em { font-style: italic; color: #3C3020; }
+.doc-card strong { font-weight: 600; color: #1C1810; }
+.doc-card div[style*="border-top"] {
+  border-top-color: rgba(26,22,16,.12) !important;
+}
+.doc-card p[style*="text-align:center"] {
+  color: #5A4E38 !important;
+  border-color: rgba(26,22,16,.12) !important;
+}
+/* doc-card lead sentence */
+.doc-card p[style*="font-size:1.15em"] {
+  color: #1C1810 !important;
+  font-weight: 500;
+}
+/* exam on card */
+.doc-card .np-exam-q {
+  color: #1C1810 !important;
+}
+.doc-card .np-exam-opt {
+  background: rgba(28,58,56,.04) !important;
+  border-color: rgba(28,58,56,.2) !important;
+  color: #2C2618 !important;
+}
+.doc-card .np-exam-opt:hover {
+  background: rgba(28,58,56,.10) !important;
+  border-color: rgba(28,58,56,.45) !important;
+}
+
+#np-body p { margin-bottom:1.5em; }
+#np-body p:first-child { margin-top:0; }
+#np-body em { font-style:italic; font-weight:400; }
+#np-body strong { font-weight:600; }
 .np-exam-opt {
   display:block; width:100%; text-align:left;
   background:rgba(200,160,32,.05); border:1px solid rgba(200,160,32,.18);
-  color:rgba(240,235,205,.72);
-  font-family:'Libertinus',KaTeX_Main,Georgia,serif;
-  font-size:clamp(17px,1.9vw,20px); line-height:1.8;
-  padding:12px 16px; cursor:pointer;
+  color:rgba(240,235,205,.75);
+  font-family:'Inter',system-ui,sans-serif;
+  font-weight:400;
+  font-size:clamp(15px,1.7vw,18px); line-height:1.75;
+  padding:12px 16px; cursor:pointer; margin-bottom:8px;
   transition:background .15s,border-color .15s;
 }
-.np-exam-opt:hover { background:rgba(200,160,32,.12); border-color:rgba(200,160,32,.4); }
-#np-body em { font-family: KaTeX_Math, KaTeX_Main, serif; font-style: italic; }
-#np-body strong { font-family: KaTeX_Main, serif; font-weight: bold; }
+.np-exam-opt:hover { background:rgba(200,160,32,.12); border-color:rgba(200,160,32,.45); }
 
 .bb-chev {
   position: absolute; right: 10px;
@@ -752,23 +814,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 
 <script type="text/ql-anim-b64" id="anim-room1-bureau">PGRpdiBzdHlsZT0ibWFyZ2luOjAgMCAyNHB4O2JhY2tncm91bmQ6IzA3MDkwZjtvdmVyZmxvdzpoaWRkZW47Ij4KPHN0eWxlPgoucWwtd3JhcHtiYWNrZ3JvdW5kOiMwNzA5MGY7b3ZlcmZsb3c6aGlkZGVuO30KLnFsLXdyYXAgY2FudmFze2Rpc3BsYXk6YmxvY2s7d2lkdGg6MTAwJTt9Ci5xbC1sb2d7cGFkZGluZzoxNHB4IDI0cHggNHB4O21pbi1oZWlnaHQ6ODhweDtkaXNwbGF5OmZsZXg7ZmxleC1kaXJlY3Rpb246Y29sdW1uO2dhcDowO2ZvbnQtZmFtaWx5OkludGVyLHN5c3RlbS11aSxzYW5zLXNlcmlmO2ZvbnQtd2VpZ2h0OjMwMDt9Ci5xbC1mcntkaXNwbGF5OmZsZXg7YWxpZ24taXRlbXM6YmFzZWxpbmU7Z2FwOjE0cHg7b3BhY2l0eTowO3RyYW5zZm9ybTp0cmFuc2xhdGVZKDZweCk7dHJhbnNpdGlvbjpvcGFjaXR5IC43cyBjdWJpYy1iZXppZXIoMC4xNiwxLDAuMywxKSx0cmFuc2Zvcm0gLjdzIGN1YmljLWJlemllcigwLjE2LDEsMC4zLDEpO30KLnFsLWZyLmlue29wYWNpdHk6MTt0cmFuc2Zvcm06bm9uZTt9Ci5xbC1mci5kaW0uaW57b3BhY2l0eTouMjt9Ci5xbC1mbntmb250LXNpemU6MTBweDtsZXR0ZXItc3BhY2luZzouMjJlbTt0ZXh0LXRyYW5zZm9ybTp1cHBlcmNhc2U7Y29sb3I6cmdiYSgyMzgsMjMyLDE5MiwuMzIpO21pbi13aWR0aDo0OHB4O3BhZGRpbmctdG9wOjJweDt9Ci5xbC1mb3tmb250LXNpemU6MTJweDtsZXR0ZXItc3BhY2luZzouMjJlbTt0ZXh0LXRyYW5zZm9ybTp1cHBlcmNhc2U7Y29sb3I6I0VFRThDNDtsaW5lLWhlaWdodDoxLjg7fQoucWwtc3R7Zm9udC1zaXplOjEycHg7bGV0dGVyLXNwYWNpbmc6LjE4ZW07dGV4dC10cmFuc2Zvcm06dXBwZXJjYXNlO2NvbG9yOiNFRUU4QzQ7bGluZS1oZWlnaHQ6MS45O29wYWNpdHk6MDt0cmFuc2Zvcm06dHJhbnNsYXRlWSg2cHgpO3RyYW5zaXRpb246b3BhY2l0eSAuOXMgY3ViaWMtYmV6aWVyKDAuMTYsMSwwLjMsMSksdHJhbnNmb3JtIC45cyBjdWJpYy1iZXppZXIoMC4xNiwxLDAuMywxKTt9Ci5xbC1zdC5pbntvcGFjaXR5OjE7dHJhbnNmb3JtOm5vbmU7fQoucWwtc3QuZGltLmlue29wYWNpdHk6LjI4O30KLnFsLXN0LnNwe21hcmdpbi10b3A6OHB4O30KLnFsLWZvb3R7cGFkZGluZzo2cHggMjRweCAxNHB4O30KLnFsLWJ0bntmb250LWZhbWlseTpJbnRlcixzeXN0ZW0tdWksc2Fucy1zZXJpZjtmb250LXNpemU6MTFweDtmb250LXdlaWdodDozMDA7bGV0dGVyLXNwYWNpbmc6LjJlbTt0ZXh0LXRyYW5zZm9ybTp1cHBlcmNhc2U7YmFja2dyb3VuZDp0cmFuc3BhcmVudDtib3JkZXI6MXB4IHNvbGlkIHJnYmEoMjM4LDIzMiwxOTIsLjI1KTtjb2xvcjpyZ2JhKDIzOCwyMzIsMTkyLC41KTtwYWRkaW5nOjdweCAyMnB4O2N1cnNvcjpwb2ludGVyO3RyYW5zaXRpb246YWxsIC4yczt9Ci5xbC1idG46aG92ZXJ7Ym9yZGVyLWNvbG9yOnJnYmEoMjM4LDIzMiwxOTIsLjcpO2NvbG9yOnJnYmEoMjM4LDIzMiwxOTIsLjkpO30KLnFsLWJ0bjpkaXNhYmxlZHtvcGFjaXR5Oi4xMjtjdXJzb3I6ZGVmYXVsdDt9Cjwvc3R5bGU+CjxkaXYgY2xhc3M9InFsLXdyYXAiPgo8Y2FudmFzIGlkPSJxbC1jdiIgd2lkdGg9IjcwMCIgaGVpZ2h0PSIyMzUiPjwvY2FudmFzPgo8ZGl2IGNsYXNzPSJxbC1sb2ciIGlkPSJxbC1sb2ciPjwvZGl2Pgo8ZGl2IGNsYXNzPSJxbC1mb290Ij48YnV0dG9uIGNsYXNzPSJxbC1idG4iIGlkPSJxbC1idG4iPkJlZ2luPC9idXR0b24+PC9kaXY+CjwvZGl2Pgo8c2NyaXB0IHNyYz0iaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L25wbS9yb3VnaGpzQDQuNi42L2J1bmRsZWQvcm91Z2guanMiPjwvc2NyaXB0Pgo8c2NyaXB0PgooZnVuY3Rpb24oKXsKdmFyIGN2PWRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdxbC1jdicpLGN0eD1jdi5nZXRDb250ZXh0KCcyZCcpOwp2YXIgVz03MDAsSD0yMzUsRlk9MTgyLENSPTU5MCxDVz04LENEPTMwLENSMj0yMixFUkM9RlkrQ0QtQ1IyOwp2YXIgQkc9JyMwNzA5MGYnLENLPSdyZ2JhKDIzOCwyMzIsMTkyLC45MCknLENTPSdyZ2JhKDIzOCwyMzIsMTkyLC4yMCknLENHPSdyZ2JhKDIzOCwyMzIsMTkyLC4xMCknLFdIPSdyZ2JhKDI1NSwyNTUsMjU1LC45MiknOwp2YXIgcmM9bnVsbCxzTj0wLHJhZj1udWxsLHJ1bj1mYWxzZSxTQU5TPSdJbnRlcixzeXN0ZW0tdWksc2Fucy1zZXJpZicsRlM9MTY7CmZ1bmN0aW9uIGlSQygpe2lmKCFyYyYmd2luZG93LnJvdWdoKXJjPXJvdWdoLmNhbnZhcyhjdik7fQp2YXIgcm89ZnVuY3Rpb24obyl7cmV0dXJuIE9iamVjdC5hc3NpZ24oe3N0cm9rZTpDSyxzdHJva2VXaWR0aDoxLjkscm91Z2huZXNzOjAuNyxib3dpbmc6MC41LGZpbGw6J25vbmUnfSxvfHx7fSk7fTsKdmFyIHJvZD1mdW5jdGlvbihvKXtyZXR1cm4gT2JqZWN0LmFzc2lnbih7c3Ryb2tlOkNTLHN0cm9rZVdpZHRoOjEuMSxyb3VnaG5lc3M6MS41LGJvd2luZzowLjcsZmlsbDonbm9uZSd9LG98fHt9KTt9Owp2YXIgcm9nPWZ1bmN0aW9uKG8pe3JldHVybiBPYmplY3QuYXNzaWduKHtzdHJva2U6Q0csc3Ryb2tlV2lkdGg6MS4wLHJvdWdobmVzczoxLjQsYm93aW5nOjAuOCxmaWxsOidub25lJ30sb3x8e30pO307CnZhciByb3c9ZnVuY3Rpb24obyl7cmV0dXJuIE9iamVjdC5hc3NpZ24oe3N0cm9rZTpXSCxzdHJva2VXaWR0aDoxLjgscm91Z2huZXNzOjEuMixib3dpbmc6MC45LGZpbGw6J25vbmUnfSxvfHx7fSk7fTsKdmFyIHJvYj1mdW5jdGlvbihvKXtyZXR1cm4gT2JqZWN0LmFzc2lnbih7c3Ryb2tlOkNLLHN0cm9rZVdpZHRoOjIuMCxyb3VnaG5lc3M6MC42LGJvd2luZzowLjQsZmlsbDonbm9uZSd9LG98fHt9KTt9OwpmdW5jdGlvbiBkQkcoKXtjdHguZmlsbFN0eWxlPUJHO2N0eC5maWxsUmVjdCgwLDAsVyxIKTtjdHguc3Ryb2tlU3R5bGU9J3JnYmEoMjM4LDIzMiwxOTIsLjA0KSc7Y3R4LmxpbmVXaWR0aD0xO2Zvcih2YXIgeT0yNzt5PEg7eSs9Mjcpe2N0eC5iZWdpblBhdGgoKTtjdHgubW92ZVRvKDAseSk7Y3R4LmxpbmVUbyhXLHkpO2N0eC5zdHJva2UoKTt9fQpmdW5jdGlvbiBkRmwoKXtpZighcmMpcmV0dXJuO3JjLmxpbmUoMjAsRlksQ1ItQ1csRlkscm9kKCkpO3JjLmxpbmUoQ1IrQ1csRlksNjgwLEZZLHJvZCgpKTtyYy5saW5lKENSLUNXLEZZLENSLEZZK0NELHJvdygpKTtyYy5saW5lKENSLEZZK0NELENSK0NXLEZZLHJvdygpKTt9CmZ1bmN0aW9uIGRIYWlyU3coY3gsY3kpe3ZhciBvPXJvYih7c3Ryb2tlV2lkdGg6Mi4wLHJvdWdobmVzczowLjgsYm93aW5nOjEuMn0pO3JjLmxpbmUoY3gtOCxjeS0xMSxjeC0yLGN5LTI4LG8pO3JjLmxpbmUoY3gtMyxjeS0xMSxjeCs0LGN5LTI4LG8pO3JjLmxpbmUoY3grMyxjeS0xMSxjeCsxMCxjeS0yNixvKTtyYy5saW5lKGN4KzgsY3ktMTEsY3grMTUsY3ktMjMsbyk7cmMubGluZShjeC0xMCxjeS0xMSxjeCsxMCxjeS0xMSxyb2Ioe3N0cm9rZVdpZHRoOjEuMyxyb3VnaG5lc3M6MC40fSkpO30KZnVuY3Rpb24gZEhhaXJUUihjeCxjeSl7dmFyIG89cm9iKHtzdHJva2VXaWR0aDoyLjAscm91Z2huZXNzOjAuOCxib3dpbmc6MS44fSk7cmMubGluZShjeC02LGN5LTExLGN4KzIsY3ktMjgsbyk7cmMubGluZShjeC0xLGN5LTExLGN4KzgsY3ktMjcsbyk7cmMubGluZShjeCs1LGN5LTExLGN4KzE0LGN5LTI1LG8pO3JjLmxpbmUoY3grMTAsY3ktMTEsY3grMTgsY3ktMjIsbyk7cmMubGluZShjeC04LGN5LTExLGN4KzEyLGN5LTExLHJvYih7c3Ryb2tlV2lkdGg6MS4zLHJvdWdobmVzczowLjR9KSk7fQpmdW5jdGlvbiBkSGRGKGN4LGN5KXtyYy5jaXJjbGUoY3gsY3ksMjIscm9iKHtyb3VnaG5lc3M6MC40fSkpO3JjLmNpcmNsZShjeC02LGN5LTIsMixyb2Ioe3N0cm9rZVdpZHRoOjEuNSxyb3VnaG5lc3M6MC4zfSkpO3JjLmNpcmNsZShjeCs2LGN5LTIsMixyb2Ioe3N0cm9rZVdpZHRoOjEuNSxyb3VnaG5lc3M6MC4zfSkpO2RIYWlyU3coY3gsY3kpO30KZnVuY3Rpb24gZEhkQihjeCxjeSl7cmMuY2lyY2xlKGN4LGN5LDIyLHJvYih7cm91Z2huZXNzOjAuNH0pKTtkSGFpclN3KGN4LGN5KTt9CmZ1bmN0aW9uIGRIZFRSKGN4LGN5KXtyYy5jaXJjbGUoY3gsY3ksMjIscm9iKHtyb3VnaG5lc3M6MC40fSkpO3JjLmNpcmNsZShjeCxjeS0yLDIscm9iKHtzdHJva2VXaWR0aDoxLjUscm91Z2huZXNzOjAuM30pKTtyYy5jaXJjbGUoY3grOCxjeS0yLDIscm9iKHtzdHJva2VXaWR0aDoxLjUscm91Z2huZXNzOjAuM30pKTtkSGFpclRSKGN4LGN5KTt9CmZ1bmN0aW9uIGRTdChhcm0pe2lmKCFyYylyZXR1cm47dmFyIHg9NTIseT1GWSxvPXJvYigpO3JjLmxpbmUoeC01LHktMjQseC03LHksbyk7cmMubGluZSh4KzUseS0yNCx4KzcseSxvKTtyYy5saW5lKHgtNyx5LHgtMTgseSxvKTtyYy5saW5lKHgrNyx5LHgrMTgseSxvKTtyYy5saW5lKHgseS0yNCx4LHktNjgsbyk7dmFyIGF4PXgrTWF0aC5jb3MoYXJtKSozMCxheT15LTU4K01hdGguc2luKGFybSkqMzA7cmMubGluZSh4LHktNTgsYXgsYXksbyk7cmMubGluZSh4LHktNTgseC0yNix5LTQ4LG8pO2RIZEYoeCx5LTgyKTt9CmZ1bmN0aW9uIGRXayh4LHQpe2lmKCFyYylyZXR1cm47dmFyIHk9Rlksbz1yb2IoKSxzPU1hdGguc2luKHQqMC4wNikqMC42O3JjLmxpbmUoeCx5LTI0LHgtNitzKjcseSxvKTtyYy5saW5lKHgseS0yNCx4KzYtcyo3LHksbyk7cmMubGluZSh4LTYrcyo3LHkseC0xNCtzKjcseSxvKTtyYy5saW5lKHgrNi1zKjcseSx4KzE0LXMqNyx5LG8pO3JjLmxpbmUoeCx5LTI0LHgtNCx5LTY4LG8pO3JjLmxpbmUoeC00LHktNTgseC00K3MqNSx5LTQwLG8pO3JjLmxpbmUoeC00LHktNTgseC00LXMqNSx5LTQyLG8pO2RIZEIoeC00LHktODIpO30KZnVuY3Rpb24gZFN0ZCh4LHRhKXtpZighcmMpcmV0dXJuO3ZhciB5PUZZLG89cm9iKCk7cmMubGluZSh4LHktMjQseC0xMCx5LG8pO3JjLmxpbmUoeCx5LTI0LHgrMTAseSxvKTtyYy5saW5lKHgtMTAseSx4LTIwLHksbyk7cmMubGluZSh4KzEwLHkseCsyMCx5LG8pO3JjLmxpbmUoeCx5LTI0LHgtNCx5LTY2LG8pO3JjLmxpbmUoeC00LHktNTYseC0xOCx5LTM0LG8pO3JjLmxpbmUoeC00LHktNTYseCsxMix5LTM2LG8pO3ZhciBoeD14LTQsaHk9eS04MDtpZih0YTwwLjUpZEhkQihoeCxoeSk7ZWxzZSBkSGRUUihoeCxoeSk7fQpmdW5jdGlvbiBjVHgoY3gsY3ksc3gsZmFjZSl7aWYoIWZhY2V8fE1hdGguYWJzKHN4KTwwLjE4KXJldHVybjtjdHguc2F2ZSgpO2N0eC50cmFuc2xhdGUoY3gsY3kpO2N0eC5zY2FsZShzeCwxKTtjdHguZm9udD0nMzAwICcrRlMrJ3B4ICcrU0FOUztjdHguZmlsbFN0eWxlPUNLO2N0eC5nbG9iYWxBbHBoYT1NYXRoLm1pbigxLE1hdGguYWJzKHN4KSoxLjgpO2N0eC50ZXh0QWxpZ249J2NlbnRlcic7Y3R4LnRleHRCYXNlbGluZT0nbWlkZGxlJztjdHguZmlsbFRleHQoZmFjZS50b1VwcGVyQ2FzZSgpLDAsMCk7Y3R4LnJlc3RvcmUoKTt9CmZ1bmN0aW9uIGRDVShjeCxjeSxzeCxmYWNlKXtpZighcmMpcmV0dXJuO3ZhciBydz1NYXRoLm1heCgxLjUsQ1IyKk1hdGguYWJzKHN4KSk7cmMuZWxsaXBzZShjeCxjeSxydyoyLENSMioyLHJvKCkpO2NUeChjeCxjeSxzeCxmYWNlKTt9CmZ1bmN0aW9uIGRDRihjeCxyeSl7aWYoIXJjfHxyeTwwLjQpcmV0dXJuO3JjLmVsbGlwc2UoY3gsRlksQ1IyKjMuOCxNYXRoLm1heCgwLjgscnkqMikscm8oe3N0cm9rZVdpZHRoOjEuNn0pKTt9CmZ1bmN0aW9uIGRDRShleSx0aWx0LHdoKXtpZighcmMpcmV0dXJuO2N0eC5zYXZlKCk7Y3R4LnRyYW5zbGF0ZShDUixleSk7Y3R4LnJvdGF0ZSh0aWx0fHwwKTtyYy5lbGxpcHNlKDAsMCw1LENSMioyLHdoP3Jvdyh7c3Ryb2tlV2lkdGg6Mi4yfSk6cm8oe3N0cm9rZVdpZHRoOjEuOX0pKTtjdHgucmVzdG9yZSgpO30KZnVuY3Rpb24gZEhhbmQoY3gsY3ksbGJsLGFsKXtpZighcmN8fGFsPDAuMDEpcmV0dXJuO2N0eC5zYXZlKCk7Y3R4Lmdsb2JhbEFscGhhPWFsO3ZhciBvPXtzdHJva2U6Q0ssc3Ryb2tlV2lkdGg6MS43LHJvdWdobmVzczowLjYsYm93aW5nOjAuNCxmaWxsOidub25lJ307dmFyIGZ0PWN5K0NSMiozLUNSMioxLjI7cmMubGluZShjeC0xMCxmdCxjeC0xMCxmdCtDUjIqMS40LG8pO3JjLmxpbmUoY3gsZnQsY3gsZnQrQ1IyKjEuNCxvKTtyYy5saW5lKGN4KzEwLGZ0LGN4KzEwLGZ0K0NSMioxLjQsbyk7cmMuY2lyY2xlKGN4LGN5LENSMiozLHJvYih7c3Ryb2tlV2lkdGg6Mi40LHJvdWdobmVzczowLjV9KSk7Y3R4LmZpbGxTdHlsZT1DSztjdHguZm9udD0nMzAwICcrRlMrJ3B4ICcrU0FOUztjdHgudGV4dEFsaWduPSdjZW50ZXInO2N0eC50ZXh0QmFzZWxpbmU9J21pZGRsZSc7Y3R4LmZpbGxUZXh0KGxibC50b1VwcGVyQ2FzZSgpLGN4LGN5KTtjdHgucmVzdG9yZSgpO30KZnVuY3Rpb24gZFBDKCl7c3QucGMuZm9yRWFjaChmdW5jdGlvbihjKXtpZighcmMpcmV0dXJuO3JjLmVsbGlwc2UoYy54LEZZLENSMiozLjYsOSxyb2coKSk7fSk7fQp2YXIgV1M9NTIsV0U9Q1ItNDQ7CnZhciBzdD17cGg6J2lkbGUnLHQ6MCxjeDoxMDAsY3k6RlktQ1IyLHN4OjEsY2Y6JycsY3Y6ZmFsc2Uscnk6Q1IyLGZ4OjAsZnY6ZmFsc2UsaHg6MCxoeTo4MCxobDonJyxoYTowLGh2OmZhbHNlLGV4OkZZLUNSMixldDowLGV2OmZhbHNlLGV3OmZhbHNlLHd4OldTLHdrOmZhbHNlLGFyOmZhbHNlLHRhOjAsYXJtOi1NYXRoLlBJLzUscGM6W10sbHg6MzAwLGRvbmU6bnVsbH07CmZ1bmN0aW9uIGxlcnAoYSxiLHQpe3JldHVybiBhKyhiLWEpKnQ7fQpmdW5jdGlvbiBlTyh0KXtyZXR1cm4gMS0oMS10KSooMS10KTt9CmZ1bmN0aW9uIGVPMyh0KXtyZXR1cm4gMS0oMS10KSooMS10KSooMS10KTt9CmZ1bmN0aW9uIGVJTyh0KXtyZXR1cm4gdDwwLjU/Mip0KnQ6MS0yKigxLXQpKigxLXQpO30KZnVuY3Rpb24gZUlPUyh0KXtyZXR1cm4gdDwwLjU/NCp0KnQqdDoxLTQqKDEtdCkqKDEtdCkqKDEtdCk7fQpmdW5jdGlvbiBjbGFtcCh2LGxvLGhpKXtyZXR1cm4gTWF0aC5tYXgobG8sTWF0aC5taW4oaGksdikpO30KZnVuY3Rpb24gYnoocDAscDEscDIsdCl7cmV0dXJuIGxlcnAobGVycChwMCxwMSx0KSxsZXJwKHAxLHAyLHQpLHQpO30KZnVuY3Rpb24gcmVuZGVyKCl7ZEJHKCk7ZEZsKCk7aWYoc3QuYXIpZFN0ZChzdC53eCxzdC50YSk7ZWxzZSBpZihzdC53aylkV2soc3Qud3gsc3QudCk7ZWxzZSBkU3Qoc3QuYXJtKTtkUEMoKTtpZihzdC5mdilkQ0Yoc3QuZngsc3QucnkpO2lmKHN0LmN2KWRDVShzdC5jeCxzdC5jeSxzdC5zeCxzdC5jZik7aWYoc3QuaHYpZEhhbmQoc3QuaHgsc3QuaHksc3QuaGwsc3QuaGEpO2lmKHN0LmV2KWRDRShzdC5leCxzdC5ldCxzdC5ldyk7fQp2YXIgUEg9ewogIHdpbmR1cDpmdW5jdGlvbihzKXt2YXIgZD0xOCxwPWNsYW1wKHMudC9kLDAsMSk7cy5hcm09bGVycCgtTWF0aC5QSS81LC1NYXRoLlBJKjAuMzUsZU8ocCkpO3MuY3Y9ZmFsc2U7aWYocy50Pj1kKXtzLnBoPSdhcmMnO3MudD0wO319LAogIGFyYzpmdW5jdGlvbihzKXt2YXIgZD02MixwPWNsYW1wKHMudC9kLDAsMSk7cy5jeD1ieigxMDAscy5seC8yKzQwLHMubHgscCk7cy5jeT0oRlktQ1IyKS1NYXRoLnNpbihwKk1hdGguUEkpKjE3MDtzLnN4PU1hdGguY29zKHAqTWF0aC5QSSo0LjIpO3MuY3Y9dHJ1ZTtzLmZ2PWZhbHNlO3MuaHY9ZmFsc2U7cy5hcm09bGVycCgtTWF0aC5QSSowLjM1LC1NYXRoLlBJKjEuMDUsY2xhbXAocy50LzIyLDAsMSkpO2lmKHMudD49ZCl7cy5waD0nYjEnO3MudD0wO319LAogIGIxOmZ1bmN0aW9uKHMpe3ZhciBkPTI0LHA9Y2xhbXAocy50L2QsMCwxKTtzLmN4PWxlcnAocy5seCxzLmx4KzM2LHApO3MuY3k9KEZZLUNSMiktTWF0aC5zaW4ocCpNYXRoLlBJKSozNjtzLnN4PU1hdGguY29zKHAqTWF0aC5QSSoxLjIrTWF0aC5QSSo0LjIpO2lmKHMudD49ZCl7cy5waD0nYjInO3MudD0wO319LAogIGIyOmZ1bmN0aW9uKHMpe3ZhciBkPTE2LHA9Y2xhbXAocy50L2QsMCwxKTtzLmN4PWxlcnAocy5seCszNixzLmx4KzUwLHApO3MuY3k9KEZZLUNSMiktTWF0aC5zaW4ocCpNYXRoLlBJKSoxNDtzLnN4PU1hdGguY29zKHAqTWF0aC5QSSowLjcrTWF0aC5QSSo1LjQpO2lmKHMudD49ZCl7cy5jeD1zLmx4O3MuY3k9RlktQ1IyO3Muc3g9MTtzLnBoPSd3Yic7cy50PTA7fX0sCiAgd2I6ZnVuY3Rpb24ocyl7dmFyIGQ9NTIscD1jbGFtcChzLnQvZCwwLDEpLGZsPTEtZU8zKHApO2lmKGZsPjAuMjgpe3MuY3k9RlktQ1IyKmZsO3Muc3g9MTtzLmN2PXRydWU7cy5mdj1mYWxzZTt9ZWxzZXtzLmN2PWZhbHNlO3MuZnY9dHJ1ZTtzLmZ4PXMubHg7cy5yeT1NYXRoLm1heCgyLjUsQ1IyKmZsKTt9aWYocy50Pj1kKXtzLnBoPSdzZSc7cy50PTA7cy5jdj1mYWxzZTtzLmZ2PXRydWU7cy5yeT0yLjU7fX0sCiAgc2U6ZnVuY3Rpb24ocyl7cy5yeT0yLjUrTWF0aC5zaW4ocy50Kk1hdGguUEkvMTQpKjEuMjtpZihzLnQ+PTE0KXtzLnJ5PTIuNTtzLnBoPSdsaSc7cy50PTA7cy5oeD1zLmx4O3MuaHk9RlktQ1IyKjQ7cy5obD1zLmNmO319LAogIGxpOmZ1bmN0aW9uKHMpe3ZhciBkPTQwLHA9Y2xhbXAocy50L2QsMCwxKTtzLmh2PXRydWU7cy5oYT1lTyhwKTtzLmh5PWxlcnAoRlktQ1IyKjQtMzAsRlktQ1IyKjQsZU8zKHApKTtpZihzLnQ+PWQpe3MucGg9J2hvJztzLnQ9MDt9fSwKICBobzpmdW5jdGlvbihzKXtpZihzLnQ+PTUwKXtzLnBoPSdpZGxlJztpZihzLmRvbmUpcy5kb25lKCk7fX0sCiAgZVd1OmZ1bmN0aW9uKHMpe3ZhciBkPTE4LHA9Y2xhbXAocy50L2QsMCwxKTtzLmFybT1sZXJwKC1NYXRoLlBJLzUsLU1hdGguUEkqMC4zNSxlTyhwKSk7cy5jdj1mYWxzZTtpZihzLnQ+PWQpe3MucGg9J2VBcic7cy50PTA7fX0sCiAgZUFyOmZ1bmN0aW9uKHMpe3ZhciBkPTY1LHA9Y2xhbXAocy50L2QsMCwxKTtzLmN4PWJ6KDEwMCwzNjAsQ1IscCk7cy5jeT0oRlktQ1IyKS1NYXRoLnNpbihwKk1hdGguUEkpKjE4MDtzLnN4PTAuMDg7cy5jZj0nJztzLmN2PXRydWU7cy5ldj1mYWxzZTtzLmFybT1sZXJwKC1NYXRoLlBJKjAuMzUsLU1hdGguUEkqMS4wNSxjbGFtcChzLnQvMjIsMCwxKSk7aWYocy50Pj1kKXtzLnBoPSdlQm8nO3MudD0wO319LAogIGVCbzpmdW5jdGlvbihzKXt2YXIgZD0yMixwPWNsYW1wKHMudC9kLDAsMSk7cy5jeD1sZXJwKENSLENSKzI4LHApO3MuY3k9KEZZLUNSMiktTWF0aC5zaW4ocCpNYXRoLlBJKSoyNjtpZihzLnQ+PWQpe3MucGg9J2VSbyc7cy50PTA7fX0sCiAgZVJvOmZ1bmN0aW9uKHMpe3ZhciBkPTU1LHA9Y2xhbXAocy50L2QsMCwxKTtzLmN4PWxlcnAoQ1IrMjgsQ1IsZUlPKHApKTtzLmN5PUZZLUNSMjtpZihzLnQ+PWQpe3MuY3Y9ZmFsc2U7cy5ldj10cnVlO3MuZXg9RlktQ1IyO3MuZXQ9MDtzLnBoPSdlRHInO3MudD0wO319LAogIGVEcjpmdW5jdGlvbihzKXt2YXIgZD0yNSxwPWNsYW1wKHMudC9kLDAsMSk7cy5leD1sZXJwKEZZLUNSMixFUkMsZU8ocCkpO2lmKHMudD49ZCl7cy5waD0nZVdiJztzLnQ9MDt9fSwKICBlV2I6ZnVuY3Rpb24ocyl7dmFyIGFtcD0yOCpNYXRoLmV4cCgtcy50KjAuMDM0KTtzLmV0PU1hdGguc2luKHMudCowLjI1KSphbXAqKE1hdGguUEkvMTgwKTtzLmV4PUVSQztpZihzLnQ+MTAwKXtzLmV0PTA7cy5ldz10cnVlO3MucGg9J2VSZSc7cy50PTA7fX0sCiAgZVJlOmZ1bmN0aW9uKHMpe3MuZXg9RVJDO3MuZXQ9MDtpZihzLnQ9PT04JiZzLmRvbmUpcy5kb25lKCk7fSwKICBwYXVzZTpmdW5jdGlvbihzKXtpZihzLnQ+PTgwKXtzLnBoPSd3YWxrJztzLnQ9MDtzLndrPXRydWU7cy53eD1XUzt9fSwKICB3YWxrOmZ1bmN0aW9uKHMpe3ZhciBkPTM2MCxwPWNsYW1wKHMudC9kLDAsMSk7cy53eD1sZXJwKFdTLFdFLGVJT1MocCkpO2lmKHMudD49ZCl7cy53az1mYWxzZTtzLmFyPXRydWU7cy50YT0wO3MucGg9J3R1cm4nO3MudD0wO319LAogIHR1cm46ZnVuY3Rpb24ocyl7dmFyIGQ9NjAscD1jbGFtcChzLnQvZCwwLDEpO3MudGE9ZU8ocCk7aWYocy50Pj1kKXtzLnBoPSdzbmQnO3MudD0wO319LAogIHNuZDpmdW5jdGlvbihzKXtzLmFyPXRydWU7cy50YT0xO30KfTsKZnVuY3Rpb24gdGljaygpe2lmKCFydW4pcmV0dXJuO3N0LnQrKztpZihQSFtzdC5waF0pUEhbc3QucGhdKHN0KTtyZW5kZXIoKTtyYWY9cmVxdWVzdEFuaW1hdGlvbkZyYW1lKHRpY2spO30KZnVuY3Rpb24gc3RhcnRBKCl7aWYocmFmKWNhbmNlbEFuaW1hdGlvbkZyYW1lKHJhZik7cnVuPXRydWU7cmFmPXJlcXVlc3RBbmltYXRpb25GcmFtZSh0aWNrKTt9CmZ1bmN0aW9uIHN0b3BBKCl7cnVuPWZhbHNlO2lmKHJhZil7Y2FuY2VsQW5pbWF0aW9uRnJhbWUocmFmKTtyYWY9bnVsbDt9fQp2YXIgZWw9ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3FsLWxvZycpOwpmdW5jdGlvbiBjbEwoKXtlbC5pbm5lckhUTUw9Jyc7fQpmdW5jdGlvbiBmUm93KG51bSxvdXQsY2xzLGRlbGF5KXt2YXIgcj1kb2N1bWVudC5jcmVhdGVFbGVtZW50KCdkaXYnKTtyLmNsYXNzTmFtZT0ncWwtZnIgJysoY2xzfHwnJyk7ci5pbm5lckhUTUw9JzxzcGFuIGNsYXNzPSJxbC1mbiI+JytudW0rJzwvc3Bhbj48c3BhbiBjbGFzcz0icWwtZm8iPicrb3V0Kyc8L3NwYW4+JztlbC5hcHBlbmRDaGlsZChyKTtzZXRUaW1lb3V0KGZ1bmN0aW9uKCl7ci5jbGFzc0xpc3QuYWRkKCdpbicpO30sZGVsYXl8fDApO30KZnVuY3Rpb24gc3RtdCh0eHQsY2xzLGRlbGF5KXt2YXIgZD1kb2N1bWVudC5jcmVhdGVFbGVtZW50KCdkaXYnKTtkLmNsYXNzTmFtZT0ncWwtc3QgJysoY2xzfHwnJyk7ZC50ZXh0Q29udGVudD10eHR8fCdcdTAwYTAnO2VsLmFwcGVuZENoaWxkKGQpO3NldFRpbWVvdXQoZnVuY3Rpb24oKXtkLmNsYXNzTGlzdC5hZGQoJ2luJyk7fSxkZWxheXx8MCk7fQpmdW5jdGlvbiBzQnRuKGxibCxkZWxheSl7dmFyIGI9ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3FsLWJ0bicpO2Iuc3R5bGUuZGlzcGxheT1sYmw/Jyc6J25vbmUnO2lmKGxibCl7Yi50ZXh0Q29udGVudD1sYmw7Yi5kaXNhYmxlZD10cnVlO31pZihsYmwmJmRlbGF5IT1udWxsKXNldFRpbWVvdXQoZnVuY3Rpb24oKXtiLmRpc2FibGVkPWZhbHNlO30sZGVsYXkpO30KZnVuY3Rpb24gclN0KCl7c3RvcEEoKTtPYmplY3QuYXNzaWduKHN0LHtwaDonaWRsZScsdDowLGN4OjEwMCxjeTpGWS1DUjIsc3g6MSxjZjonJyxjdjpmYWxzZSxyeTpDUjIsZng6MCxmdjpmYWxzZSxoeDowLGh5OjgwLGhsOicnLGhhOjAsaHY6ZmFsc2UsZXg6RlktQ1IyLGV0OjAsZXY6ZmFsc2UsZXc6ZmFsc2Usd3g6V1Msd2s6ZmFsc2UsYXI6ZmFsc2UsdGE6MCxhcm06LU1hdGguUEkvNX0pO30KdmFyIGx4cz1bMjAwLDMxMCw0MjBdLGxpPTA7CnZhciBzdGVwcz1bCiAgZnVuY3Rpb24oKXtyU3QoKTtzdC5wYz1bXTtyZW5kZXIoKTtjbEwoKTtzdG10KCdBIGNvaW4gaGFzIHR3byBmYWNlcy4gV2hhdCBhcmUgdGhlIHBvc3NpYmlsaXRpZXM/JywnJywzMDApO3NCdG4oJ0JlZ2luJywxMTAwKTt9LAogIGZ1bmN0aW9uKCl7clN0KCk7bGk9MDtzdC5wYz1bXTtjbEwoKTtzQnRuKCcnKTtzdC5jZj0nSCc7c3QubHg9bHhzW2xpXTtzdC5kb25lPWZ1bmN0aW9uKCl7c3QucGMucHVzaCh7eDpseHNbbGldfSk7bGkrKztjbEwoKTtmUm93KCdGbGlwIDEnLCdIZWFkcycsJycsMjAwKTtzQnRuKCdGbGlwIGFnYWluJywxMDAwKTt9O3N0LnBoPSd3aW5kdXAnO3N0YXJ0QSgpO30sCiAgZnVuY3Rpb24oKXtyU3QoKTtzdC5wYz1be3g6bHhzWzBdfV07Y2xMKCk7ZlJvdygnRmxpcCAxJywnSGVhZHMnLCdkaW0nLDApO3NCdG4oJycpO3N0LmNmPSdIJztzdC5seD1seHNbbGldO3N0LmRvbmU9ZnVuY3Rpb24oKXtzdC5wYy5wdXNoKHt4Omx4c1tsaV19KTtsaSsrO2NsTCgpO2ZSb3coJ0ZsaXAgMScsJ0hlYWRzJywnZGltJyw4MCk7ZlJvdygnRmxpcCAyJywnSGVhZHMnLCcnLDMwMCk7c0J0bignRmxpcCBhZ2FpbicsMTEwMCk7fTtzdC5waD0nd2luZHVwJztzdGFydEEoKTt9LAogIGZ1bmN0aW9uKCl7clN0KCk7c3QucGM9W3t4Omx4c1swXX0se3g6bHhzWzFdfV07Y2xMKCk7ZlJvdygnRmxpcCAxJywnSGVhZHMnLCdkaW0nLDApO2ZSb3coJ0ZsaXAgMicsJ0hlYWRzJywnZGltJywwKTtzQnRuKCcnKTtzdC5jZj0nVCc7c3QubHg9bHhzW2xpXTtzdC5kb25lPWZ1bmN0aW9uKCl7c3QucGMucHVzaCh7eDpseHNbbGldfSk7bGkrKztjbEwoKTtmUm93KCdGbGlwIDEnLCdIZWFkcycsJ2RpbScsODApO2ZSb3coJ0ZsaXAgMicsJ0hlYWRzJywnZGltJywyMjApO2ZSb3coJ0ZsaXAgMycsJ1RhaWxzJywnJywzODApO3N0bXQoJ3tILCBUfSDigJQgZXZlcnkgb3V0Y29tZSBhY2NvdW50ZWQgZm9yLicsJ3NwJywxMDAwKTtzQnRuKCdDb250aW51ZScsMjQwMCk7fTtzdC5waD0nd2luZHVwJztzdGFydEEoKTt9LAogIGZ1bmN0aW9uKCl7c3RvcEEoKTtzdC5jdj1mYWxzZTtzdC5odj1mYWxzZTtzdC5ldj1mYWxzZTtzdC5mdj10cnVlO3N0LmZ4PWx4c1syXTtzdC5yeT0yLjU7c3QucGM9W3t4Omx4c1swXX0se3g6bHhzWzFdfV07cmVuZGVyKCk7Y2xMKCk7c3RtdCgne0gsIFR9IOKAlCBldmVyeSBvdXRjb21lIGFjY291bnRlZCBmb3IuJywnJywwKTtzdG10KCdPciBzbyBpdCBhcHBlYXJzLicsJ3NwJywxMjAwKTtzdG10KCdXaGF0IGhhdmUgd2Ugbm90IHRob3VnaHQgb2Y/Jywnc3AnLDMwMDApO3NCdG4oJ0ZsaXAgNCcsNDQwMCk7fSwKICBmdW5jdGlvbigpe3JTdCgpO3N0LnBjPVt7eDpseHNbMF19LHt4Omx4c1sxXX0se3g6bHhzWzJdfV07Y2xMKCk7c3RtdCgnV2hhdCBhYm91dCB0aGlzPycsJ3NwJywwKTtzQnRuKCcnKTtzdC5kb25lPWZ1bmN0aW9uKCl7Y2xMKCk7ZlJvdygnRmxpcCA0JywnU2lkZScsJycsMzAwKTtzdG10KCd7SCwgVCwgU2lkZX0nLCdzcCcsMTEwMCk7c3RtdCgnQW4gb3V0Y29tZSB5b3UgZGlkIG5vdCBsaXN0IGRvZXMgbm90IGNlYXNlIHRvIGV4aXN0IGJlY2F1c2UgeW91IGRpZCBub3QgbGlzdCBpdC4gSXQgd2FpdHMuJywnc3AnLDIyMDApO3NldFRpbWVvdXQoZnVuY3Rpb24oKXtzdC5waD0ncGF1c2UnO30sMzgwMCk7fTtzdC5waD0nZVd1JztzdGFydEEoKTt9Cl07CihmdW5jdGlvbiB3YWl0KCl7aWYod2luZG93LnJvdWdoKXtpUkMoKTtzdGVwc1swXSgpO2RvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdxbC1idG4nKS5hZGRFdmVudExpc3RlbmVyKCdjbGljaycsZnVuY3Rpb24oKXtzTisrO2lmKHNOPHN0ZXBzLmxlbmd0aClzdGVwc1tzTl0oKTt9KTt9ZWxzZSBzZXRUaW1lb3V0KHdhaXQsODApO30pKCk7Cn0pKCk7Cjwvc2NyaXB0Pgo8L2Rpdj4K</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-<style>
-@font-face {
-  font-family: 'Libertinus';
-  src: url('https://cdn.jsdelivr.net/npm/libertinus-fonts@7.040/woff2/LibertinusSerif-Regular.woff2') format('woff2');
-  font-weight: normal; font-style: normal;
-}
-@font-face {
-  font-family: 'Libertinus';
-  src: url('https://cdn.jsdelivr.net/npm/libertinus-fonts@7.040/woff2/LibertinusSerif-Italic.woff2') format('woff2');
-  font-weight: normal; font-style: italic;
-}
-@font-face {
-  font-family: 'Libertinus';
-  src: url('https://cdn.jsdelivr.net/npm/libertinus-fonts@7.040/woff2/LibertinusSerif-Bold.woff2') format('woff2');
-  font-weight: bold; font-style: normal;
-}
-</style>
+
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
@@ -785,11 +831,11 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
       height:62px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
       padding:0 16px 0 18px;flex-shrink:0;pointer-events:none;">
       <div id="tb-plaque-sub" style="
-        font-family:-apple-system,'Helvetica Neue',Arial,sans-serif;
+        font-family:'Inter',system-ui,sans-serif;
         font-size:9px;letter-spacing:.18em;text-transform:uppercase;
         color:rgba(200,160,32,.45);margin-bottom:2px;">First Floor</div>
       <div id="tb-plaque-loc" style="
-        font-family:-apple-system,'Helvetica Neue',Arial,sans-serif;
+        font-family:'Inter',system-ui,sans-serif;
         font-size:11px;letter-spacing:.12em;text-transform:uppercase;
         color:rgba(220,190,80,.7);font-weight:500;">Stairwell</div>
     </div>
@@ -979,19 +1025,19 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 
     <canvas id="map-canvas-main" style="display:block;width:100%;height:100%;"></canvas>
     <!-- ── NODE POPUP — full screen ── -->
+    <!-- ── NODE POPUP — full screen ── -->
     <div id="node-popup" style="display:none;position:fixed;inset:0;z-index:500;flex-direction:column;align-items:center;background:#07090f;transform:translateY(100%);transition:transform 0.38s cubic-bezier(0.22,1,0.36,1);">
       <div style="width:100%;max-width:740px;display:flex;flex-direction:column;flex:1;min-height:0;">
-      <div id="np-header" style="flex-shrink:0;padding:18px 28px 14px;border-bottom:1px solid rgba(200,160,32,.12);display:flex;align-items:baseline;justify-content:space-between;">
-        <div>
-          <div id="np-super" style="font-family:monospace;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,160,32,.55);margin-bottom:8px;"></div>
-          <div id="np-title" style="font-family:'Libertinus',KaTeX_Main,Georgia,serif;font-weight:normal;font-size:clamp(28px,3.2vw,38px);color:rgba(240,235,205,.92);letter-spacing:.01em;padding-bottom:12px;border-bottom:1px solid rgba(200,160,32,.10);margin-bottom:0;"></div>
+        <div id="np-header" style="flex-shrink:0;padding:18px 28px 14px;border-bottom:1px solid rgba(200,160,32,.12);display:flex;align-items:baseline;justify-content:space-between;">
+          <div>
+            <div id="np-super" style="font-family:monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,160,32,.5);margin-bottom:8px;"></div>
+            <div id="np-title" style="font-family:'Inter',system-ui,sans-serif;font-weight:500;font-size:clamp(20px,2.4vw,28px);color:rgba(240,235,205,.95);letter-spacing:-.02em;"></div>
+          </div>
+          <button onclick="closeNodePopup()" style="background:none;border:none;border-bottom:1px solid rgba(238,232,192,.18);color:rgba(238,232,192,.28);font-family:monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;padding:4px 0;cursor:pointer;flex-shrink:0;margin-left:24px;transition:color .15s,border-color .15s;" onmouseover="this.style.color='rgba(238,232,192,.65)';this.style.borderColor='rgba(238,232,192,.45)';" onmouseout="this.style.color='rgba(238,232,192,.28)';this.style.borderColor='rgba(238,232,192,.18)';">— close —</button>
         </div>
-        <button onclick="closeNodePopup()" style="background:none;border:none;border-bottom:1px solid rgba(238,232,192,.18);color:rgba(238,232,192,.28);font-family:monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;padding:4px 0;cursor:pointer;flex-shrink:0;margin-left:24px;transition:color .15s,border-color .15s;" onmouseover="this.style.color='rgba(238,232,192,.65)';this.style.borderColor='rgba(238,232,192,.45)';" onmouseout="this.style.color='rgba(238,232,192,.28)';this.style.borderColor='rgba(238,232,192,.18)';">— close —</button>
+        <div id="np-shelf-nav" style="flex-shrink:0;padding:0 28px;border-bottom:1px solid rgba(200,160,32,.08);display:none;gap:0;"></div>
+        <div id="np-body" style="flex:1;overflow-y:auto;padding:24px 20px 40px;width:100%;box-sizing:border-box;"></div>
       </div>
-      <div id="np-shelf-nav" style="flex-shrink:0;padding:0 28px;border-bottom:1px solid rgba(200,160,32,.08);display:none;gap:0;">
-      </div>
-      <div id="np-body" style="flex:1;overflow-y:auto;padding:32px 28px 48px;width:100%;box-sizing:border-box;"></div>
-      </div><!-- /inner -->
     </div>
   </div>
 
@@ -1119,10 +1165,10 @@ function clerkAddMsg(role, text){
   var d = document.createElement('div');
   d.style.cssText = 'margin-bottom:1.6em;';
   var label = document.createElement('div');
-  label.style.cssText = 'font-family:monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,160,32,.35);margin-bottom:6px;';
+  label.style.cssText = 'font-family:monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,160,32,.4);margin-bottom:8px;';
   label.textContent = role==='assistant' ? 'The Clerk' : 'Candidate';
   var msg = document.createElement('div');
-  msg.style.cssText = 'font-family:Libertinus,serif;font-size:clamp(16px,1.8vw,20px);line-height:1.85;color:' + (role==='assistant'?'rgba(240,235,205,.88)':'rgba(240,235,205,.55)') + ';';
+  msg.style.cssText = 'font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(15px,1.7vw,18px);line-height:1.85;color:' + (role==='assistant'?'rgba(240,235,205,.88)':'rgba(240,235,205,.52)') + ';';
   msg.innerHTML = text.split('\n').join('<br>');
   d.appendChild(label);
   d.appendChild(msg);
@@ -1798,7 +1844,15 @@ function bbUpdateChevrons(){
 // BB.write() is available for blackboard updates
 
 // ── NODE POPUP ──
-var _npShelves = null; // array of shelf HTML strings, or null
+var _npShelves = null;
+
+function _wrapCard(html, skip){
+  // skip wrapping for animation, clerk, cleaner
+  if(skip || !html) return html||'';
+  if(html.indexOf('ql-cv')!==-1) return html;      // animation canvas
+  if(html.indexOf('clerk-wrap')!==-1) return html; // clerk chat
+  return '<div class="doc-card">'+html+'</div>';
+}
 
 function openNodePopup(sup, title, body, shelves, examKey, ri, ni){
   var np=document.getElementById('node-popup');
@@ -1828,12 +1882,12 @@ function openNodePopup(sup, title, body, shelves, examKey, ri, ni){
       var el2=document.getElementById('anim-room1-bureau');
       if(el2) html0=decodeURIComponent(escape(atob(el2.textContent.trim())));
     }
-    bodyEl.innerHTML=html0||'';
+    bodyEl.innerHTML=_wrapCard(html0);
     _execScripts(bodyEl);
   } else {
     _npShelves=null;
     nav.style.display='none';
-    bodyEl.innerHTML=body||'';
+    bodyEl.innerHTML=_wrapCard(body);
   }
 
   renderMath(bodyEl);
@@ -1858,7 +1912,7 @@ function openNodePopup(sup, title, body, shelves, examKey, ri, ni){
       // Examination — ruled paper
       tex='repeating-linear-gradient(to bottom, transparent 0, transparent 30px, rgba('+r+','+g+','+b+',.05) 30px, rgba('+r+','+g+','+b+',.05) 31px),';
     }
-    np.style.background=tex+'linear-gradient(135deg, rgba('+r+','+g+','+b+',.10) 0%, transparent 50%), #07090f';
+    np.style.background='#07090f';
   } else {
     np.style.background='#07090f';
   }
@@ -1907,7 +1961,7 @@ function npShelf(idx){
     var el=document.getElementById('anim-room1-bureau');
     if(el) html=decodeURIComponent(escape(atob(el.textContent.trim())));
   }
-  bodyEl.innerHTML=html;
+  bodyEl.innerHTML=_wrapCard(html);
   bodyEl.scrollTop=0;
   _execScripts(bodyEl);
   renderMath(bodyEl);
@@ -1944,7 +1998,7 @@ const K=(a=1)=>`rgba(200,220,255,${a})`; // blueprint chalk white
 const ROOMS=[
   {name:'Uncertainty',n:[
     {l:'Bookcase',s:'Room 1 — Uncertainty',b:'',shelves:[{label:'Lower Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">Uncertainty is not a feeling.</p>\n<p style="margin-bottom:1.8em;">Scientific method cannot rely on instinct. We need to talk about uncertain phenomena formally. But before we can do so, we need to know what we are uncertain about and how uncertain we are.</p>\n<div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div>\n<p style="margin-bottom:1.8em;">The Cleaner asked Aubrey what he was uncertain about and how uncertain he was about it. He did not know. These were his two problems. The third problem was that he had not asked himself these questions at all.</p>'},{label:'Middle Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">Probability theory is the scientific discipline that expresses uncertainty in mathematical terms.</p>\n<p style="margin-bottom:1.8em;">It allows us to reason precisely about phenomena whose outcomes we cannot know in advance — from the toss of a coin to the outcome of a clinical trial. Without it, our ability to draw conclusions from data has nothing to build on. In other words, statistical theory needs a foundation.</p>\n<div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div>\n<p style="margin-bottom:1.8em;">Just as statistical theory builds upon the foundation of probability theory, probability theory in turn builds upon set theory, which is where our studies begin.</p>\n<p style="text-align:center;font-style:italic;font-size:1.05em;padding:1.2em 2em;color:rgba(240,235,205,.65);line-height:1.7;margin-bottom:1.8em;">What we are uncertain about will be collected and organised into sets.<br>How uncertain we are will be expressed as numbers mapped onto those sets.</p>'},{label:'Upper Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">For most of human history, probability was intuitive — a judgement, not a calculation.</p>\n<p style="margin-bottom:1.8em;">It was not until 1933 that Andrey Kolmogorov placed probability theory on a rigorous mathematical foundation. His contribution was a masterpiece of mathematical economy: <em>Grundbegriffe der Wahrscheinlichkeitsrechnung</em> (Foundations of the Theory of Probability).</p>\n<p style="text-align:center;font-variant:small-caps;font-size:1em;letter-spacing:.06em;padding:1.4em 2em;color:rgba(240,235,205,.75);line-height:1.9;border-top:1px solid rgba(200,160,32,.12);border-bottom:1px solid rgba(200,160,32,.12);margin:2em 0;">Three axioms are necessary and sufficient<br>to define the way any and all probabilities must behave.</p>\n<p style="margin-bottom:1.8em;">The power of formalisation is that it makes the rules explicit. Before Kolmogorov, it was possible to reason about probability while violating its own logic — assigning negative probabilities, or probabilities that did not sum correctly. After Kolmogorov, these errors have a name: axiom violations.</p>\n<p style="margin-bottom:1.8em;">The framework does not tell you what probabilities to assign. It tells you what any valid assignment must satisfy. Everything that follows in The Institute is a consequence of that.</p>'}]},
-    {l:'Bureau',s:'Room 1 — Uncertainty',b:'',shelves:[{label:'Monte Carlo',html:'__BUREAU_ANIM__'},{label:'Real World',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">In 1768, the <em>Opera Omnia</em> of Gottfried Wilhelm Leibniz was published posthumously.</p>\n<p style="margin-bottom:1.8em;">Leibniz co-invented calculus, developed binary arithmetic, and made foundational contributions to logic and philosophy. He was one of the most formidable mathematical minds in history. That is what makes this example so interesting.</p>\n<div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div>\n<p style="margin-bottom:1.8em;">The question was simple: when rolling two dice, what is the probability of getting a total of 11, versus a total of 12? Leibniz listed combinations without regard to order — 21 possibilities in total. In his space, the combination "one five and one six" appears once, and so does "two sixes". He concluded both were equally probable.</p>\n<p style="margin-bottom:1.8em;">But if you take order into account, there are 36 equally likely outcomes — permutations, not combinations. The combination "one five and one six" can appear two ways: $(5,6)$ and $(6,5)$. The combination "two sixes" can only appear one way: $(6,6)$. The probabilities of obtaining 11 and 12 are not equal.</p>\n<p style="text-align:center;font-style:italic;font-size:1.05em;padding:1.2em 2em;color:rgba(240,235,205,.65);line-height:1.7;margin-bottom:1.8em;">The error was in listing the set of all possible outcomes.<br>Without a formal framework, there was no principle available to identify where the reasoning had failed.</p>\n<p style="margin-bottom:1.8em;">After Kolmogorov, first year BSc students get a better answer than Leibniz did. The right one.</p>'}]},
+    {l:'Bureau',s:'Room 1 — Uncertainty',b:'',shelves:[{label:'Monte Carlo',html:'__BUREAU_ANIM__'},{label:'Real World',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">In 1768, the <em>Opera Omnia</em> of Gottfried Wilhelm Leibniz was published posthumously.</p>\n<p style="margin-bottom:1.8em;">Leibniz co-invented calculus, developed binary arithmetic, and made foundational contributions to logic and philosophy. He was one of the most formidable mathematical minds in history. That is what makes this example so interesting.</p>\n<div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div>\n<p style="margin-bottom:1.8em;">The question was simple: when rolling two dice, what is the probability of getting a total of 11, versus a total of 12? Leibniz listed combinations without regard to order — 21 possibilities in total. In his space, the combination "one five and one six" appears once, and so does "two sixes". He concluded both were equally probable.</p>\n<p style="margin-bottom:1.8em;">But if you take order into account, there are 36 equally likely outcomes — permutations, not combinations. The combination "one five and one six" can appear two ways: $(5,6)$ and $(6,5)$. The combination "two sixes" can only appear one way: $(6,6)$. The probabilities of obtaining 11 and 12 are not equal.</p>\n<p style="text-align:center;font-style:italic;font-size:1.05em;padding:1.2em 2em;color:rgba(240,235,205,.65);line-height:1.7;margin-bottom:1.8em;">The error was in the way the set of all possible outcomes was specified.<br>Without a formal framework, there was no principle available to identify where the reasoning had failed.</p>\n<p style="margin-bottom:1.8em;">After Kolmogorov, first year BSc students get a better answer than Leibniz did. The right one.</p>'}]},
     {l:'Examination',s:'Assessment · Room 01',b:'What does it mean to quantify uncertainty? What three properties must any valid probability assignment satisfy?<br><br><em>The dossier is open.</em>'},
   ]},
   {name:'Experiment',n:[
@@ -1965,7 +2019,7 @@ const ROOMS=[
     {l:'Examination',s:`Assessment · Room ${num}`,b:'<em>This room has not yet been inscribed.</em>'},
   ]}))
 ];
-const CLERK={l:'Room 197A',s:'The Clerk · First Floor',b:'<div id="clerk-wrap" style="display:flex;flex-direction:column;height:100%;min-height:0;">\n  <div id="clerk-history" style="flex:1;overflow-y:auto;padding-bottom:16px;"></div>\n  <div style="flex-shrink:0;border-top:1px solid rgba(200,160,32,.12);padding-top:16px;display:flex;gap:10px;align-items:flex-end;">\n    <textarea id="clerk-input" placeholder="Your response to the Clerk." style="flex:1;resize:none;background:rgba(200,160,32,.04);border:1px solid rgba(200,160,32,.18);color:rgba(240,235,205,.82);font-family:\'Libertinus\',KaTeX_Main,Georgia,serif;font-size:clamp(15px,1.7vw,18px);line-height:1.7;padding:10px 14px;outline:none;min-height:60px;max-height:160px;box-sizing:border-box;" rows="2" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();clerkSend();}"></textarea>\n    <button onclick="clerkSend()" style="flex-shrink:0;background:none;border:1px solid rgba(200,160,32,.22);color:rgba(200,160,32,.55);font-family:monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;padding:10px 16px;cursor:pointer;transition:all .15s;align-self:stretch;" onmouseover="this.style.borderColor=\'rgba(200,160,32,.6)\';this.style.color=\'rgba(200,160,32,.9)\';" onmouseout="this.style.borderColor=\'rgba(200,160,32,.22)\';this.style.color=\'rgba(200,160,32,.55)\';">Send</button>\n  </div>\n</div>'};
+const CLERK={l:'Room 197A',s:'The Clerk · First Floor',b:'<div id="clerk-wrap" style="display:flex;flex-direction:column;height:100%;min-height:0;">\n  <div id="clerk-history" style="flex:1;overflow-y:auto;padding-bottom:16px;"></div>\n  <div style="flex-shrink:0;border-top:1px solid rgba(200,160,32,.12);padding-top:16px;display:flex;gap:10px;align-items:flex-end;">\n    <textarea id="clerk-input" placeholder="Your response to the Clerk." style="flex:1;resize:none;background:rgba(200,160,32,.04);border:1px solid rgba(200,160,32,.18);color:rgba(240,235,205,.82);font-family:Inter,system-ui,sans-serif;font-weight:300;font-size:clamp(15px,1.7vw,18px);line-height:1.7;padding:10px 14px;outline:none;min-height:60px;max-height:160px;box-sizing:border-box;color:rgba(240,235,205,.82);background:rgba(200,160,32,.04);border:1px solid rgba(200,160,32,.18);" rows="2" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();clerkSend();}"></textarea>\n    <button onclick="clerkSend()" style="flex-shrink:0;background:none;border:1px solid rgba(200,160,32,.22);color:rgba(200,160,32,.55);font-family:monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;padding:10px 16px;cursor:pointer;transition:all .15s;align-self:stretch;" onmouseover="this.style.borderColor=\'rgba(200,160,32,.6)\';this.style.color=\'rgba(200,160,32,.9)\';" onmouseout="this.style.borderColor=\'rgba(200,160,32,.22)\';this.style.color=\'rgba(200,160,32,.55)\';">Send</button>\n  </div>\n</div>'};
 const CLEANER={l:'The Cleaner',s:'The Cleaner · First Floor',b:'<div style="font-family:monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,160,32,.35);margin-bottom:28px;">The Institute □ — First Floor · Landing</div>\n<p style="font-style:italic;color:rgba(240,235,205,.45);margin-bottom:.8em;">\u200bThe Cleaner passed through the first floor corridor with a mop. She did not look up.</p>\n<p>“I am uncertain about —” said Aubrey.</p>\n<p style="font-style:italic;color:rgba(240,235,205,.45);margin-bottom:.8em;">She stopped. Still did not look up.</p>\n<p>“About what?” said the Cleaner.</p>\n<p>“That,” said Aubrey, “is rather the question.”</p>\n<p>“And how uncertain are you?”</p>\n<p style="font-style:italic;color:rgba(240,235,205,.45);margin-bottom:.8em;">He had not thought about it in those terms. He looked at the empty dossier in his hand.</p>\n<p>“I don’t know.”</p>\n<p style="font-style:italic;color:rgba(240,235,205,.45);margin-bottom:.8em;">The Cleaner resumed moving.</p>\n<p>“Then you have two problems. Not one.”</p>'};
 
 // ── LAYOUT ──
