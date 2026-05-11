@@ -1387,6 +1387,7 @@ function submitExam(chosen){
     _examSubmittedThisRoom = true;
     _completedRooms.add(_examRoom);
     _saveCompletedRooms();
+    _dossierAddPage(_examRoom);
     setTimeout(function(){ _issueCleanerDoc(_examRoom); }, 800);
   }
 }
@@ -1617,6 +1618,37 @@ var BB = (function(){
 // ── TOOLBAR ACTIONS ──
 
 // ── DOSSIER ──
+// ── DOSSIER — cross-floor page store ──
+// Each floor writes pages to ql_dossier on exam completion.
+// All floors read from the same store so the dossier accumulates across the building.
+
+var FLOOR_ID = 1; // this file is Floor 1
+
+// Page store — persisted in localStorage
+function _dossierLoad(){
+  try{ return JSON.parse(localStorage.getItem('ql_dossier')||'[]'); }catch(e){ return []; }
+}
+function _dossierSave(pages){
+  try{ localStorage.setItem('ql_dossier', JSON.stringify(pages)); }catch(e){}
+}
+
+// Called when an exam is completed on this floor
+function _dossierAddPage(ri){
+  var pages = _dossierLoad();
+  var exists = pages.some(function(p){ return p.floor===FLOOR_ID && p.ri===ri; });
+  if(exists) return;
+  pages.push({
+    floor: FLOOR_ID,
+    ri:    ri,
+    name:  _ROOM_NAMES[ri] || ('Room '+(ri+1)),
+    completed: Date.now()
+  });
+  _dossierSave(pages);
+}
+
+// Note key — floor-scoped
+function _noteKey(ri){ return 'ql_notes-f'+FLOOR_ID+'-r'+ri; }
+
 var _ROOM_NAMES=['Uncertainty','Experiment','Sample Space','Event','Sigma-Algebra','Mutual Exclusivity','Probability Measure','Axiom 1','Axiom 2','Axiom 3'];
 
 function pipSVG(shape, filled, size){
@@ -1633,36 +1665,66 @@ function pipSVG(shape, filled, size){
 function openDossier(){
   var inner=document.getElementById('dossier-inner');
   if(!inner) return;
-  var html='<div style="font-family:monospace;font-size:8px;letter-spacing:.1em;color:rgba(26,22,16,.3);margin-bottom:10px;">Click any room to add notes — read by the Clerk.</div>';
+
+  var pages=_dossierLoad();
+  // floors that have at least one page entry (other floors)
+  var otherFloors={};
+  pages.forEach(function(p){
+    if(p.floor!==FLOOR_ID){
+      if(!otherFloors[p.floor]) otherFloors[p.floor]=[];
+      otherFloors[p.floor].push(p);
+    }
+  });
+  var otherFloorIds=Object.keys(otherFloors).map(Number).sort(function(a,b){return a-b;});
+
+  var html='';
+
+  // ── Current floor — always show all 10 rooms ──
+  html+='<div style="font-family:monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(26,22,16,.28);margin-bottom:8px;">Floor '+FLOOR_ID+'</div>';
+  html+='<div style="font-family:monospace;font-size:8px;letter-spacing:.1em;color:rgba(26,22,16,.28);margin-bottom:10px;">Click any room to add notes — read by the Clerk.</div>';
+
   _ROOM_NAMES.forEach(function(name,ri){
     var pips='';
-    [['square',0],['circle',1],['diamond',2]].forEach(function(p){
-      pips+=pipSVG(p[0],NV&&NV[ri+'-'+p[1]],12);
+    [['square',0],['circle',1],['diamond',2]].forEach(function(nd){
+      pips+=pipSVG(nd[0],NV&&NV[ri+'-'+nd[1]],12);
     });
-    var noteKey='dossier-notes-'+ri;
-    var noteVal=(localStorage.getItem(noteKey)||'').trim();
-    var noteKey='dossier-notes-'+ri;
-    var noteVal=(localStorage.getItem(noteKey)||'').trim();
-    var rowId='drow-'+ri;
+    var nk=_noteKey(ri);
+    var noteVal=(localStorage.getItem(nk)||'').trim();
     html+=
-      '<div class="drow-m" onclick="dosToggle('+ri+')" style="cursor:pointer;" title="Click to add notes">'+
+      '<div class="drow-m" onclick="dosToggle(\''+FLOOR_ID+'-'+ri+'\')" style="cursor:pointer;">'+
         '<span style="font-family:monospace;font-size:9px;color:rgba(26,22,16,.32);width:22px;flex-shrink:0">'+(ri<9?'0':'')+(ri+1)+'</span>'+
         '<span style="font-family:monospace;font-size:11px;letter-spacing:.05em;color:rgba(26,22,16,.8);flex:1;padding:0 8px">'+name.toUpperCase()+'</span>'+
         '<span style="display:flex;gap:3px;align-items:center;flex-shrink:0;">'+pips+'</span>'+
         (noteVal?'<span style="font-family:monospace;font-size:8px;color:rgba(26,22,16,.3);margin-left:6px;flex-shrink:0;">✎</span>':'')+
       '</div>'+
-      '<div id="drow-notes-'+ri+'" style="display:none;padding:4px 0 8px 22px;">'+
-        '<textarea class="drow-notes" data-key="'+noteKey+'" rows="4" placeholder="Notes, questions, points of uncertainty...">'+noteVal+'</textarea>'+
+      '<div id="drow-notes-'+FLOOR_ID+'-'+ri+'" style="display:none;padding:4px 0 8px 22px;">'+
+        '<textarea class="drow-notes" data-key="'+nk+'" rows="4" placeholder="Notes, questions, points of uncertainty...">'+noteVal+'</textarea>'+
       '</div>';
   });
+
+  // ── Other floors — only rooms with pages (exam completed) ──
+  otherFloorIds.forEach(function(fl){
+    html+='<div style="font-family:monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(26,22,16,.28);margin:18px 0 8px;border-top:1px solid rgba(26,22,16,.08);padding-top:10px;">Floor '+fl+'</div>';
+    otherFloors[fl].forEach(function(p){
+      var nk='ql_notes-f'+fl+'-r'+p.ri;
+      var noteVal=(localStorage.getItem(nk)||'').trim();
+      html+=
+        '<div class="drow-m">'+
+          '<span style="font-family:monospace;font-size:9px;color:rgba(26,22,16,.32);width:22px;flex-shrink:0">'+(p.ri<9?'0':'')+(p.ri+1)+'</span>'+
+          '<span style="font-family:monospace;font-size:11px;letter-spacing:.05em;color:rgba(26,22,16,.8);flex:1;padding:0 8px">'+p.name.toUpperCase()+'</span>'+
+          (noteVal?'<span style="font-family:monospace;font-size:8px;color:rgba(26,22,16,.3);margin-left:6px;flex-shrink:0;">✎</span>':'')+
+        '</div>';
+    });
+  });
+
   inner.innerHTML=html;
   wireNotes(inner);
   var o=document.getElementById('dossier-overlay');
   o.style.display='flex';o.style.alignItems='flex-start';o.style.justifyContent='center';
 }
 
-function dosToggle(ri){
-  var el=document.getElementById('drow-notes-'+ri);
+function dosToggle(id){
+  var el=document.getElementById('drow-notes-'+id);
   if(!el) return;
   var open=el.style.display==='block';
   el.style.display=open?'none':'block';
@@ -1670,17 +1732,6 @@ function dosToggle(ri){
     var ta=el.querySelector('textarea');
     if(ta){ ta.style.height='auto'; ta.style.height=ta.scrollHeight+'px'; ta.focus(); }
   }
-}
-
-function dosExpand(btn,key){
-  var ta=document.createElement('textarea');
-  ta.className='drow-notes';
-  ta.dataset.key=key;
-  ta.placeholder='Notes, questions, points of uncertainty...';
-  ta.rows=4;
-  btn.parentNode.replaceChild(ta,btn);
-  wireNotes(ta.parentNode.parentNode);
-  ta.focus();
 }
 
 function wireNotes(container){
@@ -1694,11 +1745,11 @@ function wireNotes(container){
     ta.style.height=ta.scrollHeight+'px';
   });
 }
+
 function closeDossier(){
   document.getElementById('dossier-overlay').style.display='none';
 }
 
-// Close on Escape or outside click
 document.addEventListener('keydown',function(e){
   if(e.key==='Escape') closeDossier();
 });
@@ -1706,20 +1757,24 @@ document.getElementById('dossier-overlay').addEventListener('click',function(e){
   if(e.target===this) closeDossier();
 });
 
-// build dossier summary for Clerk
+// Clerk summary — reads shared store
 function buildDossierSummary(){
+  var pages=_dossierLoad();
   var lines=[];
-  _ROOM_NAMES.forEach(function(name,ri){
-    var visited=NV&&(NV[ri+'-0']||NV[ri+'-1']||NV[ri+'-2']);
+  pages.forEach(function(p){
+    var isCurrentFloor=(p.floor===FLOOR_ID);
     var nodes=[];
-    if(NV&&NV[ri+'-0']) nodes.push('Bookcase');
-    if(NV&&NV[ri+'-1']) nodes.push('Bureau');
-    if(NV&&NV[ri+'-2']) nodes.push('Examination');
-    var note=localStorage.getItem('dossier-notes-'+ri)||'';
-    var line=name+': '+(nodes.length?nodes.join(', '):'not visited');
+    if(isCurrentFloor){
+      if(NV&&NV[p.ri+'-0']) nodes.push('Bookcase');
+      if(NV&&NV[p.ri+'-1']) nodes.push('Bureau');
+      if(NV&&NV[p.ri+'-2']) nodes.push('Examination');
+    }
+    var note=localStorage.getItem(isCurrentFloor?_noteKey(p.ri):'ql_notes-f'+p.floor+'-r'+p.ri)||'';
+    var line='[F'+p.floor+'] '+p.name+': '+(nodes.length?nodes.join(', '):'exam on file');
     if(note) line+=' | Note: '+note;
     lines.push(line);
   });
+  if(lines.length===0) return 'The dossier is empty. No examinations have been filed.';
   return lines.join(' | ');
 }
 
@@ -1740,8 +1795,11 @@ function resetFloor(){
   clerkVisited=0; cleanerVisited=0;
   _issuedDocSet.length=0;
   try{ localStorage.removeItem('ql_cleaner_docs'); }catch(e){}
+  // clear dossier pages for this floor only
+  var pages=_dossierLoad().filter(function(p){ return p.floor!==FLOOR_ID; });
+  _dossierSave(pages);
+  for(var i=0;i<10;i++) localStorage.removeItem(_noteKey(i));
   localStorage.removeItem('ql_floor1_visited');
-  for(var i=0;i<10;i++) localStorage.removeItem('dossier-notes-'+i);
   var ov=document.getElementById('map-intro-overlay');
   if(ov){ ov.style.transition='none'; ov.style.opacity='0'; ov.classList.remove('gone'); setTimeout(function(){ ov.style.transition=''; },50); }
   setLocation('Stairwell');
@@ -1944,12 +2002,23 @@ function _sPlay(){
 }
 function startSound(){_sInit();if(_sRunning)return;_sRunning=true;_sLoop=0;_sPlay();}
 function stopSound(){_sRunning=false;clearTimeout(_sTimer);}
+function stopSound(){
+  _sRunning=false;
+  clearTimeout(_sTimer);
+  if(_sMaster) _sMaster.gain.setTargetAtTime(0, _AC.currentTime, 0.05);
+}
 function toggleSound(){
   _soundOn=!_soundOn;
   var btn=document.getElementById('btn-sound');
-  if(btn)btn.style.opacity=_soundOn?'1':'0.55';
-  if(_soundOn){_sInit();_sRunning=true;_sPlay();}
-  else stopSound();
+  if(btn) btn.style.opacity=_soundOn?'1':'0.35';
+  if(_soundOn){
+    _sInit();
+    if(_sMaster) _sMaster.gain.setTargetAtTime(0.44, _AC.currentTime, 0.1);
+    _sRunning=true;
+    _sPlay();
+  } else {
+    stopSound();
+  }
 }
 
 // ── CHOICES ──
