@@ -8,42 +8,91 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#101830;
   --brass:#C8A020;
   --chalk:rgba(240,235,205,.88);
   --bar-h:62px;
   --ease:cubic-bezier(0.16,1,0.3,1);
-  --doc-w:520px;
-  --col-w:440px;
+  --col:620px;
+  --pad:clamp(20px,4vw,48px);
 }
-html,body{height:100%;background:#0d1428;}
+html,body{height:100%;background:#091209;}
 body{font-family:'Courier Prime',monospace;color:var(--chalk);}
 #grain{position:fixed;inset:0;pointer-events:none;z-index:998;opacity:.055;mix-blend-mode:overlay;}
+
+/* VIEWPORT */
 #viewport{
   max-width:860px;width:100%;margin:0 auto;
   position:relative;min-height:100vh;
-  background:linear-gradient(180deg,#1a2a48 0%,#101830 40%,#080e1e 100%);
+  background:linear-gradient(180deg,#1a2a1a 0%,#0d150d 45%,#091209 100%);
   box-shadow:0 0 120px rgba(0,0,0,.95);
   overflow:hidden;
   padding-bottom:calc(var(--bar-h) + 60px);
 }
+/* plaster texture */
 #viewport::before{
   content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
   background-image:
-    repeating-linear-gradient(rgba(140,190,255,.028) 0 1px,transparent 1px 8px),
-    repeating-linear-gradient(90deg,rgba(140,190,255,.028) 0 1px,transparent 1px 8px);
-  background-size:8px 8px;
+    repeating-linear-gradient(
+      180deg,
+      transparent 0px,
+      rgba(255,255,255,.007) 1px,
+      transparent 2px,
+      rgba(0,0,0,.01) 3px,
+      transparent 4px
+    );
+  background-size:100% 4px;
 }
-#content{position:relative;z-index:10;padding:clamp(24px,4vh,48px) clamp(20px,4vw,48px) 0;display:flex;flex-direction:column;align-items:center;}
+/* dado rail — in content flow, sits between doc and ledger */
+.dado-rail{
+  width:100%;height:6px;
+  background:linear-gradient(180deg,
+    rgba(255,255,255,.06) 0%,
+    rgba(255,255,255,.03) 40%,
+    rgba(0,0,0,.35) 100%
+  );
+  box-shadow:0 2px 6px rgba(0,0,0,.5);
+  position:relative;z-index:10;
+  flex-shrink:0;
+}
+.dado-rail::before{
+  content:'';position:absolute;top:-1px;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.1) 20%,rgba(255,255,255,.1) 80%,transparent);
+}
+/* corner vignettes */
+#viewport-vignette{
+  position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:
+    radial-gradient(ellipse 55% 35% at 0% 0%,rgba(0,0,0,.45) 0%,transparent 100%),
+    radial-gradient(ellipse 55% 35% at 100% 0%,rgba(0,0,0,.45) 0%,transparent 100%),
+    radial-gradient(ellipse 70% 25% at 0% 100%,rgba(0,0,0,.5) 0%,transparent 100%),
+    radial-gradient(ellipse 70% 25% at 100% 100%,rgba(0,0,0,.5) 0%,transparent 100%);
+}
+/* ceiling wash */
+#viewport::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:280px;
+  pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(200,140,40,.05) 0%,transparent 100%);
+}
+
+/* CENTRED COLUMN */
+.col{
+  position:relative;z-index:10;
+  max-width:var(--col);
+  margin:0 auto;
+  padding:0 var(--pad);
+}
 
 /* WINDOW */
-#window-wide{width:min(var(--col-w),90%);flex-shrink:0;margin-bottom:clamp(18px,3vh,32px);}
+#window-wide{
+  padding-top:clamp(28px,4vh,52px);
+  padding-bottom:0;
+}
 .winw-frame{background:#0a0c14;padding:4px 4px 0;box-shadow:0 6px 28px rgba(0,0,0,.75),inset 0 0 0 1px rgba(140,190,255,.06),inset 2px 2px 4px rgba(0,0,0,.4);}
 .winw-glass{height:clamp(160px,22vh,220px);position:relative;overflow:hidden;background:#04050C;}
-.winw-bar-v{position:absolute;top:0;bottom:0;width:4px;background:linear-gradient(90deg,#0a0c14 0%,#111428 50%,#0a0c14 100%);border-left:1px solid rgba(0,0,0,.5);z-index:5;margin-left:-2px;}
-.winw-bar-h{position:absolute;top:50%;left:0;right:0;height:4px;background:#0a0c14;border-top:1px solid rgba(140,190,255,.03);z-index:5;margin-top:-2px;}
+.winw-bar-v{position:absolute;top:0;bottom:0;width:4px;background:linear-gradient(90deg,#0a0c14,#111428 50%,#0a0c14);border-left:1px solid rgba(0,0,0,.5);z-index:5;margin-left:-2px;}
+.winw-bar-h{position:absolute;left:0;right:0;height:4px;background:#0a0c14;border-top:1px solid rgba(140,190,255,.03);z-index:5;margin-top:-2px;}
 .winw-glare{position:absolute;top:3%;left:2%;width:28%;height:42%;background:linear-gradient(135deg,rgba(140,190,255,.018) 0%,transparent 60%);z-index:6;pointer-events:none;}
-.winw-sill{height:6px;background:linear-gradient(180deg,#0e1018 0%,#080a10 100%);border-top:1px solid rgba(0,0,0,.6);}
+.winw-sill{height:6px;background:linear-gradient(180deg,#0e1018,#080a10);border-top:1px solid rgba(0,0,0,.6);}
 @keyframes sign-breathe{0%,100%{opacity:.8;}45%{opacity:1;}46%{opacity:.65;}47%{opacity:.95;}}
 @keyframes sign-flicker{0%,91%,100%{opacity:1;}92.5%{opacity:.15;}93%{opacity:1;}95.4%{opacity:.3;}95.8%{opacity:1;}97.3%{opacity:.08;}97.6%{opacity:.9;}97.9%{opacity:.08;}98.2%{opacity:1;}}
 @keyframes sign-ruin{0%,59%,100%{opacity:1;}60.6%{opacity:.08;}61.2%{opacity:1;}80.4%{opacity:.35;}80.8%{opacity:1;}}
@@ -51,287 +100,257 @@ body{font-family:'Courier Prime',monospace;color:var(--chalk);}
 .sign-amb{animation:sign-breathe 6s ease-in-out infinite,sign-flicker 8s ease-in-out infinite;}
 .sign-ruin{animation:sign-breathe 6s ease-in-out infinite,sign-ruin 11s ease-in-out infinite 1.4s;}
 
+/* SILL RULE */
+.sill-rule{
+  height:1px;
+  margin:clamp(18px,3vh,28px) 0;
+  background:linear-gradient(90deg,transparent,rgba(240,232,192,.28) 20%,rgba(240,232,192,.28) 80%,transparent);
+}
 
 /* BLACKBOARD */
-.bb-wrap{width:min(var(--col-w),90%);margin-bottom:clamp(20px,3.5vh,36px);}
+.bb-wrap{margin-bottom:clamp(24px,3.5vh,40px);}
 .bb-frame{
-  background:linear-gradient(150deg,#231608 0%,#100a02 50%,#231608 100%);
+  background:linear-gradient(150deg,#231608,#100a02 50%,#231608);
   padding:8px;
-  box-shadow:0 4px 16px rgba(0,0,0,.7),inset 0 3px 0 rgba(255,210,90,.14),inset 0 6px 12px rgba(0,0,0,.4),inset 3px 0 0 rgba(255,200,80,.10),inset -2px 0 0 rgba(0,0,0,.5),inset 0 -2px 0 rgba(180,140,60,.10);
+  box-shadow:0 4px 16px rgba(0,0,0,.7),inset 0 3px 0 rgba(255,210,90,.14),inset 0 6px 12px rgba(0,0,0,.4),inset 3px 0 0 rgba(255,200,80,.10),inset -2px 0 0 rgba(0,0,0,.5);
 }
-.bb{background:#0c160c;padding:clamp(16px,2.8vh,28px) clamp(18px,3vw,40px);min-height:70px;box-shadow:inset 0 4px 18px rgba(0,0,0,.55),inset 0 -4px 18px rgba(0,0,0,.55),inset 4px 0 18px rgba(0,0,0,.45),inset -4px 0 18px rgba(0,0,0,.45);}
-.bb-tray{height:7px;background:linear-gradient(180deg,#1C1408 0%,#120E04 100%);border-top:1px solid rgba(0,0,0,.6);display:flex;align-items:center;padding:0 16px;gap:8px;}
+.bb{background:#0c160c;padding:clamp(16px,2.8vh,28px) clamp(18px,3vw,36px);min-height:70px;box-shadow:inset 0 4px 18px rgba(0,0,0,.55),inset 0 -4px 18px rgba(0,0,0,.55),inset 4px 0 18px rgba(0,0,0,.45),inset -4px 0 18px rgba(0,0,0,.45);}
+.bb-tray{height:7px;background:linear-gradient(180deg,#1C1408,#120E04);border-top:1px solid rgba(0,0,0,.6);display:flex;align-items:center;padding:0 16px;gap:8px;}
 .cp{height:2px;border-radius:2px;background:linear-gradient(90deg,rgba(238,232,192,.12),rgba(238,232,192,.36),rgba(238,232,192,.12));}
-.chalk-text{font-family:'Courier Prime',monospace;font-size:clamp(15px,2vw,21px);line-height:1.92;color:rgba(240,235,205,.86);}
+.chalk-text{font-family:'Courier Prime',monospace;font-size:clamp(16px,2.2vw,22px);line-height:1.92;color:rgba(240,235,205,.86);}
 .chalk-text p{margin-bottom:.4em;}
 .chalk-text p:last-child{margin-bottom:0;}
 
 /* DOCUMENT */
-.doc-outer{position:relative;margin-bottom:6px;width:min(var(--doc-w),88%);}
+.doc-outer{position:relative;margin-bottom:clamp(32px,5vh,56px);}
 .doc-shadow{position:absolute;bottom:-5px;left:6px;right:-6px;top:5px;background:#EDE8CC;border:1px solid rgba(26,22,16,.06);}
 .doc{
   position:relative;z-index:1;
-  background:linear-gradient(160deg,#FAFAF7 0%,#F5F2EC 100%);
+  background:linear-gradient(160deg,#FAFAF7,#F5F2EC);
   border-top:2px solid #1C3A38;
   border-bottom:2px solid #1C3A38;
   border-left:1px solid rgba(26,22,16,.08);
   border-right:1px solid rgba(26,22,16,.08);
-  padding:clamp(18px,2.8vh,28px) clamp(20px,3.2vw,34px);
-  transform:rotate(-.3deg);
-  box-shadow:0 1px 3px rgba(0,0,0,.07),2px 4px 16px rgba(0,0,0,.1),4px 8px 28px rgba(0,0,0,.07);
+  padding:clamp(20px,3vh,32px) clamp(22px,3.5vw,36px);
+  transform:rotate(-.25deg);
+  box-shadow:0 2px 4px rgba(0,0,0,.08),2px 6px 20px rgba(0,0,0,.12),4px 10px 32px rgba(0,0,0,.08);
 }
-.doc-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid rgba(26,22,16,.12);padding-bottom:8px;margin-bottom:16px;}
-.doc-label{font-family:monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#8A8070;}
-.doc-loc{font-size:13px;color:#8A8070;font-style:italic;font-family:serif;}
-.doc p{font-family:Georgia,'Times New Roman',serif;font-size:clamp(13px,1.45vw,15px);line-height:1.85;color:#3D3828;margin-bottom:.85em;}
+.doc-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid rgba(26,22,16,.12);padding-bottom:10px;margin-bottom:18px;}
+.doc-label{font-family:monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#8A8070;}
+.doc-loc{font-size:13px;color:#8A8070;font-style:italic;font-family:Georgia,serif;}
+.doc p{font-family:Georgia,'Times New Roman',serif;font-size:clamp(14px,1.55vw,16px);line-height:1.88;color:#3D3828;margin-bottom:.9em;}
 .doc p:last-child{margin-bottom:0;}
-.form-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
-.fh-left{font-family:monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8A8070;line-height:1.9;}
-.fh-left strong{display:block;font-size:12px;letter-spacing:.05em;color:#1C1810;margin-bottom:2px;font-family:Georgia,serif;font-style:normal;}
-.fh-right{font-family:monospace;font-size:12px;color:#9A9080;text-align:right;line-height:1.9;}
-.hd-stamp{display:inline-block;border:1.5px solid rgba(139,26,26,.6);color:rgba(139,26,26,.75);font-family:monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:2px 8px;transform:rotate(-1.5deg);animation:stamp-in .4s var(--ease) .5s both;float:right;margin-top:2px;}
+.form-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.fh-left{font-family:monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#8A8070;line-height:2;}
+.fh-left strong{display:block;font-size:14px;letter-spacing:.04em;color:#1C1810;margin-bottom:3px;font-family:Georgia,serif;font-style:normal;font-weight:700;}
+.fh-right{font-family:monospace;font-size:11px;color:#9A9080;text-align:right;line-height:2;}
+.hd-stamp{display:inline-block;border:1.5px solid rgba(139,26,26,.6);color:rgba(139,26,26,.75);font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:3px 9px;transform:rotate(-1.5deg);animation:stamp-in .4s var(--ease) .5s both;float:right;margin-top:3px;}
 @keyframes stamp-in{from{opacity:0;transform:rotate(-1.5deg) scale(1.2);}to{opacity:1;transform:rotate(-1.5deg) scale(1);}}
+.doc-rule{margin-top:22px;border-top:1px solid rgba(28,58,56,.3);}
 
-/* LEDGER */
-.ledger-wrap{width:min(var(--col-w),90%);}
-.ledger-head{font-family:monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:rgba(140,190,255,.5);border-bottom:1px solid rgba(140,190,255,.14);padding-bottom:7px;margin-bottom:0;margin-top:clamp(20px,3vh,32px);}
-.floor-row{display:flex;align-items:center;padding:clamp(11px,1.6vh,16px) 0;border-bottom:1px solid rgba(140,190,255,.12);text-decoration:none;color:inherit;transition:background .14s,padding .14s var(--ease);}
-.floor-row.available:hover{background:rgba(140,190,255,.03);padding-left:10px;padding-right:10px;margin:0 -10px;}
-.floor-row.locked{opacity:.28;cursor:default;}
-.floor-row.ellipsis{opacity:.22;cursor:default;justify-content:center;}
-.floor-row.casino-row{border-bottom:none;margin-top:10px;opacity:.28;cursor:default;}
-.fl-num{font-family:monospace;font-size:13px;letter-spacing:.14em;color:rgba(140,190,255,.55);width:110px;flex-shrink:0;text-transform:uppercase;}
-.fl-title{flex:1;font-family:'Courier Prime',monospace;font-size:clamp(15px,1.8vw,19px);color:rgba(240,235,205,.88);line-height:1.3;}
-.fl-title.dim{color:rgba(240,235,205,.28);}
-.fl-sub{display:block;font-family:monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(140,190,255,.45);margin-top:3px;}
-.fl-tag{font-family:monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;flex-shrink:0;}
-.fl-tag.available{color:var(--brass);border:1px solid rgba(200,160,32,.45);padding:3px 10px;}
-.fl-tag.dim{color:rgba(240,235,205,.28);}
-.fl-tag.casino{color:rgba(240,235,205,.28);border:1px solid rgba(240,235,205,.12);padding:3px 10px;}
-.ellipsis-dots{font-family:monospace;font-size:12px;letter-spacing:.3em;color:rgba(140,190,255,.2);text-transform:uppercase;}
-.form-foot{border-top:1px solid rgba(140,190,255,.06);margin-top:10px;padding:10px 0;display:flex;justify-content:space-between;font-family:monospace;font-size:9px;letter-spacing:.1em;color:rgba(140,190,255,.14);text-transform:uppercase;}
+/* LEDGER — full bleed */
+#ledger-section{
+  position:relative;z-index:10;
+  background:linear-gradient(180deg,#0c1422 0%,#060c18 25%,#060c18 75%,#0c1422 100%);
+  border:1px solid rgba(140,190,255,.14);
+  border-top:1px solid rgba(140,190,255,.22);
+  border-bottom:1px solid rgba(140,190,255,.10);
+  padding:0 clamp(20px,3.5vw,40px) clamp(20px,3vh,32px);
+  box-shadow:
+    0 -4px 20px rgba(0,0,0,.55),
+    0 8px 28px rgba(0,0,0,.5),
+    inset 0 1px 0 rgba(140,190,255,.1),
+    inset 0 -1px 0 rgba(140,190,255,.06),
+    inset 3px 0 16px rgba(0,0,0,.35),
+    inset -3px 0 16px rgba(0,0,0,.35);
+
+}
+#ledger-section::before,
+#ledger-section::after{
+  content:'';
+  position:absolute;left:0;right:0;height:10px;pointer-events:none;z-index:1;
+}
+#ledger-section::before{
+  top:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,transparent 100%);
+}
+#ledger-section::after{
+  bottom:0;
+  background:linear-gradient(0deg,rgba(0,0,0,.45) 0%,transparent 100%);
+}
+.ledger-inner{max-width:var(--col);margin:0 auto;}
+.ledger-head{
+  font-family:monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(140,190,255,.45);
+  border-bottom:1px solid rgba(140,190,255,.12);
+  padding:clamp(18px,2.5vh,28px) 0 8px;
+  margin-bottom:0;
+}
+.floor-row{
+  display:flex;align-items:center;
+  padding:clamp(13px,1.8vh,18px) 0;
+  border-bottom:1px solid rgba(140,190,255,.08);
+  text-decoration:none;color:inherit;
+  transition:background .14s,padding .14s var(--ease);
+}
+.floor-row.available:hover{background:rgba(140,190,255,.04);padding-left:12px;padding-right:12px;margin:0 -12px;}
+.floor-row.locked{opacity:.25;cursor:default;}
+.floor-row.ellipsis{opacity:.2;cursor:default;justify-content:center;padding:clamp(10px,1.4vh,14px) 0;}
+.floor-row.casino-row{border-bottom:none;margin-top:8px;opacity:.25;cursor:default;}
+.fl-num{font-family:monospace;font-size:12px;letter-spacing:.14em;color:rgba(140,190,255,.5);width:120px;flex-shrink:0;text-transform:uppercase;}
+.fl-title{flex:1;font-family:'Courier Prime',monospace;font-size:clamp(16px,1.9vw,20px);color:rgba(240,235,205,.85);line-height:1.3;}
+.fl-title.dim{color:rgba(240,235,205,.25);}
+.fl-sub{display:block;font-family:monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(140,190,255,.4);margin-top:4px;}
+.fl-tag{font-family:monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;flex-shrink:0;}
+.fl-tag.available{color:var(--brass);border:1px solid rgba(200,160,32,.4);padding:4px 12px;}
+.fl-tag.dim{color:rgba(240,235,205,.22);}
+.fl-tag.casino{color:rgba(240,235,205,.22);border:1px solid rgba(240,235,205,.1);padding:4px 12px;}
+.ellipsis-dots{font-family:monospace;font-size:11px;letter-spacing:.3em;color:rgba(140,190,255,.2);text-transform:uppercase;}
 
 /* FOOTER RULE */
-.page-end{margin-top:clamp(28px,4vh,48px);width:min(var(--col-w),90%);display:flex;flex-direction:column;align-items:center;gap:12px;}
-.page-end-rule{width:100%;height:1px;background:linear-gradient(90deg,transparent,#1C3A38,transparent);opacity:0.6;}
-.page-end-text{font-family:monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(140,190,255,.14);text-align:center;}
+.page-end{
+  position:relative;z-index:10;
+  padding:clamp(24px,3.5vh,40px) var(--pad) 0;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+}
+.page-end-rule{width:min(var(--col),100%);height:1px;background:linear-gradient(90deg,transparent,#1C3A38,transparent);opacity:0.5;}
+.page-end-text{font-family:monospace;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(140,190,255,.14);}
 
 /* NAV FOOTER */
 #nav-footer{
   position:fixed;bottom:0;left:0;right:0;height:var(--bar-h);
-  background:linear-gradient(180deg,#321F08 0%,#221408 35%,#180E04 100%);
+  background:linear-gradient(180deg,#321F08,#221408 35%,#180E04);
   border-top:2px solid transparent;
   border-image:linear-gradient(90deg,#080502 0%,#3A2608 8%,#7A5A10 18%,#B89020 30%,#D8B030 40%,#ECD060 50%,#D8B030 60%,#B89020 70%,#7A5A10 82%,#3A2608 92%,#080502 100%) 1;
   z-index:50;display:flex;align-items:center;justify-content:space-between;
   padding:0 clamp(14px,2.5vw,28px);gap:8px;
   max-width:860px;margin:0 auto;left:50%;transform:translateX(-50%);width:100%;
 }
-.nf-btn{background:none;border:1px solid rgba(200,160,32,.25);color:rgba(200,160,32,.55);font-family:monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:7px 14px;cursor:pointer;text-decoration:none;transition:border-color .15s,color .15s;white-space:nowrap;}
+.nf-btn{background:none;border:1px solid rgba(200,160,32,.25);color:rgba(200,160,32,.55);font-family:monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:8px 16px;cursor:pointer;text-decoration:none;transition:border-color .15s,color .15s;white-space:nowrap;}
 .nf-btn:hover{border-color:rgba(200,160,32,.7);color:rgba(200,160,32,.9);}
 .nf-mid{font-family:monospace;font-size:11px;letter-spacing:.2em;color:rgba(200,160,32,.18);text-transform:uppercase;text-align:center;flex:1;}
-@media(max-width:500px){#content{padding:18px 18px 0;}.fl-num{width:80px;}.nf-mid{display:none;}}
+@media(max-width:500px){.fl-num{width:80px;}.nf-mid{display:none;}}
 </style>
 </head>
 <body>
 <canvas id="grain"></canvas>
 <div id="viewport">
-  <div id="content">
+  <div id="viewport-vignette"></div>
+  <canvas id="wall-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:9;"></canvas>
 
-    <!-- Window -->
+  <!-- Window + Blackboard + Document — centred column -->
+  <div class="col">
     <div id="window-wide"><div class="winw-frame"><div class="winw-glass">
       <svg id="win-svg" viewBox="0 0 400 160" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;display:block">
         <defs>
-          <linearGradient id="ww-sky" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#02030A"/>
-            <stop offset="100%" stop-color="#07091A"/>
-          </linearGradient>
-          <linearGradient id="ww-road" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#0A0B16"/>
-            <stop offset="100%" stop-color="#060810"/>
-          </linearGradient>
-          <linearGradient id="sg-sh" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stop-color="rgba(0,0,0,.5)"/>
-            <stop offset="25%"  stop-color="rgba(0,0,0,.08)"/>
-            <stop offset="75%"  stop-color="rgba(0,0,0,.08)"/>
-            <stop offset="100%" stop-color="rgba(0,0,0,.5)"/>
-          </linearGradient>
-          <filter id="sign-glow">
-            <feGaussianBlur stdDeviation="3" result="blur"/>
-            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
+          <linearGradient id="ww-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#02030A"/><stop offset="100%" stop-color="#07091A"/></linearGradient>
+          <linearGradient id="ww-road" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0A0B16"/><stop offset="100%" stop-color="#060810"/></linearGradient>
+          <linearGradient id="sg-sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(0,0,0,.5)"/><stop offset="25%" stop-color="rgba(0,0,0,.08)"/><stop offset="75%" stop-color="rgba(0,0,0,.08)"/><stop offset="100%" stop-color="rgba(0,0,0,.5)"/></linearGradient>
         </defs>
-
-        <!-- Sky -->
         <rect id="sky-rect" width="400" height="160" fill="url(#ww-sky)"/>
-
-        <!-- Clouds -->
         <g id="clouds" opacity="0">
-          <ellipse cx="60"  cy="28" rx="70" ry="16" fill="rgba(22,28,48,.85)"/>
+          <ellipse cx="60" cy="28" rx="70" ry="16" fill="rgba(22,28,48,.85)"/>
           <ellipse cx="180" cy="18" rx="95" ry="18" fill="rgba(18,24,44,.9)"/>
           <ellipse cx="310" cy="30" rx="80" ry="14" fill="rgba(20,26,46,.85)"/>
-          <ellipse cx="390" cy="20" rx="55" ry="12" fill="rgba(18,22,42,.8)"/>
         </g>
-
-        <!-- Far background buildings (distant, very dark) -->
         <g id="pw-bg">
-          <rect x="0"   y="70" width="40"  height="90" fill="#0A0C18"/>
-          <rect x="355" y="60" width="45"  height="100" fill="#0A0C18"/>
-          <rect x="360" y="75" width="8"   height="6"  fill="rgba(255,240,150,.05)"/>
-          <rect x="374" y="75" width="8"   height="6"  fill="rgba(255,240,150,.07)"/>
-          <rect x="360" y="87" width="8"   height="6"  fill="rgba(255,240,150,.08)"/>
-          <rect x="374" y="87" width="8"   height="6"  fill="rgba(255,240,150,.04)"/>
-          <rect x="5"   y="76" width="8"   height="6"  fill="rgba(255,240,150,.06)"/>
-          <rect x="18"  y="76" width="8"   height="6"  fill="rgba(255,240,150,.09)"/>
-          <rect x="5"   y="88" width="8"   height="6"  fill="rgba(255,240,150,.04)"/>
-          <rect x="18"  y="88" width="8"   height="6"  fill="rgba(255,240,150,.07)"/>
+          <rect x="0" y="70" width="40" height="90" fill="#0A0C18"/>
+          <rect x="355" y="60" width="45" height="100" fill="#0A0C18"/>
+          <rect x="5" y="76" width="8" height="6" fill="rgba(255,240,150,.06)"/>
+          <rect x="18" y="76" width="8" height="6" fill="rgba(255,240,150,.09)"/>
+          <rect x="360" y="75" width="8" height="6" fill="rgba(255,240,150,.05)"/>
+          <rect x="374" y="87" width="8" height="6" fill="rgba(255,240,150,.07)"/>
         </g>
-
-        <!-- Institute building (left, dark concrete) -->
         <g id="pw-mid">
-          <!-- Institute block -->
           <rect x="20" y="28" width="130" height="132" fill="#0E1022"/>
-          <rect x="20" y="24" width="130" height="6"   fill="#161830"/>
-          <rect x="22" y="30" width="126" height="1"   fill="rgba(140,160,255,.06)"/>
-          <!-- Institute windows — cold, mostly dark -->
-          <rect x="28"  y="36" width="10" height="7" fill="rgba(140,180,255,.04)"/>
-          <rect x="43"  y="36" width="10" height="7" fill="rgba(140,180,255,.07)"/>
-          <rect x="58"  y="36" width="10" height="7" fill="rgba(140,180,255,.03)"/>
-          <rect x="73"  y="36" width="10" height="7" fill="rgba(140,180,255,.06)"/>
-          <rect x="88"  y="36" width="10" height="7" fill="rgba(140,180,255,.00)"/>
+          <rect x="20" y="24" width="130" height="6" fill="#161830"/>
+          <rect x="28" y="36" width="10" height="7" fill="rgba(140,180,255,.04)"/>
+          <rect x="43" y="36" width="10" height="7" fill="rgba(140,180,255,.07)"/>
+          <rect x="58" y="36" width="10" height="7" fill="rgba(140,180,255,.03)"/>
+          <rect x="73" y="36" width="10" height="7" fill="rgba(140,180,255,.06)"/>
+          <rect x="88" y="36" width="10" height="7" fill="rgba(140,180,255,.00)"/>
           <rect x="103" y="36" width="10" height="7" fill="rgba(140,180,255,.05)"/>
-          <rect x="28"  y="50" width="10" height="7" fill="rgba(140,180,255,.06)"/>
-          <rect x="43"  y="50" width="10" height="7" fill="rgba(140,180,255,.00)"/>
-          <rect x="58"  y="50" width="10" height="7" fill="rgba(140,180,255,.08)"/>
-          <rect x="73"  y="50" width="10" height="7" fill="rgba(140,180,255,.04)"/>
-          <rect x="88"  y="50" width="10" height="7" fill="rgba(140,180,255,.07)"/>
+          <rect x="28" y="50" width="10" height="7" fill="rgba(140,180,255,.06)"/>
+          <rect x="43" y="50" width="10" height="7" fill="rgba(140,180,255,.00)"/>
+          <rect x="58" y="50" width="10" height="7" fill="rgba(140,180,255,.08)"/>
+          <rect x="73" y="50" width="10" height="7" fill="rgba(140,180,255,.04)"/>
+          <rect x="88" y="50" width="10" height="7" fill="rgba(140,180,255,.07)"/>
           <rect x="103" y="50" width="10" height="7" fill="rgba(140,180,255,.02)"/>
-          <rect x="28"  y="64" width="10" height="7" fill="rgba(140,180,255,.03)"/>
-          <rect x="43"  y="64" width="10" height="7" fill="rgba(140,180,255,.07)"/>
-          <rect x="58"  y="64" width="10" height="7" fill="rgba(140,180,255,.05)"/>
-          <rect x="73"  y="64" width="10" height="7" fill="rgba(140,180,255,.00)"/>
-          <rect x="88"  y="64" width="10" height="7" fill="rgba(140,180,255,.06)"/>
+          <rect x="28" y="64" width="10" height="7" fill="rgba(140,180,255,.03)"/>
+          <rect x="43" y="64" width="10" height="7" fill="rgba(140,180,255,.07)"/>
+          <rect x="58" y="64" width="10" height="7" fill="rgba(140,180,255,.05)"/>
+          <rect x="73" y="64" width="10" height="7" fill="rgba(140,180,255,.00)"/>
+          <rect x="88" y="64" width="10" height="7" fill="rgba(140,180,255,.06)"/>
           <rect x="103" y="64" width="10" height="7" fill="rgba(140,180,255,.04)"/>
-          <rect x="28"  y="78" width="10" height="7" fill="rgba(140,180,255,.05)"/>
-          <rect x="43"  y="78" width="10" height="7" fill="rgba(140,180,255,.03)"/>
-          <rect x="58"  y="78" width="10" height="7" fill="rgba(140,180,255,.07)"/>
-          <rect x="73"  y="78" width="10" height="7" fill="rgba(140,180,255,.00)"/>
-          <rect x="88"  y="78" width="10" height="7" fill="rgba(140,180,255,.05)"/>
+          <rect x="28" y="78" width="10" height="7" fill="rgba(140,180,255,.05)"/>
+          <rect x="43" y="78" width="10" height="7" fill="rgba(140,180,255,.03)"/>
+          <rect x="58" y="78" width="10" height="7" fill="rgba(140,180,255,.07)"/>
+          <rect x="73" y="78" width="10" height="7" fill="rgba(140,180,255,.00)"/>
+          <rect x="88" y="78" width="10" height="7" fill="rgba(140,180,255,.05)"/>
           <rect x="103" y="78" width="10" height="7" fill="rgba(140,180,255,.08)"/>
-          <!-- Institute door -->
           <rect x="62" y="130" width="26" height="30" fill="rgba(140,160,255,.04)" rx="1"/>
           <line x1="75" y1="130" x2="75" y2="160" stroke="rgba(140,160,255,.08)" stroke-width=".6"/>
           <rect x="62" y="130" width="26" height="30" fill="none" stroke="rgba(140,160,255,.10)" stroke-width=".6" rx="1"/>
-
-          <!-- Road between buildings -->
           <rect x="150" y="120" width="100" height="40" fill="#080A14"/>
-          <rect x="150" y="120" width="100" height="1"  fill="rgba(255,255,255,.04)"/>
-          <!-- Road markings -->
           <rect x="192" y="128" width="16" height="2" fill="rgba(255,255,255,.05)" rx=".5"/>
           <rect x="192" y="134" width="16" height="2" fill="rgba(255,255,255,.05)" rx=".5"/>
           <rect x="192" y="140" width="16" height="2" fill="rgba(255,255,255,.05)" rx=".5"/>
-
-          <!-- Casino building (centre, warm, lit) -->
           <rect x="120" y="18" width="160" height="142" fill="#120D1E"/>
-          <rect x="120" y="14" width="160" height="6"   fill="#1C1530"/>
-          <rect x="122" y="20" width="156" height="1"   fill="rgba(255,180,40,.08)"/>
-          <!-- Casino windows — warm amber glow -->
+          <rect x="120" y="14" width="160" height="6" fill="#1C1530"/>
+          <rect x="122" y="20" width="156" height="1" fill="rgba(255,180,40,.08)"/>
           <rect x="128" y="28" width="12" height="8" fill="rgba(255,240,150,.07)"/>
           <rect x="146" y="28" width="12" height="8" fill="rgba(255,240,150,.10)"/>
           <rect x="164" y="28" width="12" height="8" fill="rgba(255,240,150,.05)"/>
           <rect x="182" y="28" width="12" height="8" fill="rgba(255,240,150,.09)"/>
           <rect x="200" y="28" width="12" height="8" fill="rgba(255,240,150,.12)"/>
+          <rect x="218" y="28" width="12" height="8" fill="rgba(255,240,150,.07)"/>
+          <rect x="236" y="28" width="12" height="8" fill="rgba(255,240,150,.04)"/>
           <rect x="128" y="76" width="12" height="8" fill="rgba(255,240,150,.08)"/>
           <rect x="146" y="76" width="12" height="8" fill="rgba(255,240,150,.04)"/>
           <rect x="164" y="76" width="12" height="8" fill="rgba(255,240,150,.09)"/>
           <rect x="182" y="76" width="12" height="8" fill="rgba(255,240,150,.07)"/>
           <rect x="200" y="76" width="12" height="8" fill="rgba(255,240,150,.10)"/>
-          <!-- Casino door -->
+          <rect x="128" y="84" width="12" height="8" fill="rgba(255,240,150,.08)"/>
+          <rect x="146" y="84" width="12" height="8" fill="rgba(255,240,150,.05)"/>
+          <rect x="164" y="84" width="12" height="8" fill="rgba(255,240,150,.10)"/>
+          <rect x="182" y="84" width="12" height="8" fill="rgba(255,240,150,.04)"/>
+          <rect x="200" y="84" width="12" height="8" fill="rgba(255,240,150,.09)"/>
+          <rect x="218" y="84" width="12" height="8" fill="rgba(255,240,150,.07)"/>
+          <rect x="236" y="84" width="12" height="8" fill="rgba(255,240,150,.11)"/>
+          <rect x="128" y="98" width="12" height="8" fill="rgba(255,240,150,.05)"/>
+          <rect x="146" y="98" width="12" height="8" fill="rgba(255,240,150,.09)"/>
+          <rect x="164" y="98" width="12" height="8" fill="rgba(255,240,150,.07)"/>
+          <rect x="182" y="98" width="12" height="8" fill="rgba(255,240,150,.11)"/>
+          <rect x="200" y="98" width="12" height="8" fill="rgba(255,240,150,.06)"/>
+          <rect x="218" y="98" width="12" height="8" fill="rgba(255,240,150,.08)"/>
+          <rect x="236" y="98" width="12" height="8" fill="rgba(255,240,150,.04)"/>
           <rect x="186" y="115" width="28" height="45" fill="rgba(255,200,80,.06)" rx="1"/>
           <line x1="200" y1="115" x2="200" y2="160" stroke="rgba(255,200,80,.15)" stroke-width=".6"/>
           <rect x="186" y="115" width="28" height="45" fill="none" stroke="rgba(255,200,80,.20)" stroke-width=".8" rx="1"/>
-          <!-- Door glow on pavement -->
           <ellipse cx="200" cy="160" rx="20" ry="4" fill="rgba(255,180,40,.08)"/>
-
-          <rect x="128" y="84"  width="12" height="8" fill="rgba(255,240,150,.08)"/>
-          <rect x="146" y="84"  width="12" height="8" fill="rgba(255,240,150,.05)"/>
-          <rect x="164" y="84"  width="12" height="8" fill="rgba(255,240,150,.10)"/>
-          <rect x="182" y="84"  width="12" height="8" fill="rgba(255,240,150,.04)"/>
-          <rect x="200" y="84"  width="12" height="8" fill="rgba(255,240,150,.09)"/>
-          <rect x="218" y="84"  width="12" height="8" fill="rgba(255,240,150,.07)"/>
-          <rect x="236" y="84"  width="12" height="8" fill="rgba(255,240,150,.11)"/>
-          <rect x="128" y="98"  width="12" height="8" fill="rgba(255,240,150,.05)"/>
-          <rect x="146" y="98"  width="12" height="8" fill="rgba(255,240,150,.09)"/>
-          <rect x="164" y="98"  width="12" height="8" fill="rgba(255,240,150,.07)"/>
-          <rect x="182" y="98"  width="12" height="8" fill="rgba(255,240,150,.11)"/>
-          <rect x="200" y="98"  width="12" height="8" fill="rgba(255,240,150,.06)"/>
-          <rect x="218" y="98"  width="12" height="8" fill="rgba(255,240,150,.08)"/>
-          <rect x="236" y="98"  width="12" height="8" fill="rgba(255,240,150,.04)"/>
-          <!-- Casino sign — full facade width, prominent -->
           <g class="sign-group">
-            <!-- sign board spans full casino width -->
             <rect x="145" y="40" width="110" height="34" rx="2" fill="#010106"/>
             <rect x="145" y="40" width="110" height="34" rx="2" fill="none" stroke="rgba(200,160,30,.55)" stroke-width="1.5"/>
             <rect x="148" y="43" width="104" height="28" rx="1.5" fill="none" stroke="rgba(200,160,30,.15)" stroke-width=".6"/>
             <rect x="145" y="40" width="110" height="34" rx="2" fill="url(#sg-sh)"/>
-            <!-- bulbs top row — tight spacing across full width -->
-            <!-- bulbs bottom row -->
-            <circle cx="148" cy="42" r="1.5" fill="rgba(255,220,80,.80"/>
-            <circle cx="155" cy="42" r="1.5" fill="rgba(255,180,60,.45"/>
-            <circle cx="162" cy="42" r="1.5" fill="rgba(255,220,80,.90"/>
-            <circle cx="169" cy="42" r="1.5" fill="rgba(255,180,60,.00"/>
-            <circle cx="176" cy="42" r="1.5" fill="rgba(255,220,80,.75"/>
-            <circle cx="183" cy="42" r="1.5" fill="rgba(255,180,60,.70"/>
-            <circle cx="190" cy="42" r="1.5" fill="rgba(255,220,80,.85"/>
-            <circle cx="197" cy="42" r="1.5" fill="rgba(255,180,60,.55"/>
-            <circle cx="204" cy="42" r="1.5" fill="rgba(255,220,80,.80"/>
-            <circle cx="211" cy="42" r="1.5" fill="rgba(255,180,60,.65"/>
-            <circle cx="218" cy="42" r="1.5" fill="rgba(255,220,80,.85"/>
-            <circle cx="225" cy="42" r="1.5" fill="rgba(255,180,60,.40"/>
-            <circle cx="232" cy="42" r="1.5" fill="rgba(255,220,80,.75"/>
-            <circle cx="239" cy="42" r="1.5" fill="rgba(255,180,60,.00"/>
-            <circle cx="246" cy="42" r="1.5" fill="rgba(255,220,80,.80"/>
-            <circle cx="148" cy="72" r="1.5" fill="rgba(255,220,80,.70"/>
-            <circle cx="155" cy="72" r="1.5" fill="rgba(255,180,60,.85"/>
-            <circle cx="162" cy="72" r="1.5" fill="rgba(255,220,80,.55"/>
-            <circle cx="169" cy="72" r="1.5" fill="rgba(255,180,60,.00"/>
-            <circle cx="176" cy="72" r="1.5" fill="rgba(255,220,80,.80"/>
-            <circle cx="183" cy="72" r="1.5" fill="rgba(255,180,60,.65"/>
-            <circle cx="190" cy="72" r="1.5" fill="rgba(255,220,80,.90"/>
-            <circle cx="197" cy="72" r="1.5" fill="rgba(255,180,60,.50"/>
-            <circle cx="204" cy="72" r="1.5" fill="rgba(255,220,80,.75"/>
-            <circle cx="211" cy="72" r="1.5" fill="rgba(255,180,60,.80"/>
-            <circle cx="218" cy="72" r="1.5" fill="rgba(255,220,80,.60"/>
-            <circle cx="225" cy="72" r="1.5" fill="rgba(255,180,60,.00"/>
-            <circle cx="232" cy="72" r="1.5" fill="rgba(255,220,80,.85"/>
-            <circle cx="239" cy="72" r="1.5" fill="rgba(255,180,60,.70"/>
-            <circle cx="246" cy="72" r="1.5" fill="rgba(255,220,80,.65"/>
-            <!-- glow halos behind text -->
-            <ellipse cx="200" cy="51"  rx="58" ry="6"  fill="rgba(255,140,0,.14)"  class="sign-amb"/>
-            <ellipse cx="200" cy="63" rx="48" ry="7"  fill="rgba(220,20,20,.16)"  class="sign-ruin"/>
-            <!-- text — bigger, tighter to board -->
-            <text x="200" y="55"  text-anchor="middle" font-family="'Special Elite',monospace" font-size="9"   letter-spacing="2.5" fill="#FFCC44" class="sign-amb">GAMBLER'S</text>
-            <text x="200" y="69" text-anchor="middle" font-family="'Special Elite',monospace" font-size="14"  letter-spacing="5"   fill="#FF3030" class="sign-ruin">RUIN</text>
+            <circle cx="148" cy="42" r="1.5" fill="rgba(255,220,80,.80)"/><circle cx="155" cy="42" r="1.5" fill="rgba(255,180,60,.45)"/><circle cx="162" cy="42" r="1.5" fill="rgba(255,220,80,.90)"/><circle cx="169" cy="42" r="1.5" fill="rgba(255,180,60,.00)"/><circle cx="176" cy="42" r="1.5" fill="rgba(255,220,80,.75)"/><circle cx="183" cy="42" r="1.5" fill="rgba(255,180,60,.70)"/><circle cx="190" cy="42" r="1.5" fill="rgba(255,220,80,.85)"/><circle cx="197" cy="42" r="1.5" fill="rgba(255,180,60,.55)"/><circle cx="204" cy="42" r="1.5" fill="rgba(255,220,80,.80)"/><circle cx="211" cy="42" r="1.5" fill="rgba(255,180,60,.65)"/><circle cx="218" cy="42" r="1.5" fill="rgba(255,220,80,.85)"/><circle cx="225" cy="42" r="1.5" fill="rgba(255,180,60,.40)"/><circle cx="232" cy="42" r="1.5" fill="rgba(255,220,80,.75)"/><circle cx="239" cy="42" r="1.5" fill="rgba(255,180,60,.00)"/><circle cx="246" cy="42" r="1.5" fill="rgba(255,220,80,.85)"/>
+            <circle cx="148" cy="72" r="1.5" fill="rgba(255,220,80,.70)"/><circle cx="155" cy="72" r="1.5" fill="rgba(255,180,60,.85)"/><circle cx="162" cy="72" r="1.5" fill="rgba(255,220,80,.55)"/><circle cx="169" cy="72" r="1.5" fill="rgba(255,180,60,.00)"/><circle cx="176" cy="72" r="1.5" fill="rgba(255,220,80,.80)"/><circle cx="183" cy="72" r="1.5" fill="rgba(255,180,60,.65)"/><circle cx="190" cy="72" r="1.5" fill="rgba(255,220,80,.90)"/><circle cx="197" cy="72" r="1.5" fill="rgba(255,180,60,.50)"/><circle cx="204" cy="72" r="1.5" fill="rgba(255,220,80,.75)"/><circle cx="211" cy="72" r="1.5" fill="rgba(255,180,60,.80)"/><circle cx="218" cy="72" r="1.5" fill="rgba(255,220,80,.60)"/><circle cx="225" cy="72" r="1.5" fill="rgba(255,180,60,.00)"/><circle cx="232" cy="72" r="1.5" fill="rgba(255,220,80,.85)"/><circle cx="239" cy="72" r="1.5" fill="rgba(255,180,60,.70)"/><circle cx="246" cy="72" r="1.5" fill="rgba(255,220,80,.65)"/>
+            <ellipse cx="200" cy="51" rx="48" ry="5" fill="rgba(255,140,0,.14)" class="sign-amb"/>
+            <ellipse cx="200" cy="63" rx="40" ry="6" fill="rgba(220,20,20,.16)" class="sign-ruin"/>
+            <text x="200" y="55" text-anchor="middle" font-family="'Special Elite',monospace" font-size="9" letter-spacing="2.5" fill="#FFCC44" class="sign-amb">GAMBLER'S</text>
+            <text x="200" y="69" text-anchor="middle" font-family="'Special Elite',monospace" font-size="14" letter-spacing="5" fill="#FF3030" class="sign-ruin">RUIN</text>
           </g>
-
-          <!-- Puddle reflection (rain) -->
           <g id="puddle" opacity="0">
             <ellipse cx="200" cy="158" rx="30" ry="2.5" fill="rgba(255,40,40,.07)"/>
             <ellipse cx="200" cy="158" rx="20" ry="1.5" fill="rgba(255,140,0,.05)"/>
           </g>
         </g>
-
-        <!-- Foreground pavement -->
         <g id="pw-fg">
           <rect x="0" y="148" width="400" height="12" fill="url(#ww-road)"/>
-          <rect x="0" y="148" width="400" height="1"  fill="rgba(255,255,255,.04)"/>
-          <!-- kerb -->
-          <rect x="0" y="146" width="400" height="3"  fill="#0C0E1C"/>
-          <rect x="0" y="146" width="400" height="1"  fill="rgba(255,255,255,.06)"/>
+          <rect x="0" y="146" width="400" height="3" fill="#0C0E1C"/>
+          <rect x="0" y="146" width="400" height="1" fill="rgba(255,255,255,.06)"/>
         </g>
-
-        <!-- Fog layer -->
         <rect id="fog" x="0" y="0" width="400" height="160" fill="rgba(60,70,90,0)" opacity="0"/>
-        <!-- Lightning flash -->
         <rect id="lightning" x="0" y="0" width="400" height="160" fill="rgba(200,220,255,0)"/>
       </svg>
       <canvas id="rain-canvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;"></canvas>
@@ -340,6 +359,8 @@ body{font-family:'Courier Prime',monospace;color:var(--chalk);}
       <div class="winw-bar-h" style="top:55%"></div>
       <div class="winw-glare"></div>
     </div><div class="winw-sill"></div></div></div>
+
+    <div class="sill-rule"></div>
 
     <!-- Blackboard -->
     <div class="bb-wrap">
@@ -381,14 +402,19 @@ body{font-family:'Courier Prime',monospace;color:var(--chalk);}
         <p>On the other side of the road, in relative darkness, stands the Institute. It is a building of uncertain provenance. Its style suggests the architect had strong feelings about concrete. It houses ten floors.</p>
         <p>Candidate Squeakwell stands on the ground floor of the Institute. He is there to file his application for entry to the casino. The requisite framework for entry is mathematical. It is available on the floors above.</p>
         <p>The casino is called Gambler's Ruin. Its lights are always on. Several applications have been filed at the Institute. None have been successful yet.</p>
-        <div style="margin-top:20px;border-top:1px solid #1C3A38;opacity:0.35;"></div>
+        <div class="doc-rule"></div>
       </div>
     </div>
+  </div><!-- /col -->
 
-    <!-- Floor ledger -->
-    <div class="ledger-wrap">
+  <!-- Dado rail — in flow -->
+  <div class="dado-rail"></div>
+
+  <!-- Floor ledger — full bleed -->
+  <div id="ledger-section">
+    <canvas id="ledger-grid" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:1;"></canvas>
+    <div class="ledger-inner" style="position:relative;z-index:1;">
       <div class="ledger-head">Select to enter</div>
-
       <a class="floor-row available" href="episode1-game.html">
         <div class="fl-num">First Floor</div>
         <div class="fl-title">Probability Foundations<span class="fl-sub">Sample Spaces &nbsp;&middot;&nbsp; Events &nbsp;&middot;&nbsp; Axioms</span></div>
@@ -413,15 +439,15 @@ body{font-family:'Courier Prime',monospace;color:var(--chalk);}
         <div class="fl-tag casino">Locked</div>
       </div>
     </div>
-
-    <!-- Footer rule -->
-    <div class="page-end">
-      <div class="page-end-rule"></div>
-      <div class="page-end-text">The Institute &nbsp;&middot;&nbsp; Ground Floor &nbsp;&middot;&nbsp; &#9633;</div>
-    </div>
-
   </div>
-</div>
+
+  <!-- Footer -->
+  <div class="page-end">
+    <div class="page-end-rule"></div>
+    <div class="page-end-text">The Institute &nbsp;&middot;&nbsp; Ground Floor &nbsp;&middot;&nbsp; &#9633;</div>
+  </div>
+
+</div><!-- /viewport -->
 
 <!-- Nav footer -->
 <div id="nav-footer">
@@ -431,210 +457,225 @@ body{font-family:'Courier Prime',monospace;color:var(--chalk);}
 </div>
 
 <script>
-// ── HEAVY RAIN ──
+// ── WALL CHARACTER ──
+(function(){
+  var cv = document.getElementById('wall-canvas');
+  if(!cv) return;
+  var ctx = cv.getContext('2d');
+
+  function draw(){
+    var W = cv.offsetWidth || 860;
+    var H = cv.offsetHeight || 900;
+    cv.width = W; cv.height = H;
+    ctx.clearRect(0,0,W,H);
+
+    var dado = H * 0.60;
+
+    // ── PLASTER ABOVE DADO ──
+    // Subtle horizontal variation — lighter bands suggesting uneven plaster
+    for(var i=0;i<12;i++){
+      var y = Math.random()*dado;
+      var h = 8+Math.random()*40;
+      var alpha = 0.012+Math.random()*0.018;
+      var g = ctx.createLinearGradient(0,y,W,y+h);
+      g.addColorStop(0,'rgba(255,255,255,0)');
+      g.addColorStop(0.3,'rgba(255,255,255,'+alpha+')');
+      g.addColorStop(0.7,'rgba(255,255,255,'+alpha+')');
+      g.addColorStop(1,'rgba(255,255,255,0)');
+      ctx.fillStyle=g;
+      ctx.fillRect(0,y,W,h);
+    }
+
+    // ── DAMP STAIN — top left corner ──
+    var stain = ctx.createRadialGradient(W*0.08,H*0.04,0,W*0.12,H*0.08,W*0.22);
+    stain.addColorStop(0,'rgba(0,0,0,.18)');
+    stain.addColorStop(0.4,'rgba(10,20,8,.10)');
+    stain.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=stain;
+    ctx.fillRect(0,0,W*0.45,H*0.35);
+
+    // smaller damp patch top right
+    var stain2 = ctx.createRadialGradient(W*0.88,H*0.06,0,W*0.85,H*0.1,W*0.16);
+    stain2.addColorStop(0,'rgba(0,0,0,.12)');
+    stain2.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=stain2;
+    ctx.fillRect(W*0.6,0,W*0.4,H*0.28);
+
+    // ── DADO PANEL TEXTURE — vertical grooves ──
+    ctx.save();
+    // clip to panel area
+    ctx.beginPath();
+    ctx.rect(0,dado,W,H-dado);
+    ctx.clip();
+    // vertical groove lines
+    var grooveSpacing = W/18;
+    for(var gx=grooveSpacing/2;gx<W;gx+=grooveSpacing){
+      // left edge of groove — light
+      ctx.beginPath();
+      ctx.moveTo(gx,dado);ctx.lineTo(gx,H);
+      ctx.strokeStyle='rgba(255,255,255,.04)';
+      ctx.lineWidth=1;ctx.stroke();
+      // right edge — shadow
+      ctx.beginPath();
+      ctx.moveTo(gx+2,dado);ctx.lineTo(gx+2,H);
+      ctx.strokeStyle='rgba(0,0,0,.12)';
+      ctx.lineWidth=1;ctx.stroke();
+    }
+    ctx.restore();
+
+    // ── SKIRTING BOARD ──
+    var skirtH = Math.min(16, H*0.018);
+    var skirtG = ctx.createLinearGradient(0,H-skirtH,0,H);
+    skirtG.addColorStop(0,'rgba(0,0,0,.35)');
+    skirtG.addColorStop(0.3,'rgba(0,0,0,.55)');
+    skirtG.addColorStop(1,'rgba(0,0,0,.7)');
+    ctx.fillStyle=skirtG;
+    ctx.fillRect(0,H-skirtH,W,skirtH);
+    // skirting highlight
+    ctx.fillStyle='rgba(255,255,255,.05)';
+    ctx.fillRect(0,H-skirtH,W,1);
+  }
+
+  draw();
+  window.addEventListener('resize',draw);
+})();
+
+
+(function(){
+  var cv = document.getElementById('ledger-grid');
+  if(!cv) return;
+  var ctx = cv.getContext('2d');
+
+  function draw(){
+    var W = cv.offsetWidth;
+    var H = cv.offsetHeight;
+    cv.width  = W;
+    cv.height = H;
+    ctx.clearRect(0, 0, W, H);
+
+    // Fine grid — 24px
+    ctx.strokeStyle = 'rgba(140,190,255,0.06)';
+    ctx.lineWidth = 0.5;
+    for(var x = 0; x < W; x += 24){
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+    }
+    for(var y = 0; y < H; y += 24){
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+    }
+
+    // Medium grid — irregular spacing to feel hand-drawn
+    var mxSteps = [96, 120, 84, 108, 96];
+    var mySteps = [80, 104, 88, 96, 112];
+    ctx.strokeStyle = 'rgba(140,190,255,0.13)';
+    ctx.lineWidth = 0.8;
+    var mx = 0, si = 0;
+    while(mx < W){ mx += mxSteps[si % mxSteps.length]; si++;
+      ctx.beginPath(); ctx.moveTo(mx, 0); ctx.lineTo(mx, H); ctx.stroke();
+    }
+    var my = 0; si = 0;
+    while(my < H){ my += mySteps[si % mySteps.length]; si++;
+      ctx.beginPath(); ctx.moveTo(0, my); ctx.lineTo(W, my); ctx.stroke();
+    }
+  }
+
+  draw();
+  window.addEventListener('resize', draw);
+})();
+
+
 (function(){
   var cv = document.getElementById('rain-canvas');
   if(!cv) return;
   var ctx = cv.getContext('2d');
   var drops = [];
-
   function resize(){
-    cv.width  = cv.offsetWidth  || 440;
-    cv.height = cv.offsetHeight || 220;
-    drops = Array.from({length: 120}, function(){
-      return {
-        x:     Math.random() * cv.width,
-        y:     Math.random() * cv.height,
-        len:   12 + Math.random() * 18,
-        speed: 5  + Math.random() * 6,
-        op:    0.06 + Math.random() * 0.12,
-        w:     0.4 + Math.random() * 0.5
-      };
+    cv.width=cv.offsetWidth||520;cv.height=cv.offsetHeight||220;
+    drops=Array.from({length:120},function(){
+      return{x:Math.random()*cv.width,y:Math.random()*cv.height,len:12+Math.random()*18,speed:5+Math.random()*6,op:0.06+Math.random()*0.12,w:0.4+Math.random()*0.5};
     });
   }
-
   function draw(){
-    ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.clearRect(0,0,cv.width,cv.height);
     drops.forEach(function(d){
-      ctx.beginPath();
-      // diagonal streaks — rain angle
-      ctx.moveTo(d.x, d.y);
-      ctx.lineTo(d.x + d.len * 0.18, d.y + d.len);
-      ctx.strokeStyle = 'rgba(180,215,255,' + d.op + ')';
-      ctx.lineWidth   = d.w;
-      ctx.stroke();
-      d.y += d.speed;
-      d.x += d.speed * 0.18;
-      if(d.y > cv.height || d.x > cv.width){
-        d.y = -d.len - Math.random() * 40;
-        d.x = Math.random() * cv.width;
-      }
+      ctx.beginPath();ctx.moveTo(d.x,d.y);ctx.lineTo(d.x+d.len*0.18,d.y+d.len);
+      ctx.strokeStyle='rgba(180,215,255,'+d.op+')';ctx.lineWidth=d.w;ctx.stroke();
+      d.y+=d.speed;d.x+=d.speed*0.18;
+      if(d.y>cv.height||d.x>cv.width){d.y=-d.len-Math.random()*40;d.x=Math.random()*cv.width;}
     });
     requestAnimationFrame(draw);
   }
-
-  resize();
-  window.addEventListener('resize', resize);
-  draw();
+  resize();window.addEventListener('resize',resize);draw();
 })();
 
 // ── CONDENSATION ──
 (function(){
-  var cv = document.createElement('canvas');
-  cv.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;z-index:4;pointer-events:none;';
-  var glass = document.querySelector('.winw-glass');
-  if(!glass) return;
+  var cv=document.createElement('canvas');
+  cv.style.cssText='position:absolute;inset:0;width:100%;height:100%;z-index:4;pointer-events:none;';
+  var glass=document.querySelector('.winw-glass');
+  if(!glass)return;
   glass.appendChild(cv);
-  var ctx = cv.getContext('2d');
-
-  // droplets on glass — static positions, slow trickle
-  var droplets = [];
-
+  var ctx=cv.getContext('2d');
+  var droplets=[];
   function resize(){
-    cv.width  = cv.offsetWidth  || 440;
-    cv.height = cv.offsetHeight || 220;
-    droplets = Array.from({length: 60}, function(){
-      return {
-        x:    Math.random() * cv.width,
-        y:    Math.random() * cv.height,
-        r:    1.5 + Math.random() * 4,
-        op:   0.04 + Math.random() * 0.10,
-        vy:   0,
-        trickle: Math.random() > 0.75, // some droplets run
-        delay: Math.floor(Math.random() * 400)
-      };
+    cv.width=cv.offsetWidth||520;cv.height=cv.offsetHeight||220;
+    droplets=Array.from({length:60},function(){
+      return{x:Math.random()*cv.width,y:Math.random()*cv.height,r:1.5+Math.random()*4,op:0.04+Math.random()*0.10,vy:0,trickle:Math.random()>.75,delay:Math.floor(Math.random()*400)};
     });
   }
-
-  var frame = 0;
+  var frame=0;
   function draw(){
-    frame++;
-    ctx.clearRect(0, 0, cv.width, cv.height);
-
-    // fog/mist layer — bottom edge condensation
-    var fog = ctx.createLinearGradient(0, cv.height * 0.7, 0, cv.height);
-    fog.addColorStop(0, 'rgba(140,160,200,0)');
-    fog.addColorStop(1, 'rgba(140,160,200,0.055)');
-    ctx.fillStyle = fog;
-    ctx.fillRect(0, 0, cv.width, cv.height);
-
+    frame++;ctx.clearRect(0,0,cv.width,cv.height);
+    var fog=ctx.createLinearGradient(0,cv.height*.7,0,cv.height);
+    fog.addColorStop(0,'rgba(140,160,200,0)');fog.addColorStop(1,'rgba(140,160,200,0.05)');
+    ctx.fillStyle=fog;ctx.fillRect(0,0,cv.width,cv.height);
     droplets.forEach(function(d){
-      if(frame < d.delay) return;
-      // trickle downward
-      if(d.trickle && frame % 3 === 0){
-        d.vy += 0.08;
-        d.y  += d.vy;
-        if(d.y > cv.height){
-          d.y = Math.random() * cv.height * 0.4;
-          d.x = Math.random() * cv.width;
-          d.vy = 0;
-        }
-      }
-      // draw droplet — slightly blurred oval
-      ctx.save();
-      ctx.globalAlpha = d.op;
-      ctx.beginPath();
-      ctx.ellipse(d.x, d.y, d.r, d.r * 1.3, 0, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(200,220,255,0.6)';
-      ctx.fill();
-      // highlight
-      ctx.beginPath();
-      ctx.ellipse(d.x - d.r * 0.2, d.y - d.r * 0.3, d.r * 0.35, d.r * 0.3, 0, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255,255,255,0.5)';
-      ctx.fill();
+      if(frame<d.delay)return;
+      if(d.trickle&&frame%3===0){d.vy+=0.08;d.y+=d.vy;if(d.y>cv.height){d.y=Math.random()*cv.height*.4;d.x=Math.random()*cv.width;d.vy=0;}}
+      ctx.save();ctx.globalAlpha=d.op;
+      ctx.beginPath();ctx.ellipse(d.x,d.y,d.r,d.r*1.3,0,0,Math.PI*2);ctx.fillStyle='rgba(200,220,255,0.6)';ctx.fill();
+      ctx.beginPath();ctx.ellipse(d.x-d.r*.2,d.y-d.r*.3,d.r*.35,d.r*.3,0,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.5)';ctx.fill();
       ctx.restore();
     });
-
     requestAnimationFrame(draw);
   }
-
-  resize();
-  window.addEventListener('resize', resize);
-  draw();
+  resize();window.addEventListener('resize',resize);draw();
 })();
 
 // ── CASINO LIGHT LEAK ──
 (function(){
-  var glass = document.querySelector('.winw-glass');
-  if(!glass) return;
-
-  // Amber/red glow leaking in from bottom — casino sign colours
-  var leak = document.createElement('div');
-  leak.style.cssText = [
-    'position:absolute',
-    'bottom:0',
-    'left:0',
-    'right:0',
-    'height:45%',
-    'pointer-events:none',
-    'z-index:2',
-    'background:linear-gradient(to top,',
-    '  rgba(220,80,20,.12) 0%,',
-    '  rgba(255,140,0,.06) 20%,',
-    '  rgba(200,30,20,.04) 40%,',
-    '  transparent 100%)',
-    'animation:leak-breathe 4s ease-in-out infinite'
-  ].join(';');
+  var glass=document.querySelector('.winw-glass');if(!glass)return;
+  var leak=document.createElement('div');
+  leak.style.cssText='position:absolute;bottom:0;left:0;right:0;height:45%;pointer-events:none;z-index:2;background:linear-gradient(to top,rgba(220,80,20,.12) 0%,rgba(255,140,0,.06) 20%,rgba(200,30,20,.04) 40%,transparent 100%);animation:leak-breathe 4s ease-in-out infinite';
   glass.appendChild(leak);
-
-  // Inject keyframe
-  var style = document.createElement('style');
-  style.textContent = '@keyframes leak-breathe{0%,100%{opacity:.75;}50%{opacity:1;}}';
+  var style=document.createElement('style');
+  style.textContent='@keyframes leak-breathe{0%,100%{opacity:.75;}50%{opacity:1;}}';
   document.head.appendChild(style);
-
-  // Side glow — red from sign
-  var redGlow = document.createElement('div');
-  redGlow.style.cssText = [
-    'position:absolute',
-    'bottom:0',
-    'left:25%',
-    'width:50%',
-    'height:30%',
-    'pointer-events:none',
-    'z-index:2',
-    'background:radial-gradient(ellipse at 50% 100%,rgba(255,30,20,.08) 0%,transparent 70%)',
-    'animation:leak-breathe 4s ease-in-out infinite 0.5s'
-  ].join(';');
-  glass.appendChild(redGlow);
+  var red=document.createElement('div');
+  red.style.cssText='position:absolute;bottom:0;left:25%;width:50%;height:30%;pointer-events:none;z-index:2;background:radial-gradient(ellipse at 50% 100%,rgba(255,30,20,.08) 0%,transparent 70%);animation:leak-breathe 4s ease-in-out infinite 0.5s';
+  glass.appendChild(red);
 })();
 
 // ── WINDOW PARALLAX ──
 (function(){
-  var win=document.getElementById('window-wide');
-  if(!win)return;
+  var win=document.getElementById('window-wide');if(!win)return;
   var layers=[{id:'pw-bg',x:0.6,y:0.25},{id:'pw-mid',x:1.4,y:0.5},{id:'pw-fg',x:2.2,y:0.8}];
   var cur={x:0,y:0},tgt={x:0,y:0},raf=null;
   function lerp(a,b,t){return a+(b-a)*t;}
   function tick(){
     cur.x=lerp(cur.x,tgt.x,.08);cur.y=lerp(cur.y,tgt.y,.08);
-    layers.forEach(function(l){
-      var el=document.getElementById(l.id);
-      if(el)el.setAttribute('transform','translate('+(cur.x*l.x)+','+(cur.y*l.y)+')');
-    });
-    if(Math.abs(cur.x-tgt.x)>.01||Math.abs(cur.y-tgt.y)>.01){raf=requestAnimationFrame(tick);}
-    else{raf=null;}
+    layers.forEach(function(l){var el=document.getElementById(l.id);if(el)el.setAttribute('transform','translate('+(cur.x*l.x)+','+(cur.y*l.y)+')');});
+    if(Math.abs(cur.x-tgt.x)>.01||Math.abs(cur.y-tgt.y)>.01)raf=requestAnimationFrame(tick);else raf=null;
   }
-  function startTick(){if(!raf)raf=requestAnimationFrame(tick);}
-  win.addEventListener('mousemove',function(e){
-    var r=win.getBoundingClientRect();
-    tgt.x=-((e.clientX-r.left)/r.width-.5)*2*3.5;
-    tgt.y=-((e.clientY-r.top)/r.height-.5)*2*1.2;
-    startTick();
-  });
-  win.addEventListener('mouseleave',function(){tgt.x=0;tgt.y=0;startTick();});
+  function go(){if(!raf)raf=requestAnimationFrame(tick);}
+  win.addEventListener('mousemove',function(e){var r=win.getBoundingClientRect();tgt.x=-((e.clientX-r.left)/r.width-.5)*2*3.5;tgt.y=-((e.clientY-r.top)/r.height-.5)*2*1.2;go();});
+  win.addEventListener('mouseleave',function(){tgt.x=0;tgt.y=0;go();});
 })();
 
 // ── GRAIN ──
 const gc=document.getElementById('grain');
 const gctx=gc.getContext('2d');
 function gr(){gc.width=window.innerWidth;gc.height=window.innerHeight;}
-function grain(){
-  const id=gctx.createImageData(gc.width,gc.height);
-  const d=id.data;
-  for(let i=0;i<d.length;i+=4){const v=Math.random()*255|0;d[i]=d[i+1]=d[i+2]=v;d[i+3]=255;}
-  gctx.putImageData(id,0,0);
-  requestAnimationFrame(grain);
-}
+function grain(){const id=gctx.createImageData(gc.width,gc.height);const d=id.data;for(let i=0;i<d.length;i+=4){const v=Math.random()*255|0;d[i]=d[i+1]=d[i+2]=v;d[i+3]=255;}gctx.putImageData(id,0,0);requestAnimationFrame(grain);}
 gr();window.addEventListener('resize',gr);grain();
 </script>
 </body>
