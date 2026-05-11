@@ -254,6 +254,15 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   transition:left 0.38s cubic-bezier(0.22,1,0.36,1),width 0.38s cubic-bezier(0.22,1,0.36,1);
   pointer-events:none;
 }
+#node-popup::before {
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    repeating-linear-gradient(rgba(140,190,255,.025) 0 1px,transparent 1px 8px),
+    repeating-linear-gradient(90deg,rgba(140,190,255,.025) 0 1px,transparent 1px 8px),
+    repeating-linear-gradient(rgba(140,190,255,.05) 0 1px,transparent 1px 40px),
+    repeating-linear-gradient(90deg,rgba(140,190,255,.05) 0 1px,transparent 1px 40px);
+  background-size:8px 8px,8px 8px,40px 40px,40px 40px;
+}
 #np-body {
   font-family:'Inter',system-ui,sans-serif;
   font-size:clamp(16px,1.8vw,19px);
@@ -2524,45 +2533,47 @@ cv.addEventListener('mousemove',e=>{
 // ── CLICK ──
 cv.addEventListener('click',e=>{
   if(!_corridorActive) return;
-  // clicking outside the active room — exit to corridor
-  if(activeRoom>=0 && !(hotBox&&hotBox.ri===activeRoom) && !(hotNode&&hotNode.ri===activeRoom) && !hotStrip){
-    activeRoom=-1; activeStrip=null;
-    setRoomBleed(-1);
-    if(typeof BB!=='undefined'&&BB.write){
-      if(!cleanerVisited){
-        BB.write(['First Floor. The corridor.','The Cleaner is on the landing.'],[{l:'Speak to the Cleaner \u2192', f:function(){
-          activeStrip='cleaner';activeRoom=-1;
-          openNodePopup(CLEANER.s,CLEANER.l,CLEANER.b,CLEANER.shelves,null,-1,-1);
-          cleanerVisited=1;
-          setTimeout(function(){ BB.write(['First Floor. The corridor.','Ten rooms. One application.']); },400);
-        }}]);
-      } else {
-        BB.write(['First Floor. The corridor.','Ten rooms. One application.']);
+  // ── IN A ROOM — only allow clicking outside to return to corridor ──
+  if(activeRoom>=0){
+    const inActiveRoom=(hotBox&&hotBox.ri===activeRoom)||(hotNode&&hotNode.ri===activeRoom);
+    if(!inActiveRoom){
+      // exit to corridor
+      activeRoom=-1; activeStrip=null;
+      setRoomBleed(-1);
+      if(typeof BB!=='undefined'&&BB.write){
+        if(!cleanerVisited){
+          BB.write(['First Floor. The corridor.','The Cleaner is on the landing.'],[{l:'Speak to the Cleaner \u2192', f:function(){
+            activeStrip='cleaner';activeRoom=-1;
+            openNodePopup(CLEANER.s,CLEANER.l,CLEANER.b,CLEANER.shelves,null,-1,-1);
+            cleanerVisited=1;
+            setTimeout(function(){ BB.write(['First Floor. The corridor.','Ten rooms. One application.']); },400);
+          }}]);
+        } else {
+          BB.write(['First Floor. The corridor.','Ten rooms. One application.']);
+        }
       }
+      setLocation('The Corridor');
     }
-    setLocation('The Corridor');
+    // if inActiveRoom — node click handled below, everything else blocked
+    else if(hotNode&&activeRoom===hotNode.ri){
+      NV[hotNode.ri+'-'+hotNode.ni]=true;
+      if(!NVE[hotNode.ri+'-'+hotNode.ni]) NVE[hotNode.ri+'-'+hotNode.ni]=0.001;
+      const r=ROOMS[hotNode.ri%ROOMS.length];
+      const nd=r?.n[hotNode.ni];
+      if(nd) openNodePopup(nd.s,nd.l,nd.b,nd.shelves||null,nd.exam||null,hotNode.ri,hotNode.ni);
+    }
     return;
   }
-  // node click — only if room already active
-  if(hotNode&&activeRoom===hotNode.ri){
-    NV[hotNode.ri+'-'+hotNode.ni]=true;
-    if(!NVE[hotNode.ri+'-'+hotNode.ni]) NVE[hotNode.ri+'-'+hotNode.ni]=0.001;
-    const r=ROOMS[hotNode.ri%ROOMS.length];
-    const nd=r?.n[hotNode.ni];
-    if(nd) openNodePopup(nd.s,nd.l,nd.b,nd.shelves||null,nd.exam||null,hotNode.ri,hotNode.ni);
-    return;
-  }
-  // room box click — only allowed from corridor (activeRoom===-1)
+  // ── IN CORRIDOR — allow room entry and strip clicks ──
+  // room box click
   if((hotBox||hotNode) && activeRoom===-1){
     const ri=hotBox?hotBox.ri:hotNode.ri;
-    // gate — room ri requires all previous rooms complete
-    // check all rooms 0..ri-1 are complete
     var _allPriorDone=true;
     for(var _pi=0;_pi<ri;_pi++){ if(!_completedRooms.has(_pi)){ _allPriorDone=false; break; } }
     if(ri>0&&!_allPriorDone){
       var _firstMissing=0;
       for(var _pi=0;_pi<ri;_pi++){ if(!_completedRooms.has(_pi)){ _firstMissing=_pi; break; } }
-      hotBox=null; hotNode=null; // prevent mousemove from overwriting
+      hotBox=null; hotNode=null;
       if(typeof BB!=='undefined'&&BB.write){
         BB.write(['Room '+(ri+1)+' requires a filing of the examination in Room '+(_firstMissing+1)+'.']);
       }
@@ -2577,7 +2588,7 @@ cv.addEventListener('click',e=>{
     setLocation('Room '+String(ri+1).padStart(2,'0'));
     return;
   }
-  activeRoom=-1;
+  // strip clicks — corridor only
   if(hotStrip==='ground'){ goToGroundFloor(); return; }
   if(hotStrip==='clerk'){activeStrip='clerk';activeRoom=-1;clerkVisited=clerkVisited||0.02;openNodePopup(CLERK.s,CLERK.l,CLERK.b,null,null,-1,-1);setTimeout(function(){clerkInit();},100);return;}
   if(hotStrip==='cleaner'){activeStrip='cleaner';activeRoom=-1;cleanerVisited=cleanerVisited||0.02;_cleanerPulsing=false;_cleanerPulse=0;openNodePopup(CLEANER.s,CLEANER.l,CLEANER.b,CLEANER.shelves,null,-1,-1);return;}
@@ -2987,17 +2998,17 @@ function draw(){
   }
 
   c.globalAlpha=_corridorActive?Math.max(0.4,_mapReveal):1;
+  // blueprint grid — always
+  c.strokeStyle='rgba(140,190,255,.035)';c.lineWidth=.4;
+  for(let y=0;y<H;y+=8){c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke();}
+  for(let x=0;x<W;x+=8){c.beginPath();c.moveTo(x,0);c.lineTo(x,H);c.stroke();}
+  c.strokeStyle='rgba(140,190,255,.05)';c.lineWidth=.4;
+  for(let y=0;y<H;y+=40){c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke();}
+  for(let x=0;x<W;x+=40){c.beginPath();c.moveTo(x,0);c.lineTo(x,H);c.stroke();}
+  c.strokeStyle='rgba(140,190,255,.07)';c.lineWidth=.5;
+  for(let y=0;y<H;y+=200){c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke();}
+  for(let x=0;x<W;x+=200){c.beginPath();c.moveTo(x,0);c.lineTo(x,H);c.stroke();}
   if(!_corridorActive){
-    // blueprint grid only
-    c.strokeStyle='rgba(140,190,255,.035)';c.lineWidth=.4;
-    for(let y=0;y<H;y+=8){c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke();}
-    for(let x=0;x<W;x+=8){c.beginPath();c.moveTo(x,0);c.lineTo(x,H);c.stroke();}
-    c.strokeStyle='rgba(140,190,255,.05)';c.lineWidth=.4;
-    for(let y=0;y<H;y+=40){c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke();}
-    for(let x=0;x<W;x+=40){c.beginPath();c.moveTo(x,0);c.lineTo(x,H);c.stroke();}
-    c.strokeStyle='rgba(140,190,255,.07)';c.lineWidth=.5;
-    for(let y=0;y<H;y+=200){c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke();}
-    for(let x=0;x<W;x+=200){c.beginPath();c.moveTo(x,0);c.lineTo(x,H);c.stroke();}
     // Title — top left, all stairwell scenes
     c.save();
     c.textAlign='left';
