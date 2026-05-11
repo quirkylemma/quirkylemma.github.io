@@ -1738,10 +1738,10 @@ function resetFloor(){
   try{ localStorage.removeItem('ql_completed_rooms'); }catch(e){}
   Object.keys(NVE).forEach(k=>delete NVE[k]);
   clerkVisited=0; cleanerVisited=0;
+  _issuedDocSet.length=0;
+  try{ localStorage.removeItem('ql_cleaner_docs'); }catch(e){}
   localStorage.removeItem('ql_floor1_visited');
-  // reset dossier notes for this floor
   for(var i=0;i<10;i++) localStorage.removeItem('dossier-notes-'+i);
-  // reset envelope
   var ov=document.getElementById('map-intro-overlay');
   if(ov){ ov.style.transition='none'; ov.style.opacity='0'; ov.classList.remove('gone'); setTimeout(function(){ ov.style.transition=''; },50); }
   setLocation('Stairwell');
@@ -1755,9 +1755,9 @@ function resetGame(){
   _corridorActive=false;
   Object.keys(NV).forEach(k=>delete NV[k]);
   _completedRooms.clear();
-  try{ localStorage.removeItem('ql_completed_rooms'); }catch(e){}
   Object.keys(NVE).forEach(k=>delete NVE[k]);
   clerkVisited=0; cleanerVisited=0;
+  _issuedDocSet.length=0;
   var ov=document.getElementById('map-intro-overlay');
   if(ov){ ov.style.transition='none'; ov.style.opacity='0'; ov.classList.remove('gone'); setTimeout(function(){ ov.style.transition=''; },50); }
   if(window._s0_intro) window._s0_intro();
@@ -2277,10 +2277,9 @@ const _CLEANER_DOCS=['<div style="font-family:monospace;font-size:9px;letter-spa
 const CLEANER={l:'The Cleaner',s:'The Cleaner · First Floor',b:'',
   get shelves(){
     var issued=_issuedDocs().sort(function(a,b){return a-b;});
-    // most recent issued doc = current encounter
-    var latestIdx=issued.length>0?issued[issued.length-1]:0;
-    var encounterHtml=_CLEANER_DOCS[latestIdx]||_CLEANER_DOCS[0]||'';
-    // prior docs = all except the latest
+    if(issued.length===0) return [{label:'The Encounter',sub:'First Floor',html:''}];
+    var latestIdx=issued[issued.length-1];
+    var encounterHtml=_CLEANER_DOCS[latestIdx]||'';
     var priorIdxs=issued.slice(0,-1);
     var tabs=[{label:'The Encounter',sub:'First Floor',html:encounterHtml}];
     if(priorIdxs.length>0){
