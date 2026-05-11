@@ -427,12 +427,12 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 /* Lined paper */
 .intro-env-paper {
   margin: 8px 10px 0;
-  max-height: 120px;
+  max-height: 100px;
   overflow: hidden;
   background: linear-gradient(170deg, #FAFAF2, #F4EED8);
   border: 1px solid rgba(0,0,0,.1);
   box-shadow: 0 2px 8px rgba(0,0,0,.2);
-  position: relative; overflow: hidden;
+  position: relative;
   z-index: 2;
 }
 .intro-env-paper-lines {
@@ -536,12 +536,12 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 /* Lined paper */
 .intro-env-paper {
   margin: 8px 10px 0;
-  max-height: 120px;
+  max-height: 100px;
   overflow: hidden;
   background: linear-gradient(170deg, #FAFAF2, #F4EED8);
   border: 1px solid rgba(0,0,0,.1);
   box-shadow: 0 2px 8px rgba(0,0,0,.2);
-  position: relative; overflow: hidden;
+  position: relative;
   z-index: 2;
 }
 .intro-env-paper-lines {
@@ -1039,14 +1039,11 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
           <!-- lined paper sticking out of envelope -->
           <div class="intro-env-paper">
             <div class="intro-env-paper-lines"></div>
-            <div class="intro-env-paper-content">
-              <div class="intro-env-ref">Form AS/001 &middot; Ref: AS/001/F1</div>
-              <div class="intro-env-title">Dossier</div>
-              <div class="intro-env-subtitle">Absorption Record</div>
-              <div class="intro-env-field">Candidate: Squeakwell, A.</div>
-              <div class="intro-env-field">The Institute &middot; First Floor</div>
-              <div class="intro-env-field">&nbsp;</div>
-              <div class="intro-env-field intro-env-status">Status: <em>Empty</em></div>
+            <div class="intro-env-paper-content" style="padding:7px 10px 8px;">
+              <div class="intro-env-ref" style="font-size:6px;margin-bottom:5px;">Form AS/001 &middot; First Floor</div>
+              <div class="intro-env-title" style="font-size:10px;margin-bottom:6px;padding-bottom:4px;">Dossier</div>
+              <div class="intro-env-field" style="font-size:6px;line-height:1.7;">Candidate: Squeakwell, A.</div>
+              <div class="intro-env-field intro-env-status" style="font-size:6px;margin-top:1px;">Status: <em style="font-size:9px;">Empty</em></div>
             </div>
           </div>
         </div>
@@ -2342,7 +2339,7 @@ const ROOMS=[
   ]}))
 ];
 const CLERK={l:'Room 197A',s:'The Clerk · First Floor',b:'<div id="clerk-wrap" style="display:flex;flex-direction:column;height:100%;min-height:0;">\n  <div id="clerk-history" style="flex:1;overflow-y:auto;padding-bottom:16px;"></div>\n  <div style="flex-shrink:0;border-top:1px solid rgba(200,160,32,.12);padding-top:16px;display:flex;gap:10px;align-items:flex-end;">\n    <textarea id="clerk-input" placeholder="Your response to the Clerk." style="flex:1;resize:none;background:rgba(200,160,32,.04);border:1px solid rgba(200,160,32,.18);color:rgba(240,235,205,.82);font-family:Inter,system-ui,sans-serif;font-weight:300;font-size:clamp(15px,1.7vw,18px);line-height:1.7;padding:10px 14px;outline:none;min-height:60px;max-height:160px;box-sizing:border-box;color:rgba(240,235,205,.82);background:rgba(200,160,32,.04);border:1px solid rgba(200,160,32,.18);" rows="2" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();clerkSend();}"></textarea>\n    <button onclick="clerkSend()" style="flex-shrink:0;background:none;border:1px solid rgba(200,160,32,.22);color:rgba(200,160,32,.55);font-family:monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;padding:10px 16px;cursor:pointer;transition:all .15s;align-self:stretch;" onmouseover="this.style.borderColor=\'rgba(200,160,32,.6)\';this.style.color=\'rgba(200,160,32,.9)\';" onmouseout="this.style.borderColor=\'rgba(200,160,32,.22)\';this.style.color=\'rgba(200,160,32,.55)\';">Send</button>\n  </div>\n</div>'};
-const _CLEANER_DOCS=['<div style="font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#5A5040;margin-bottom:24px;">Form AS/001 &middot; First Floor &middot; Landing</div><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">The Cleaner passed through the first floor corridor with a mop. She did not look up.</p><p>&ldquo;I am uncertain about &mdash;&rdquo; said Aubrey.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">She stopped. Still did not look up.</p><p>&ldquo;About what?&rdquo; said the Cleaner.</p><p>&ldquo;That,&rdquo; said Aubrey, &ldquo;is rather the question.&rdquo;</p><p>&ldquo;And how uncertain are you?&rdquo;</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">He had not thought about it in those terms. He looked at the empty dossier in his hand.</p><p>&ldquo;I don&rsquo;t know.&rdquo;</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">The Cleaner resumed moving.</p><p>&ldquo;Then you have two problems. Not one.&rdquo;</p>','<div style="font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#5A5040;margin-bottom:24px;">Form AS/002 &middot; First Floor</div><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">Aubrey filed the examination for Room 1. A copy was placed in the dossier. Three copies were placed somewhere else. Aubrey did not ask why.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">The Cleaner was in the corridor when he came out. She was not waiting for him. She was cleaning the corridor. These are different things.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">She did not stop.</p><p>&ldquo;What did you read?&rdquo; she said.</p><p>&ldquo;That uncertainty can be quantified,&rdquo; said Aubrey.</p><p>&ldquo;Can it now,&rdquo; said the Cleaner.</p><p>&ldquo;Yes,&rdquo; said Aubrey. &ldquo;Using an axiomatic framework.&rdquo;</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">She moved the mop.</p><p>&ldquo;And what are you going to do with that?&rdquo;</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">Aubrey thought about it. The framework was sound. He had not yet identified what required it.</p><p>&ldquo;What creates the uncertainty?&rdquo; she said.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">She left.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">Aubrey stood in the corridor for a moment. Room 2 was on his left. The door was open. It may always have been.</p>'];
+const _CLEANER_DOCS=['<div style="font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#5A5040;margin-bottom:24px;">Form AS/001 &middot; First Floor &middot; Landing</div><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">The Cleaner passed through the first floor corridor with a mop. She did not look up.</p><p>&ldquo;I am uncertain about &mdash;&rdquo; said Aubrey.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">She stopped. Still did not look up.</p><p>&ldquo;About what?&rdquo; said the Cleaner.</p><p>&ldquo;That,&rdquo; said Aubrey, &ldquo;is rather the question.&rdquo;</p><p>&ldquo;And how uncertain are you?&rdquo;</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">He had not thought about it in those terms. He looked at the empty dossier in his hand.</p><p>&ldquo;I don&rsquo;t know.&rdquo;</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">The Cleaner resumed moving.</p><p>&ldquo;Then you have two problems. Not one.&rdquo;</p>','<div style="font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#5A5040;margin-bottom:24px;">Form AS/002 &middot; First Floor</div><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">Aubrey filed the examination for Room 1. A copy was placed in the dossier. Three copies were placed somewhere else. Aubrey did not ask why.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">The Cleaner was in the corridor when he came out. She was not waiting for him. She was cleaning the corridor. These are different things.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">She did not stop.</p><p>&ldquo;What did you read?&rdquo; she said.</p><p>&ldquo;That uncertainty can be quantified,&rdquo; said Aubrey.</p><p>&ldquo;Can it now,&rdquo; said the Cleaner.</p><p>&ldquo;Yes,&rdquo; said Aubrey. &ldquo;Using an axiomatic framework.&rdquo;</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">She moved the mop.</p><p>&ldquo;And what are you going to do with that?&rdquo;</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">Aubrey thought about it. The framework was sound. He had not yet identified what required it.</p><p>&ldquo;What creates the uncertainty?&rdquo; she said.</p><p>&ldquo;Other than you?&rdquo; said Aubrey.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">She did not answer. She left.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">Aubrey stood in the corridor for a moment. Room 2 was on his left. The door was open. It may always have been.</p>'];
 const CLEANER={l:'The Cleaner',s:'The Cleaner · First Floor',b:'',
   get shelves(){
     var issued=_issuedDocs().sort(function(a,b){return a-b;});
@@ -2609,18 +2606,23 @@ cv.addEventListener('mousemove',e=>{
 
   // pip hover in active room — write to blackboard
   if(hotNode&&activeRoom===hotNode.ri){
-    const _labels=['The Bookcase. Lower shelf. What others have written.','The Bureau. Real world. What actually happened.','The Examination. Assessment. What you now know.'];
+    const _virgin=activeRoom===0&&!NV['0-0']&&!NV['0-1']&&!NV['0-2'];
+    const _labels=[['The Bookcase. Lower shelf.','What others have written.'].concat(_virgin?['It opens when clicked.']:[]),['The Bureau. Real world.','What actually happened.'].concat(_virgin?['It opens when clicked.']:[]),['The Examination. Assessment.','What you now know.'].concat(_virgin?['It opens when clicked.']: [])];
     const _lbl=_labels[hotNode.ni];
     if(_lbl&&typeof BB!=='undefined'&&BB.write&&_lbl!==_lastPipHover){
       _lastPipHover=_lbl;
-      BB.write([_lbl]);
+      BB.write(_lbl);
     }
   } else if(_lastPipHover&&activeRoom>=0){
     // moved off pip but still in active room — restore room name
     _lastPipHover=null;
     const _room=ROOMS[activeRoom%ROOMS.length];
-    if(typeof BB!=='undefined'&&BB.write)
-      BB.write(['I am in Room '+(activeRoom+1)+'.', (_room?.name||'')+'.']);
+    if(typeof BB!=='undefined'&&BB.write){
+      if(activeRoom===0)
+        BB.write(['Three stations per room. Lower shelf first.','The Institute has noted that candidates who proceed out of order arrive at the same destination.']);
+      else
+        BB.write(['I am in Room '+(activeRoom+1)+'.', (_room?.name||'')+'.']);
+    }
   } else {
     _lastPipHover=null;
   }
@@ -2679,8 +2681,12 @@ cv.addEventListener('click',e=>{
     setRoomBleed(ri);
     if(typeof triggerLampPulse!=='undefined') triggerLampPulse();
     const room=ROOMS[ri%ROOMS.length];
-    if(typeof BB!=='undefined'&&BB.write)
-      BB.write(['I am in Room '+(ri+1)+'.', (room?.name||'')+'.']);
+    if(typeof BB!=='undefined'&&BB.write){
+      if(ri===0)
+        BB.write(['Three stations per room. Lower shelf first.','The Institute has noted that candidates who proceed out of order arrive at the same destination.']);
+      else
+        BB.write(['I am in Room '+(ri+1)+'.', (room?.name||'')+'.']);
+    }
     setLocation('Room '+String(ri+1).padStart(2,'0'));
     return;
   }
@@ -3276,7 +3282,10 @@ cv.addEventListener('click', function(e){
       const rname = room ? room.name : '';
       const rnum = String(hotBox.ri+1).padStart(2,'0');
       if(typeof BB !== 'undefined' && BB.write){
-        BB.write(['Room '+rnum+'.', rname+'.']);
+        if(hotBox.ri===0)
+          BB.write(['Three stations per room. Lower shelf first.','The Institute has noted that candidates who proceed out of order arrive at the same destination.']);
+        else
+          BB.write(['Room '+rnum+'.', rname+'.']);
       }
     }
   }, 10);
@@ -3303,11 +3312,9 @@ requestAnimationFrame(function(){ requestAnimationFrame(function(){
   function s0b(){
     BB.write([
       'Last October, I decided to make a fortune.',
-      'I had a plan.',
-      'To go to the casino.',
+      'I had a plan. To go to the casino.',
       'I was not admitted.',
-      'I was informed that I lacked the necessary framework.',
-      'The framework is the condition of entry.'
+      'I was informed that I lacked the necessary framework.'
     ], [{l:'Continue →', f:s0c},{l:'Ascend to First Floor →', f:s0f}]);
   }
 
@@ -3321,10 +3328,8 @@ requestAnimationFrame(function(){ requestAnimationFrame(function(){
 
     BB.write([
       'I enquired.',
-      'I was handed a dossier.',
-      'It was empty.',
-      'I was told to fill it.',
-      'I asked with what.',
+      'I was handed a dossier. It was empty.',
+      'I asked what it was for.',
       'The question was noted with interest and filed.'
     ], [{l:'Continue →', f:s0d},{l:'Ascend to First Floor →', f:s0f}]);
   }
