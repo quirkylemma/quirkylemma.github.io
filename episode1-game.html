@@ -1276,72 +1276,159 @@ var _EXAM_BANK = {
     }
   ]
 };
-var _examCurrent = null;
+
+// ── EXAM SYSTEM ──
+// All questions in bank presented in sequence, back/forward navigation
+
+var _examBank = [];      // shuffled questions for this room
+var _examIdx = 0;        // current question index
+var _examAnswers = [];   // {chosen, correct} per question, null if unanswered
 
 function loadExam(roomKey){
+  _examRoom = activeRoom;
   var bank = _EXAM_BANK[roomKey];
   if(!bank||!bank.length) return;
-  _examCurrent = bank[Math.floor(Math.random()*bank.length)];
 
-  // Build as two-shelf popup
-  var workedHtml = _examCurrent.worked||('<p>'+_examCurrent.ok+'</p>');
-  var unsolvedHtml = _buildExamHtml(_examCurrent);
+  // use all questions, shuffled
+  _examBank = bank.slice().sort(function(){ return Math.random()-.5; });
+  _examIdx = 0;
+  _examAnswers = _examBank.map(function(){ return null; });
 
-  var shelves=[
-    {label:'Solved',sub:'Example',html:workedHtml},
-    {label:'Unsolved',sub:'Assessment',html:unsolvedHtml}
-  ];
+  // hide shelf nav and track bar — single panel exam
+  var nav = document.getElementById('np-shelf-nav');
+  var tbar = document.getElementById('np-tbar');
+  if(nav){ nav.innerHTML=''; nav.style.display='none'; }
+  if(tbar) tbar.style.display='none';
+  _npShelves = null;
 
-  // inject shelves into existing popup (already open)
-  var nav=document.getElementById('np-shelf-nav');
-  var bodyEl=document.getElementById('np-body');
-  var tbar=document.getElementById('np-tbar');
-  nav.innerHTML='';
-  nav.style.display='flex';
-  _npShelves=shelves;
-  _npCur=0;
-  shelves.forEach(function(s,i){
-    var btn=document.createElement('button');
-    btn.className='np-shelf-btn'+(i===0?' active':'');
-    btn.dataset.shelf=i;
-    btn.innerHTML=s.label+'<span class="np-shelf-sub">'+s.sub+'</span>';
-    btn.onclick=function(){ npShelf(i); };
-    nav.appendChild(btn);
-  });
-  if(tbar) tbar.style.display='block';
-  bodyEl.innerHTML='';
-  requestAnimationFrame(function(){ requestAnimationFrame(function(){ _buildSlider(shelves,bodyEl); }); });
+  _renderExamQuestion();
 }
 
-function _buildExamHtml(exam){
-  var html='<div id="np-exam-q" style="font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(16px,1.8vw,20px);line-height:1.9;color:#1C1810;margin-bottom:24px;">'+exam.q+'</div>';
-  html+='<div id="np-exam-opts" style="display:flex;flex-direction:column;gap:8px;">';
-  exam.opts.forEach(function(opt,i){
-    html+='<button class="np-exam-opt" onclick="submitExam('+i+')" style="text-align:left;"><span style="font-family:monospace;font-size:11px;letter-spacing:.1em;margin-right:10px;color:rgba(28,58,56,.45);">'+String.fromCharCode(97+i)+'.</span>'+opt+'</button>';
+function _renderExamQuestion(){
+  var bodyEl = document.getElementById('np-body');
+  if(!bodyEl) return;
+  var q = _examBank[_examIdx];
+  var ans = _examAnswers[_examIdx];
+  var total = _examBank.length;
+
+  // progress indicator
+  var html = '<div style="font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(28,58,56,.5);margin-bottom:20px;">'
+    + 'Question ' + (_examIdx+1) + ' of ' + total
+    + '</div>';
+
+  // question
+  html += '<div style="font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(16px,1.8vw,20px);line-height:1.9;color:#1C1810;margin-bottom:24px;">' + q.q + '</div>';
+
+  // options
+  html += '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">';
+  q.opts.forEach(function(opt,i){
+    var border = 'border:1px solid rgba(28,58,56,.2);';
+    var cursor = 'cursor:pointer;';
+    var onclick = 'onclick="submitExam('+i+')"';
+    if(ans!==null){
+      cursor = 'cursor:default;';
+      onclick = '';
+      if(i===q.correct) border='border:1px solid rgba(100,220,120,.5);';
+      else if(i===ans.chosen&&!ans.correct) border='border:1px solid rgba(220,80,80,.4);';
+    }
+    html += '<button class="np-exam-opt" '+onclick+' style="text-align:left;'+border+cursor+'">'
+      + '<span style="font-family:monospace;font-size:11px;letter-spacing:.1em;margin-right:10px;color:rgba(28,58,56,.45);">'
+      + String.fromCharCode(97+i) + '.</span>' + opt + '</button>';
   });
-  html+='</div><div id="np-exam-result" style="display:none;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(14px,1.6vw,17px);line-height:1.9;color:#2C2618;border-top:1px solid rgba(28,58,56,.15);padding-top:20px;margin-top:20px;"></div>';
-  return html;
+  html += '</div>';
+
+  // feedback if answered
+  if(ans!==null){
+    var msg = ans.correct ? q.ok : (q.wrong[ans.chosen]||'Incorrect.');
+    html += '<div style="font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(14px,1.6vw,17px);line-height:1.9;color:#2C2618;border-top:1px solid rgba(28,58,56,.15);padding-top:20px;margin-bottom:20px;">'
+      + '<p>' + (ans.correct?'\u2713 ':'') + msg + '</p></div>';
+  }
+
+  // navigation
+  html += '<div style="display:flex;gap:12px;align-items:center;">';
+  if(_examIdx>0){
+    html += '<button onclick="_examNav(-1)" style="background:none;border:none;border-bottom:1px solid rgba(28,58,56,.25);color:rgba(28,58,56,.5);font-family:monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:4px 0;cursor:pointer;">← Previous</button>';
+  }
+  html += '<div style="flex:1;"></div>';
+  if(ans!==null){
+    if(_examIdx < total-1){
+      html += '<button onclick="_examNav(1)" style="background:none;border:none;border-bottom:1px solid rgba(28,58,56,.35);color:rgba(28,58,56,.7);font-family:monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:4px 0;cursor:pointer;">Continue the examination →</button>';
+    } else {
+      html += '<div style="font-family:monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(28,58,56,.45);">— The examination is complete. —</div>';
+    }
+  }
+  html += '</div>';
+
+  bodyEl.style.overflowY='auto';
+  bodyEl.style.padding='24px 20px 40px';
+  bodyEl.style.boxSizing='border-box';
+  bodyEl.innerHTML=_wrapCard(html);
+  renderMath(bodyEl);
+}
+
+function _examNav(dir){
+  _examIdx = Math.max(0,Math.min(_examBank.length-1,_examIdx+dir));
+  _renderExamQuestion();
 }
 
 function submitExam(chosen){
-  if(!_examCurrent) return;
-  var correct = chosen === _examCurrent.correct;
-  var msg = correct ? _examCurrent.ok : (_examCurrent.wrong[chosen]||'Incorrect.');
-  // disable all buttons
-  var btns = document.querySelectorAll('#np-exam-opts button');
-  btns.forEach(function(b,i){
-    b.dataset.answered = '1';
-    b.style.cursor = 'default';
-    if(i===_examCurrent.correct) b.style.borderColor='rgba(100,220,120,.5)';
-    else if(i===chosen&&!correct) b.style.borderColor='rgba(220,80,80,.4)';
-  });
-  var resEl = document.getElementById('np-exam-result');
-  if(resEl){
-    resEl.innerHTML = '<p>' + (correct ? '✓ ' : '') + msg + '</p>';
-    resEl.style.display = 'block';
-    renderMath(resEl);
+  if(!_examBank[_examIdx]) return;
+  if(_examAnswers[_examIdx]!==null) return; // already answered
+  var q = _examBank[_examIdx];
+  var correct = chosen === q.correct;
+  _examAnswers[_examIdx] = {chosen:chosen, correct:correct};
+  _renderExamQuestion();
+
+  // on first complete submission of this room
+  if(!_examSubmittedThisRoom){
+    _examSubmittedThisRoom = true;
+    _completedRooms.add(_examRoom);
+    _saveCompletedRooms();
+    setTimeout(function(){ _issueCleanerDoc(_examRoom); }, 800);
   }
 }
+
+// ── EXAM COMPLETION + GATING + CLEANER DOCS ──
+
+// Room completion — persisted in localStorage
+var _completedRooms = (function(){
+  var s = new Set();
+  try { JSON.parse(localStorage.getItem('ql_completed_rooms')||'[]').forEach(function(r){ s.add(r); }); } catch(e){}
+  return s;
+})();
+
+function _saveCompletedRooms(){
+  try { localStorage.setItem('ql_completed_rooms', JSON.stringify(Array.from(_completedRooms))); } catch(e){}
+}
+
+// Cleaner docs — persisted in localStorage
+var _issuedDocSet = (function(){
+  try { return JSON.parse(localStorage.getItem('ql_cleaner_docs')||'[]'); } catch(e){ return []; }
+})();
+
+function _issuedDocs(){ return _issuedDocSet.slice(); }
+
+function _markDocIssued(idx){
+  if(_issuedDocSet.indexOf(idx)===-1){
+    _issuedDocSet.push(idx);
+    try { localStorage.setItem('ql_cleaner_docs', JSON.stringify(_issuedDocSet)); } catch(e){}
+  }
+}
+
+// Cleaner pulse
+var _cleanerPulse=0, _cleanerPulseT=0, _cleanerPulsing=false, _pendingCleanerNotify=false;
+
+function _pulseCleanerStrip(){ _cleanerPulsing=true; _cleanerPulseT=0; }
+
+function _issueCleanerDoc(roomIdx){
+  var docIdx = roomIdx + 1;
+  if(!_CLEANER_DOCS[docIdx]) return;
+  _markDocIssued(docIdx);
+  _pendingCleanerNotify = true;
+}
+
+// Track which room the exam belongs to — set when loadExam fires
+var _examRoom = -1;
 
 function _setSplit(frac){
   var shell=document.getElementById('shell');
@@ -1363,6 +1450,8 @@ function goToGroundFloor(){
   activeRoom=-1; activeStrip=null;
   _corridorActive=false;
   Object.keys(NV).forEach(k=>delete NV[k]);
+  _completedRooms.clear();
+  try{ localStorage.removeItem('ql_completed_rooms'); }catch(e){}
   Object.keys(NVE).forEach(k=>delete NVE[k]);
   clerkVisited=0; cleanerVisited=0;
   localStorage.removeItem('ql_floor1_visited');
@@ -1642,6 +1731,8 @@ function resetFloor(){
   activeRoom=-1; activeStrip=null;
   _corridorActive=false;
   Object.keys(NV).forEach(k=>delete NV[k]);
+  _completedRooms.clear();
+  try{ localStorage.removeItem('ql_completed_rooms'); }catch(e){}
   Object.keys(NVE).forEach(k=>delete NVE[k]);
   clerkVisited=0; cleanerVisited=0;
   localStorage.removeItem('ql_floor1_visited');
@@ -1660,6 +1751,8 @@ function resetGame(){
   activeRoom=-1; activeStrip=null;
   _corridorActive=false;
   Object.keys(NV).forEach(k=>delete NV[k]);
+  _completedRooms.clear();
+  try{ localStorage.removeItem('ql_completed_rooms'); }catch(e){}
   Object.keys(NVE).forEach(k=>delete NVE[k]);
   clerkVisited=0; cleanerVisited=0;
   var ov=document.getElementById('map-intro-overlay');
@@ -2076,7 +2169,17 @@ function closeNodePopup(){
   var np=document.getElementById('node-popup');
   if(!np) return;
   np.style.transform='translateY(100%)';
-  setTimeout(function(){ np.style.display='none'; },400);
+  setTimeout(function(){
+    np.style.display='none';
+    // if a doc was issued while popup was open, pulse and write BB now
+    if(_pendingCleanerNotify){
+      _pendingCleanerNotify=false;
+      if(typeof BB!=='undefined'&&BB.write){
+        BB.write(['The assessment is complete.','The dossier has been updated.']);
+      }
+      _pulseCleanerStrip();
+    }
+  },400);
 }
 
 // ── MAP CANVAS ENGINE ──
@@ -2133,7 +2236,25 @@ const ROOMS=[
   ]}))
 ];
 const CLERK={l:'Room 197A',s:'The Clerk · First Floor',b:'<div id="clerk-wrap" style="display:flex;flex-direction:column;height:100%;min-height:0;">\n  <div id="clerk-history" style="flex:1;overflow-y:auto;padding-bottom:16px;"></div>\n  <div style="flex-shrink:0;border-top:1px solid rgba(200,160,32,.12);padding-top:16px;display:flex;gap:10px;align-items:flex-end;">\n    <textarea id="clerk-input" placeholder="Your response to the Clerk." style="flex:1;resize:none;background:rgba(200,160,32,.04);border:1px solid rgba(200,160,32,.18);color:rgba(240,235,205,.82);font-family:Inter,system-ui,sans-serif;font-weight:300;font-size:clamp(15px,1.7vw,18px);line-height:1.7;padding:10px 14px;outline:none;min-height:60px;max-height:160px;box-sizing:border-box;color:rgba(240,235,205,.82);background:rgba(200,160,32,.04);border:1px solid rgba(200,160,32,.18);" rows="2" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();clerkSend();}"></textarea>\n    <button onclick="clerkSend()" style="flex-shrink:0;background:none;border:1px solid rgba(200,160,32,.22);color:rgba(200,160,32,.55);font-family:monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;padding:10px 16px;cursor:pointer;transition:all .15s;align-self:stretch;" onmouseover="this.style.borderColor=\'rgba(200,160,32,.6)\';this.style.color=\'rgba(200,160,32,.9)\';" onmouseout="this.style.borderColor=\'rgba(200,160,32,.22)\';this.style.color=\'rgba(200,160,32,.55)\';">Send</button>\n  </div>\n</div>'};
-const CLEANER={l:'The Cleaner',s:'The Cleaner · First Floor',b:'<div style="font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#5A5040;margin-bottom:24px;">The Institute — First Floor · Landing</div><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">​The Cleaner passed through the first floor corridor with a mop. She did not look up.</p><p>“I am uncertain about —” said Aubrey.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">She stopped. Still did not look up.</p><p>“About what?” said the Cleaner.</p><p>“That,” said Aubrey, “is rather the question.”</p><p>“And how uncertain are you?”</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">He had not thought about it in those terms. He looked at the empty dossier in his hand.</p><p>“I don’t know.”</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">The Cleaner resumed moving.</p><p>“Then you have two problems. Not one.”</p>'};
+const _CLEANER_DOCS=['<div style="font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#5A5040;margin-bottom:24px;">Form AS/001 &middot; First Floor &middot; Landing</div><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">The Cleaner passed through the first floor corridor with a mop. She did not look up.</p><p>&ldquo;I am uncertain about &mdash;&rdquo; said Aubrey.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">She stopped. Still did not look up.</p><p>&ldquo;About what?&rdquo; said the Cleaner.</p><p>&ldquo;That,&rdquo; said Aubrey, &ldquo;is rather the question.&rdquo;</p><p>&ldquo;And how uncertain are you?&rdquo;</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">He had not thought about it in those terms. He looked at the empty dossier in his hand.</p><p>&ldquo;I don&rsquo;t know.&rdquo;</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">The Cleaner resumed moving.</p><p>&ldquo;Then you have two problems. Not one.&rdquo;</p>','<div style="font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#5A5040;margin-bottom:24px;">Form AS/002 &middot; First Floor</div><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">Aubrey filed the examination for Room 1. A copy was placed in the dossier. Three copies were placed somewhere else. Aubrey did not ask why.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">The Cleaner was in the corridor when he came out. She was not waiting for him. She was cleaning the corridor. These are different things.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">She did not stop.</p><p>&ldquo;What did you read?&rdquo; she said.</p><p>&ldquo;That uncertainty can be quantified,&rdquo; said Aubrey.</p><p>&ldquo;Can it now,&rdquo; said the Cleaner.</p><p>&ldquo;Yes,&rdquo; said Aubrey. &ldquo;Using an axiomatic framework.&rdquo;</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">She moved the mop.</p><p>&ldquo;And what are you going to do with that?&rdquo;</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">Aubrey thought about it. The framework was sound. He had not yet identified what required it.</p><p>&ldquo;What creates the uncertainty?&rdquo; she said.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">She left.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">Aubrey stood in the corridor for a moment. Room 2 was on his left. The door was open. It may always have been.</p>'];
+const CLEANER={l:'The Cleaner',s:'The Cleaner · First Floor',b:'',
+  get shelves(){
+    var issued=_issuedDocs().sort(function(a,b){return a-b;});
+    // most recent issued doc = current encounter
+    var latestIdx=issued.length>0?issued[issued.length-1]:0;
+    var encounterHtml=_CLEANER_DOCS[latestIdx]||_CLEANER_DOCS[0]||'';
+    // prior docs = all except the latest
+    var priorIdxs=issued.slice(0,-1);
+    var tabs=[{label:'The Encounter',sub:'First Floor',html:encounterHtml}];
+    if(priorIdxs.length>0){
+      var docsHtml=priorIdxs.map(function(i){return _CLEANER_DOCS[i];}).filter(Boolean)
+        .map(function(d){return '<div style="margin-bottom:40px;">'+d+'</div>';})
+        .join('<hr class="doc-rule" style="margin:32px 0;">');
+      tabs.push({label:'Filed Documents',sub:'From the Cleaner',html:docsHtml});
+    }
+    return tabs;
+  }
+};
 
 // ── LAYOUT ──
 const HH=0,BH=0;
@@ -2411,7 +2532,7 @@ cv.addEventListener('click',e=>{
       if(!cleanerVisited){
         BB.write(['First Floor. The corridor.','The Cleaner is on the landing.'],[{l:'Speak to the Cleaner \u2192', f:function(){
           activeStrip='cleaner';activeRoom=-1;
-          openNodePopup(CLEANER.s,CLEANER.l,CLEANER.b,null,null,-1,-1);
+          openNodePopup(CLEANER.s,CLEANER.l,CLEANER.b,CLEANER.shelves,null,-1,-1);
           cleanerVisited=1;
           setTimeout(function(){ BB.write(['First Floor. The corridor.','Ten rooms. One application.']); },400);
         }}]);
@@ -2434,7 +2555,20 @@ cv.addEventListener('click',e=>{
   // room box click — only allowed from corridor (activeRoom===-1)
   if((hotBox||hotNode) && activeRoom===-1){
     const ri=hotBox?hotBox.ri:hotNode.ri;
-    activeRoom=ri; activeStrip=null;
+    // gate — room ri requires all previous rooms complete
+    // check all rooms 0..ri-1 are complete
+    var _allPriorDone=true;
+    for(var _pi=0;_pi<ri;_pi++){ if(!_completedRooms.has(_pi)){ _allPriorDone=false; break; } }
+    if(ri>0&&!_allPriorDone){
+      var _firstMissing=0;
+      for(var _pi=0;_pi<ri;_pi++){ if(!_completedRooms.has(_pi)){ _firstMissing=_pi; break; } }
+      hotBox=null; hotNode=null; // prevent mousemove from overwriting
+      if(typeof BB!=='undefined'&&BB.write){
+        BB.write(['Room '+(ri+1)+' requires a filing of the examination in Room '+(_firstMissing+1)+'.']);
+      }
+      return;
+    }
+    activeRoom=ri; activeStrip=null; _examSubmittedThisRoom=false;
     setRoomBleed(ri);
     if(typeof triggerLampPulse!=='undefined') triggerLampPulse();
     const room=ROOMS[ri%ROOMS.length];
@@ -2445,8 +2579,8 @@ cv.addEventListener('click',e=>{
   }
   activeRoom=-1;
   if(hotStrip==='ground'){ goToGroundFloor(); return; }
-  if(hotStrip==='clerk'||L.clPt&&Math.hypot((e.clientX-cv.getBoundingClientRect().left)-L.clPt.x,(e.clientY-cv.getBoundingClientRect().top)-L.clPt.y)<22){activeStrip="clerk";activeRoom=-1;clerkVisited=clerkVisited||0.02;openNodePopup(CLERK.s,CLERK.l,CLERK.b,null,null,-1,-1);setTimeout(function(){clerkInit();},100);return;}
-  if(hotStrip==='cleaner'||L.cnPt&&Math.hypot((e.clientX-cv.getBoundingClientRect().left)-L.cnPt.x,(e.clientY-cv.getBoundingClientRect().top)-L.cnPt.y)<22){activeStrip="cleaner";activeRoom=-1;cleanerVisited=cleanerVisited||0.02;openNodePopup(CLEANER.s,CLEANER.l,CLEANER.b);}
+  if(hotStrip==='clerk'){activeStrip='clerk';activeRoom=-1;clerkVisited=clerkVisited||0.02;openNodePopup(CLERK.s,CLERK.l,CLERK.b,null,null,-1,-1);setTimeout(function(){clerkInit();},100);return;}
+  if(hotStrip==='cleaner'){activeStrip='cleaner';activeRoom=-1;cleanerVisited=cleanerVisited||0.02;_cleanerPulsing=false;_cleanerPulse=0;openNodePopup(CLEANER.s,CLEANER.l,CLEANER.b,CLEANER.shelves,null,-1,-1);return;}
 });
 
 // ── ESCAPE — exit room to corridor ──
@@ -2461,7 +2595,7 @@ document.addEventListener('keydown',function(e){
       if(!cleanerVisited){
         BB.write(['First Floor. The corridor.','The Cleaner is on the landing.'],[{l:'Speak to the Cleaner \u2192', f:function(){
           activeStrip='cleaner';activeRoom=-1;
-          openNodePopup(CLEANER.s,CLEANER.l,CLEANER.b,null,null,-1,-1);
+          openNodePopup(CLEANER.s,CLEANER.l,CLEANER.b,CLEANER.shelves,null,-1,-1);
           cleanerVisited=1;
           setTimeout(function(){ BB.write(['First Floor. The corridor.','Ten rooms. One application.']); },400);
         }}]);
@@ -2539,6 +2673,12 @@ function drawStripNode(pt,vis,label,labelSide,isHot=false){
 function update(){
   t++;
   if(_corridorActive&&_mapReveal<1) _mapReveal=Math.min(1,_mapReveal+0.004);
+  if(_cleanerPulsing){
+    _cleanerPulseT++;
+    // slow continuous sine — ease in over first 40 frames, then loop forever
+    var _env=Math.min(1,_cleanerPulseT/40);
+    _cleanerPulse=Math.max(0,Math.sin(_cleanerPulseT*0.038))*_env;
+  }
   if(!L.boxes) return;
   L.boxes.forEach(b=>{
     const s=BS[b.ri];
@@ -2908,7 +3048,21 @@ function draw(){
   drawCorridor();
 
   // strips
-  drawStrip(topY,ST,'STAIRWELL',null,null,false,L.cnPt,cleanerVisited);
+  drawStrip(topY,ST,'STAIRWELL',null,null,false,L.cnPt,Math.max(cleanerVisited,_cleanerPulse));
+  // pulse ring on cleaner node
+  if(_cleanerPulse>0.01&&L.cnPt){
+    const _pr=10+_cleanerPulse*16;
+    c.save();
+    c.globalAlpha=1;
+    c.strokeStyle=G(_cleanerPulse*0.85);
+    c.lineWidth=1.5;
+    c.beginPath();c.arc(L.cnPt.x,L.cnPt.y,_pr,0,Math.PI*2);c.stroke();
+    // soft inner glow
+    c.strokeStyle=G(_cleanerPulse*0.4);
+    c.lineWidth=6;
+    c.beginPath();c.arc(L.cnPt.x,L.cnPt.y,10,0,Math.PI*2);c.stroke();
+    c.restore();
+  }
   drawStrip(botY,ST,null,'SECOND FLOOR  →',L.clPt,clerkVisited,null,false);
 
 
@@ -3105,20 +3259,18 @@ requestAnimationFrame(function(){ requestAnimationFrame(function(){
       setTimeout(function(){ _setSplit(0.45); _startResizeInterval(); },50);
     }
 
+    _pulseCleanerStrip();
+    _markDocIssued(0);
     BB.write([
       'First Floor. The corridor.',
       'Ten rooms. One application.',
       'The Cleaner is on the landing.'
     ],[{l:'Speak to the Cleaner →', f:function(){
       activeStrip='cleaner';activeRoom=-1;
-      clerkVisited=clerkVisited||0;
-      openNodePopup(CLEANER.s,CLEANER.l,CLEANER.b,null,null,-1,-1);
       cleanerVisited=1;
+      openNodePopup(CLEANER.s,CLEANER.l,CLEANER.b,CLEANER.shelves,null,-1,-1);
       setTimeout(function(){
-        BB.write([
-          'First Floor. The corridor.',
-          'Ten rooms. One application.'
-        ]);
+        BB.write(['First Floor. The corridor.','Ten rooms. One application.']);
       },400);
     }}]);
   }
