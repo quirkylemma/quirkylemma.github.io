@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 <title>The Institute — First Floor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Cormorant+SC:wght@300;400;500&family=Special+Elite&family=Courier+Prime:ital@0;1&family=EB+Garamond:ital,wght@0,400;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Courier+Prime:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; overflow: hidden; background: #050705; }
@@ -82,7 +82,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 .tb-btn svg { opacity: .55; transition: opacity .18s; flex-shrink: 0; }
 .tb-btn:hover svg { opacity: 1; }
 .tb-lbl {
-  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(11px,1vw,13px);
   letter-spacing: .18em;
   text-transform: uppercase;
@@ -123,11 +123,11 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
     0 4px 16px rgba(0,0,0,.7),
     2px 4px 0 rgba(0,0,0,.5),
     /* top edge — lamp hits here strongest */
-    inset 0 3px 0 rgba(255,210,90,.32),
-    inset 0 6px 12px rgba(255,180,60,.08),
+    inset 0 3px 0 rgba(255,210,90,.14),
+    inset 0 6px 12px rgba(255,180,60,.04),
     /* left edge — warm secondary catch */
-    inset 3px 0 0 rgba(255,200,80,.22),
-    inset 6px 0 14px rgba(255,160,40,.06),
+    inset 3px 0 0 rgba(255,200,80,.10),
+    inset 6px 0 14px rgba(255,160,40,.03),
     /* bottom edge — faint desk bounce light */
     inset 0 -2px 0 rgba(180,140,60,.12),
     inset 0 -8px 12px rgba(120,90,30,.06),
@@ -223,48 +223,70 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   animation: choiceReveal 0.5s ease both;
 }
 
-.np-shelf-btn {
-  background: none; border: none; border-bottom: 2px solid transparent;
-  color: rgba(200,160,32,.35); font-family: monospace; font-size: 9px;
-  letter-spacing: .18em; text-transform: uppercase; padding: 10px 16px 8px;
-  cursor: pointer; transition: color .15s, border-color .15s;
-}
-.np-shelf-btn:hover { color: rgba(200,160,32,.65); }
-.np-shelf-btn.active { color: rgba(200,160,32,.85); border-bottom-color: rgba(200,160,32,.55); }
 /* ── NODE POPUP ── */
 .np-shelf-btn {
   background:none; border:none; border-bottom:2px solid transparent;
   color:rgba(240,235,205,.38); font-family:'Inter',system-ui,sans-serif;
   font-weight:400; font-size:12px; letter-spacing:.04em;
-  padding:12px 20px 10px; cursor:pointer; transition:color .15s,border-color .15s;
+  padding:10px 20px 8px; cursor:pointer; transition:color .15s,border-color .15s;
+  display:flex; flex-direction:column; align-items:center; gap:2px;
 }
 .np-shelf-btn:hover { color:rgba(240,235,205,.7); }
 .np-shelf-btn.active { color:rgba(240,235,205,.92); border-bottom-color:rgba(200,160,32,.6); }
+.np-shelf-sub {
+  font-size:8px; letter-spacing:.14em; text-transform:uppercase;
+  color:rgba(200,160,32,.4); font-family:monospace; font-weight:400;
+  transition:color .15s;
+}
+.np-shelf-btn.active .np-shelf-sub { color:rgba(200,160,32,.65); }
+.np-shelf-btn:hover .np-shelf-sub { color:rgba(200,160,32,.55); }
+#np-shelf-track-bar {
+  flex-shrink:0; height:2px; background:rgba(240,235,205,.06); position:relative; display:none;
+}
+#np-shelf-track-thumb {
+  position:absolute; top:0; height:2px;
+  background:rgba(200,160,32,.45); border-radius:1px;
+  transition:left 0.38s cubic-bezier(0.22,1,0.36,1),width 0.38s cubic-bezier(0.22,1,0.36,1);
+}
+#np-shelf-indicator {
+  position:absolute; bottom:0; height:2px;
+  background:rgba(200,160,32,.6);
+  transition:left 0.38s cubic-bezier(0.22,1,0.36,1),width 0.38s cubic-bezier(0.22,1,0.36,1);
+  pointer-events:none;
+}
 #np-body {
-  font-family: 'Inter',system-ui,sans-serif;
-  font-size: clamp(16px,1.8vw,19px);
-  line-height: 1.95;
-  color: rgba(240,235,205,.88);
-  font-weight: 400;
+  font-family:'Inter',system-ui,sans-serif;
+  font-size:clamp(16px,1.8vw,19px);
+  line-height:1.95;
+  color:rgba(240,235,205,.88);
+  font-weight:400;
 }
 /* doc card — paper inside dark popup */
 .doc-card {
+  font-family: Georgia, "Times New Roman", serif;
   background: linear-gradient(160deg, #FAFAF7 0%, #F4F1EA 100%);
-  border: 1px solid rgba(26,22,16,.09);
+  border-left: 1px solid rgba(26,22,16,.09);
+  border-right: 1px solid rgba(26,22,16,.09);
+  border-top: none;
+  border-bottom: none;
   box-shadow: 0 2px 8px rgba(0,0,0,.18), 4px 6px 24px rgba(0,0,0,.14);
   padding: clamp(24px,3vh,36px) clamp(24px,3.5vw,40px) clamp(28px,4vh,44px);
   position: relative;
   color: #2C2618;
+  box-sizing: border-box;
 }
+
 .doc-card::before {
   content: '';
   position: absolute;
-  bottom: -5px; left: 7px; right: -7px; top: 5px;
+  bottom: -6px; left: 8px; right: -8px; top: 6px;
   background: #EDE8CC;
   border: 1px solid rgba(26,22,16,.05);
-  z-index: -1;
+  z-index: -2;
 }
+
 .doc-card p {
+  font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(15px,1.65vw,18px);
   line-height: 1.95;
   color: #2C2618;
@@ -280,6 +302,12 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 .doc-card p[style*="text-align:center"] {
   color: #5A4E38 !important;
   border-color: rgba(26,22,16,.12) !important;
+}
+.doc-rule {
+  height: 1px;
+  background: #1C3A38;
+  margin: 14px 0;
+  opacity: 0.7;
 }
 /* doc-card lead sentence */
 .doc-card p[style*="font-size:1.15em"] {
@@ -423,13 +451,13 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   color: rgba(26,22,16,.35); margin-bottom: 10px;
 }
 .intro-env-title {
-  font-family: 'Cormorant SC', Georgia, serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 14px; font-weight: 400; letter-spacing: .08em;
   color: rgba(26,22,16,.8); margin-bottom: 14px;
   border-bottom: 1px solid rgba(26,22,16,.1); padding-bottom: 8px;
 }
 .intro-env-subtitle {
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: Georgia, 'Times New Roman', serif;
   font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
   color: rgba(26,22,16,.4); margin-top: -8px; margin-bottom: 14px;
   padding-bottom: 8px; border-bottom: 1px solid rgba(26,22,16,.1);
@@ -443,7 +471,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   color: rgba(26,22,16,.35); margin-top: 4px;
 }
 .intro-env-status em {
-  font-style: italic; font-family: 'EB Garamond', serif;
+  font-style: italic; font-family: Georgia, serif;
   font-size: 11px; color: rgba(26,22,16,.4);
 }
 
@@ -532,13 +560,13 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   color: rgba(26,22,16,.35); margin-bottom: 10px;
 }
 .intro-env-title {
-  font-family: 'Cormorant SC', Georgia, serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 14px; font-weight: 400; letter-spacing: .08em;
   color: rgba(26,22,16,.8); margin-bottom: 14px;
   border-bottom: 1px solid rgba(26,22,16,.1); padding-bottom: 8px;
 }
 .intro-env-subtitle {
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: Georgia, 'Times New Roman', serif;
   font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
   color: rgba(26,22,16,.4); margin-top: -8px; margin-bottom: 14px;
   padding-bottom: 8px; border-bottom: 1px solid rgba(26,22,16,.1);
@@ -552,7 +580,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   color: rgba(26,22,16,.35); margin-top: 4px;
 }
 .intro-env-status em {
-  font-style: italic; font-family: 'EB Garamond', serif;
+  font-style: italic; font-family: Georgia, serif;
   font-size: 11px; color: rgba(26,22,16,.4);
 }
 
@@ -576,7 +604,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   display: flex; flex-direction: column;
   position: relative; overflow: hidden;
   border-top: 2px solid #030403;
-  padding: 8px 10px 10px;
+  padding: 0;
   background: #04060404;
 }
 
@@ -588,8 +616,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
     inset 2px 0 12px rgba(0,0,0,.35),
     inset -2px 0 12px rgba(0,0,0,.35),
     inset 0 -2px 12px rgba(0,0,0,.4),
-    0 0 0 1px rgba(0,0,0,.7),
-    3px 3px 0 rgba(0,0,0,.4);
+    0 0 0 1px rgba(0,0,0,.7);
   display: block;
   width: 100%;
   height: 100%;
@@ -807,7 +834,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 .map-stop-tick { font-size: 11px; color: rgba(140,190,255,.60); }
 .drow-m{display:flex;align-items:center;padding:6px 0;border-bottom:1px solid rgba(120,90,20,.1);cursor:pointer;}
 .drow-m:hover{background:rgba(160,120,20,.04);}
-.drow-notes{width:100%;margin-top:4px;padding:8px;font-family:'EB Garamond',Georgia,serif;font-size:13px;line-height:1.7;color:#3D3020;background:rgba(160,120,20,.05);border:1px dashed rgba(120,90,20,.25);outline:none;resize:vertical;min-height:80px;box-sizing:border-box;}
+.drow-notes{width:100%;margin-top:4px;padding:8px;font-family:Georgia,'Times New Roman',serif;font-size:13px;line-height:1.7;color:#3D3020;background:rgba(160,120,20,.05);border:1px dashed rgba(120,90,20,.25);outline:none;resize:vertical;min-height:80px;box-sizing:border-box;}
 .drow-notes:focus{background:rgba(160,120,20,.09);border-color:rgba(120,90,20,.5);}
 .drow-notes::placeholder{color:rgba(60,40,10,.28);font-style:italic;}
 </style>
@@ -959,7 +986,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 
             <!-- Paper header -->
             <div style="padding:16px 20px 10px;border-bottom:1px solid rgba(120,90,20,.14);position:relative;z-index:1;">
-              <div style="font-family:'Cormorant SC',Georgia,serif;font-weight:400;font-size:15px;letter-spacing:.12em;color:#1C1408;margin-bottom:3px;">Candidate Dossier</div>
+              <div style="font-family:'Inter',system-ui,sans-serif;font-weight:500;font-size:14px;letter-spacing:.04em;color:#1C1408;margin-bottom:3px;">Candidate Dossier</div>
               <div style="font-family:monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(26,22,16,.38);">Squeakwell, A. &nbsp;&middot;&nbsp; Ref: AS/001/F1 &nbsp;&middot;&nbsp; First Floor</div>
             </div>
 
@@ -978,7 +1005,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
       <!-- Close -->
       <div style="text-align:center;">
         <button onclick="closeDossier()" style="
-          font-family:'EB Garamond',Georgia,serif;
+          font-family:Georgia,'Times New Roman',serif;
           font-size:9px;letter-spacing:.28em;text-transform:uppercase;
           color:rgba(220,200,140,.45);background:none;
           border:1px solid rgba(200,160,32,.2);
@@ -994,10 +1021,10 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   <div id="map-panel">
     <div id="reset-modal" style="display:none;position:fixed;inset:0;z-index:200;align-items:center;justify-content:center;background:rgba(5,7,5,.88);">
       <div style="background:linear-gradient(160deg,#1A1408,#120E04);border:1px solid rgba(200,160,32,.28);padding:36px 44px 32px;box-shadow:0 8px 40px rgba(0,0,0,.7);text-align:center;max-width:360px;width:90%;">
-        <div style="font-family:'Special Elite',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,160,32,.7);margin-bottom:24px;">Reset</div>
-        <button onclick="resetFloor()" style="display:block;width:100%;font-family:'Special Elite',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(238,232,196,.7);background:none;border:1px solid rgba(200,160,32,.22);padding:12px 20px;margin-bottom:10px;cursor:pointer;">Clear Floor Record</button>
-        <button onclick="resetGame()" style="display:block;width:100%;font-family:'Special Elite',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(238,232,196,.7);background:none;border:1px solid rgba(200,160,32,.22);padding:12px 20px;margin-bottom:10px;cursor:pointer;">Clear Entire Dossier</button>
-        <button onclick="closeResetModal()" style="font-family:'Special Elite',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(238,232,196,.28);background:none;border:none;cursor:pointer;margin-top:8px;">— cancel —</button>
+        <div style="font-family:monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,160,32,.7);margin-bottom:24px;">Reset</div>
+        <button onclick="resetFloor()" style="display:block;width:100%;font-family:monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(238,232,196,.7);background:none;border:1px solid rgba(200,160,32,.22);padding:12px 20px;margin-bottom:10px;cursor:pointer;">Clear Floor Record</button>
+        <button onclick="resetGame()" style="display:block;width:100%;font-family:monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(238,232,196,.7);background:none;border:1px solid rgba(200,160,32,.22);padding:12px 20px;margin-bottom:10px;cursor:pointer;">Clear Entire Dossier</button>
+        <button onclick="closeResetModal()" style="font-family:monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(238,232,196,.28);background:none;border:none;cursor:pointer;margin-top:8px;">— cancel —</button>
       </div>
     </div>
     <div id="map-intro-overlay" style="opacity:0;">
@@ -1024,10 +1051,9 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
     </div>
 
     <canvas id="map-canvas-main" style="display:block;width:100%;height:100%;"></canvas>
-    <!-- ── NODE POPUP — full screen ── -->
-    <!-- ── NODE POPUP — full screen ── -->
+<!-- ── NODE POPUP ── -->
     <div id="node-popup" style="display:none;position:fixed;inset:0;z-index:500;flex-direction:column;align-items:center;background:#07090f;transform:translateY(100%);transition:transform 0.38s cubic-bezier(0.22,1,0.36,1);">
-      <div style="width:100%;max-width:740px;display:flex;flex-direction:column;flex:1;min-height:0;">
+      <div id="np-inner" style="width:100%;max-width:740px;flex:1;min-height:0;display:flex;flex-direction:column;">
         <div id="np-header" style="flex-shrink:0;padding:18px 28px 14px;border-bottom:1px solid rgba(200,160,32,.12);display:flex;align-items:baseline;justify-content:space-between;">
           <div>
             <div id="np-super" style="font-family:monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,160,32,.5);margin-bottom:8px;"></div>
@@ -1035,8 +1061,9 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
           </div>
           <button onclick="closeNodePopup()" style="background:none;border:none;border-bottom:1px solid rgba(238,232,192,.18);color:rgba(238,232,192,.28);font-family:monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;padding:4px 0;cursor:pointer;flex-shrink:0;margin-left:24px;transition:color .15s,border-color .15s;" onmouseover="this.style.color='rgba(238,232,192,.65)';this.style.borderColor='rgba(238,232,192,.45)';" onmouseout="this.style.color='rgba(238,232,192,.28)';this.style.borderColor='rgba(238,232,192,.18)';">— close —</button>
         </div>
-        <div id="np-shelf-nav" style="flex-shrink:0;padding:0 28px;border-bottom:1px solid rgba(200,160,32,.08);display:none;gap:0;"></div>
-        <div id="np-body" style="flex:1;overflow-y:auto;padding:24px 20px 40px;width:100%;box-sizing:border-box;"></div>
+        <div id="np-tbar" style="flex-shrink:0;height:3px;background:rgba(255,255,255,.05);display:none;position:relative;"><div id="np-tthumb" style="position:absolute;top:0;height:3px;background:rgba(200,160,32,.5);transition:left .35s cubic-bezier(.22,1,.36,1),width .35s cubic-bezier(.22,1,.36,1);"></div></div>
+        <div id="np-shelf-nav" style="flex-shrink:0;padding:0 28px;border-bottom:1px solid rgba(200,160,32,.08);display:none;position:relative;"></div>
+        <div id="np-body" style="flex:1;min-height:0;position:relative;overflow:hidden;"></div>
       </div>
     </div>
   </div>
@@ -1230,19 +1257,22 @@ var _EXAM_BANK = {
       opts: ['A set of conventions for expressing uncertainty as a percentage','Three axioms that define what any valid probability assignment must satisfy','A collection of worked examples drawn from games of chance','The principle that all outcomes are equally probable unless otherwise stated'],
       correct: 1,
       ok: 'Kolmogorov’s three axioms are necessary and sufficient. The framework does not tell you what probabilities to assign — it tells you what any valid assignment must satisfy.',
-      wrong: ['Percentages are one notation for probability, not its foundation. The framework operates on numbers between 0 and 1, but its content is not about notation.','','Games of chance motivated the development of probability theory. They are not its foundation. The axioms apply to clinical trials, financial models and weather systems with equal force.','Equal probability is one possible assignment — the uniform distribution. It is not a principle of the framework. Kolmogorov’s axioms say nothing about which probabilities to assign.']
+      wrong: ['Percentages are one notation for probability, not its foundation. The framework operates on numbers between 0 and 1, but its content is not about notation.','','Games of chance motivated the development of probability theory. They are not its foundation. The axioms apply to clinical trials, financial models and weather systems with equal force.','Equal probability is one possible assignment — the uniform distribution. It is not a principle of the framework. Kolmogorov’s axioms say nothing about which probabilities to assign.'],
+      worked: '<p><strong>Question:</strong> What does the foundation of probability theory consist of?</p><p><strong>The answer is (b).</strong> Kolmogorov’s <em>Grundbegriffe</em> (1933) established three axioms:</p><p><strong>Axiom 1</strong> (Non-negativity): $P(A) \\geq 0$ for any event $A$.</p><p><strong>Axiom 2</strong> (Normalisation): $P(\\Omega) = 1$.</p><p><strong>Axiom 3</strong> (Countable Additivity): For mutually exclusive events $A_1, A_2, \\ldots$, $P(\\bigcup_i A_i) = \\sum_i P(A_i)$.</p><p>These three axioms are necessary and sufficient. Everything else in probability theory is derived from them. The framework says nothing about which probabilities to assign — only what any valid assignment must satisfy.</p>'
     },
     { q: 'Leibniz concluded that the probability of rolling a total of 11 with two dice equals the probability of rolling 12. What was the error?',
       opts: ['He used the wrong formula for conditional probability','He listed permutations instead of combinations, overstating the sample space','He listed combinations without regard to order, collapsing distinct outcomes into single elements','He failed to account for the possibility of the dice showing the same number'],
       correct: 2,
       ok: '$(5,6)$ and $(6,5)$ are distinct physical outcomes — different dice, different results. By treating them as one, Leibniz constructed a sample space whose elements were not elementary events of equal standing. 11 can be made two ways, 12 only one.',
-      wrong: ['Conditional probability is not involved. This is a sample space construction error, occurring before any probabilities are assigned.','The direction of the error is reversed. He listed too few outcomes — combinations — not too many.','','Doubles are accounted for correctly under either approach. The error is in how he treated non-double combinations.']
+      wrong: ['Conditional probability is not involved. This is a sample space construction error, occurring before any probabilities are assigned.','The direction of the error is reversed. He listed too few outcomes — combinations — not too many.','','Doubles are accounted for correctly under either approach. The error is in how he treated non-double combinations.'],
+      worked: '<p><strong>Question:</strong> What was Leibniz’s error with the two-dice problem?</p><p><strong>The answer is (c).</strong> The sample space for two distinguishable dice has $6 \\times 6 = 36$ equally likely outcomes (ordered pairs).</p><p>Ways to make <strong>11</strong>: $(5,6)$ and $(6,5)$ — two outcomes.<br>Ways to make <strong>12</strong>: $(6,6)$ — one outcome.</p><p>Therefore $P(11) = \\frac{2}{36}$ and $P(12) = \\frac{1}{36}$. They are not equal.</p><p>Leibniz treated $\\{5,6\\}$ as a single combination, ignoring that the two dice are distinguishable objects. His sample space had 21 elements, not 36. The error was in the specification of $\\Omega$, not in the probability assignment.</p>'
     },
     { q: 'Before Kolmogorov, Leibniz made an error in his probability calculations despite his mathematical skill. What does this illustrate about reasoning without a formal framework?',
       opts: ['That mathematicians of the era lacked the computational tools to verify their results','That probability problems require empirical testing rather than pure reasoning','That without explicit rules, errors in logic have no name and therefore no remedy','That the uniform distribution should never be applied to dice problems'],
       correct: 2,
       ok: 'The framework does not prevent mistakes. It gives them a name — axiom violation, invalid sample space — and therefore a location. Without it, there is no principle available to identify where the reasoning failed.',
-      wrong: ['This is not a computational problem. The correct answer requires only counting. The issue is conceptual — what counts as a valid outcome space.','Empirical testing would eventually reveal the error, but it is not the point. The framework provides a principled basis for identifying it deductively.','','The uniform distribution is correct here, applied to the right sample space. The error is in defining that space, not in the distribution itself.']
+      wrong: ['This is not a computational problem. The correct answer requires only counting. The issue is conceptual — what counts as a valid outcome space.','Empirical testing would eventually reveal the error, but it is not the point. The framework provides a principled basis for identifying it deductively.','','The uniform distribution is correct here, applied to the right sample space. The error is in defining that space, not in the distribution itself.'],
+      worked: '<p><strong>Question:</strong> What does the Leibniz error illustrate about reasoning without a formal framework?</p><p><strong>The answer is (c).</strong> Consider what happened after Leibniz published his result: nothing. There was no principle available to identify the error as an error. It had no name.</p><p>After Kolmogorov, the diagnosis is immediate: Leibniz constructed an invalid sample space. His $\\Omega$ contained elements that were not equiprobable — a direct violation of the requirement that a probability measure assigns consistent values across events.</p><p>The framework does not make reasoning easier. It makes errors <em>locatable</em>. Without it, a mistake by one of the greatest mathematicians in history could stand unchallenged for over a century.</p>'
     }
   ]
 };
@@ -1252,23 +1282,45 @@ function loadExam(roomKey){
   var bank = _EXAM_BANK[roomKey];
   if(!bank||!bank.length) return;
   _examCurrent = bank[Math.floor(Math.random()*bank.length)];
-  var qEl = document.getElementById('np-exam-q');
-  var optsEl = document.getElementById('np-exam-opts');
-  var resEl = document.getElementById('np-exam-result');
-  if(!qEl||!optsEl) return;
-  qEl.innerHTML = _examCurrent.q;
-  optsEl.innerHTML = '';
-  resEl.style.display = 'none';
-  _examCurrent.opts.forEach(function(opt,i){
-    var btn = document.createElement('button');
-    btn.className = 'np-exam-opt';
 
+  // Build as two-shelf popup
+  var workedHtml = _examCurrent.worked||('<p>'+_examCurrent.ok+'</p>');
+  var unsolvedHtml = _buildExamHtml(_examCurrent);
 
-    btn.innerHTML = '<span style="font-family:monospace;font-size:11px;letter-spacing:.1em;margin-right:10px;color:rgba(200,160,32,.45);">' + String.fromCharCode(97+i) + '.</span>' + opt;
-    btn.onclick = function(){ submitExam(i); };
-    optsEl.appendChild(btn);
+  var shelves=[
+    {label:'Solved',sub:'Example',html:workedHtml},
+    {label:'Unsolved',sub:'Assessment',html:unsolvedHtml}
+  ];
+
+  // inject shelves into existing popup (already open)
+  var nav=document.getElementById('np-shelf-nav');
+  var bodyEl=document.getElementById('np-body');
+  var tbar=document.getElementById('np-tbar');
+  nav.innerHTML='';
+  nav.style.display='flex';
+  _npShelves=shelves;
+  _npCur=0;
+  shelves.forEach(function(s,i){
+    var btn=document.createElement('button');
+    btn.className='np-shelf-btn'+(i===0?' active':'');
+    btn.dataset.shelf=i;
+    btn.innerHTML=s.label+'<span class="np-shelf-sub">'+s.sub+'</span>';
+    btn.onclick=function(){ npShelf(i); };
+    nav.appendChild(btn);
   });
-  renderMath(qEl);
+  if(tbar) tbar.style.display='block';
+  bodyEl.innerHTML='';
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ _buildSlider(shelves,bodyEl); }); });
+}
+
+function _buildExamHtml(exam){
+  var html='<div id="np-exam-q" style="font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(16px,1.8vw,20px);line-height:1.9;color:#1C1810;margin-bottom:24px;">'+exam.q+'</div>';
+  html+='<div id="np-exam-opts" style="display:flex;flex-direction:column;gap:8px;">';
+  exam.opts.forEach(function(opt,i){
+    html+='<button class="np-exam-opt" onclick="submitExam('+i+')" style="text-align:left;"><span style="font-family:monospace;font-size:11px;letter-spacing:.1em;margin-right:10px;color:rgba(28,58,56,.45);">'+String.fromCharCode(97+i)+'.</span>'+opt+'</button>';
+  });
+  html+='</div><div id="np-exam-result" style="display:none;font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:clamp(14px,1.6vw,17px);line-height:1.9;color:#2C2618;border-top:1px solid rgba(28,58,56,.15);padding-top:20px;margin-top:20px;"></div>';
+  return html;
 }
 
 function submitExam(chosen){
@@ -1346,8 +1398,12 @@ function triggerLampPulse(){
   var ctx = cv.getContext('2d');
   var t = 0;
   function resize(){
-    cv.width  = cv.offsetWidth  || 400;
-    cv.height = cv.offsetHeight || 200;
+    var dpr=window.devicePixelRatio||1;
+    cv.width  = (cv.offsetWidth  || 400)*dpr;
+    cv.height = (cv.offsetHeight || 200)*dpr;
+    cv.style.width=(cv.offsetWidth||400)+'px';
+    cv.style.height=(cv.offsetHeight||200)+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
   }
   function render(){
     t += 0.008;
@@ -1844,83 +1900,12 @@ function bbUpdateChevrons(){
 // BB.write() is available for blackboard updates
 
 // ── NODE POPUP ──
-var _npShelves = null;
 
-function _wrapCard(html, skip){
-  // skip wrapping for animation, clerk, cleaner
-  if(skip || !html) return html||'';
-  if(html.indexOf('ql-cv')!==-1) return html;      // animation canvas
-  if(html.indexOf('clerk-wrap')!==-1) return html; // clerk chat
-  return '<div class="doc-card">'+html+'</div>';
-}
-
-function openNodePopup(sup, title, body, shelves, examKey, ri, ni){
-  var np=document.getElementById('node-popup');
-  if(!np) return;
-  document.getElementById('np-super').textContent = sup||'';
-  document.getElementById('np-title').textContent = title||'';
-  var nav=document.getElementById('np-shelf-nav');
-  var bodyEl=document.getElementById('np-body');
-
-  if(shelves && shelves.length){
-    _npShelves=shelves;
-    nav.style.display='flex';
-    // build buttons dynamically
-    nav.innerHTML='';
-    shelves.forEach(function(s,i){
-      var label = typeof s==='object' ? s.label : (i===0?'Lower Shelf':i===1?'Middle Shelf':'Upper Shelf');
-      var btn=document.createElement('button');
-      btn.className='np-shelf-btn'+(i===0?' active':'');
-      btn.dataset.shelf=i;
-      btn.textContent=label;
-      btn.onclick=function(){ npShelf(i); };
-      nav.appendChild(btn);
-    });
-    var html0 = typeof shelves[0]==='object' ? shelves[0].html : shelves[0];
-    // decode animation sentinel
-    if(html0==='__BUREAU_ANIM__'){
-      var el2=document.getElementById('anim-room1-bureau');
-      if(el2) html0=decodeURIComponent(escape(atob(el2.textContent.trim())));
-    }
-    bodyEl.innerHTML=_wrapCard(html0);
-    _execScripts(bodyEl);
-  } else {
-    _npShelves=null;
-    nav.style.display='none';
-    bodyEl.innerHTML=_wrapCard(body);
-  }
-
-  renderMath(bodyEl);
-
-  // load exam if node has exam key
-  
-
-  if(examKey) setTimeout(function(){ loadExam(examKey); },80);
-
-  // room accent tint + node texture
-  if(typeof ri!=='undefined'&&ri>=0&&typeof ROOM_ACCENTS!=='undefined'){
-    var acc=ROOM_ACCENTS[ri%10];
-    var r=acc[0],g=acc[1],b=acc[2];
-    var tex='';
-    if(ni===0){
-      // Bookcase — horizontal shelf lines
-      tex='repeating-linear-gradient(to bottom, transparent 0, transparent 48px, rgba('+r+','+g+','+b+',.04) 48px, rgba('+r+','+g+','+b+',.04) 49px),';
-    } else if(ni===1){
-      // Bureau — faint grid
-      tex='repeating-linear-gradient(rgba('+r+','+g+','+b+',.025) 0 1px, transparent 1px 44px), repeating-linear-gradient(90deg, rgba('+r+','+g+','+b+',.025) 0 1px, transparent 1px 44px),';
-    } else if(ni===2){
-      // Examination — ruled paper
-      tex='repeating-linear-gradient(to bottom, transparent 0, transparent 30px, rgba('+r+','+g+','+b+',.05) 30px, rgba('+r+','+g+','+b+',.05) 31px),';
-    }
-    np.style.background='#07090f';
-  } else {
-    np.style.background='#07090f';
-  }
-  np.style.display='flex';
-  requestAnimationFrame(function(){
-    requestAnimationFrame(function(){
-      np.style.transform='translateY(0)';
-    });
+function _execScripts(el){
+  Array.from(el.querySelectorAll('script')).forEach(function(old){
+    var s=document.createElement('script');
+    if(old.src) s.src=old.src; else s.textContent=old.textContent;
+    old.parentNode.replaceChild(s,old);
   });
 }
 
@@ -1930,42 +1915,162 @@ function renderMath(el){
       try{ renderMathInElement(el,{delimiters:[
         {left:'$$',right:'$$',display:true},
         {left:'$',right:'$',display:false},
-        {left:'\\(',right:'\\)',display:false},
-        {left:'\\[',right:'\\]',display:true}
+        {left:'\(',right:'\)',display:false},
+        {left:'\[',right:'\]',display:true}
       ]}); }catch(e){}
-    } else {
-      setTimeout(attempt,200);
-    }
+    } else { setTimeout(attempt,200); }
   }
   attempt();
 }
 
-function _execScripts(el){
-  // scripts injected via innerHTML don't execute — re-create them
-  Array.from(el.querySelectorAll('script')).forEach(function(old){
-    var s=document.createElement('script');
-    if(old.src) s.src=old.src;
-    else s.textContent=old.textContent;
-    old.parentNode.replaceChild(s,old);
+function _wrapCard(html){
+  if(!html) return '';
+  if(html.indexOf('ql-cv')!==-1) return html;
+  if(html.indexOf('clerk-wrap')!==-1) return html;
+  var rule='<hr class="doc-rule">';
+  var firstClose=html.indexOf('</div>');
+  var firstP=html.indexOf('<p');
+  var insertAt=(firstClose>-1&&firstClose<firstP&&firstP>-1)?firstClose+6:0;
+  var out=insertAt>0?html.slice(0,insertAt)+rule+html.slice(insertAt):rule+html;
+  return '<div class="doc-card">'+out+rule+'</div>';
+}
+
+var _npShelves=null;
+var _npCur=0;
+var _npPW=0;
+
+function openNodePopup(sup,title,body,shelves,examKey,ri,ni){
+  var np=document.getElementById('node-popup');
+  if(!np) return;
+  document.getElementById('np-super').textContent=sup||'';
+  document.getElementById('np-title').textContent=title||'';
+
+  // room tint
+  if(typeof ri!=='undefined'&&ri>=0&&typeof ROOM_ACCENTS!=='undefined'){
+    var a=ROOM_ACCENTS[ri%10];
+    np.style.background='linear-gradient(135deg,rgba('+a[0]+','+a[1]+','+a[2]+',.06) 0%,transparent 50%),#07090f';
+  } else {
+    np.style.background='#07090f';
+  }
+
+  var nav=document.getElementById('np-shelf-nav');
+  var bodyEl=document.getElementById('np-body');
+  var tbar=document.getElementById('np-tbar');
+  bodyEl.innerHTML='';
+  nav.innerHTML='';
+
+  if(shelves&&shelves.length){
+    _npShelves=shelves;
+    _npCur=0;
+    nav.style.display='flex';
+    shelves.forEach(function(s,i){
+      var label=typeof s==='object'?s.label:(i===0?'Lower Shelf':i===1?'Middle Shelf':'Upper Shelf');
+      var defaultSubs=['Intuition','BSc Level','MSc Level'];
+      var subs=typeof s==='object'&&s.sub?s.sub:defaultSubs[i]||'';
+      var btn=document.createElement('button');
+      btn.className='np-shelf-btn'+(i===0?' active':'');
+      btn.dataset.shelf=i;
+      var subLabel=typeof subs==='string'?subs:(subs[i]||'');
+      btn.innerHTML=label+(subLabel?'<span class="np-shelf-sub">'+subLabel+'</span>':'');
+      btn.onclick=function(){npShelf(i);};
+      nav.appendChild(btn);
+    });
+    if(tbar) tbar.style.display='block';
+  } else {
+    _npShelves=null;
+    nav.style.display='none';
+    if(tbar) tbar.style.display='none';
+    if(!examKey){
+      bodyEl.style.overflowY='auto';
+      bodyEl.style.padding='24px 20px 40px';
+      bodyEl.style.boxSizing='border-box';
+      bodyEl.innerHTML=_wrapCard(body);
+      renderMath(bodyEl);
+    }
+  }
+
+  if(examKey) setTimeout(function(){ loadExam(examKey); },80);
+
+  np.style.display='flex';
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      np.style.transform='translateY(0)';
+      if(_npShelves) _buildSlider(_npShelves,bodyEl);
+    });
   });
 }
 
+function _buildSlider(shelves,bodyEl){
+  var W=bodyEl.offsetWidth;
+  var H=bodyEl.offsetHeight;
+  if(!W||!H){ setTimeout(function(){ _buildSlider(shelves,bodyEl); },50); return; }
+  _npPW=W;
+
+  var track=document.createElement('div');
+  track.id='np-shelf-track';
+  track.style.cssText='position:absolute;top:0;left:0;bottom:0;display:flex;width:'+(W*shelves.length)+'px;transition:transform 0.35s cubic-bezier(.22,1,.36,1);';
+
+  shelves.forEach(function(s){
+    var html=typeof s==='object'?s.html:s;
+    if(html==='__BUREAU_ANIM__'){
+      var el=document.getElementById('anim-room1-bureau');
+      if(el) html=decodeURIComponent(escape(atob(el.textContent.trim())));
+    }
+    var panel=document.createElement('div');
+    panel.style.cssText='width:'+W+'px;height:100%;overflow-y:auto;padding:24px 20px 40px;box-sizing:border-box;flex-shrink:0;';
+    panel.innerHTML=_wrapCard(html);
+    _execScripts(panel);
+    renderMath(panel);
+    track.appendChild(panel);
+  });
+
+  bodyEl.innerHTML='';
+  bodyEl.appendChild(track);
+  _npCur=0;
+  _updateThumb(0,shelves.length);
+
+
+
+  // touch
+  var tx=0,ty=0;
+  bodyEl.addEventListener('touchstart',function(e){ tx=e.touches[0].clientX; ty=e.touches[0].clientY; },{passive:true});
+  bodyEl.addEventListener('touchend',function(e){
+    var dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>40){
+      if(dx<0&&_npCur<_npShelves.length-1) npShelf(_npCur+1);
+      else if(dx>0&&_npCur>0) npShelf(_npCur-1);
+    }
+  },{passive:true});
+}
+
 function npShelf(idx){
-  if(!_npShelves||!_npShelves[idx]) return;
+  if(!_npShelves||idx<0||idx>=_npShelves.length) return;
+  _npCur=idx;
   document.querySelectorAll('.np-shelf-btn').forEach(function(b){
     b.classList.toggle('active',parseInt(b.dataset.shelf)===idx);
   });
-  var bodyEl=document.getElementById('np-body');
-  var html = typeof _npShelves[idx]==='object' ? _npShelves[idx].html : _npShelves[idx];
-  if(html==='__BUREAU_ANIM__'){
-    var el=document.getElementById('anim-room1-bureau');
-    if(el) html=decodeURIComponent(escape(atob(el.textContent.trim())));
-  }
-  bodyEl.innerHTML=_wrapCard(html);
-  bodyEl.scrollTop=0;
-  _execScripts(bodyEl);
-  renderMath(bodyEl);
+  var track=document.getElementById('np-shelf-track');
+  if(track) track.style.transform='translateX('+(-idx*_npPW)+'px)';
+  _updateThumb(idx,_npShelves.length);
 }
+
+function _updateThumb(idx,total){
+  var thumb=document.getElementById('np-tthumb');
+  if(!thumb) return;
+  var w=100/total;
+  thumb.style.width=w+'%';
+  thumb.style.left=(idx*w)+'%';
+}
+
+// close on click outside popup content
+document.addEventListener('mousedown', function(e){
+  var np = document.getElementById('node-popup');
+  var inner = document.getElementById('np-inner');
+  if(!np || np.style.display==='none') return;
+  if(inner && !inner.contains(e.target) && np.contains(e.target)){
+    closeNodePopup();
+  }
+});
 
 function closeNodePopup(){
   var np=document.getElementById('node-popup');
@@ -1988,7 +2093,15 @@ var _DUST=Array.from({length:6},function(){
          a:.05+Math.random()*.08,r:.8+Math.random()*1.2,phase:Math.random()*Math.PI*2};
 });
 let _mapReveal=0; // 0→1 ease in on corridor activation // false = blueprint only, no atmosphere
-function resize(){const r=wrap.getBoundingClientRect();W=cv.width=r.width;H=cv.height=r.height;buildL();}
+function resize(){
+  const r=wrap.getBoundingClientRect();
+  const dpr=window.devicePixelRatio||1;
+  W=r.width; H=r.height;
+  cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
+  cv.style.width=W+'px'; cv.style.height=H+'px';
+  c.setTransform(dpr,0,0,dpr,0,0);
+  buildL();
+}
 
 // ── PALETTE ──
 const G=(a=1)=>`rgba(140,190,255,${a})`; // blueprint blue
@@ -1998,8 +2111,8 @@ const K=(a=1)=>`rgba(200,220,255,${a})`; // blueprint chalk white
 const ROOMS=[
   {name:'Uncertainty',n:[
     {l:'Bookcase',s:'Room 1 — Uncertainty',b:'',shelves:[{label:'Lower Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">Uncertainty is not a feeling.</p>\n<p style="margin-bottom:1.8em;">Scientific method cannot rely on instinct. We need to talk about uncertain phenomena formally. But before we can do so, we need to know what we are uncertain about and how uncertain we are.</p>\n<div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div>\n<p style="margin-bottom:1.8em;">The Cleaner asked Aubrey what he was uncertain about and how uncertain he was about it. He did not know. These were his two problems. The third problem was that he had not asked himself these questions at all.</p>'},{label:'Middle Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">Probability theory is the scientific discipline that expresses uncertainty in mathematical terms.</p>\n<p style="margin-bottom:1.8em;">It allows us to reason precisely about phenomena whose outcomes we cannot know in advance — from the toss of a coin to the outcome of a clinical trial. Without it, our ability to draw conclusions from data has nothing to build on. In other words, statistical theory needs a foundation.</p>\n<div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div>\n<p style="margin-bottom:1.8em;">Just as statistical theory builds upon the foundation of probability theory, probability theory in turn builds upon set theory, which is where our studies begin.</p>\n<p style="text-align:center;font-style:italic;font-size:1.05em;padding:1.2em 2em;color:rgba(240,235,205,.65);line-height:1.7;margin-bottom:1.8em;">What we are uncertain about will be collected and organised into sets.<br>How uncertain we are will be expressed as numbers mapped onto those sets.</p>'},{label:'Upper Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">For most of human history, probability was intuitive — a judgement, not a calculation.</p>\n<p style="margin-bottom:1.8em;">It was not until 1933 that Andrey Kolmogorov placed probability theory on a rigorous mathematical foundation. His contribution was a masterpiece of mathematical economy: <em>Grundbegriffe der Wahrscheinlichkeitsrechnung</em> (Foundations of the Theory of Probability).</p>\n<p style="text-align:center;font-variant:small-caps;font-size:1em;letter-spacing:.06em;padding:1.4em 2em;color:rgba(240,235,205,.75);line-height:1.9;border-top:1px solid rgba(200,160,32,.12);border-bottom:1px solid rgba(200,160,32,.12);margin:2em 0;">Three axioms are necessary and sufficient<br>to define the way any and all probabilities must behave.</p>\n<p style="margin-bottom:1.8em;">The power of formalisation is that it makes the rules explicit. Before Kolmogorov, it was possible to reason about probability while violating its own logic — assigning negative probabilities, or probabilities that did not sum correctly. After Kolmogorov, these errors have a name: axiom violations.</p>\n<p style="margin-bottom:1.8em;">The framework does not tell you what probabilities to assign. It tells you what any valid assignment must satisfy. Everything that follows in The Institute is a consequence of that.</p>'}]},
-    {l:'Bureau',s:'Room 1 — Uncertainty',b:'',shelves:[{label:'Monte Carlo',html:'__BUREAU_ANIM__'},{label:'Real World',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">In 1768, the <em>Opera Omnia</em> of Gottfried Wilhelm Leibniz was published posthumously.</p>\n<p style="margin-bottom:1.8em;">Leibniz co-invented calculus, developed binary arithmetic, and made foundational contributions to logic and philosophy. He was one of the most formidable mathematical minds in history. That is what makes this example so interesting.</p>\n<div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div>\n<p style="margin-bottom:1.8em;">The question was simple: when rolling two dice, what is the probability of getting a total of 11, versus a total of 12? Leibniz listed combinations without regard to order — 21 possibilities in total. In his space, the combination "one five and one six" appears once, and so does "two sixes". He concluded both were equally probable.</p>\n<p style="margin-bottom:1.8em;">But if you take order into account, there are 36 equally likely outcomes — permutations, not combinations. The combination "one five and one six" can appear two ways: $(5,6)$ and $(6,5)$. The combination "two sixes" can only appear one way: $(6,6)$. The probabilities of obtaining 11 and 12 are not equal.</p>\n<p style="text-align:center;font-style:italic;font-size:1.05em;padding:1.2em 2em;color:rgba(240,235,205,.65);line-height:1.7;margin-bottom:1.8em;">The error was in the way the set of all possible outcomes was specified.<br>Without a formal framework, there was no principle available to identify where the reasoning had failed.</p>\n<p style="margin-bottom:1.8em;">After Kolmogorov, first year BSc students get a better answer than Leibniz did. The right one.</p>'}]},
-    {l:'Examination',s:'Assessment · Room 01',b:'What does it mean to quantify uncertainty? What three properties must any valid probability assignment satisfy?<br><br><em>The dossier is open.</em>'},
+    {l:'Bureau',s:'Room 1 — Uncertainty',b:'',shelves:[{label:'Monte Carlo',sub:'Simulation',html:'__BUREAU_ANIM__'},{label:'Real World',sub:'Application',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">In 1768, the <em>Opera Omnia</em> of Gottfried Wilhelm Leibniz was published posthumously.</p>\n<p style="margin-bottom:1.8em;">Leibniz co-invented calculus, developed binary arithmetic, and made foundational contributions to logic and philosophy. He was one of the most formidable mathematical minds in history. That is what makes this example so interesting.</p>\n<div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div>\n<p style="margin-bottom:1.8em;">The question was simple: when rolling two dice, what is the probability of getting a total of 11, versus a total of 12? Leibniz listed combinations without regard to order — 21 possibilities in total. In his space, the combination "one five and one six" appears once, and so does "two sixes". He concluded both were equally probable.</p>\n<p style="margin-bottom:1.8em;">But if you take order into account, there are 36 equally likely outcomes — permutations, not combinations. The combination "one five and one six" can appear two ways: $(5,6)$ and $(6,5)$. The combination "two sixes" can only appear one way: $(6,6)$. The probabilities of obtaining 11 and 12 are not equal.</p>\n<p style="text-align:center;font-style:italic;font-size:1.05em;padding:1.2em 2em;color:rgba(240,235,205,.65);line-height:1.7;margin-bottom:1.8em;">The error was in the way the set of all possible outcomes was specified.<br>Without a formal framework, there was no principle available to identify where the reasoning had failed.</p>\n<p style="margin-bottom:1.8em;">After Kolmogorov, first year BSc students get a better answer than Leibniz did. The right one.</p>'}]},
+    {l:'Examination',s:'Assessment · Room 01',b:'',exam:'uncertainty'},
   ]},
   {name:'Experiment',n:[
     {l:'Bookcase',s:'Lower Shelf · Room 02',b:'An experiment is any process that produces an observable outcome. A coin. A clinical trial. A question asked of the rain.<br><br><em>What all share: a well-defined set of possible outcomes, known before the process begins.</em>'},
@@ -2020,7 +2133,7 @@ const ROOMS=[
   ]}))
 ];
 const CLERK={l:'Room 197A',s:'The Clerk · First Floor',b:'<div id="clerk-wrap" style="display:flex;flex-direction:column;height:100%;min-height:0;">\n  <div id="clerk-history" style="flex:1;overflow-y:auto;padding-bottom:16px;"></div>\n  <div style="flex-shrink:0;border-top:1px solid rgba(200,160,32,.12);padding-top:16px;display:flex;gap:10px;align-items:flex-end;">\n    <textarea id="clerk-input" placeholder="Your response to the Clerk." style="flex:1;resize:none;background:rgba(200,160,32,.04);border:1px solid rgba(200,160,32,.18);color:rgba(240,235,205,.82);font-family:Inter,system-ui,sans-serif;font-weight:300;font-size:clamp(15px,1.7vw,18px);line-height:1.7;padding:10px 14px;outline:none;min-height:60px;max-height:160px;box-sizing:border-box;color:rgba(240,235,205,.82);background:rgba(200,160,32,.04);border:1px solid rgba(200,160,32,.18);" rows="2" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();clerkSend();}"></textarea>\n    <button onclick="clerkSend()" style="flex-shrink:0;background:none;border:1px solid rgba(200,160,32,.22);color:rgba(200,160,32,.55);font-family:monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;padding:10px 16px;cursor:pointer;transition:all .15s;align-self:stretch;" onmouseover="this.style.borderColor=\'rgba(200,160,32,.6)\';this.style.color=\'rgba(200,160,32,.9)\';" onmouseout="this.style.borderColor=\'rgba(200,160,32,.22)\';this.style.color=\'rgba(200,160,32,.55)\';">Send</button>\n  </div>\n</div>'};
-const CLEANER={l:'The Cleaner',s:'The Cleaner · First Floor',b:'<div style="font-family:monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,160,32,.35);margin-bottom:28px;">The Institute □ — First Floor · Landing</div>\n<p style="font-style:italic;color:rgba(240,235,205,.45);margin-bottom:.8em;">\u200bThe Cleaner passed through the first floor corridor with a mop. She did not look up.</p>\n<p>“I am uncertain about —” said Aubrey.</p>\n<p style="font-style:italic;color:rgba(240,235,205,.45);margin-bottom:.8em;">She stopped. Still did not look up.</p>\n<p>“About what?” said the Cleaner.</p>\n<p>“That,” said Aubrey, “is rather the question.”</p>\n<p>“And how uncertain are you?”</p>\n<p style="font-style:italic;color:rgba(240,235,205,.45);margin-bottom:.8em;">He had not thought about it in those terms. He looked at the empty dossier in his hand.</p>\n<p>“I don’t know.”</p>\n<p style="font-style:italic;color:rgba(240,235,205,.45);margin-bottom:.8em;">The Cleaner resumed moving.</p>\n<p>“Then you have two problems. Not one.”</p>'};
+const CLEANER={l:'The Cleaner',s:'The Cleaner · First Floor',b:'<div style="font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#5A5040;margin-bottom:24px;">The Institute — First Floor · Landing</div><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">​The Cleaner passed through the first floor corridor with a mop. She did not look up.</p><p>“I am uncertain about —” said Aubrey.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">She stopped. Still did not look up.</p><p>“About what?” said the Cleaner.</p><p>“That,” said Aubrey, “is rather the question.”</p><p>“And how uncertain are you?”</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">He had not thought about it in those terms. He looked at the empty dossier in his hand.</p><p>“I don’t know.”</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">The Cleaner resumed moving.</p><p>“Then you have two problems. Not one.”</p>'};
 
 // ── LAYOUT ──
 const HH=0,BH=0;
@@ -2063,28 +2176,28 @@ function buildL(){
 
 // ── ROOM COLOURS ──
 const ROOM_COLS=[
-  '#0a1220', // 01 Uncertainty
-  '#0c1828', // 02 Experiment
-  '#0e1424', // 03 Sample Space
-  '#0a1018', // 04 Event
-  '#0c1420', // 05 Sigma-Algebra
-  '#081018', // 06 Mutual Exclusivity
-  '#0a1428', // 07 Probability Measure
-  '#0c1220', // 08 Axiom 1
-  '#08101e', // 09 Axiom 2
-  '#0a1224', // 10 Axiom 3
+  '#162844', // 01 Uncertainty      — cool blue
+  '#172e3a', // 02 Experiment       — teal-blue
+  '#141e3c', // 03 Sample Space     — deep indigo
+  '#181e38', // 04 Event            — slate blue
+  '#142a38', // 05 Sigma-Algebra    — teal
+  '#101e30', // 06 Mutual Exclusivity — dark steel
+  '#16244c', // 07 Probability Measure — royal blue
+  '#1c2438', // 08 Axiom 1          — grey-blue
+  '#121e40', // 09 Axiom 2          — midnight blue
+  '#162040', // 10 Axiom 3          — cobalt
 ];
-const ROOM_COLS_HI=[ // visited — brighter blue
-  '#142440', // hi 01
-  '#162c4e', // hi 02
-  '#182844', // hi 03
-  '#142038', // hi 04
-  '#182840', // hi 05
-  '#102038', // hi 06
-  '#142848', // hi 07
-  '#182440', // hi 08
-  '#10203c', // hi 09
-  '#142448', // hi 10
+const ROOM_COLS_HI=[ // visited — clearly brighter
+  '#1e3c64', // hi 01 — cool blue
+  '#1e4050', // hi 02 — teal-blue
+  '#1a2e58', // hi 03 — deep indigo
+  '#202e54', // hi 04 — slate blue
+  '#183c50', // hi 05 — teal
+  '#162e48', // hi 06 — dark steel
+  '#1c3468', // hi 07 — royal blue
+  '#263454', // hi 08 — grey-blue
+  '#182e5c', // hi 09 — midnight blue
+  '#1c305c', // hi 10 — cobalt
 ];
 // Blueprint accent colours — cool blue-white spectrum
 const ROOM_ACCENTS=[
@@ -2237,7 +2350,8 @@ cv.addEventListener('mouseleave',()=>{hotBox=null;hotNode=null;hotStrip=null;});
 cv.addEventListener('mousemove',e=>{
   if(!_corridorActive){ cv.style.cursor='default'; return; }
   const _r=cv.getBoundingClientRect();
-  mX=e.clientX-_r.left;mY=e.clientY-_r.top;
+  const _sx=W/_r.width; const _sy=H/_r.height;
+  mX=(e.clientX-_r.left)*_sx;mY=(e.clientY-_r.top)*_sy;
   hotBox=null;hotNode=null;
   if(!L.boxes) return;
   for(const b of L.boxes){
@@ -2247,7 +2361,7 @@ cv.addEventListener('mousemove',e=>{
   for(const b of L.boxes){
     const pts=L.nodePts(b);
     for(let ni=0;ni<3;ni++){
-      if(Math.hypot(mX-pts[ni].x,mY-pts[ni].y)<20){
+      if(Math.hypot(mX-pts[ni].x,mY-pts[ni].y)<Math.max(20,pts[ni].r*2.2)){
         hotNode={ri:b.ri,ni,x:pts[ni].x,y:pts[ni].y,side:b.side};
         break;
       }
@@ -2293,7 +2407,18 @@ cv.addEventListener('click',e=>{
   if(activeRoom>=0 && !(hotBox&&hotBox.ri===activeRoom) && !(hotNode&&hotNode.ri===activeRoom) && !hotStrip){
     activeRoom=-1; activeStrip=null;
     setRoomBleed(-1);
-    if(typeof BB!=='undefined'&&BB.write) BB.write(['First Floor. The corridor.','Ten rooms. One application.']);
+    if(typeof BB!=='undefined'&&BB.write){
+      if(!cleanerVisited){
+        BB.write(['First Floor. The corridor.','The Cleaner is on the landing.'],[{l:'Speak to the Cleaner \u2192', f:function(){
+          activeStrip='cleaner';activeRoom=-1;
+          openNodePopup(CLEANER.s,CLEANER.l,CLEANER.b,null,null,-1,-1);
+          cleanerVisited=1;
+          setTimeout(function(){ BB.write(['First Floor. The corridor.','Ten rooms. One application.']); },400);
+        }}]);
+      } else {
+        BB.write(['First Floor. The corridor.','Ten rooms. One application.']);
+      }
+    }
     setLocation('The Corridor');
     return;
   }
@@ -2306,8 +2431,8 @@ cv.addEventListener('click',e=>{
     if(nd) openNodePopup(nd.s,nd.l,nd.b,nd.shelves||null,nd.exam||null,hotNode.ri,hotNode.ni);
     return;
   }
-  // room box click — enter room (even if hotNode, treat as room entry if not active)
-  if(hotBox||hotNode){
+  // room box click — only allowed from corridor (activeRoom===-1)
+  if((hotBox||hotNode) && activeRoom===-1){
     const ri=hotBox?hotBox.ri:hotNode.ri;
     activeRoom=ri; activeStrip=null;
     setRoomBleed(ri);
@@ -2332,7 +2457,18 @@ document.addEventListener('keydown',function(e){
   if(activeRoom>=0){
     activeRoom=-1; activeStrip=null;
     setRoomBleed(-1);
-    if(typeof BB!=='undefined'&&BB.write) BB.write(['First Floor. The corridor.','Ten rooms. One application.']);
+    if(typeof BB!=='undefined'&&BB.write){
+      if(!cleanerVisited){
+        BB.write(['First Floor. The corridor.','The Cleaner is on the landing.'],[{l:'Speak to the Cleaner \u2192', f:function(){
+          activeStrip='cleaner';activeRoom=-1;
+          openNodePopup(CLEANER.s,CLEANER.l,CLEANER.b,null,null,-1,-1);
+          cleanerVisited=1;
+          setTimeout(function(){ BB.write(['First Floor. The corridor.','Ten rooms. One application.']); },400);
+        }}]);
+      } else {
+        BB.write(['First Floor. The corridor.','Ten rooms. One application.']);
+      }
+    }
     setLocation('The Corridor');
   }
 });
@@ -2353,7 +2489,7 @@ function drawNode(x,y,vis,isHot,r=9,ri=0,shape='circle'){
     }
   }
   // outer ring
-  c.strokeStyle=roomAccent(ri,vis?.85:isHot?.65:.32);
+  c.strokeStyle=roomAccent(ri,vis?.95:isHot?.80:.55);
   c.lineWidth=1.2;
   nodePath();c.stroke();
   // fill
@@ -2489,7 +2625,7 @@ function drawRoom(box){
   // ── WATERMARK ROOM NUMBER ──
   c.save();c.beginPath();c.rect(box.x,box.y,box.w,box.h);c.clip();
   const wmSize=Math.min(box.h*.7,box.w*.5);
-  c.font="100 "+wmSize+"px 'Helvetica Neue',Helvetica,Arial,sans-serif";
+  c.font="700 "+wmSize+"px 'Helvetica Neue',Helvetica,Arial,sans-serif";
   c.textAlign='center';c.letterSpacing='-.02em';
   const phase=Math.sin(t*.0006+box.ri*1.1);
   const isHov=hotBox&&hotBox.ri===box.ri&&hotBox.side===box.side;
@@ -2604,17 +2740,14 @@ function drawCorridor(){
   // fill
   c.fillStyle='#060d1e';c.fillRect(cx,corrTop,cw,corrH);
 
-  // ── CEILING LIGHTS — clipped so arcs don't show outside corridor area ──
+  // ── CEILING LIGHTS — tiny fixture dots, no clipping needed ──
   const lightOffsets=[.08,.22,.38,.52,.67,.81,.94];
-  c.save();c.beginPath();c.rect(0,0,W,H);c.clip();
   lightOffsets.forEach((off,i)=>{
     const ly=corrTop+corrH*off;
     const lIntens=.4+.35*Math.sin(t*(.009+i*.0017)+i*2.1)+.25*Math.sin(t*(.006+i*.001)+i*1.3);
-    // fixture dot only — no pool glow
     c.fillStyle=`rgba(255,210,100,${.35*lIntens})`;
     c.beginPath();c.arc(midX,ly,1.8,0,Math.PI*2);c.fill();
   });
-  c.restore();
 
   // ── FOOTSTEPS — soft ovals, alternating L/R ──
   if(STEPS.length){
@@ -2641,21 +2774,10 @@ function drawCorridor(){
     c.restore();
   }
 
-  // bleed into walls
-  const gl=c.createLinearGradient(cx-14,0,cx+6,0);
-  gl.addColorStop(0,'transparent');gl.addColorStop(1,'rgba(0,0,0,.45)');
-  c.fillStyle=gl;c.fillRect(cx-14,corrTop,20,corrH);
-  const gr=c.createLinearGradient(cx+cw-6,0,cx+cw+14,0);
-  gr.addColorStop(0,'rgba(0,0,0,.45)');gr.addColorStop(1,'transparent');
-  c.fillStyle=gr;c.fillRect(cx+cw-6,corrTop,20,corrH);
-
-  // teal edges
-  c.fillStyle='#1a3a6e';
-  c.fillRect(cx-1,corrTop,2,corrH);c.fillRect(cx+cw-1,corrTop,2,corrH);
-  // brass inner
-  c.strokeStyle=G(.4);c.lineWidth=1;
-  c.beginPath();c.moveTo(cx+1.5,corrTop);c.lineTo(cx+1.5,corrBot);c.stroke();
-  c.beginPath();c.moveTo(cx+cw-1.5,corrTop);c.lineTo(cx+cw-1.5,corrBot);c.stroke();
+  // corridor edges — single faint line each side
+  c.strokeStyle=G(.18);c.lineWidth=1;
+  c.beginPath();c.moveTo(cx+.5,corrTop);c.lineTo(cx+.5,corrBot);c.stroke();
+  c.beginPath();c.moveTo(cx+cw-.5,corrTop);c.lineTo(cx+cw-.5,corrBot);c.stroke();
   // door brackets + tramlines
   if(!L.boxes) return;
   L.boxes.forEach(box=>{
@@ -2683,20 +2805,12 @@ function drawStrip(y,h,leftLabel,rightLabel,leftNode,leftVis,rightNode,rightVis)
   const rightHot=SH[_rk]>.05;
   const lh=SH[_lk], rh=SH[_rk];
 
-  // base fill
-  c.fillStyle='#060e1e';c.fillRect(0,y,W,h);
-
-  // hover warmth on active side
-  if(lh>.01){c.fillStyle=`rgba(200,160,32,${lh*.06})`;c.fillRect(0,y,L.cx,h);}
-  if(rh>.01){c.fillStyle=`rgba(200,160,32,${rh*.06})`;c.fillRect(L.cx+L.cw,y,W-L.cx-L.cw,h);}
-
-  // brass rule
-  c.strokeStyle=G(.18);c.lineWidth=1;
-  const ruleY=isTop?y+h:y;
-  c.beginPath();c.moveTo(0,ruleY);c.lineTo(W,ruleY);c.stroke();
-
-  // corridor continues through as dark spine
+  // strip — corridor spine only, same colour as main corridor
   c.fillStyle='#060d1e';c.fillRect(L.cx,y,L.cw,h);
+
+  // hover warmth on active side only
+  if(lh>.01){c.fillStyle=`rgba(200,160,32,${lh*.05})`;c.fillRect(0,y,L.cx,h);}
+  if(rh>.01){c.fillStyle=`rgba(200,160,32,${rh*.05})`;c.fillRect(L.cx+L.cw,y,W-L.cx-L.cw,h);}
 
   // left label
   if(leftLabel){
@@ -2714,7 +2828,7 @@ function drawStrip(y,h,leftLabel,rightLabel,leftNode,leftVis,rightNode,rightVis)
   }
 
   // nodes
-  if(leftNode)drawStripNode(leftNode,leftVis,leftNode===L.clPt?'THE CLERK':'← GROUND FLOOR','left',leftHot);
+  if(leftNode)drawStripNode(leftNode,leftVis,leftNode===L.clPt?'THE CLERK':'STAIRWELL','left',leftHot);
   if(rightNode)drawStripNode(rightNode,rightVis,rightNode===L.cnPt?'THE CLEANER':'SECOND FLOOR  →','right',rightHot);
 }
 
@@ -2732,7 +2846,7 @@ function draw(){
     c.fillStyle=bf;c.fillRect(0,0,W,H);
   }
 
-  c.globalAlpha=_corridorActive?_mapReveal:1;
+  c.globalAlpha=_corridorActive?Math.max(0.4,_mapReveal):1;
   if(!_corridorActive){
     // blueprint grid only
     c.strokeStyle='rgba(140,190,255,.035)';c.lineWidth=.4;
@@ -2794,7 +2908,7 @@ function draw(){
   drawCorridor();
 
   // strips
-  drawStrip(topY,ST,'← GROUND FLOOR',null,null,false,L.cnPt,cleanerVisited);
+  drawStrip(topY,ST,'STAIRWELL',null,null,false,L.cnPt,cleanerVisited);
   drawStrip(botY,ST,null,'SECOND FLOOR  →',L.clPt,clerkVisited,null,false);
 
 
@@ -2994,8 +3108,19 @@ requestAnimationFrame(function(){ requestAnimationFrame(function(){
     BB.write([
       'First Floor. The corridor.',
       'Ten rooms. One application.',
-      'The framework fills itself, apparently.'
-    ]);
+      'The Cleaner is on the landing.'
+    ],[{l:'Speak to the Cleaner →', f:function(){
+      activeStrip='cleaner';activeRoom=-1;
+      clerkVisited=clerkVisited||0;
+      openNodePopup(CLEANER.s,CLEANER.l,CLEANER.b,null,null,-1,-1);
+      cleanerVisited=1;
+      setTimeout(function(){
+        BB.write([
+          'First Floor. The corridor.',
+          'Ten rooms. One application.'
+        ]);
+      },400);
+    }}]);
   }
 
   window._s0_intro=s0_intro;
