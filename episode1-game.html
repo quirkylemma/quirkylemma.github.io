@@ -2724,9 +2724,14 @@ function roShow(ri){
   document.getElementById('ro-room-num').textContent = 'Room ' + String(ri+1).padStart(2,'0');
   document.getElementById('ro-room-name').textContent = room ? room.name : '';
 
-  // BB entry — the two questions
+  // BB entry — room-specific
+  var _roomBB = [
+    ['What am I uncertain about?', 'How uncertain am I?', 'Formally.'],
+    ['What creates the uncertainty?', 'Other than the Cleaner.'],
+  ];
+  var entry = _roomBB[ri] || ['What am I uncertain about?', 'How uncertain am I?', 'Formally.'];
   if(typeof BB !== 'undefined' && BB.write){
-    BB.write(['What am I uncertain about?', 'How uncertain am I?', 'Formally.']);
+    BB.write(entry);
   }
   // tint border of buttons to room accent
   var acc = ROOM_ACCENTS ? ROOM_ACCENTS[ri % ROOM_ACCENTS.length] : [140,190,255];
