@@ -14,12 +14,12 @@
   --ease:cubic-bezier(0.16,1,0.3,1);
   --col:720px;
   --pad:clamp(20px,4vw,48px);
-  /* institutional green */
-  --wall-hi: #2a4a2a;
-  --wall-mid:#1e301e;
-  --wall-lo: #141e14;
+  /* blueprint dark — matches episode1 */
+  --wall-hi: #0e1628;
+  --wall-mid:#0a1020;
+  --wall-lo: #060b18;
 }
-html,body{height:100%;background:#141e14;}
+html,body{height:100%;background:#060b18;}
 body{font-family:'Courier Prime',monospace;color:var(--chalk);}
 #grain{position:fixed;inset:0;pointer-events:none;z-index:998;opacity:.06;mix-blend-mode:overlay;}
 
@@ -27,25 +27,20 @@ body{font-family:'Courier Prime',monospace;color:var(--chalk);}
 #viewport{
   max-width:860px;width:100%;margin:0 auto;
   position:relative;min-height:100vh;
-  background:#1e301e;
+  background:#0a1020;
   box-shadow:0 0 80px rgba(0,0,0,.95);
   overflow:hidden;
   padding-bottom:calc(var(--bar-h) + 60px);
 }
-/* painted wall texture — horizontal brush strokes */
+/* blueprint grid texture — matches episode1 */
 #viewport::before{
   content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
   background-image:
-    repeating-linear-gradient(180deg,
-      transparent 0px,
-      rgba(255,255,255,.008) 1px,
-      transparent 2px,
-      rgba(0,0,0,.014) 4px,
-      transparent 5px,
-      rgba(255,255,255,.005) 7px,
-      transparent 8px
-    );
-  background-size:100% 8px;
+    linear-gradient(rgba(140,190,255,.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(140,190,255,.032) 1px, transparent 1px),
+    linear-gradient(rgba(140,190,255,.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(140,190,255,.055) 1px, transparent 1px);
+  background-size: 8px 8px, 8px 8px, 40px 40px, 40px 40px;
 }
 
 /* ── STRIP LIGHTS ── */
@@ -62,12 +57,12 @@ body{font-family:'Courier Prime',monospace;color:var(--chalk);}
 .strip-chain{
   position:absolute;top:-28px;left:50%;
   width:1px;height:28px;
-  background:linear-gradient(180deg,rgba(180,160,80,.3),rgba(180,160,80,.15));
+  background:linear-gradient(180deg,rgba(140,190,255,.2),rgba(100,150,220,.1));
 }
 .strip-chain::before{
   content:'';position:absolute;top:-1px;left:-2px;
   width:5px;height:5px;border-radius:50%;
-  background:rgba(160,140,60,.25);
+  background:rgba(140,190,255,.15);
 }
 .strip-housing{
   width:min(380px,80%);height:8px;
@@ -83,23 +78,23 @@ body{font-family:'Courier Prime',monospace;color:var(--chalk);}
   transition:background 0.1s;
 }
 .strip-light.on .strip-tube{
-  background:rgba(240,248,255,.98);
-  box-shadow:0 0 6px rgba(230,245,255,1),0 0 20px rgba(200,225,255,.6),0 0 40px rgba(180,210,255,.3);
+  background:rgba(200,225,255,.92);
+  box-shadow:0 0 6px rgba(140,190,255,.8),0 0 20px rgba(140,190,255,.4),0 0 40px rgba(100,150,220,.2);
 }
 
 /* ── WALL COLOUR ZONES ── */
-/* upper zone — lit by strip light 1 */
+/* upper zone — blueprint glow */
 #zone-upper{
   position:absolute;top:0;left:0;right:0;height:70%;
   pointer-events:none;z-index:1;
   background:
-    radial-gradient(ellipse 80% 60% at 50% 2%,rgba(180,220,160,.12) 0%,rgba(140,200,120,.06) 30%,transparent 70%);
+    radial-gradient(ellipse 80% 60% at 50% 2%,rgba(140,190,255,.06) 0%,rgba(100,150,220,.03) 30%,transparent 70%);
 }
-/* lower zone — ledger area, darker, shadowed */
+/* lower zone — deeper dark */
 #zone-lower{
   position:absolute;left:0;right:0;bottom:0;
   height:45%;
-  background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.15) 100%);
+  background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.25) 100%);
   pointer-events:none;z-index:1;
 }
 /* corner shadows — always dark */
@@ -149,12 +144,12 @@ body{font-family:'Courier Prime',monospace;color:var(--chalk);}
 
 /* ── DOCUMENT ── */
 .doc-outer{position:relative;margin-bottom:clamp(16px,2.5vh,28px);padding:0 var(--pad);max-width:min(560px,100%);margin-left:auto;margin-right:auto;}
-.doc-shadow{position:absolute;bottom:-5px;left:6px;right:-6px;top:5px;background:#EDE8CC;border:1px solid rgba(26,22,16,.06);}
-.doc{position:relative;z-index:1;background:linear-gradient(160deg,#FAFAF7,#F5F2EC);border-top:2px solid #1C3A38;border-bottom:2px solid #1C3A38;border-left:1px solid rgba(26,22,16,.08);border-right:1px solid rgba(26,22,16,.08);padding:clamp(20px,3vh,32px) clamp(22px,3.5vw,36px);transform:rotate(-.25deg);box-shadow:0 2px 4px rgba(0,0,0,.08),2px 6px 20px rgba(0,0,0,.12),4px 10px 32px rgba(0,0,0,.08);}
+.doc-shadow{position:absolute;bottom:-5px;left:6px;right:-6px;top:5px;background:#D8D0B4;border:1px solid rgba(26,22,16,.06);}
+.doc{position:relative;z-index:1;background:linear-gradient(160deg,#EAE4D0,#E0D8C0);border-top:2px solid #1C3A38;border-bottom:2px solid #1C3A38;border-left:1px solid rgba(26,22,16,.08);border-right:1px solid rgba(26,22,16,.08);padding:clamp(20px,3vh,32px) clamp(22px,3.5vw,36px);transform:rotate(-.25deg);box-shadow:0 2px 4px rgba(0,0,0,.08),2px 6px 20px rgba(0,0,0,.12),4px 10px 32px rgba(0,0,0,.08);}
 .doc-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid rgba(26,22,16,.12);padding-bottom:10px;margin-bottom:18px;}
 .doc-label{font-family:monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#8A8070;}
 .doc-loc{font-size:13px;color:#8A8070;font-style:italic;font-family:Georgia,serif;}
-.doc p{font-family:Georgia,'Times New Roman',serif;font-size:clamp(14px,1.55vw,16px);line-height:1.88;color:#3D3828;margin-bottom:.9em;}
+.doc p{font-family:Georgia,'Times New Roman',serif;font-size:clamp(14px,1.55vw,16px);line-height:1.88;color:#2C2418;margin-bottom:.9em;}
 .doc p:last-child{margin-bottom:0;}
 .form-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:8px;flex-wrap:wrap;}
 .fh-left{font-family:monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#8A8070;line-height:2;}
@@ -347,10 +342,10 @@ body{font-family:'Courier Prime',monospace;color:var(--chalk);}
           <span class="doc-label">The Institute &nbsp;&#9633;</span>
           <span class="doc-loc">Ground Floor</span>
         </div>
-        <p>The lights of the casino are on.</p>
-        <p>On the other side of the road, in relative darkness, stands the Institute. It is a building of uncertain provenance. Its style suggests the architect had strong feelings about concrete. It houses ten floors.</p>
-        <p>Candidate Squeakwell stands on the ground floor of the Institute. He is there to file his application for entry to the casino. The requisite framework for entry is mathematical. It is available on the floors above.</p>
-        <p>The casino is called Gambler's Ruin. Its lights are always on. Several applications have been filed at the Institute. None have been successful yet.</p>
+        <p>The lights of the casino are on. Its doors are closed.</p>
+        <p>On this side of the road, in relative darkness, stands the Institute. It is a building of uncertain provenance. Its style suggests the architect had strong feelings about concrete. It houses ten floors.</p>
+        <p>Candidate Squeakwell is on the ground floor. He is at the Institute to file his application for entry to the casino. The requisite framework for entry is mathematical. It is available on the ten floors above.</p>
+        <p>The casino is called Gambler's Ruin. Its lights are always on. Several applications have been filed. None have been successful yet.</p>
         <div class="doc-rule"></div>
       </div>
     </div>
