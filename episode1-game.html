@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-<title>The Institute — First Floor</title>
+<title>The Institute \u2014 First Floor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Courier+Prime:ital@0;1&family=Special+Elite&family=Reenie+Beanie&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; overflow: hidden; background: #050705; }
 
-/* ── SHELL ── */
+/* -- SHELL -- */
 #shell {
   position: fixed; inset: 0;
   width: 100%;
@@ -27,7 +27,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   mix-blend-mode: overlay;
 }
 
-/* ── TOOLBAR ── */
+/* -- TOOLBAR -- */
 #inst-toolbar {
   flex-shrink: 0; height: 62px;
   background:
@@ -95,7 +95,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   background: linear-gradient(180deg, transparent, rgba(180,140,30,.18), transparent);
 }
 
-/* ── BOARD PANEL ── */
+/* -- BOARD PANEL -- */
 #board-panel {
   flex: 9 0 0; min-height: 0;
   display: flex; flex-direction: column;
@@ -105,7 +105,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   transition: height 1.8s ease;
 }
 
-/* Blackboard frame — dark wood surround */
+/* Blackboard frame \u2014 dark wood surround */
 #board-col {
   flex: 1; min-height: 0;
   display: flex; flex-direction: column;
@@ -122,27 +122,27 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
     /* outer drop shadow */
     0 4px 16px rgba(0,0,0,.7),
     2px 4px 0 rgba(0,0,0,.5),
-    /* top edge — lamp hits here strongest */
+    /* top edge \u2014 lamp hits here strongest */
     inset 0 3px 0 rgba(255,210,90,.14),
     inset 0 6px 12px rgba(255,180,60,.04),
-    /* left edge — warm secondary catch */
+    /* left edge \u2014 warm secondary catch */
     inset 3px 0 0 rgba(255,200,80,.10),
     inset 6px 0 14px rgba(255,160,40,.03),
-    /* bottom edge — faint desk bounce light */
+    /* bottom edge \u2014 faint desk bounce light */
     inset 0 -2px 0 rgba(180,140,60,.12),
     inset 0 -8px 12px rgba(120,90,30,.06),
-    /* right edge — in shadow */
+    /* right edge \u2014 in shadow */
     inset -2px 0 0 rgba(0,0,0,.5);
   padding: 8px;
 }
 
-/* Reveal gap — thin dark line between frame and board */
+/* Reveal gap \u2014 thin dark line between frame and board */
 #board-col::before {
   content: '';
   position: absolute;
   inset: 6px;
   box-shadow:
-    /* inner reveal — board sits behind frame */
+    /* inner reveal \u2014 board sits behind frame */
     inset 0 0 0 1px rgba(0,0,0,.8),
     inset 0 0 0 2px rgba(0,0,0,.4);
   pointer-events: none;
@@ -160,22 +160,22 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   pointer-events: none;
 }
 
-/* Blackboard surface — slate, matte, inhabited */
+/* Blackboard surface \u2014 slate, matte, inhabited */
 #blackboard {
   flex: 1; min-height: 0;
-  /* Layered surface — order matters */
+  /* Layered surface \u2014 order matters */
   background:
-    /* Noise grain — chalk dust */
+    /* Noise grain \u2014 chalk dust */
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='512' height='512'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23n)' opacity='0.048'/%3E%3C/svg%3E"),
-    /* Ghost erased lines — previous session */
+    /* Ghost erased lines \u2014 previous session */
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='500'%3E%3Cfilter id='blur'%3E%3CfeGaussianBlur stdDeviation='1.2'/%3E%3C/filter%3E%3Cg filter='url(%23blur)' stroke='rgba(200,210,190,0.045)' fill='none' stroke-width='1.8'%3E%3Cline x1='48' y1='92' x2='380' y2='90'/%3E%3Cline x1='48' y1='178' x2='310' y2='177'/%3E%3Cline x1='48' y1='264' x2='250' y2='262'/%3E%3Cline x1='48' y1='340' x2='190' y2='339'/%3E%3C/g%3E%3C/svg%3E"),
-    /* Base — classic dark slate green */
+    /* Base \u2014 classic dark slate green */
     #0c160c;
-  /* Room colour bleed via background-color — sits behind all layers */
+  /* Room colour bleed via background-color \u2014 sits behind all layers */
   background-color: #0c160c;
   transition: background-color 1.8s ease;
   box-shadow:
-    /* board recesses behind frame — deep cast shadows from all edges */
+    /* board recesses behind frame \u2014 deep cast shadows from all edges */
     inset 0 4px 18px rgba(0,0,0,.55),
     inset 0 -4px 18px rgba(0,0,0,.55),
     inset 4px 0 18px rgba(0,0,0,.45),
@@ -194,12 +194,13 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   font-family: 'Reenie Beanie', 'Special Elite', monospace;
   font-size: clamp(26px, 3.2vw, 36px);
   line-height: 1.75;
-  color: rgba(240,235,205,.86);
+  color: rgba(248,242,215,.96);
   margin: 0 0 0.55em;
   letter-spacing: .06em;
   text-shadow:
-    0 0 12px rgba(240,235,205,.08),
-    0 1px 2px rgba(0,0,0,.4);
+    0 0 8px rgba(248,242,215,.18),
+    0 0 2px rgba(248,242,215,.22),
+    0 1px 2px rgba(0,0,0,.35);
 }
 #bb-chalk p:last-child { margin-bottom: 0; }
 #bb-chalk p em {
@@ -207,7 +208,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   color: rgba(235,228,195,.58);
 }
 
-/* Chevrons — scroll indicators */
+/* Chevrons \u2014 scroll indicators */
 #bb-lamp {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
@@ -223,18 +224,18 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   animation: choiceReveal 0.5s ease both;
 }
 
-/* ── NODE POPUP ── */
+/* -- NODE POPUP -- */
 .np-shelf-btn {
   background:none; border:none; border-bottom:2px solid transparent;
   color:rgba(240,235,205,.38); font-family:'Inter',system-ui,sans-serif;
-  font-weight:400; font-size:12px; letter-spacing:.04em;
+  font-weight:400; font-size:13px; letter-spacing:.04em;
   padding:10px 20px 8px; cursor:pointer; transition:color .15s,border-color .15s;
   display:flex; flex-direction:column; align-items:center; gap:2px;
 }
 .np-shelf-btn:hover { color:rgba(240,235,205,.7); }
 .np-shelf-btn.active { color:rgba(240,235,205,.92); border-bottom-color:rgba(140,190,255,.6); }
 .np-shelf-sub {
-  font-size:8px; letter-spacing:.14em; text-transform:uppercase;
+  font-size:10px; letter-spacing:.14em; text-transform:uppercase;
   color:rgba(200,160,32,.4); font-family:monospace; font-weight:400;
   transition:color .15s;
 }
@@ -264,7 +265,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   color:rgba(240,235,205,.88);
   font-weight:400;
 }
-/* Scrollbars inside node popup — thin, dark, accent track */
+/* Scrollbars inside node popup \u2014 thin, dark, accent track */
 #np-body::-webkit-scrollbar,
 #np-body *::-webkit-scrollbar {
   width: 4px;
@@ -290,7 +291,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 #np-shelf-track > div::-webkit-scrollbar-thumb:hover { background: rgba(140,190,255,.38); }
 #np-shelf-track > div { scrollbar-width: thin; scrollbar-color: rgba(140,190,255,.18) rgba(6,11,24,.6); }
 
-/* doc-card — paper inside dark popup */
+/* doc-card \u2014 paper inside dark popup */
 .doc-card {
   font-family: Georgia, "Times New Roman", serif;
   background: linear-gradient(160deg, #EAE4D0 0%, #E0D8C0 100%);
@@ -395,7 +396,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 .bb-chev:not(.top) { bottom: 10px; }
 .bb-chev.hidden { opacity: 0; pointer-events: none; }
 
-/* ── MAP — PRE-ACTIVATION ── */
+/* -- MAP \u2014 PRE-ACTIVATION -- */
 #map-intro-overlay {
   position: absolute; inset: 0; z-index: 10;
   display: flex; align-items: center; justify-content: center;
@@ -487,7 +488,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 }
 .intro-env-subtitle {
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
   color: rgba(26,22,16,.4); margin-top: -8px; margin-bottom: 14px;
   padding-bottom: 8px; border-bottom: 1px solid rgba(26,22,16,.1);
 }
@@ -504,7 +505,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   font-size: 11px; color: rgba(26,22,16,.4);
 }
 
-/* ── BRASS DIVIDER ── */
+/* -- BRASS DIVIDER -- */
 #divider {
   flex-shrink: 0; height: 5px; position: relative; z-index: 10;
   background: linear-gradient(90deg,
@@ -518,7 +519,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 }
 #divider:hover { filter: brightness(1.25); }
 
-/* ── MAP PANEL ── */
+/* -- MAP PANEL -- */
 
 /* Closed dossier on blueprint */
 .intro-envelope {
@@ -596,7 +597,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 }
 .intro-env-subtitle {
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
   color: rgba(26,22,16,.4); margin-top: -8px; margin-bottom: 14px;
   padding-bottom: 8px; border-bottom: 1px solid rgba(26,22,16,.1);
 }
@@ -613,7 +614,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   font-size: 11px; color: rgba(26,22,16,.4);
 }
 
-/* ── BRASS DIVIDER ── */
+/* -- BRASS DIVIDER -- */
 #divider {
   flex-shrink: 0; height: 5px; position: relative; z-index: 10;
   background: linear-gradient(90deg,
@@ -627,7 +628,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 }
 #divider:hover { filter: brightness(1.25); }
 
-/* ── MAP PANEL ── */
+/* -- MAP PANEL -- */
 #map-panel {
   flex: 11 0 0; min-height: 0;
   display: flex; flex-direction: column;
@@ -659,12 +660,12 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   background: #060b18;
 }
 
-/* ── TOP ROW ── */
+/* -- TOP ROW -- */
 #map-top-row {
   display: flex; flex-direction: row; flex-shrink: 0;
 }
 
-/* ── STAIRWELL: spans left col + corridor, pinstriped ── */
+/* -- STAIRWELL: spans left col + corridor, pinstriped -- */
 #map-stairwell {
   grid-column: 1 / 3;  /* left rooms col + corridor strip */
   grid-row: 1;
@@ -716,7 +717,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   /* points down into corridor */
 }
 
-/* ── MAIN CORRIDOR WRAP ── */
+/* -- MAIN CORRIDOR WRAP -- */
 #map-corridor-wrap {
   grid-column: 1 / 4;  /* all 3 cols */
   grid-row: 2;
@@ -736,7 +737,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 #map-aubrey-wrap { display: flex; justify-content: center; flex-shrink: 0; }
 #map-canvas { display: block; background: transparent; }
 
-/* ── BOTTOM ROW ── */
+/* -- BOTTOM ROW -- */
 #map-bottom-row {
   grid-column: 1 / 4;
   grid-row: 3;
@@ -765,7 +766,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   grid-column: 3; grid-row: 1;
 }
 
-/* ── WAYPOINTS ── */
+/* -- WAYPOINTS -- */
 .map-waynode {
   display: flex; align-items: center; gap: 5px;
   cursor: pointer; transition: border-color .15s, background .15s;
@@ -786,7 +787,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 }
 .map-waynode.snap .map-waynode-label { color: rgba(180,220,255,.92); }
 
-/* ── ROOM BOXES ── */
+/* -- ROOM BOXES -- */
 .map-room {
   border: 1px solid rgba(140,190,255,.18);
   background: rgba(140,190,255,.03);
@@ -806,7 +807,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 }
 .map-room-pips { display: flex; gap: 3px; align-items: center; }
 
-/* ── CLEANER CUTSCENE ── */
+/* -- CLEANER CUTSCENE -- */
 #cleaner-cutscene {
   display: none;
   position: fixed; inset: 0; z-index: 600;
@@ -831,7 +832,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 }
 #cs-ref {
   font-family: 'Special Elite', monospace;
-  font-size: clamp(9px,1vw,11px); letter-spacing: .2em; text-transform: uppercase;
+  font-size: clamp(11px,1.1vw,13px); letter-spacing: .2em; text-transform: uppercase;
   color: rgba(238,232,192,.22);
   margin-bottom: 36px;
 }
@@ -853,13 +854,13 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   border-bottom: 1px solid rgba(238,232,192,.15);
   color: rgba(238,232,192,.25);
   font-family: 'Special Elite', monospace;
-  font-size: clamp(10px,1.1vw,12px); letter-spacing: .18em; text-transform: uppercase;
+  font-size: clamp(12px,1.2vw,14px); letter-spacing: .18em; text-transform: uppercase;
   padding: 4px 0; cursor: pointer;
   transition: color .15s, border-color .15s;
 }
 #cs-close:hover { color: rgba(238,232,192,.72); border-color: rgba(238,232,192,.45); }
 
-/* ── ROOM OVERLAY ── */
+/* -- ROOM OVERLAY -- */
 #room-overlay {
   display: none;
   position: absolute; inset: 0; z-index: 100;
@@ -903,7 +904,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   display: block;
   font-family: 'Inter', system-ui, sans-serif;
   font-weight: 300;
-  font-size: clamp(14px,1.8vw,18px);
+  font-size: clamp(15px,1.9vw,19px);
   letter-spacing: .14em;
   text-transform: uppercase;
   color: rgba(230,225,200,.55);
@@ -982,7 +983,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   color: rgba(238,232,192,.55);
   border-color: rgba(238,232,192,.35);
 }
-/* ── Compact room overlay for short viewports ── */
+/* -- Compact room overlay for short viewports -- */
 @media screen and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
   #shell { filter: brightness(1.45); }
 }
@@ -991,8 +992,8 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   #ro-room-num { font-size: 11px; }
   #ro-room-name { font-size: 11px; }
   .ro-btn-name { font-size: 13px; }
-  .ro-btn-sub { font-size: 8px; }
-  #ro-back { font-size: 9px; }
+  .ro-btn-sub { font-size: 10px; }
+  #ro-back { font-size: 11px; }
   .ro-btn { padding: 7px 16px; }
   #ro-indicator { margin-bottom: 10px; padding-top: 8px; }
 }
@@ -1005,7 +1006,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   font-size: 10px; color: rgba(140,190,255,.55);
 }
 
-/* ── SUB-ROOM ── */
+/* -- SUB-ROOM -- */
 #map-subroom {
   display: none; position: absolute; inset: 0; z-index: 20;
   flex-direction: column;
@@ -1066,7 +1067,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 }
 .dos-tab {
   font-family: monospace;
-  font-size: 8px; letter-spacing: .16em; text-transform: uppercase;
+  font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
   color: rgba(26,22,16,.35);
   padding: 8px 16px;
   cursor: pointer;
@@ -1079,7 +1080,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 .dos-tab.active { color: rgba(26,22,16,.8); border-bottom-color: rgba(120,90,20,.45); }
 </style>
 
-<script type="text/ql-anim-b64" id="anim-room1-bureau">PGRpdiBzdHlsZT0ibWFyZ2luOjAgMCAyNHB4O2JhY2tncm91bmQ6IzA3MDkwZjtvdmVyZmxvdzpoaWRkZW47Ij4KPHN0eWxlPgoucWwtd3JhcHtiYWNrZ3JvdW5kOiMwNzA5MGY7b3ZlcmZsb3c6aGlkZGVuO30KLnFsLXdyYXAgY2FudmFze2Rpc3BsYXk6YmxvY2s7d2lkdGg6MTAwJTt9Ci5xbC1sb2d7cGFkZGluZzoxNHB4IDI0cHggNHB4O21pbi1oZWlnaHQ6ODhweDtkaXNwbGF5OmZsZXg7ZmxleC1kaXJlY3Rpb246Y29sdW1uO2dhcDowO2ZvbnQtZmFtaWx5OkludGVyLHN5c3RlbS11aSxzYW5zLXNlcmlmO2ZvbnQtd2VpZ2h0OjMwMDt9Ci5xbC1mcntkaXNwbGF5OmZsZXg7YWxpZ24taXRlbXM6YmFzZWxpbmU7Z2FwOjE0cHg7b3BhY2l0eTowO3RyYW5zZm9ybTp0cmFuc2xhdGVZKDZweCk7dHJhbnNpdGlvbjpvcGFjaXR5IC43cyBjdWJpYy1iZXppZXIoMC4xNiwxLDAuMywxKSx0cmFuc2Zvcm0gLjdzIGN1YmljLWJlemllcigwLjE2LDEsMC4zLDEpO30KLnFsLWZyLmlue29wYWNpdHk6MTt0cmFuc2Zvcm06bm9uZTt9Ci5xbC1mci5kaW0uaW57b3BhY2l0eTouMjt9Ci5xbC1mbntmb250LXNpemU6MTBweDtsZXR0ZXItc3BhY2luZzouMjJlbTt0ZXh0LXRyYW5zZm9ybTp1cHBlcmNhc2U7Y29sb3I6cmdiYSgyMzgsMjMyLDE5MiwuMzIpO21pbi13aWR0aDo0OHB4O3BhZGRpbmctdG9wOjJweDt9Ci5xbC1mb3tmb250LXNpemU6MTJweDtsZXR0ZXItc3BhY2luZzouMjJlbTt0ZXh0LXRyYW5zZm9ybTp1cHBlcmNhc2U7Y29sb3I6I0VFRThDNDtsaW5lLWhlaWdodDoxLjg7fQoucWwtc3R7Zm9udC1zaXplOjEycHg7bGV0dGVyLXNwYWNpbmc6LjE4ZW07dGV4dC10cmFuc2Zvcm06dXBwZXJjYXNlO2NvbG9yOiNFRUU4QzQ7bGluZS1oZWlnaHQ6MS45O29wYWNpdHk6MDt0cmFuc2Zvcm06dHJhbnNsYXRlWSg2cHgpO3RyYW5zaXRpb246b3BhY2l0eSAuOXMgY3ViaWMtYmV6aWVyKDAuMTYsMSwwLjMsMSksdHJhbnNmb3JtIC45cyBjdWJpYy1iZXppZXIoMC4xNiwxLDAuMywxKTt9Ci5xbC1zdC5pbntvcGFjaXR5OjE7dHJhbnNmb3JtOm5vbmU7fQoucWwtc3QuZGltLmlue29wYWNpdHk6LjI4O30KLnFsLXN0LnNwe21hcmdpbi10b3A6OHB4O30KLnFsLWZvb3R7cGFkZGluZzo2cHggMjRweCAxNHB4O30KLnFsLWJ0bntmb250LWZhbWlseTpJbnRlcixzeXN0ZW0tdWksc2Fucy1zZXJpZjtmb250LXNpemU6MTFweDtmb250LXdlaWdodDozMDA7bGV0dGVyLXNwYWNpbmc6LjJlbTt0ZXh0LXRyYW5zZm9ybTp1cHBlcmNhc2U7YmFja2dyb3VuZDp0cmFuc3BhcmVudDtib3JkZXI6MXB4IHNvbGlkIHJnYmEoMjM4LDIzMiwxOTIsLjI1KTtjb2xvcjpyZ2JhKDIzOCwyMzIsMTkyLC41KTtwYWRkaW5nOjdweCAyMnB4O2N1cnNvcjpwb2ludGVyO3RyYW5zaXRpb246YWxsIC4yczt9Ci5xbC1idG46aG92ZXJ7Ym9yZGVyLWNvbG9yOnJnYmEoMjM4LDIzMiwxOTIsLjcpO2NvbG9yOnJnYmEoMjM4LDIzMiwxOTIsLjkpO30KLnFsLWJ0bjpkaXNhYmxlZHtvcGFjaXR5Oi4xMjtjdXJzb3I6ZGVmYXVsdDt9Cjwvc3R5bGU+CjxkaXYgY2xhc3M9InFsLXdyYXAiPgo8Y2FudmFzIGlkPSJxbC1jdiIgd2lkdGg9IjcwMCIgaGVpZ2h0PSIyMzUiPjwvY2FudmFzPgo8ZGl2IGNsYXNzPSJxbC1sb2ciIGlkPSJxbC1sb2ciPjwvZGl2Pgo8ZGl2IGNsYXNzPSJxbC1mb290Ij48YnV0dG9uIGNsYXNzPSJxbC1idG4iIGlkPSJxbC1idG4iPkJlZ2luPC9idXR0b24+PC9kaXY+CjwvZGl2Pgo8c2NyaXB0IHNyYz0iaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L25wbS9yb3VnaGpzQDQuNi42L2J1bmRsZWQvcm91Z2guanMiPjwvc2NyaXB0Pgo8c2NyaXB0PgooZnVuY3Rpb24oKXsKdmFyIGN2PWRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdxbC1jdicpLGN0eD1jdi5nZXRDb250ZXh0KCcyZCcpOwp2YXIgVz03MDAsSD0yMzUsRlk9MTgyLENSPTU5MCxDVz04LENEPTMwLENSMj0yMixFUkM9RlkrQ0QtQ1IyOwp2YXIgQkc9JyMwNzA5MGYnLENLPSdyZ2JhKDIzOCwyMzIsMTkyLC45MCknLENTPSdyZ2JhKDIzOCwyMzIsMTkyLC4yMCknLENHPSdyZ2JhKDIzOCwyMzIsMTkyLC4xMCknLFdIPSdyZ2JhKDI1NSwyNTUsMjU1LC45MiknOwp2YXIgcmM9bnVsbCxzTj0wLHJhZj1udWxsLHJ1bj1mYWxzZSxTQU5TPSdJbnRlcixzeXN0ZW0tdWksc2Fucy1zZXJpZicsRlM9MTY7CmZ1bmN0aW9uIGlSQygpe2lmKCFyYyYmd2luZG93LnJvdWdoKXJjPXJvdWdoLmNhbnZhcyhjdik7fQp2YXIgcm89ZnVuY3Rpb24obyl7cmV0dXJuIE9iamVjdC5hc3NpZ24oe3N0cm9rZTpDSyxzdHJva2VXaWR0aDoxLjkscm91Z2huZXNzOjAuNyxib3dpbmc6MC41LGZpbGw6J25vbmUnfSxvfHx7fSk7fTsKdmFyIHJvZD1mdW5jdGlvbihvKXtyZXR1cm4gT2JqZWN0LmFzc2lnbih7c3Ryb2tlOkNTLHN0cm9rZVdpZHRoOjEuMSxyb3VnaG5lc3M6MS41LGJvd2luZzowLjcsZmlsbDonbm9uZSd9LG98fHt9KTt9Owp2YXIgcm9nPWZ1bmN0aW9uKG8pe3JldHVybiBPYmplY3QuYXNzaWduKHtzdHJva2U6Q0csc3Ryb2tlV2lkdGg6MS4wLHJvdWdobmVzczoxLjQsYm93aW5nOjAuOCxmaWxsOidub25lJ30sb3x8e30pO307CnZhciByb3c9ZnVuY3Rpb24obyl7cmV0dXJuIE9iamVjdC5hc3NpZ24oe3N0cm9rZTpXSCxzdHJva2VXaWR0aDoxLjgscm91Z2huZXNzOjEuMixib3dpbmc6MC45LGZpbGw6J25vbmUnfSxvfHx7fSk7fTsKdmFyIHJvYj1mdW5jdGlvbihvKXtyZXR1cm4gT2JqZWN0LmFzc2lnbih7c3Ryb2tlOkNLLHN0cm9rZVdpZHRoOjIuMCxyb3VnaG5lc3M6MC42LGJvd2luZzowLjQsZmlsbDonbm9uZSd9LG98fHt9KTt9OwpmdW5jdGlvbiBkQkcoKXtjdHguZmlsbFN0eWxlPUJHO2N0eC5maWxsUmVjdCgwLDAsVyxIKTtjdHguc3Ryb2tlU3R5bGU9J3JnYmEoMjM4LDIzMiwxOTIsLjA0KSc7Y3R4LmxpbmVXaWR0aD0xO2Zvcih2YXIgeT0yNzt5PEg7eSs9Mjcpe2N0eC5iZWdpblBhdGgoKTtjdHgubW92ZVRvKDAseSk7Y3R4LmxpbmVUbyhXLHkpO2N0eC5zdHJva2UoKTt9fQpmdW5jdGlvbiBkRmwoKXtpZighcmMpcmV0dXJuO3JjLmxpbmUoMjAsRlksQ1ItQ1csRlkscm9kKCkpO3JjLmxpbmUoQ1IrQ1csRlksNjgwLEZZLHJvZCgpKTtyYy5saW5lKENSLUNXLEZZLENSLEZZK0NELHJvdygpKTtyYy5saW5lKENSLEZZK0NELENSK0NXLEZZLHJvdygpKTt9CmZ1bmN0aW9uIGRIYWlyU3coY3gsY3kpe3ZhciBvPXJvYih7c3Ryb2tlV2lkdGg6Mi4wLHJvdWdobmVzczowLjgsYm93aW5nOjEuMn0pO3JjLmxpbmUoY3gtOCxjeS0xMSxjeC0yLGN5LTI4LG8pO3JjLmxpbmUoY3gtMyxjeS0xMSxjeCs0LGN5LTI4LG8pO3JjLmxpbmUoY3grMyxjeS0xMSxjeCsxMCxjeS0yNixvKTtyYy5saW5lKGN4KzgsY3ktMTEsY3grMTUsY3ktMjMsbyk7cmMubGluZShjeC0xMCxjeS0xMSxjeCsxMCxjeS0xMSxyb2Ioe3N0cm9rZVdpZHRoOjEuMyxyb3VnaG5lc3M6MC40fSkpO30KZnVuY3Rpb24gZEhhaXJUUihjeCxjeSl7dmFyIG89cm9iKHtzdHJva2VXaWR0aDoyLjAscm91Z2huZXNzOjAuOCxib3dpbmc6MS44fSk7cmMubGluZShjeC02LGN5LTExLGN4KzIsY3ktMjgsbyk7cmMubGluZShjeC0xLGN5LTExLGN4KzgsY3ktMjcsbyk7cmMubGluZShjeCs1LGN5LTExLGN4KzE0LGN5LTI1LG8pO3JjLmxpbmUoY3grMTAsY3ktMTEsY3grMTgsY3ktMjIsbyk7cmMubGluZShjeC04LGN5LTExLGN4KzEyLGN5LTExLHJvYih7c3Ryb2tlV2lkdGg6MS4zLHJvdWdobmVzczowLjR9KSk7fQpmdW5jdGlvbiBkSGRGKGN4LGN5KXtyYy5jaXJjbGUoY3gsY3ksMjIscm9iKHtyb3VnaG5lc3M6MC40fSkpO3JjLmNpcmNsZShjeC02LGN5LTIsMixyb2Ioe3N0cm9rZVdpZHRoOjEuNSxyb3VnaG5lc3M6MC4zfSkpO3JjLmNpcmNsZShjeCs2LGN5LTIsMixyb2Ioe3N0cm9rZVdpZHRoOjEuNSxyb3VnaG5lc3M6MC4zfSkpO2RIYWlyU3coY3gsY3kpO30KZnVuY3Rpb24gZEhkQihjeCxjeSl7cmMuY2lyY2xlKGN4LGN5LDIyLHJvYih7cm91Z2huZXNzOjAuNH0pKTtkSGFpclN3KGN4LGN5KTt9CmZ1bmN0aW9uIGRIZFRSKGN4LGN5KXtyYy5jaXJjbGUoY3gsY3ksMjIscm9iKHtyb3VnaG5lc3M6MC40fSkpO3JjLmNpcmNsZShjeCxjeS0yLDIscm9iKHtzdHJva2VXaWR0aDoxLjUscm91Z2huZXNzOjAuM30pKTtyYy5jaXJjbGUoY3grOCxjeS0yLDIscm9iKHtzdHJva2VXaWR0aDoxLjUscm91Z2huZXNzOjAuM30pKTtkSGFpclRSKGN4LGN5KTt9CmZ1bmN0aW9uIGRTdChhcm0pe2lmKCFyYylyZXR1cm47dmFyIHg9NTIseT1GWSxvPXJvYigpO3JjLmxpbmUoeC01LHktMjQseC03LHksbyk7cmMubGluZSh4KzUseS0yNCx4KzcseSxvKTtyYy5saW5lKHgtNyx5LHgtMTgseSxvKTtyYy5saW5lKHgrNyx5LHgrMTgseSxvKTtyYy5saW5lKHgseS0yNCx4LHktNjgsbyk7dmFyIGF4PXgrTWF0aC5jb3MoYXJtKSozMCxheT15LTU4K01hdGguc2luKGFybSkqMzA7cmMubGluZSh4LHktNTgsYXgsYXksbyk7cmMubGluZSh4LHktNTgseC0yNix5LTQ4LG8pO2RIZEYoeCx5LTgyKTt9CmZ1bmN0aW9uIGRXayh4LHQpe2lmKCFyYylyZXR1cm47dmFyIHk9Rlksbz1yb2IoKSxzPU1hdGguc2luKHQqMC4wNikqMC42O3JjLmxpbmUoeCx5LTI0LHgtNitzKjcseSxvKTtyYy5saW5lKHgseS0yNCx4KzYtcyo3LHksbyk7cmMubGluZSh4LTYrcyo3LHkseC0xNCtzKjcseSxvKTtyYy5saW5lKHgrNi1zKjcseSx4KzE0LXMqNyx5LG8pO3JjLmxpbmUoeCx5LTI0LHgtNCx5LTY4LG8pO3JjLmxpbmUoeC00LHktNTgseC00K3MqNSx5LTQwLG8pO3JjLmxpbmUoeC00LHktNTgseC00LXMqNSx5LTQyLG8pO2RIZEIoeC00LHktODIpO30KZnVuY3Rpb24gZFN0ZCh4LHRhKXtpZighcmMpcmV0dXJuO3ZhciB5PUZZLG89cm9iKCk7cmMubGluZSh4LHktMjQseC0xMCx5LG8pO3JjLmxpbmUoeCx5LTI0LHgrMTAseSxvKTtyYy5saW5lKHgtMTAseSx4LTIwLHksbyk7cmMubGluZSh4KzEwLHkseCsyMCx5LG8pO3JjLmxpbmUoeCx5LTI0LHgtNCx5LTY2LG8pO3JjLmxpbmUoeC00LHktNTYseC0xOCx5LTM0LG8pO3JjLmxpbmUoeC00LHktNTYseCsxMix5LTM2LG8pO3ZhciBoeD14LTQsaHk9eS04MDtpZih0YTwwLjUpZEhkQihoeCxoeSk7ZWxzZSBkSGRUUihoeCxoeSk7fQpmdW5jdGlvbiBjVHgoY3gsY3ksc3gsZmFjZSl7aWYoIWZhY2V8fE1hdGguYWJzKHN4KTwwLjE4KXJldHVybjtjdHguc2F2ZSgpO2N0eC50cmFuc2xhdGUoY3gsY3kpO2N0eC5zY2FsZShzeCwxKTtjdHguZm9udD0nMzAwICcrRlMrJ3B4ICcrU0FOUztjdHguZmlsbFN0eWxlPUNLO2N0eC5nbG9iYWxBbHBoYT1NYXRoLm1pbigxLE1hdGguYWJzKHN4KSoxLjgpO2N0eC50ZXh0QWxpZ249J2NlbnRlcic7Y3R4LnRleHRCYXNlbGluZT0nbWlkZGxlJztjdHguZmlsbFRleHQoZmFjZS50b1VwcGVyQ2FzZSgpLDAsMCk7Y3R4LnJlc3RvcmUoKTt9CmZ1bmN0aW9uIGRDVShjeCxjeSxzeCxmYWNlKXtpZighcmMpcmV0dXJuO3ZhciBydz1NYXRoLm1heCgxLjUsQ1IyKk1hdGguYWJzKHN4KSk7cmMuZWxsaXBzZShjeCxjeSxydyoyLENSMioyLHJvKCkpO2NUeChjeCxjeSxzeCxmYWNlKTt9CmZ1bmN0aW9uIGRDRihjeCxyeSl7aWYoIXJjfHxyeTwwLjQpcmV0dXJuO3JjLmVsbGlwc2UoY3gsRlksQ1IyKjMuOCxNYXRoLm1heCgwLjgscnkqMikscm8oe3N0cm9rZVdpZHRoOjEuNn0pKTt9CmZ1bmN0aW9uIGRDRShleSx0aWx0LHdoKXtpZighcmMpcmV0dXJuO2N0eC5zYXZlKCk7Y3R4LnRyYW5zbGF0ZShDUixleSk7Y3R4LnJvdGF0ZSh0aWx0fHwwKTtyYy5lbGxpcHNlKDAsMCw1LENSMioyLHdoP3Jvdyh7c3Ryb2tlV2lkdGg6Mi4yfSk6cm8oe3N0cm9rZVdpZHRoOjEuOX0pKTtjdHgucmVzdG9yZSgpO30KZnVuY3Rpb24gZEhhbmQoY3gsY3ksbGJsLGFsKXtpZighcmN8fGFsPDAuMDEpcmV0dXJuO2N0eC5zYXZlKCk7Y3R4Lmdsb2JhbEFscGhhPWFsO3ZhciBvPXtzdHJva2U6Q0ssc3Ryb2tlV2lkdGg6MS43LHJvdWdobmVzczowLjYsYm93aW5nOjAuNCxmaWxsOidub25lJ307dmFyIGZ0PWN5K0NSMiozLUNSMioxLjI7cmMubGluZShjeC0xMCxmdCxjeC0xMCxmdCtDUjIqMS40LG8pO3JjLmxpbmUoY3gsZnQsY3gsZnQrQ1IyKjEuNCxvKTtyYy5saW5lKGN4KzEwLGZ0LGN4KzEwLGZ0K0NSMioxLjQsbyk7cmMuY2lyY2xlKGN4LGN5LENSMiozLHJvYih7c3Ryb2tlV2lkdGg6Mi40LHJvdWdobmVzczowLjV9KSk7Y3R4LmZpbGxTdHlsZT1DSztjdHguZm9udD0nMzAwICcrRlMrJ3B4ICcrU0FOUztjdHgudGV4dEFsaWduPSdjZW50ZXInO2N0eC50ZXh0QmFzZWxpbmU9J21pZGRsZSc7Y3R4LmZpbGxUZXh0KGxibC50b1VwcGVyQ2FzZSgpLGN4LGN5KTtjdHgucmVzdG9yZSgpO30KZnVuY3Rpb24gZFBDKCl7c3QucGMuZm9yRWFjaChmdW5jdGlvbihjKXtpZighcmMpcmV0dXJuO3JjLmVsbGlwc2UoYy54LEZZLENSMiozLjYsOSxyb2coKSk7fSk7fQp2YXIgV1M9NTIsV0U9Q1ItNDQ7CnZhciBzdD17cGg6J2lkbGUnLHQ6MCxjeDoxMDAsY3k6RlktQ1IyLHN4OjEsY2Y6JycsY3Y6ZmFsc2Uscnk6Q1IyLGZ4OjAsZnY6ZmFsc2UsaHg6MCxoeTo4MCxobDonJyxoYTowLGh2OmZhbHNlLGV4OkZZLUNSMixldDowLGV2OmZhbHNlLGV3OmZhbHNlLHd4OldTLHdrOmZhbHNlLGFyOmZhbHNlLHRhOjAsYXJtOi1NYXRoLlBJLzUscGM6W10sbHg6MzAwLGRvbmU6bnVsbH07CmZ1bmN0aW9uIGxlcnAoYSxiLHQpe3JldHVybiBhKyhiLWEpKnQ7fQpmdW5jdGlvbiBlTyh0KXtyZXR1cm4gMS0oMS10KSooMS10KTt9CmZ1bmN0aW9uIGVPMyh0KXtyZXR1cm4gMS0oMS10KSooMS10KSooMS10KTt9CmZ1bmN0aW9uIGVJTyh0KXtyZXR1cm4gdDwwLjU/Mip0KnQ6MS0yKigxLXQpKigxLXQpO30KZnVuY3Rpb24gZUlPUyh0KXtyZXR1cm4gdDwwLjU/NCp0KnQqdDoxLTQqKDEtdCkqKDEtdCkqKDEtdCk7fQpmdW5jdGlvbiBjbGFtcCh2LGxvLGhpKXtyZXR1cm4gTWF0aC5tYXgobG8sTWF0aC5taW4oaGksdikpO30KZnVuY3Rpb24gYnoocDAscDEscDIsdCl7cmV0dXJuIGxlcnAobGVycChwMCxwMSx0KSxsZXJwKHAxLHAyLHQpLHQpO30KZnVuY3Rpb24gcmVuZGVyKCl7ZEJHKCk7ZEZsKCk7aWYoc3QuYXIpZFN0ZChzdC53eCxzdC50YSk7ZWxzZSBpZihzdC53aylkV2soc3Qud3gsc3QudCk7ZWxzZSBkU3Qoc3QuYXJtKTtkUEMoKTtpZihzdC5mdilkQ0Yoc3QuZngsc3QucnkpO2lmKHN0LmN2KWRDVShzdC5jeCxzdC5jeSxzdC5zeCxzdC5jZik7aWYoc3QuaHYpZEhhbmQoc3QuaHgsc3QuaHksc3QuaGwsc3QuaGEpO2lmKHN0LmV2KWRDRShzdC5leCxzdC5ldCxzdC5ldyk7fQp2YXIgUEg9ewogIHdpbmR1cDpmdW5jdGlvbihzKXt2YXIgZD0xOCxwPWNsYW1wKHMudC9kLDAsMSk7cy5hcm09bGVycCgtTWF0aC5QSS81LC1NYXRoLlBJKjAuMzUsZU8ocCkpO3MuY3Y9ZmFsc2U7aWYocy50Pj1kKXtzLnBoPSdhcmMnO3MudD0wO319LAogIGFyYzpmdW5jdGlvbihzKXt2YXIgZD02MixwPWNsYW1wKHMudC9kLDAsMSk7cy5jeD1ieigxMDAscy5seC8yKzQwLHMubHgscCk7cy5jeT0oRlktQ1IyKS1NYXRoLnNpbihwKk1hdGguUEkpKjE3MDtzLnN4PU1hdGguY29zKHAqTWF0aC5QSSo0LjIpO3MuY3Y9dHJ1ZTtzLmZ2PWZhbHNlO3MuaHY9ZmFsc2U7cy5hcm09bGVycCgtTWF0aC5QSSowLjM1LC1NYXRoLlBJKjEuMDUsY2xhbXAocy50LzIyLDAsMSkpO2lmKHMudD49ZCl7cy5waD0nYjEnO3MudD0wO319LAogIGIxOmZ1bmN0aW9uKHMpe3ZhciBkPTI0LHA9Y2xhbXAocy50L2QsMCwxKTtzLmN4PWxlcnAocy5seCxzLmx4KzM2LHApO3MuY3k9KEZZLUNSMiktTWF0aC5zaW4ocCpNYXRoLlBJKSozNjtzLnN4PU1hdGguY29zKHAqTWF0aC5QSSoxLjIrTWF0aC5QSSo0LjIpO2lmKHMudD49ZCl7cy5waD0nYjInO3MudD0wO319LAogIGIyOmZ1bmN0aW9uKHMpe3ZhciBkPTE2LHA9Y2xhbXAocy50L2QsMCwxKTtzLmN4PWxlcnAocy5seCszNixzLmx4KzUwLHApO3MuY3k9KEZZLUNSMiktTWF0aC5zaW4ocCpNYXRoLlBJKSoxNDtzLnN4PU1hdGguY29zKHAqTWF0aC5QSSowLjcrTWF0aC5QSSo1LjQpO2lmKHMudD49ZCl7cy5jeD1zLmx4O3MuY3k9RlktQ1IyO3Muc3g9MTtzLnBoPSd3Yic7cy50PTA7fX0sCiAgd2I6ZnVuY3Rpb24ocyl7dmFyIGQ9NTIscD1jbGFtcChzLnQvZCwwLDEpLGZsPTEtZU8zKHApO2lmKGZsPjAuMjgpe3MuY3k9RlktQ1IyKmZsO3Muc3g9MTtzLmN2PXRydWU7cy5mdj1mYWxzZTt9ZWxzZXtzLmN2PWZhbHNlO3MuZnY9dHJ1ZTtzLmZ4PXMubHg7cy5yeT1NYXRoLm1heCgyLjUsQ1IyKmZsKTt9aWYocy50Pj1kKXtzLnBoPSdzZSc7cy50PTA7cy5jdj1mYWxzZTtzLmZ2PXRydWU7cy5yeT0yLjU7fX0sCiAgc2U6ZnVuY3Rpb24ocyl7cy5yeT0yLjUrTWF0aC5zaW4ocy50Kk1hdGguUEkvMTQpKjEuMjtpZihzLnQ+PTE0KXtzLnJ5PTIuNTtzLnBoPSdsaSc7cy50PTA7cy5oeD1zLmx4O3MuaHk9RlktQ1IyKjQ7cy5obD1zLmNmO319LAogIGxpOmZ1bmN0aW9uKHMpe3ZhciBkPTQwLHA9Y2xhbXAocy50L2QsMCwxKTtzLmh2PXRydWU7cy5oYT1lTyhwKTtzLmh5PWxlcnAoRlktQ1IyKjQtMzAsRlktQ1IyKjQsZU8zKHApKTtpZihzLnQ+PWQpe3MucGg9J2hvJztzLnQ9MDt9fSwKICBobzpmdW5jdGlvbihzKXtpZihzLnQ+PTUwKXtzLnBoPSdpZGxlJztpZihzLmRvbmUpcy5kb25lKCk7fX0sCiAgZVd1OmZ1bmN0aW9uKHMpe3ZhciBkPTE4LHA9Y2xhbXAocy50L2QsMCwxKTtzLmFybT1sZXJwKC1NYXRoLlBJLzUsLU1hdGguUEkqMC4zNSxlTyhwKSk7cy5jdj1mYWxzZTtpZihzLnQ+PWQpe3MucGg9J2VBcic7cy50PTA7fX0sCiAgZUFyOmZ1bmN0aW9uKHMpe3ZhciBkPTY1LHA9Y2xhbXAocy50L2QsMCwxKTtzLmN4PWJ6KDEwMCwzNjAsQ1IscCk7cy5jeT0oRlktQ1IyKS1NYXRoLnNpbihwKk1hdGguUEkpKjE4MDtzLnN4PTAuMDg7cy5jZj0nJztzLmN2PXRydWU7cy5ldj1mYWxzZTtzLmFybT1sZXJwKC1NYXRoLlBJKjAuMzUsLU1hdGguUEkqMS4wNSxjbGFtcChzLnQvMjIsMCwxKSk7aWYocy50Pj1kKXtzLnBoPSdlQm8nO3MudD0wO319LAogIGVCbzpmdW5jdGlvbihzKXt2YXIgZD0yMixwPWNsYW1wKHMudC9kLDAsMSk7cy5jeD1sZXJwKENSLENSKzI4LHApO3MuY3k9KEZZLUNSMiktTWF0aC5zaW4ocCpNYXRoLlBJKSoyNjtpZihzLnQ+PWQpe3MucGg9J2VSbyc7cy50PTA7fX0sCiAgZVJvOmZ1bmN0aW9uKHMpe3ZhciBkPTU1LHA9Y2xhbXAocy50L2QsMCwxKTtzLmN4PWxlcnAoQ1IrMjgsQ1IsZUlPKHApKTtzLmN5PUZZLUNSMjtpZihzLnQ+PWQpe3MuY3Y9ZmFsc2U7cy5ldj10cnVlO3MuZXg9RlktQ1IyO3MuZXQ9MDtzLnBoPSdlRHInO3MudD0wO319LAogIGVEcjpmdW5jdGlvbihzKXt2YXIgZD0yNSxwPWNsYW1wKHMudC9kLDAsMSk7cy5leD1sZXJwKEZZLUNSMixFUkMsZU8ocCkpO2lmKHMudD49ZCl7cy5waD0nZVdiJztzLnQ9MDt9fSwKICBlV2I6ZnVuY3Rpb24ocyl7dmFyIGFtcD0yOCpNYXRoLmV4cCgtcy50KjAuMDM0KTtzLmV0PU1hdGguc2luKHMudCowLjI1KSphbXAqKE1hdGguUEkvMTgwKTtzLmV4PUVSQztpZihzLnQ+MTAwKXtzLmV0PTA7cy5ldz10cnVlO3MucGg9J2VSZSc7cy50PTA7fX0sCiAgZVJlOmZ1bmN0aW9uKHMpe3MuZXg9RVJDO3MuZXQ9MDtpZihzLnQ9PT04JiZzLmRvbmUpcy5kb25lKCk7fSwKICBwYXVzZTpmdW5jdGlvbihzKXtpZihzLnQ+PTgwKXtzLnBoPSd3YWxrJztzLnQ9MDtzLndrPXRydWU7cy53eD1XUzt9fSwKICB3YWxrOmZ1bmN0aW9uKHMpe3ZhciBkPTM2MCxwPWNsYW1wKHMudC9kLDAsMSk7cy53eD1sZXJwKFdTLFdFLGVJT1MocCkpO2lmKHMudD49ZCl7cy53az1mYWxzZTtzLmFyPXRydWU7cy50YT0wO3MucGg9J3R1cm4nO3MudD0wO319LAogIHR1cm46ZnVuY3Rpb24ocyl7dmFyIGQ9NjAscD1jbGFtcChzLnQvZCwwLDEpO3MudGE9ZU8ocCk7aWYocy50Pj1kKXtzLnBoPSdzbmQnO3MudD0wO319LAogIHNuZDpmdW5jdGlvbihzKXtzLmFyPXRydWU7cy50YT0xO30KfTsKZnVuY3Rpb24gdGljaygpe2lmKCFydW4pcmV0dXJuO3N0LnQrKztpZihQSFtzdC5waF0pUEhbc3QucGhdKHN0KTtyZW5kZXIoKTtyYWY9cmVxdWVzdEFuaW1hdGlvbkZyYW1lKHRpY2spO30KZnVuY3Rpb24gc3RhcnRBKCl7aWYocmFmKWNhbmNlbEFuaW1hdGlvbkZyYW1lKHJhZik7cnVuPXRydWU7cmFmPXJlcXVlc3RBbmltYXRpb25GcmFtZSh0aWNrKTt9CmZ1bmN0aW9uIHN0b3BBKCl7cnVuPWZhbHNlO2lmKHJhZil7Y2FuY2VsQW5pbWF0aW9uRnJhbWUocmFmKTtyYWY9bnVsbDt9fQp2YXIgZWw9ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3FsLWxvZycpOwpmdW5jdGlvbiBjbEwoKXtlbC5pbm5lckhUTUw9Jyc7fQpmdW5jdGlvbiBmUm93KG51bSxvdXQsY2xzLGRlbGF5KXt2YXIgcj1kb2N1bWVudC5jcmVhdGVFbGVtZW50KCdkaXYnKTtyLmNsYXNzTmFtZT0ncWwtZnIgJysoY2xzfHwnJyk7ci5pbm5lckhUTUw9JzxzcGFuIGNsYXNzPSJxbC1mbiI+JytudW0rJzwvc3Bhbj48c3BhbiBjbGFzcz0icWwtZm8iPicrb3V0Kyc8L3NwYW4+JztlbC5hcHBlbmRDaGlsZChyKTtzZXRUaW1lb3V0KGZ1bmN0aW9uKCl7ci5jbGFzc0xpc3QuYWRkKCdpbicpO30sZGVsYXl8fDApO30KZnVuY3Rpb24gc3RtdCh0eHQsY2xzLGRlbGF5KXt2YXIgZD1kb2N1bWVudC5jcmVhdGVFbGVtZW50KCdkaXYnKTtkLmNsYXNzTmFtZT0ncWwtc3QgJysoY2xzfHwnJyk7ZC50ZXh0Q29udGVudD10eHR8fCdcdTAwYTAnO2VsLmFwcGVuZENoaWxkKGQpO3NldFRpbWVvdXQoZnVuY3Rpb24oKXtkLmNsYXNzTGlzdC5hZGQoJ2luJyk7fSxkZWxheXx8MCk7fQpmdW5jdGlvbiBzQnRuKGxibCxkZWxheSl7dmFyIGI9ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3FsLWJ0bicpO2Iuc3R5bGUuZGlzcGxheT1sYmw/Jyc6J25vbmUnO2lmKGxibCl7Yi50ZXh0Q29udGVudD1sYmw7Yi5kaXNhYmxlZD10cnVlO31pZihsYmwmJmRlbGF5IT1udWxsKXNldFRpbWVvdXQoZnVuY3Rpb24oKXtiLmRpc2FibGVkPWZhbHNlO30sZGVsYXkpO30KZnVuY3Rpb24gclN0KCl7c3RvcEEoKTtPYmplY3QuYXNzaWduKHN0LHtwaDonaWRsZScsdDowLGN4OjEwMCxjeTpGWS1DUjIsc3g6MSxjZjonJyxjdjpmYWxzZSxyeTpDUjIsZng6MCxmdjpmYWxzZSxoeDowLGh5OjgwLGhsOicnLGhhOjAsaHY6ZmFsc2UsZXg6RlktQ1IyLGV0OjAsZXY6ZmFsc2UsZXc6ZmFsc2Usd3g6V1Msd2s6ZmFsc2UsYXI6ZmFsc2UsdGE6MCxhcm06LU1hdGguUEkvNX0pO30KdmFyIGx4cz1bMjAwLDMxMCw0MjBdLGxpPTA7CnZhciBzdGVwcz1bCiAgZnVuY3Rpb24oKXtyU3QoKTtzdC5wYz1bXTtyZW5kZXIoKTtjbEwoKTtzdG10KCdBIGNvaW4gaGFzIHR3byBmYWNlcy4gV2hhdCBhcmUgdGhlIHBvc3NpYmlsaXRpZXM/JywnJywzMDApO3NCdG4oJ0JlZ2luJywxMTAwKTt9LAogIGZ1bmN0aW9uKCl7clN0KCk7bGk9MDtzdC5wYz1bXTtjbEwoKTtzQnRuKCcnKTtzdC5jZj0nSCc7c3QubHg9bHhzW2xpXTtzdC5kb25lPWZ1bmN0aW9uKCl7c3QucGMucHVzaCh7eDpseHNbbGldfSk7bGkrKztjbEwoKTtmUm93KCdGbGlwIDEnLCdIZWFkcycsJycsMjAwKTtzQnRuKCdGbGlwIGFnYWluJywxMDAwKTt9O3N0LnBoPSd3aW5kdXAnO3N0YXJ0QSgpO30sCiAgZnVuY3Rpb24oKXtyU3QoKTtzdC5wYz1be3g6bHhzWzBdfV07Y2xMKCk7ZlJvdygnRmxpcCAxJywnSGVhZHMnLCdkaW0nLDApO3NCdG4oJycpO3N0LmNmPSdIJztzdC5seD1seHNbbGldO3N0LmRvbmU9ZnVuY3Rpb24oKXtzdC5wYy5wdXNoKHt4Omx4c1tsaV19KTtsaSsrO2NsTCgpO2ZSb3coJ0ZsaXAgMScsJ0hlYWRzJywnZGltJyw4MCk7ZlJvdygnRmxpcCAyJywnSGVhZHMnLCcnLDMwMCk7c0J0bignRmxpcCBhZ2FpbicsMTEwMCk7fTtzdC5waD0nd2luZHVwJztzdGFydEEoKTt9LAogIGZ1bmN0aW9uKCl7clN0KCk7c3QucGM9W3t4Omx4c1swXX0se3g6bHhzWzFdfV07Y2xMKCk7ZlJvdygnRmxpcCAxJywnSGVhZHMnLCdkaW0nLDApO2ZSb3coJ0ZsaXAgMicsJ0hlYWRzJywnZGltJywwKTtzQnRuKCcnKTtzdC5jZj0nVCc7c3QubHg9bHhzW2xpXTtzdC5kb25lPWZ1bmN0aW9uKCl7c3QucGMucHVzaCh7eDpseHNbbGldfSk7bGkrKztjbEwoKTtmUm93KCdGbGlwIDEnLCdIZWFkcycsJ2RpbScsODApO2ZSb3coJ0ZsaXAgMicsJ0hlYWRzJywnZGltJywyMjApO2ZSb3coJ0ZsaXAgMycsJ1RhaWxzJywnJywzODApO3N0bXQoJ3tILCBUfSDigJQgZXZlcnkgb3V0Y29tZSBhY2NvdW50ZWQgZm9yLicsJ3NwJywxMDAwKTtzdG10KCdUaGUgc2FtcGxlIHNwYWNlIGlzIGNvbXBsZXRlLiBUaGUgZmlsZSBpcyBjbG9zZWQuJywnc3AnLDE4MDApO3NCdG4oJ0NvbnRpbnVlJywzMjAwKTt9O3N0LnBoPSd3aW5kdXAnO3N0YXJ0QSgpO30sCiAgZnVuY3Rpb24oKXtzdG9wQSgpO3N0LmN2PWZhbHNlO3N0Lmh2PWZhbHNlO3N0LmV2PWZhbHNlO3N0LmZ2PXRydWU7c3QuZng9bHhzWzJdO3N0LnJ5PTIuNTtzdC5wYz1be3g6bHhzWzBdfSx7eDpseHNbMV19XTtyZW5kZXIoKTtjbEwoKTtzdG10KCd7SCwgVH0g4oCUIGV2ZXJ5IG91dGNvbWUgYWNjb3VudGVkIGZvci4nLCcnLDApO3N0bXQoJ09yIHNvIGl0IGFwcGVhcnMuJywnc3AnLDEyMDApO3N0bXQoJ1doYXQgaGF2ZSB3ZSBub3QgdGhvdWdodCBvZj8nLCdzcCcsMzAwMCk7c0J0bignRmxpcCA0Jyw0NDAwKTt9LAogIGZ1bmN0aW9uKCl7clN0KCk7c3QucGM9W3t4Omx4c1swXX0se3g6bHhzWzFdfSx7eDpseHNbMl19XTtjbEwoKTtzdG10KCdUaGUgY29pbiB3YXMgbm90IGNvbnN1bHRlZCBhYm91dCB0aGUgc2FtcGxlIHNwYWNlLicsJ3NwJywwKTtzQnRuKCcnKTtzdC5kb25lPWZ1bmN0aW9uKCl7Y2xMKCk7ZlJvdygnRmxpcCA0JywnU2lkZScsJycsMzAwKTtzdG10KCd7SCwgVCwgU2lkZX0nLCdzcCcsMTEwMCk7c3RtdCgnQW4gb3V0Y29tZSB5b3UgZGlkIG5vdCBsaXN0IGRvZXMgbm90IGNlYXNlIHRvIGV4aXN0LiBJdCB3YWl0cy4nLCdzcCcsMjIwMCk7c2V0VGltZW91dChmdW5jdGlvbigpe3N0LnBoPSdwYXVzZSc7fSwzODAwKTt9O3N0LnBoPSdlV3UnO3N0YXJ0QSgpO30KXTsKKGZ1bmN0aW9uIHdhaXQoKXtpZih3aW5kb3cucm91Z2gpe2lSQygpO3N0ZXBzWzBdKCk7ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3FsLWJ0bicpLmFkZEV2ZW50TGlzdGVuZXIoJ2NsaWNrJyxmdW5jdGlvbigpe3NOKys7aWYoc048c3RlcHMubGVuZ3RoKXN0ZXBzW3NOXSgpO30pO31lbHNlIHNldFRpbWVvdXQod2FpdCw4MCk7fSkoKTsKfSkoKTsKPC9zY3JpcHQ+CjwvZGl2Pgo=</script>
+<div style="display:none" data-ql-anim-b64 id="anim-room1-bureau">PGRpdiBzdHlsZT0ibWFyZ2luOjAgMCAyNHB4O2JhY2tncm91bmQ6IzA3MDkwZjtvdmVyZmxvdzpoaWRkZW47Zm9udC1mYW1pbHk6J0ludGVyJyxzeXN0ZW0tdWksc2Fucy1zZXJpZjtmb250LXdlaWdodDozMDA7Ij4KPHN0eWxlPgoucWwtbG9ne3BhZGRpbmc6MThweCAyNHB4IDhweDttaW4taGVpZ2h0OjgwcHg7ZGlzcGxheTpmbGV4O2ZsZXgtZGlyZWN0aW9uOmNvbHVtbjtnYXA6MDt9Ci5xbC1yb3d7ZGlzcGxheTpmbGV4O2FsaWduLWl0ZW1zOmJhc2VsaW5lO2dhcDoxNnB4O29wYWNpdHk6MDt0cmFuc2Zvcm06dHJhbnNsYXRlWSg1cHgpO3RyYW5zaXRpb246b3BhY2l0eSAuN3MgY3ViaWMtYmV6aWVyKDAuMTYsMSwwLjMsMSksdHJhbnNmb3JtIC43cyBjdWJpYy1iZXppZXIoMC4xNiwxLDAuMywxKTttYXJnaW4tYm90dG9tOjEwcHg7fQoucWwtcm93Lmlue29wYWNpdHk6MTt0cmFuc2Zvcm06bm9uZTt9Ci5xbC1xe2ZvbnQtc2l6ZToxMnB4O2xldHRlci1zcGFjaW5nOi4xM2VtO2NvbG9yOnJnYmEoMjM4LDIzMiwxOTIsLjc4KTtsaW5lLWhlaWdodDoxLjc7ZmxleDoxO2ZvbnQtc3R5bGU6aXRhbGljO30KLnFsLXN0YW1we2ZvbnQtZmFtaWx5Om1vbm9zcGFjZTtmb250LXNpemU6OHB4O2xldHRlci1zcGFjaW5nOi4yNGVtO3RleHQtdHJhbnNmb3JtOnVwcGVyY2FzZTtmbGV4LXNocmluazowO3BhZGRpbmc6MnB4IDdweDtib3JkZXI6MXB4IHNvbGlkIHJnYmEoMjIwLDYwLDQwLC40NSk7Y29sb3I6cmdiYSgyMjAsNjAsNDAsLjc1KTtvcGFjaXR5OjA7dHJhbnNpdGlvbjpvcGFjaXR5IC4zNXMgZWFzZTt9Ci5xbC1zdGFtcC5pbntvcGFjaXR5OjE7fQoucWwtcmVhc29ue2ZvbnQtc2l6ZToxMHB4O2xldHRlci1zcGFjaW5nOi4xNmVtO3RleHQtdHJhbnNmb3JtOnVwcGVyY2FzZTtjb2xvcjpyZ2JhKDIzOCwyMzIsMTkyLC4yOCk7bGluZS1oZWlnaHQ6MS44O29wYWNpdHk6MDt0cmFuc2Zvcm06dHJhbnNsYXRlWSgzcHgpO3RyYW5zaXRpb246b3BhY2l0eSAuNTVzIGVhc2UsdHJhbnNmb3JtIC41NXMgZWFzZTttYXJnaW4tYm90dG9tOjhweDtwYWRkaW5nLWxlZnQ6MnB4O30KLnFsLXJlYXNvbi5pbntvcGFjaXR5OjE7dHJhbnNmb3JtOm5vbmU7fQoucWwtZm9vdHtwYWRkaW5nOjZweCAyNHB4IDE2cHg7fQoucWwtYnRue2ZvbnQtZmFtaWx5OidJbnRlcicsc3lzdGVtLXVpLHNhbnMtc2VyaWY7Zm9udC1zaXplOjExcHg7Zm9udC13ZWlnaHQ6MzAwO2xldHRlci1zcGFjaW5nOi4yZW07dGV4dC10cmFuc2Zvcm06dXBwZXJjYXNlO2JhY2tncm91bmQ6dHJhbnNwYXJlbnQ7Ym9yZGVyOjFweCBzb2xpZCByZ2JhKDIzOCwyMzIsMTkyLC4yMik7Y29sb3I6cmdiYSgyMzgsMjMyLDE5MiwuNDUpO3BhZGRpbmc6N3B4IDIycHg7Y3Vyc29yOnBvaW50ZXI7dHJhbnNpdGlvbjphbGwgLjJzO30KLnFsLWJ0bjpob3Zlcntib3JkZXItY29sb3I6cmdiYSgyMzgsMjMyLDE5MiwuNjUpO2NvbG9yOnJnYmEoMjM4LDIzMiwxOTIsLjg1KTt9Ci5xbC1idG46ZGlzYWJsZWR7b3BhY2l0eTouMTtjdXJzb3I6ZGVmYXVsdDt9Cjwvc3R5bGU+CjxkaXYgY2xhc3M9InFsLWxvZyIgaWQ9InFsLWxvZyI+PC9kaXY+CjxkaXYgY2xhc3M9InFsLWZvb3QiPjxidXR0b24gY2xhc3M9InFsLWJ0biIgaWQ9InFsLWJ0biI+QmVnaW48L2J1dHRvbj48L2Rpdj4KPHNjcmlwdD4KKGZ1bmN0aW9uKCl7CnZhciBRVUVTVElPTlM9WwogIHtxOiciV2hhdCB3aWxsIGhhcHBlbj8iJywgICAgICAgICAgICBzdGFtcDonUmVqZWN0ZWQnLCByZWFzb246J1RoaXMgaXMgbm90IGEgcXVlc3Rpb24uIFRoaXMgaXMgYSB3aXNoLiBUaGUgSW5zdGl0dXRlIGRvZXMgbm90IHByb2Nlc3Mgd2lzaGVzLid9LAogIHtxOiciV2hhdCBhcmUgbXkgY2hhbmNlcz8iJywgICAgICAgICBzdGFtcDonUmVqZWN0ZWQnLCByZWFzb246J0NoYW5jZXMgb2Ygd2hhdD8gSW4gd2hhdCBleHBlcmltZW50PyBXaXRoIHdoYXQgb3V0Y29tZXM/IFJlc3VibWl0Lid9LAogIHtxOiciV2lsbCBpdCB3b3JrIG91dCBpbiB0aGUgZW5kPyInLCBzdGFtcDonUmVqZWN0ZWQnLCByZWFzb246J1RoZSBlbmQgaGFzIG5vdCBiZWVuIGRlZmluZWQuIFRoZSBvdXRjb21lcyBoYXZlIG5vdCBiZWVuIGxpc3RlZC4gQWxzbzogbm8uJ30sCiAge3E6JyJXaGF0IGlzIHRoZSBwcm9iYWJpbGl0eT8iJywgICAgIHN0YW1wOidSZWplY3RlZCcsIHJlYXNvbjonT2Ygd2hhdD8nfQpdOwp2YXIgcUlkeD0wOwp2YXIgbG9nPWRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdxbC1sb2cnKTsKCmZ1bmN0aW9uIGFkZFEocSwgY2IpewogIHZhciByb3c9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgnZGl2Jyk7IHJvdy5jbGFzc05hbWU9J3FsLXJvdyc7CiAgdmFyIHFFbD1kb2N1bWVudC5jcmVhdGVFbGVtZW50KCdkaXYnKTsgcUVsLmNsYXNzTmFtZT0ncWwtcSc7IHFFbC50ZXh0Q29udGVudD1xLnE7CiAgdmFyIHN0YW1wPWRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2RpdicpOyBzdGFtcC5jbGFzc05hbWU9J3FsLXN0YW1wJzsgc3RhbXAudGV4dENvbnRlbnQ9cS5zdGFtcDsKICByb3cuYXBwZW5kQ2hpbGQocUVsKTsgcm93LmFwcGVuZENoaWxkKHN0YW1wKTsgbG9nLmFwcGVuZENoaWxkKHJvdyk7CiAgc2V0VGltZW91dChmdW5jdGlvbigpeyByb3cuY2xhc3NMaXN0LmFkZCgnaW4nKTsgfSw4MCk7CiAgc2V0VGltZW91dChmdW5jdGlvbigpeyBzdGFtcC5jbGFzc0xpc3QuYWRkKCdpbicpOyB9LDY4MCk7CiAgdmFyIHJlYXNvbj1kb2N1bWVudC5jcmVhdGVFbGVtZW50KCdkaXYnKTsgcmVhc29uLmNsYXNzTmFtZT0ncWwtcmVhc29uJzsKICByZWFzb24udGV4dENvbnRlbnQ9cS5yZWFzb247IGxvZy5hcHBlbmRDaGlsZChyZWFzb24pOwogIHNldFRpbWVvdXQoZnVuY3Rpb24oKXsgcmVhc29uLmNsYXNzTGlzdC5hZGQoJ2luJyk7IGlmKGNiKSBjYigpOyB9LDExMDApOwp9CgpmdW5jdGlvbiBzQnRuKGxibCxkZWxheSl7CiAgdmFyIGI9ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3FsLWJ0bicpOwogIGlmKCFsYmwpeyBiLnN0eWxlLmRpc3BsYXk9J25vbmUnOyByZXR1cm47IH0KICBiLnN0eWxlLmRpc3BsYXk9Jyc7IGIudGV4dENvbnRlbnQ9bGJsOyBiLmRpc2FibGVkPXRydWU7CiAgaWYoZGVsYXkhPW51bGwpIHNldFRpbWVvdXQoZnVuY3Rpb24oKXsgYi5kaXNhYmxlZD1mYWxzZTsgfSxkZWxheSk7Cn0KCmRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdxbC1idG4nKS5hZGRFdmVudExpc3RlbmVyKCdjbGljaycsZnVuY3Rpb24oKXsKICBpZihxSWR4PFFVRVNUSU9OUy5sZW5ndGgpewogICAgc0J0bignJyk7CiAgICBhZGRRKFFVRVNUSU9OU1txSWR4XSwgZnVuY3Rpb24oKXsKICAgICAgcUlkeCsrOwogICAgICBpZihxSWR4PFFVRVNUSU9OUy5sZW5ndGgpewogICAgICAgIHNCdG4oJ0NvbnRpbnVlJyw1MDApOwogICAgICB9IGVsc2UgewogICAgICAgIHNldFRpbWVvdXQoZnVuY3Rpb24oKXsKICAgICAgICAgIHZhciBzPWRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2RpdicpOyBzLmNsYXNzTmFtZT0ncWwtcmVhc29uJzsKICAgICAgICAgIHMuc3R5bGUubWFyZ2luVG9wPScxMHB4Jzsgcy5zdHlsZS5jb2xvcj0ncmdiYSgyMzgsMjMyLDE5MiwuMTYpJzsKICAgICAgICAgIHMudGV4dENvbnRlbnQ9J1RoZSBJbnN0aXR1dGUgaXMgc3RpbGwgd2FpdGluZy4nOwogICAgICAgICAgbG9nLmFwcGVuZENoaWxkKHMpOwogICAgICAgICAgc2V0VGltZW91dChmdW5jdGlvbigpeyBzLmNsYXNzTGlzdC5hZGQoJ2luJyk7IH0sMTAwKTsKICAgICAgICB9LDQwMCk7CiAgICAgIH0KICAgIH0pOwogIH0KfSk7Cn0pKCk7Cjwvc2NyaXB0Pgo8L2Rpdj4K</div>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -1188,7 +1189,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
           box-shadow:0 4px 20px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,220,80,.2);
           padding:0 0 18px;">
 
-          <!-- Flap — V-fold -->
+          <!-- Flap \u2014 V-fold -->
           <div style="position:relative;height:52px;overflow:hidden;border-bottom:1px solid rgba(0,0,0,.18);">
             <div style="position:absolute;inset:0;
               background:linear-gradient(175deg,#C89018 0%,#A87008 100%);
@@ -1260,7 +1261,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
           padding:10px 36px;cursor:pointer;
           transition:color .18s,border-color .18s;"
           onmouseover="this.style.color='rgba(240,220,160,.8)';this.style.borderColor='rgba(200,160,32,.5)'"
-          onmouseout="this.style.color='rgba(220,200,140,.45)';this.style.borderColor='rgba(200,160,32,.2)'">— close —</button>
+          onmouseout="this.style.color='rgba(220,200,140,.45)';this.style.borderColor='rgba(200,160,32,.2)'">\u2014 close \u2014</button>
       </div>
 
     </div>
@@ -1272,7 +1273,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
         <div style="font-family:monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,160,32,.7);margin-bottom:24px;">Reset</div>
         <button onclick="resetFloor()" style="display:block;width:100%;font-family:monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(238,232,196,.7);background:none;border:1px solid rgba(200,160,32,.22);padding:12px 20px;margin-bottom:10px;cursor:pointer;">Clear Floor Record</button>
         <button onclick="resetGame()" style="display:block;width:100%;font-family:monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(238,232,196,.7);background:none;border:1px solid rgba(200,160,32,.22);padding:12px 20px;margin-bottom:10px;cursor:pointer;">Clear Entire Dossier</button>
-        <button onclick="closeResetModal()" style="font-family:monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(238,232,196,.28);background:none;border:none;cursor:pointer;margin-top:8px;">— cancel —</button>
+        <button onclick="closeResetModal()" style="font-family:monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(238,232,196,.28);background:none;border:none;cursor:pointer;margin-top:8px;">\u2014 cancel \u2014</button>
       </div>
     </div>
     <div id="map-intro-overlay" style="opacity:0;">
@@ -1284,17 +1285,17 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
           <div class="intro-env-paper">
             <div class="intro-env-paper-lines"></div>
             <div class="intro-env-paper-content" style="padding:9px 12px 10px;">
-              <div class="intro-env-ref" style="font-size:7px;margin-bottom:6px;">Form AS/001 &middot; First Floor</div>
+              <div class="intro-env-ref" style="font-size:9px;margin-bottom:6px;">Form AS/001 &middot; First Floor</div>
               <div class="intro-env-title" style="font-size:12px;margin-bottom:5px;padding-bottom:5px;">Dossier</div>
-              <div class="intro-env-field" style="font-size:8px;line-height:1.8;">Candidate: Squeakwell, A.</div>
-              <div class="intro-env-field intro-env-status" style="font-size:8px;margin-top:3px;">Status: <em style="font-size:12px;">Empty</em></div>
+              <div class="intro-env-field" style="font-size:10px;line-height:1.8;">Candidate: Squeakwell, A.</div>
+              <div class="intro-env-field intro-env-status" style="font-size:10px;margin-top:3px;">Status: <em style="font-size:12px;">Empty</em></div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ── ROOM OVERLAY ── -->
+    <!-- -- ROOM OVERLAY -- -->
     <div id="room-overlay">
       <div id="ro-grid"></div>
       <div id="ro-indicator">
@@ -1309,7 +1310,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
           </span>
           <span class="ro-btn-label">
             <span class="ro-btn-name">Bookcase</span>
-            <span class="ro-btn-sub">Lower · Middle · Upper</span>
+            <span class="ro-btn-sub">Lower &middot; Middle &middot; Upper</span>
           </span>
         </button>
         <button class="ro-btn" id="ro-btn-1" onclick="roOpen(1)">
@@ -1318,7 +1319,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
           </span>
           <span class="ro-btn-label">
             <span class="ro-btn-name">Bureau</span>
-            <span class="ro-btn-sub">Monte Carlo · Real World</span>
+            <span class="ro-btn-sub">Monte Carlo &middot; Real World</span>
           </span>
         </button>
         <button class="ro-btn" id="ro-btn-2" onclick="roOpen(2)">
@@ -1335,7 +1336,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
     </div>
 
     <canvas id="map-canvas-main" style="display:block;width:100%;height:100%;"></canvas>
-<!-- ── NODE POPUP ── -->
+<!-- -- NODE POPUP -- -->
     <div id="node-popup" style="display:none;position:fixed;inset:0;z-index:500;flex-direction:column;align-items:center;background:#07090f;transform:translateY(100%);transition:transform 0.6s cubic-bezier(0.22,1,0.36,1);">
       <div id="np-inner" style="width:100%;max-width:740px;flex:1;min-height:0;display:flex;flex-direction:column;">
         <div id="np-header" style="flex-shrink:0;padding:16px 24px 14px;border-bottom:1px solid rgba(140,190,255,.1);display:flex;align-items:center;justify-content:space-between;">
@@ -1354,7 +1355,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 
 </div><!-- /shell -->
 
-<!-- ── CLEANER CUTSCENE OVERLAY ── -->
+<!-- -- CLEANER CUTSCENE OVERLAY -- -->
 <div id="cleaner-cutscene">
   <div id="cs-scroll">
     <div id="cs-ref"></div>
@@ -1364,7 +1365,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 </div>
 
 <script>
-// ── GRAIN ──
+// -- GRAIN --
 (function(){
   var cv = document.getElementById('grain');
   if(!cv) return;
@@ -1388,10 +1389,10 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   render();
 })();
 
-// ── LAMP GLOW + ROOM COLOUR BLEED ──
-var _lampPulse = 0; // 0→1→0 on room entry
+// -- LAMP GLOW + ROOM COLOUR BLEED --
+var _lampPulse = 0; // 0\u21921\u21920 on room entry
 
-// ── DIVIDER DRAG ──
+// -- DIVIDER DRAG --
 (function(){
   var divider=document.getElementById('divider');
   var shell=document.getElementById('shell');
@@ -1438,7 +1439,7 @@ var _lampPulse = 0; // 0→1→0 on room entry
 
 
 
-// ── CLERK API ──
+// -- CLERK API --
 var _clerkHistory = [];
 var _clerkInitialised = false;
 var _clerkThinking = false;
@@ -1514,7 +1515,7 @@ function clerkSend(){
   thinking.textContent = 'The Clerk is considering.';
   if(h){ h.appendChild(thinking); h.scrollTop=h.scrollHeight; }
 
-  var sysPrompt = "You are the Clerk in Room 197A at the Institute. You are an expert in probability theory in the tradition of Kolmogorov — measure-theoretic foundations, sigma-algebras, probability spaces, random variables, convergence theorems, and the full axiomatic apparatus. Your mathematics is always exact. You may draw on intuition and motivation as it appears in the theoretical literature. You do not invent analogies or informal explanations of your own.\n\nYou have read the candidate's dossier. You know which rooms they visited, which they skipped, and where their examination record shows gaps. You only introduce concepts that appear in the candidate's dossier. If the candidate introduces a concept themselves, you may follow it wherever it leads.\n\nYour method is that of Lakatos. You do not tell the candidate they are wrong. You find the case their answer does not cover and ask about it. When they offer a definition, you ask for the boundary condition. When they offer an explanation, you ask what happens when one assumption is removed. You make the gap visible through the question, not through correction. If after three exchanges the candidate has not located the gap themselves, you state the correct formulation precisely — one sentence, no hedging — and move to a new question.\n\nYour register is that of a DPhil supervisor. Not warm. Not hostile. You operate at the level where precision is assumed and imprecision is noted without ceremony. You do not praise. You do not encourage. You do not say: good, correct, interesting, exactly, well done, or any equivalent.\n\nRules:\n- End every response with exactly one question. Never two. Never zero.\n- Two to three sentences maximum, except when stating a correction after three failed attempts.\n- Never use bullet points or lists.\n- Never ask a question that presupposes an incorrect framing.\n- Only introduce concepts that appear in the candidate's dossier. If the candidate introduces a concept themselves, follow it.\n\nDOSSIER: [DOSSIER]".replace('[DOSSIER]', buildDossierSummary());
+  var sysPrompt = "You are the Clerk in Room 197A at the Institute. You are an expert in probability theory in the tradition of Kolmogorov \u2014 measure-theoretic foundations, sigma-algebras, probability spaces, random variables, convergence theorems, and the full axiomatic apparatus. Your mathematics is always exact. You may draw on intuition and motivation as it appears in the theoretical literature. You do not invent analogies or informal explanations of your own.\n\nYou have read the candidate's dossier. You know which rooms they visited, which they skipped, and where their examination record shows gaps. You only introduce concepts that appear in the candidate's dossier. If the candidate introduces a concept themselves, you may follow it wherever it leads.\n\nYour method is that of Lakatos. You do not tell the candidate they are wrong. You find the case their answer does not cover and ask about it. When they offer a definition, you ask for the boundary condition. When they offer an explanation, you ask what happens when one assumption is removed. You make the gap visible through the question, not through correction. If after three exchanges the candidate has not located the gap themselves, you state the correct formulation precisely \u2014 one sentence, no hedging \u2014 and move to a new question.\n\nYour register is that of a DPhil supervisor. Not warm. Not hostile. You operate at the level where precision is assumed and imprecision is noted without ceremony. You do not praise. You do not encourage. You do not say: good, correct, interesting, exactly, well done, or any equivalent.\n\nRules:\n- End every response with exactly one question. Never two. Never zero.\n- Two to three sentences maximum, except when stating a correction after three failed attempts.\n- Never use bullet points or lists.\n- Never ask a question that presupposes an incorrect framing.\n- Only introduce concepts that appear in the candidate's dossier. If the candidate introduces a concept themselves, follow it.\n\nDOSSIER: [DOSSIER]".replace('[DOSSIER]', buildDossierSummary());
 
   fetch('https://api.anthropic.com/v1/messages', {
     method:'POST',
@@ -1543,34 +1544,34 @@ function clerkSend(){
 // Initialise when clerk popup opens
 var _origOpenNodePopup = openNodePopup;
 
-// ── EXAM BANK ──
+// -- EXAM BANK --
 var _EXAM_BANK = {
   'uncertainty': [
     { q: 'Probability theory provides a foundation for statistical reasoning. What does that foundation consist of?',
       opts: ['A set of conventions for expressing uncertainty as a percentage','Three axioms that define what any valid probability assignment must satisfy','A collection of worked examples drawn from games of chance','The principle that all outcomes are equally probable unless otherwise stated'],
       correct: 1,
-      ok: 'Kolmogorov’s three axioms are necessary and sufficient. The framework does not tell you what probabilities to assign — it tells you what any valid assignment must satisfy.',
-      wrong: ['Percentages are one notation for probability, not its foundation. The framework operates on numbers between 0 and 1, but its content is not about notation.','','Games of chance motivated the development of probability theory. They are not its foundation. The axioms apply to clinical trials, financial models and weather systems with equal force.','Equal probability is one possible assignment — the uniform distribution. It is not a principle of the framework. Kolmogorov’s axioms say nothing about which probabilities to assign.'],
-      worked: '<p><strong>Question:</strong> What does the foundation of probability theory consist of?</p><p><strong>The answer is (b).</strong> Kolmogorov’s <em>Grundbegriffe</em> (1933) established three axioms:</p><p><strong>Axiom 1</strong> (Non-negativity): $P(A) \\geq 0$ for any event $A$.</p><p><strong>Axiom 2</strong> (Normalisation): $P(\\Omega) = 1$.</p><p><strong>Axiom 3</strong> (Countable Additivity): For mutually exclusive events $A_1, A_2, \\ldots$, $P(\\bigcup_i A_i) = \\sum_i P(A_i)$.</p><p>These three axioms are necessary and sufficient. Everything else in probability theory is derived from them. The framework says nothing about which probabilities to assign — only what any valid assignment must satisfy.</p>'
+      ok: 'Kolmogorov\'s three axioms are necessary and sufficient. The framework does not tell you what probabilities to assign \u2014 it tells you what any valid assignment must satisfy.',
+      wrong: ['Percentages are one notation for probability, not its foundation. The framework operates on numbers between 0 and 1, but its content is not about notation.','','Games of chance motivated the development of probability theory. They are not its foundation. The axioms apply to clinical trials, financial models and weather systems with equal force.','Equal probability is one possible assignment \u2014 the uniform distribution. It is not a principle of the framework. Kolmogorov\'s axioms say nothing about which probabilities to assign.'],
+      worked: '<p><strong>Question:</strong> What does the foundation of probability theory consist of?</p><p><strong>The answer is (b).</strong> Kolmogorov\'s <em>Grundbegriffe</em> (1933) established three axioms:</p><p><strong>Axiom 1</strong> (Non-negativity): $P(A) \\geq 0$ for any event $A$.</p><p><strong>Axiom 2</strong> (Normalisation): $P(\\Omega) = 1$.</p><p><strong>Axiom 3</strong> (Countable Additivity): For mutually exclusive events $A_1, A_2, \\ldots$, $P(\\bigcup_i A_i) = \\sum_i P(A_i)$.</p><p>These three axioms are necessary and sufficient. Everything else in probability theory is derived from them. The framework says nothing about which probabilities to assign \u2014 only what any valid assignment must satisfy.</p>'
     },
     { q: 'What is the probability of obtaining a total of 11 when rolling two fair dice?',
       opts: ['1/36','2/36','3/36','1/21'],
       correct: 1,
       ok: 'The sample space contains 36 equally likely ordered pairs. A total of 11 can be obtained two ways: (5,6) and (6,5). The probability is 2/36.',
-      wrong: ['1/36 would mean only one ordered pair produces a total of 11. There are two: (5,6) and (6,5).','','3/36 would require three ordered pairs. Only (5,6) and (6,5) produce a total of 11.','This is Leibniz\'s answer — one combination out of 21, each assumed equally likely. Leibniz listed 6 doubles: {1,1}, {2,2}, {3,3}, {4,4}, {5,5}, {6,6} — and 15 non-doubles: {1,2}, {1,3}, {1,4}, {1,5}, {1,6}, {2,3}, {2,4}, {2,5}, {2,6}, {3,4}, {3,5}, {3,6}, {4,5}, {4,6}, {5,6}. Total: 21. But the 15 non-doubles are not equally likely to the doubles — each can occur two ways. 11 can occur two ways, 12 only one. The correct sample space has 36 ordered pairs.'],
-      worked: '<p><strong>Question:</strong> What is the probability of obtaining a total of 11 when rolling two fair dice?</p><p><strong>The answer is (b): 2/36.</strong> The sample space for two distinguishable dice contains 36 equally likely ordered pairs. The ways to make a total of 11 are $(5,6)$ and $(6,5)$ — two outcomes. Therefore $P(11) = 2/36$.</p><p>Leibniz obtained 1/21 by listing 21 unordered combinations and assuming each was equally likely. The combination $\\{5,6\\}$ can occur two ways; $\\{6,6\\}$ only one. The 21 combinations are not equally likely, so the uniform assumption fails.</p>'
+      wrong: ['1/36 would mean only one ordered pair produces a total of 11. There are two: (5,6) and (6,5).','','3/36 would require three ordered pairs. Only (5,6) and (6,5) produce a total of 11.','This is Leibniz\'s answer \u2014 one combination out of 21, each assumed equally likely. Leibniz listed 6 doubles: {1,1}, {2,2}, {3,3}, {4,4}, {5,5}, {6,6} \u2014 and 15 non-doubles: {1,2}, {1,3}, {1,4}, {1,5}, {1,6}, {2,3}, {2,4}, {2,5}, {2,6}, {3,4}, {3,5}, {3,6}, {4,5}, {4,6}, {5,6}. Total: 21. But the 15 non-doubles are not equally likely to the doubles \u2014 each can occur two ways. 11 can occur two ways, 12 only one. The correct sample space has 36 ordered pairs.'],
+      worked: '<p><strong>Question:</strong> What is the probability of obtaining a total of 11 when rolling two fair dice?</p><p><strong>The answer is (b): 2/36.</strong> The sample space for two distinguishable dice contains 36 equally likely ordered pairs. The ways to make a total of 11 are $(5,6)$ and $(6,5)$ \u2014 two outcomes. Therefore $P(11) = 2/36$.</p><p>Leibniz obtained 1/21 by listing 21 unordered combinations and assuming each was equally likely. The combination $\\{5,6\\}$ can occur two ways; $\\{6,6\\}$ only one. The 21 combinations are not equally likely, so the uniform assumption fails.</p>'
     },
     { q: 'Before Kolmogorov, Leibniz made an error in his probability calculations despite his mathematical skill. What does this illustrate about reasoning without a formal framework?',
       opts: ['That mathematicians of the era lacked the computational tools to verify their results','That probability problems require empirical testing rather than pure reasoning','That without explicit rules, errors in logic have no name and therefore no remedy','That the uniform distribution should never be applied to dice problems'],
       correct: 2,
-      ok: 'The framework does not prevent mistakes. It gives them a name — axiom violation, invalid sample space — and therefore a location. Without it, there is no principle available to identify where the reasoning failed.',
-      wrong: ['This is not a computational problem. The correct answer requires only counting. The issue is conceptual — what counts as a valid outcome space.','Empirical testing would eventually reveal the error, but it is not the point. The framework provides a principled basis for identifying it deductively.','','The uniform distribution is correct here, applied to the right sample space. The error is in defining that space, not in the distribution itself.'],
+      ok: 'The framework does not prevent mistakes. It gives them a name \u2014 axiom violation, invalid sample space \u2014 and therefore a location. Without it, there is no principle available to identify where the reasoning failed.',
+      wrong: ['This is not a computational problem. The correct answer requires only counting. The issue is conceptual \u2014 what counts as a valid outcome space.','Empirical testing would eventually reveal the error, but it is not the point. The framework provides a principled basis for identifying it deductively.','','The uniform distribution is correct here, applied to the right sample space. The error is in defining that space, not in the distribution itself.'],
       worked: '<p><strong>Question:</strong> What does the Leibniz error illustrate about reasoning without a formal framework?</p><p><strong>The answer is (c).</strong> After Kolmogorov, the diagnosis is immediate: Leibniz constructed an invalid sample space. Without the framework, the error had no name and no remedy.</p><p>The framework does not make reasoning easier. It makes errors <em>locatable</em>.</p>'
     }
   ]
 };
 
-// ── EXAM SYSTEM ──
+// -- EXAM SYSTEM --
 // All questions in bank presented in sequence, back/forward navigation
 
 var _examBank = [];      // shuffled questions for this room
@@ -1587,7 +1588,7 @@ function loadExam(roomKey){
   _examIdx = 0;
   _examAnswers = _examBank.map(function(){ return null; });
 
-  // hide shelf nav and track bar — single panel exam
+  // hide shelf nav and track bar \u2014 single panel exam
   var nav = document.getElementById('np-shelf-nav');
   var tbar = document.getElementById('np-tbar');
   if(nav){ nav.innerHTML=''; nav.style.display='none'; }
@@ -1640,14 +1641,14 @@ function _renderExamQuestion(){
   // navigation
   html += '<div style="display:flex;gap:12px;align-items:center;">';
   if(_examIdx>0){
-    html += '<button onclick="_examNav(-1)" style="background:none;border:none;border-bottom:1px solid rgba(28,58,56,.25);color:rgba(28,58,56,.5);font-family:monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:4px 0;cursor:pointer;">← Previous</button>';
+    html += '<button onclick="_examNav(-1)" style="background:none;border:none;border-bottom:1px solid rgba(28,58,56,.25);color:rgba(28,58,56,.5);font-family:monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:4px 0;cursor:pointer;">\u2190 Previous</button>';
   }
   html += '<div style="flex:1;"></div>';
   if(ans!==null){
     if(_examIdx < total-1){
-      html += '<button onclick="_examNav(1)" style="background:none;border:none;border-bottom:1px solid rgba(28,58,56,.35);color:rgba(28,58,56,.7);font-family:monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:4px 0;cursor:pointer;">Continue the examination →</button>';
+      html += '<button onclick="_examNav(1)" style="background:none;border:none;border-bottom:1px solid rgba(28,58,56,.35);color:rgba(28,58,56,.7);font-family:monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:4px 0;cursor:pointer;">Continue the examination \u2192</button>';
     } else {
-      html += '<div style="font-family:monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(28,58,56,.45);">— The filing is complete. —</div>';
+      html += '<div style="font-family:monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(28,58,56,.45);">\u2014 The filing is complete. \u2014</div>';
     }
   }
   html += '</div>';
@@ -1682,9 +1683,9 @@ function submitExam(chosen){
   }
 }
 
-// ── EXAM COMPLETION + GATING + CLEANER DOCS ──
+// -- EXAM COMPLETION + GATING + CLEANER DOCS --
 
-// Room completion — persisted in localStorage
+// Room completion \u2014 persisted in localStorage
 var _completedRooms = (function(){
   var s = new Set();
   try { JSON.parse(localStorage.getItem('ql_completed_rooms')||'[]').forEach(function(r){ s.add(r); }); } catch(e){}
@@ -1695,7 +1696,7 @@ function _saveCompletedRooms(){
   try { localStorage.setItem('ql_completed_rooms', JSON.stringify(Array.from(_completedRooms))); } catch(e){}
 }
 
-// Cleaner docs — persisted in localStorage
+// Cleaner docs \u2014 persisted in localStorage
 var _issuedDocSet = (function(){
   try { return JSON.parse(localStorage.getItem('ql_cleaner_docs')||'[]'); } catch(e){ return []; }
 })();
@@ -1721,7 +1722,7 @@ function _issueCleanerDoc(roomIdx){
   _pendingCleanerNotify = true;
 }
 
-// Track which room the exam belongs to — set when loadExam fires
+// Track which room the exam belongs to \u2014 set when loadExam fires
 var _examRoom = -1;
 
 function _setSplit(frac){
@@ -1805,7 +1806,7 @@ function triggerLampPulse(){
 })();
 
 
-// ── CLEANER CUTSCENE ──
+// -- CLEANER CUTSCENE --
 var _cleanerCutsceneActive = false;
 
 function cleanerCutscene(){
@@ -1876,7 +1877,7 @@ function csClose(){
   }, 600);
 }
 
-// ── BLACKBOARD ──
+// -- BLACKBOARD --
 var BB = (function(){
   var el, chalk, timers = [], skip = null;
 
@@ -1978,16 +1979,16 @@ var BB = (function(){
   return { init: init, write: write };
 })();
 
-// ── TOOLBAR ACTIONS ──
+// -- TOOLBAR ACTIONS --
 
-// ── DOSSIER ──
-// ── DOSSIER — cross-floor page store ──
+// -- DOSSIER --
+// -- DOSSIER \u2014 cross-floor page store --
 // Each floor writes pages to ql_dossier on exam completion.
 // All floors read from the same store so the dossier accumulates across the building.
 
 var FLOOR_ID = 1; // this file is Floor 1
 
-// Page store — persisted in localStorage
+// Page store \u2014 persisted in localStorage
 function _dossierLoad(){
   try{ return JSON.parse(localStorage.getItem('ql_dossier')||'[]'); }catch(e){ return []; }
 }
@@ -2009,7 +2010,7 @@ function _dossierAddPage(ri){
   _dossierSave(pages);
 }
 
-// Note key — floor-scoped
+// Note key \u2014 floor-scoped
 function _noteKey(ri){ return 'ql_notes-f'+FLOOR_ID+'-r'+ri; }
 
 var _ROOM_NAMES=['Uncertainty','Experiment','Sample Space','Event','Sigma-Algebra','Mutual Exclusivity','Probability Measure','Axiom 1','Axiom 2','Axiom 3'];
@@ -2044,9 +2045,9 @@ function openDossier(){
 
   var html='';
 
-  // ── Current floor — always show all 10 rooms ──
+  // -- Current floor \u2014 always show all 10 rooms --
   html+='<div style="font-family:monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(26,22,16,.28);margin-bottom:8px;">Floor '+FLOOR_ID+'</div>';
-  html+='<div style="font-family:monospace;font-size:8px;letter-spacing:.1em;color:rgba(26,22,16,.28);margin-bottom:10px;">Click any room to add notes — read by the Clerk.</div>';
+  html+='<div style="font-family:monospace;font-size:8px;letter-spacing:.1em;color:rgba(26,22,16,.28);margin-bottom:10px;">Click any room to add notes \u2014 read by the Clerk.</div>';
 
   _ROOM_NAMES.forEach(function(name,ri){
     var pips='';
@@ -2060,14 +2061,14 @@ function openDossier(){
         '<span style="font-family:monospace;font-size:9px;color:rgba(26,22,16,.32);width:22px;flex-shrink:0">'+(ri<9?'0':'')+(ri+1)+'</span>'+
         '<span style="font-family:monospace;font-size:11px;letter-spacing:.05em;color:rgba(26,22,16,.8);flex:1;padding:0 8px">'+name.toUpperCase()+'</span>'+
         '<span style="display:flex;gap:3px;align-items:center;flex-shrink:0;">'+pips+'</span>'+
-        (noteVal?'<span style="font-family:monospace;font-size:8px;color:rgba(26,22,16,.3);margin-left:6px;flex-shrink:0;">✎</span>':'')+
+        (noteVal?'<span style="font-family:monospace;font-size:8px;color:rgba(26,22,16,.3);margin-left:6px;flex-shrink:0;">\u270E</span>':'')+
       '</div>'+
       '<div id="drow-notes-'+FLOOR_ID+'-'+ri+'" style="display:none;padding:4px 0 8px 22px;">'+
         '<textarea class="drow-notes" data-key="'+nk+'" rows="4" placeholder="Notes, questions, points of uncertainty...">'+noteVal+'</textarea>'+
       '</div>';
   });
 
-  // ── Other floors — only rooms with pages (exam completed) ──
+  // -- Other floors \u2014 only rooms with pages (exam completed) --
   otherFloorIds.forEach(function(fl){
     html+='<div style="font-family:monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(26,22,16,.28);margin:18px 0 8px;border-top:1px solid rgba(26,22,16,.08);padding-top:10px;">Floor '+fl+'</div>';
     otherFloors[fl].forEach(function(p){
@@ -2077,7 +2078,7 @@ function openDossier(){
         '<div class="drow-m">'+
           '<span style="font-family:monospace;font-size:9px;color:rgba(26,22,16,.32);width:22px;flex-shrink:0">'+(p.ri<9?'0':'')+(p.ri+1)+'</span>'+
           '<span style="font-family:monospace;font-size:11px;letter-spacing:.05em;color:rgba(26,22,16,.8);flex:1;padding:0 8px">'+p.name.toUpperCase()+'</span>'+
-          (noteVal?'<span style="font-family:monospace;font-size:8px;color:rgba(26,22,16,.3);margin-left:6px;flex-shrink:0;">✎</span>':'')+
+          (noteVal?'<span style="font-family:monospace;font-size:8px;color:rgba(26,22,16,.3);margin-left:6px;flex-shrink:0;">\u270E</span>':'')+
         '</div>';
     });
   });
@@ -2085,7 +2086,7 @@ function openDossier(){
   inner.innerHTML=html;
   wireNotes(inner);
 
-  // ── Cleaner tab — separate panel ──
+  // -- Cleaner tab \u2014 separate panel --
   var cleanerPanel = document.getElementById('dossier-cleaner');
   if(cleanerPanel){
     var issuedDocs = _issuedDocs().sort(function(a,b){ return a-b; });
@@ -2182,7 +2183,7 @@ document.getElementById('dossier-overlay').addEventListener('click',function(e){
   if(e.target===this) closeDossier();
 });
 
-// Clerk summary — reads shared store
+// Clerk summary \u2014 reads shared store
 function buildDossierSummary(){
   var pages=_dossierLoad();
   var lines=[];
@@ -2247,7 +2248,7 @@ function resetGame(){
   if(window._s0_intro) window._s0_intro();
 }
 
-// ── GNOSSIENNE No. 1 — Satie — Full Score ──
+// -- GNOSSIENNE No. 1 \u2014 Satie \u2014 Full Score --
 var _soundOn=true;
 var _AC=null,_sRev=null,_sRevG=null,_sDryG=null,_sMaster=null;
 var _sRunning=false,_sTimer=null,_sLoop=0;
@@ -2258,12 +2259,12 @@ var _SCORE=(function(){
          Eb4:311.13,F4:349.23,G4:392,Ab4:415.30,Bb4:466.16,C5:523.25,
          Db5:554.37,Eb5:622.25,F5:698.46,Ab5:830.61,Eb2:77.78,Gb3:185.00};
   return [
-    // ── INTRO VAMP ──
+    // -- INTRO VAMP --
     {t:'b',f:f.F2,b:0,d:3.8,v:.22},{t:'h',f:[f.F3,f.Ab3,f.C4],b:.05,d:1.6,v:.13},
     {t:'h',f:[f.F3,f.Ab3,f.C4],b:1,d:1.6,v:.11},{t:'h',f:[f.F3,f.Ab3,f.C4],b:2,d:1.6,v:.11},
     {t:'b',f:f.Ab2,b:4,d:3.8,v:.22},{t:'h',f:[f.Eb3,f.Ab3,f.C4],b:4.05,d:1.6,v:.13},
     {t:'h',f:[f.Eb3,f.Ab3,f.C4],b:5,d:1.6,v:.11},{t:'h',f:[f.Eb3,f.Ab3,f.C4],b:6,d:1.6,v:.11},
-    // ── THEME A (first pass) ──
+    // -- THEME A (first pass) --
     {t:'b',f:f.F2,b:8,d:3.8,v:.22},{t:'h',f:[f.F3,f.Ab3,f.C4],b:8.05,d:1.6,v:.12},
     {t:'h',f:[f.F3,f.Ab3,f.C4],b:9,d:1.6,v:.10},{t:'h',f:[f.F3,f.Ab3,f.C4],b:10,d:1.6,v:.10},
     {t:'m',f:f.C5,b:8,d:2.0,v:.40},{t:'m',f:f.Bb4,b:10,d:1.0,v:.34},{t:'m',f:f.Ab4,b:11,d:1.0,v:.30},
@@ -2276,7 +2277,7 @@ var _SCORE=(function(){
     {t:'b',f:f.C3,b:20,d:3.8,v:.22},{t:'h',f:[f.G3,f.C4,f.Eb4],b:20.05,d:1.6,v:.12},
     {t:'h',f:[f.G3,f.C4,f.Eb4],b:21,d:1.6,v:.10},{t:'h',f:[f.G3,f.C4,f.Eb4],b:22,d:1.6,v:.10},
     {t:'m',f:f.Db4,b:20,d:3.5,v:.38},
-    // ── THEME A (second pass — slightly fuller) ──
+    // -- THEME A (second pass \u2014 slightly fuller) --
     {t:'b',f:f.F2,b:24,d:3.8,v:.24},{t:'h',f:[f.F3,f.Ab3,f.C4],b:24.05,d:1.6,v:.14},
     {t:'h',f:[f.F3,f.Ab3,f.C4],b:25,d:1.6,v:.12},{t:'h',f:[f.F3,f.Ab3,f.C4],b:26,d:1.6,v:.12},
     {t:'m',f:f.C5,b:24,d:2.0,v:.44},{t:'m',f:f.Bb4,b:26,d:1.0,v:.38},{t:'m',f:f.Ab4,b:27,d:1.0,v:.34},
@@ -2289,7 +2290,7 @@ var _SCORE=(function(){
     {t:'b',f:f.C3,b:36,d:3.8,v:.24},{t:'h',f:[f.G3,f.C4,f.Eb4],b:36.05,d:1.6,v:.14},
     {t:'h',f:[f.G3,f.C4,f.Eb4],b:37,d:1.6,v:.12},{t:'h',f:[f.G3,f.C4,f.Eb4],b:38,d:1.6,v:.12},
     {t:'m',f:f.Db4,b:36,d:3.5,v:.42},
-    // ── THEME B (first pass) ──
+    // -- THEME B (first pass) --
     {t:'b',f:f.F2,b:40,d:3.8,v:.22},{t:'h',f:[f.F3,f.Ab3,f.C4],b:40.05,d:1.6,v:.12},
     {t:'h',f:[f.F3,f.Ab3,f.C4],b:41,d:1.6,v:.10},{t:'h',f:[f.F3,f.Ab3,f.C4],b:42,d:1.6,v:.10},
     {t:'m',f:f.Eb5,b:40,d:2.0,v:.42},{t:'m',f:f.Db5,b:42,d:1.0,v:.36},{t:'m',f:f.C5,b:43,d:1.0,v:.32},
@@ -2302,7 +2303,7 @@ var _SCORE=(function(){
     {t:'b',f:f.C3,b:52,d:3.8,v:.22},{t:'h',f:[f.G3,f.C4,f.Eb4],b:52.05,d:1.6,v:.12},
     {t:'h',f:[f.G3,f.C4,f.Eb4],b:53,d:1.6,v:.10},{t:'h',f:[f.G3,f.C4,f.Eb4],b:54,d:1.6,v:.10},
     {t:'m',f:f.Ab4,b:52,d:3.8,v:.42},
-    // ── THEME B (second pass — higher, more intense) ──
+    // -- THEME B (second pass \u2014 higher, more intense) --
     {t:'b',f:f.F2,b:56,d:3.8,v:.26},{t:'h',f:[f.F3,f.Ab3,f.C4],b:56.05,d:1.6,v:.15},
     {t:'h',f:[f.F3,f.Ab3,f.C4],b:57,d:1.6,v:.13},{t:'h',f:[f.F3,f.Ab3,f.C4],b:58,d:1.6,v:.13},
     {t:'m',f:f.Eb5,b:56,d:2.0,v:.46},{t:'m',f:f.Db5,b:58,d:1.0,v:.40},{t:'m',f:f.C5,b:59,d:1.0,v:.36},
@@ -2315,7 +2316,7 @@ var _SCORE=(function(){
     {t:'b',f:f.C3,b:68,d:3.8,v:.26},{t:'h',f:[f.G3,f.C4,f.Eb4],b:68.05,d:1.6,v:.15},
     {t:'h',f:[f.G3,f.C4,f.Eb4],b:69,d:1.6,v:.13},{t:'h',f:[f.G3,f.C4,f.Eb4],b:70,d:1.6,v:.13},
     {t:'m',f:f.Ab4,b:68,d:3.8,v:.46},
-    // ── THEME C ──
+    // -- THEME C --
     {t:'b',f:f.Bb2,b:72,d:3.8,v:.24},{t:'h',f:[f.F3,f.Bb3,f.Db4],b:72.05,d:1.6,v:.13},
     {t:'h',f:[f.F3,f.Bb3,f.Db4],b:73,d:1.6,v:.11},{t:'h',f:[f.F3,f.Bb3,f.Db4],b:74,d:1.6,v:.11},
     {t:'m',f:f.F5,b:72,d:1.5,v:.42},{t:'m',f:f.Eb5,b:73.5,d:1.2,v:.38},{t:'m',f:f.Db5,b:74.7,d:.8,v:.34},
@@ -2331,7 +2332,7 @@ var _SCORE=(function(){
     {t:'b',f:f.Eb3,b:88,d:3.8,v:.24},{t:'h',f:[f.Bb3,f.Eb4,f.G4],b:88.05,d:1.6,v:.13},
     {t:'h',f:[f.Bb3,f.Eb4,f.G4],b:89,d:1.6,v:.11},{t:'h',f:[f.Bb3,f.Eb4,f.G4],b:90,d:1.6,v:.11},
     {t:'m',f:f.Db5,b:88,d:4.0,v:.42},
-    // ── THEME C (second pass) ──
+    // -- THEME C (second pass) --
     {t:'b',f:f.Bb2,b:92,d:3.8,v:.26},{t:'h',f:[f.F3,f.Bb3,f.Db4],b:92.05,d:1.6,v:.15},
     {t:'h',f:[f.F3,f.Bb3,f.Db4],b:93,d:1.6,v:.13},{t:'h',f:[f.F3,f.Bb3,f.Db4],b:94,d:1.6,v:.13},
     {t:'m',f:f.F5,b:92,d:1.5,v:.46},{t:'m',f:f.Eb5,b:93.5,d:1.2,v:.42},{t:'m',f:f.Db5,b:94.7,d:.8,v:.38},
@@ -2347,7 +2348,7 @@ var _SCORE=(function(){
     {t:'b',f:f.Eb3,b:108,d:3.8,v:.26},{t:'h',f:[f.Bb3,f.Eb4,f.G4],b:108.05,d:1.6,v:.15},
     {t:'h',f:[f.Bb3,f.Eb4,f.G4],b:109,d:1.6,v:.13},{t:'h',f:[f.Bb3,f.Eb4,f.G4],b:110,d:1.6,v:.13},
     {t:'m',f:f.Db5,b:108,d:4.0,v:.46},
-    // ── FINAL THEME A REPRISE ──
+    // -- FINAL THEME A REPRISE --
     {t:'b',f:f.F2,b:112,d:3.8,v:.24},{t:'h',f:[f.F3,f.Ab3,f.C4],b:112.05,d:1.6,v:.13},
     {t:'h',f:[f.F3,f.Ab3,f.C4],b:113,d:1.6,v:.11},{t:'h',f:[f.F3,f.Ab3,f.C4],b:114,d:1.6,v:.11},
     {t:'m',f:f.C5,b:112,d:2.0,v:.42},{t:'m',f:f.Bb4,b:114,d:1.0,v:.36},{t:'m',f:f.Ab4,b:115,d:1.0,v:.32},
@@ -2360,7 +2361,7 @@ var _SCORE=(function(){
     {t:'b',f:f.C3,b:124,d:3.8,v:.24},{t:'h',f:[f.G3,f.C4,f.Eb4],b:124.05,d:1.6,v:.13},
     {t:'h',f:[f.G3,f.C4,f.Eb4],b:125,d:1.6,v:.11},{t:'h',f:[f.G3,f.C4,f.Eb4],b:126,d:1.6,v:.11},
     {t:'m',f:f.Db4,b:124,d:3.5,v:.40},
-    // ── CODA — slow resolution to F minor ──
+    // -- CODA \u2014 slow resolution to F minor --
     {t:'b',f:f.F2,b:128,d:3.8,v:.22},{t:'h',f:[f.F3,f.Ab3,f.C4],b:128.05,d:1.6,v:.12},
     {t:'h',f:[f.F3,f.Ab3,f.C4],b:129,d:1.6,v:.10},{t:'h',f:[f.F3,f.Ab3,f.C4],b:130,d:1.6,v:.10},
     {t:'m',f:f.F4,b:128,d:3.5,v:.38},
@@ -2369,7 +2370,7 @@ var _SCORE=(function(){
     {t:'m',f:f.Eb4,b:132,d:4.0,v:.34},
     {t:'b',f:f.F2,b:136,d:5.0,v:.20},{t:'h',f:[f.F3,f.Ab3,f.C4],b:136.05,d:4.5,v:.11},
     {t:'m',f:f.F4,b:136,d:5.0,v:.30},
-    // ── OUTRO VAMP (fade out) ──
+    // -- OUTRO VAMP (fade out) --
     {t:'b',f:f.F2,b:142,d:3.8,v:.16},{t:'h',f:[f.F3,f.Ab3,f.C4],b:142.05,d:1.6,v:.09},
     {t:'h',f:[f.F3,f.Ab3,f.C4],b:143,d:1.6,v:.07},{t:'h',f:[f.F3,f.Ab3,f.C4],b:144,d:1.6,v:.07},
     {t:'b',f:f.Ab2,b:146,d:3.8,v:.14},{t:'h',f:[f.Eb3,f.Ab3,f.C4],b:146.05,d:1.6,v:.08},
@@ -2411,9 +2412,9 @@ function _sNote(freq,when,dur,vel){
 function _sPlay(){
   if(!_soundOn||!_sRunning)return;
   _sLoop++;
-  // Feature 1: tempo drift — each loop slightly different
+  // Feature 1: tempo drift \u2014 each loop slightly different
   var tempo=0.75+(Math.random()-.5)*0.12;
-  // Feature 2: velocity variation — ±15% per loop
+  // Feature 2: velocity variation \u2014 \u00B115% per loop
   var velScale=0.78+Math.random()*.44;
   var bd=1/tempo, now=_AC.currentTime+0.1;
   _SCORE.forEach(function(n){
@@ -2447,7 +2448,7 @@ function toggleSound(){
   }
 }
 
-// ── CHOICES ──
+// -- CHOICES --
 function bbChoices(choices){
   var chalk2 = document.getElementById('bb-chalk');
   if(!chalk2) return;
@@ -2466,7 +2467,7 @@ function bbChoices(choices){
   });
 }
 
-// ── CHEVRONS ──
+// -- CHEVRONS --
 function bbScroll(dir){
   var el=document.getElementById('blackboard');
   if(el) el.scrollBy({top:dir*90,behavior:'smooth'});
@@ -2482,16 +2483,16 @@ function bbUpdateChevrons(){
 (function(){
   var el=document.getElementById('blackboard');
   if(el) el.addEventListener('scroll',bbUpdateChevrons);
-  // Poll every 300ms — catches content changes
+  // Poll every 300ms \u2014 catches content changes
   setInterval(bbUpdateChevrons, 300);
 })();
 
 
-// ── INTEGRATED MAP ENGINE ──
+// -- INTEGRATED MAP ENGINE --
 // Replaces BMAP with our canvas navigation system
 // BB.write() is available for blackboard updates
 
-// ── NODE POPUP ──
+// -- NODE POPUP --
 
 function _execScripts(el){
   Array.from(el.querySelectorAll('script')).forEach(function(old){
@@ -2545,7 +2546,7 @@ function openNodePopup(sup,title,body,shelves,examKey,ri,ni){
     np.style.background='#07090f';
   }
 
-  // blueprint grid canvas — draw once, reuse same lines as map
+  // blueprint grid canvas \u2014 draw once, reuse same lines as map
   var _gc=document.getElementById('np-grid-canvas');
   if(!_gc){
     _gc=document.createElement('canvas');
@@ -2718,7 +2719,7 @@ function closeNodePopup(){
   },600);
 }
 
-// ── ROOM OVERLAY ──
+// -- ROOM OVERLAY --
 var _roEl = null;
 function _getOverlay(){ return _roEl || (_roEl = document.getElementById('room-overlay')); }
 
@@ -2728,7 +2729,7 @@ function roShow(ri){
   document.getElementById('ro-room-num').textContent = 'Room ' + String(ri+1).padStart(2,'0');
   document.getElementById('ro-room-name').textContent = room ? room.name : '';
 
-  // BB entry — room-specific
+  // BB entry \u2014 room-specific
   var _roomBB = [
     ['What am I uncertain about?', 'How uncertain am I?', 'Formally.'],
     ['What creates the uncertainty?', 'Other than the Cleaner.'],
@@ -2835,8 +2836,8 @@ function roOpen(ni){
   if(nd) openNodePopup(nd.s, nd.l, nd.b, nd.shelves||null, nd.exam||null, activeRoom, ni);
 }
 
-// ── MAP CANVAS ENGINE ──
-// ── CANVAS ──
+// -- MAP CANVAS ENGINE --
+// -- CANVAS --
 const wrap=document.getElementById('map-panel');
 const cv=document.getElementById('map-canvas-main');
 const c=cv.getContext('2d');
@@ -2844,13 +2845,13 @@ const c=cv.getContext('2d');
 let W,H,t=0;
 let _corridorActive=false;
 var _dustY=0;
-var _stairScene=0; // 0–3 controls typographic card
+var _stairScene=0; // 0\u20133 controls typographic card
 var _gridLines=null;
 var _DUST=Array.from({length:6},function(){
   return{x:Math.random(),vx:0,
          a:.05+Math.random()*.08,r:.8+Math.random()*1.2,phase:Math.random()*Math.PI*2};
 });
-let _mapReveal=0; // 0→1 ease in on corridor activation // false = blueprint only, no atmosphere
+let _mapReveal=0; // 0\u21921 ease in on corridor activation // false = blueprint only, no atmosphere
 function resize(){
   const r=wrap.getBoundingClientRect();
   const dpr=window.devicePixelRatio||1;
@@ -2861,38 +2862,38 @@ function resize(){
   buildL();
 }
 
-// ── PALETTE ──
+// -- PALETTE --
 const G=(a=1)=>`rgba(140,190,255,${a})`; // blueprint blue
 const K=(a=1)=>`rgba(200,220,255,${a})`; // blueprint chalk white
 
-// ── DATA ──
+// -- DATA --
 const ROOMS=[
   {name:'Uncertainty',n:[
-    {l:'Bookcase',s:'Room 1 — Uncertainty',b:'',shelves:[{label:'Lower Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">Uncertainty is not a feeling.</p>\n<p style="margin-bottom:1.8em;">Scientific method cannot rely on instinct. We need to talk about uncertain phenomena formally. But before we can do so, we need to know what we are uncertain about and how uncertain we are.</p>\n<div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div>\n<p style="margin-bottom:1.8em;">The Cleaner asked Aubrey these questions. He did not know how to answer them. These were his two problems. The third problem was that he had not asked himself these questions at all.</p>'},{label:'Middle Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">Probability theory is the scientific discipline that expresses uncertainty in mathematical terms.</p>\n<p style="margin-bottom:1.8em;">It allows us to reason precisely about phenomena whose outcomes we cannot know in advance — from the toss of a coin to the outcome of a clinical trial.</p>\n<p style="margin-bottom:1.8em;">Statistical theory needs a foundation. Probability theory is that foundation. Probability theory in turn builds upon set theory.</p>\n<p style="text-align:center;font-style:italic;font-size:1.05em;padding:1.2em 2em;color:rgba(240,235,205,.65);line-height:1.9;border-top:1px solid rgba(200,160,32,.12);border-bottom:1px solid rgba(140,190,255,.1);margin:2em 0;">What we are uncertain about will be collected and organised into sets.<br><br>How uncertain we are will be expressed as numbers mapped onto those sets.<br><br>This is where we begin.</p>'},{label:'Upper Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">Kolmogorov defined what it means to be a probability measure. Formally.</p>\n<p style="margin-bottom:1.8em;">For most of human history, probability was intuitive — a judgement, not a calculation.</p>\n<p style="margin-bottom:1.8em;">It was not until 1933 that Andrey Kolmogorov placed probability theory on a rigorous mathematical foundation. He listed three axioms, which is a formal word for “defining features”. Any measure satisfying these axioms is called a probability measure.</p>\n<p style="text-align:center;font-variant:small-caps;font-size:1em;letter-spacing:.06em;padding:1.4em 2em;color:rgba(240,235,205,.75);line-height:1.9;border-top:1px solid rgba(200,160,32,.12);border-bottom:1px solid rgba(140,190,255,.1);margin:2em 0;">Three axioms are necessary and sufficient<br>to define the way any and all probabilities must behave.</p>\n<p style="margin-bottom:1.8em;">Before Kolmogorov, it was possible to reason about probability while violating its own logic — assigning negative probabilities, or probabilities that did not sum correctly. After Kolmogorov, these errors have a name: axiom violations.</p>\n<div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div>\n<p style="margin-bottom:.6em;">The framework does not tell you what probabilities to assign to outcomes of interest.</p>\n<p style="margin-bottom:1.8em;">It tells you what any valid assignment must satisfy.</p>\n<p style="margin-bottom:1.8em;">Everything that follows in The Institute is a consequence of that.</p>'}]},
-    {l:'Bureau',s:'Room 1 — Uncertainty',b:'',shelves:[{label:'Monte Carlo',sub:'Simulation',html:'__BUREAU_ANIM__'},{label:'Real World',sub:'Application',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">Leibniz got it wrong.</p>\n<p style="margin-bottom:1.8em;">Leibniz co-invented calculus, developed binary arithmetic, and made foundational contributions to logic and philosophy. He was one of the most formidable mathematical minds in history. That is what makes this example so interesting.</p>\n<div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div>\n<p style="margin-bottom:1.8em;">The question was simple: when rolling two dice, what is the probability of getting a total of 11, versus a total of 12? Leibniz listed combinations without regard to order — 21 possibilities in total. He assigned equal probability to each. He concluded that totals of 11 and 12 were equally probable. They are not.</p>\n<p style="text-align:center;font-style:italic;font-size:1.05em;padding:1.2em 2em;color:rgba(240,235,205,.65);line-height:1.9;border-top:1px solid rgba(200,160,32,.12);border-bottom:1px solid rgba(140,190,255,.1);margin:2em 0;">There are two places where the reasoning could have failed.<br><br>The set of possible outcomes was specified incorrectly.<br>Or the set was correct, but the probability assignments were wrong.</p>\n<p style="margin-bottom:1.8em;">In Leibniz’s case, both are arguable. But the framework separates them cleanly. Rooms 2 through 5 address the first question: what are the possible outcomes, and how do we organise them? Rooms 7 through 10 address the second: what conditions must a probability assignment satisfy?</p>\n<div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div>\n<p style="margin-bottom:.6em;">What are we uncertain about? Precisely, and in full.</p>\n<p style="margin-bottom:1.8em;">Only then: how uncertain are we?</p>'}]},
-    {l:'Filing',s:'Self-assessment · Room 01',b:'',exam:'uncertainty'},
+    {l:'Bookcase',s:'Room 1 \u2014 Uncertainty',b:'',shelves:[{label:'Lower Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">Uncertainty is not a feeling.</p>\n<p style="margin-bottom:1.8em;">Scientific method cannot rely on instinct. We need to talk about uncertain phenomena formally. But before we can do so, we need to know what we are uncertain about and how uncertain we are.</p>\n<div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div>\n<p style="margin-bottom:.6em;">The Cleaner asked Aubrey these questions. He did not know how to answer them. These were his two problems.</p>\n<p style="margin-bottom:1.8em;">The third problem was that he had not asked himself these questions at all.</p>'},{label:'Middle Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">The two questions have answers. Not approximate answers. Precise ones.</p>\n<p style="margin-bottom:1.8em;">Probability theory is the scientific discipline that provides them. It allows us to reason formally about phenomena whose outcomes we cannot know in advance \u2014 from the toss of a coin to the outcome of a clinical trial.</p>\n<p style="margin-bottom:1.8em;">Statistical theory needs a foundation. Probability theory is that foundation. Probability theory in turn builds upon set theory.</p>\n<p style="text-align:center;font-style:italic;font-size:1.05em;padding:1.2em 2em;color:rgba(240,235,205,.65);line-height:1.9;border-top:1px solid rgba(200,160,32,.12);border-bottom:1px solid rgba(140,190,255,.1);margin:2em 0;">What we are uncertain about will be collected and organised into sets.<br><br>How uncertain we are will be expressed as numbers mapped onto those sets.<br><br>This is where we begin.</p>'},{label:'Upper Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">Kolmogorov defined what it means to be a probability measure, defined on sets. Formally.</p>\n<p style="margin-bottom:1.8em;">The first question  \u2014  what are we uncertain about  \u2014  requires a precise account of every outcome that can occur. Nothing omitted. Nothing duplicated. A complete and exhaustive list. This is where set theory comes into play. Outcomes are collected into sets. Sets have rules. The rules make the list precise.</p>\n<p style="margin-bottom:1.8em;">The second question  \u2014  how uncertain are we  \u2014  requires a number assigned to each outcome, or collection of outcomes. Not an approximation. A number that obeys rules.</p>\n<p style="margin-bottom:1.8em;">In 1933, Andrey Kolmogorov stated those rules. Three axioms. The mathematical word for requirements. Any function satisfying these axioms is a probability measure.</p>\n<div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div>\n<p style="margin-bottom:.6em;">The framework does not tell you what numbers to assign.</p>\n<p style="margin-bottom:.6em;">It tells you what any valid assignment must satisfy.</p>\n<p style="text-align:center;font-variant:small-caps;font-size:1em;letter-spacing:.06em;padding:1.4em 2em;color:rgba(240,235,205,.75);line-height:1.9;border-top:1px solid rgba(200,160,32,.12);border-bottom:1px solid rgba(140,190,255,.1);margin:2em 0;">Three axioms are necessary and sufficient<br>to define the way any and all probabilities must behave.</p>\n<p style="margin-bottom:1.8em;">Everything that follows in The Institute is a consequence of that.</p>'}]},
+    {l:'Bureau',s:'Room 1 \u2014 Uncertainty',b:'',shelves:[{label:'Monte Carlo',sub:'Simulation',html:'__BUREAU_ANIM__'},{label:'Real World',sub:'Application',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">Leibniz got it wrong.</p>\n<p style="margin-bottom:1.8em;">Leibniz co-invented calculus, developed binary arithmetic, and made foundational contributions to logic and philosophy. He was one of the most formidable mathematical minds in history. That is what makes this example so interesting.</p>\n<div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div>\n<p style="margin-bottom:1.8em;">The question was simple: when rolling two dice, what is the probability of getting a total of 11, versus a total of 12? Leibniz listed combinations without regard to order \u2014 21 possibilities in total. He assigned equal probability to each. He concluded that totals of 11 and 12 were equally probable. They are not.</p>\n<p style="text-align:center;font-style:italic;font-size:1.05em;padding:1.2em 2em;color:rgba(240,235,205,.65);line-height:1.9;border-top:1px solid rgba(200,160,32,.12);border-bottom:1px solid rgba(140,190,255,.1);margin:2em 0;">There are two places where the reasoning could have failed.<br><br>The set of possible outcomes was specified incorrectly.<br>Or the set was correct, but the probability assignments were wrong.</p>\n<p style="margin-bottom:1.8em;">In Leibniz\'s case, both are arguable. But the framework separates them cleanly. Rooms 2 through 5 address the first question: what are the possible outcomes, and how do we organise them? Rooms 7 through 10 address the second: what conditions must a probability assignment satisfy?</p>\n<div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div>\n<p style="margin-bottom:.6em;">What are we uncertain about? Precisely, and in full.</p>\n<p style="margin-bottom:1.8em;">Only then: how uncertain are we?</p>'}]},
+    {l:'Filing',s:'Self-assessment \u00B7 Room 01',b:'',exam:'uncertainty'},
   ]},
   {name:'Experiment',n:[
-    {l:'Bookcase',s:'Room 2 — Experiment',b:'',shelves:[{label:'Lower Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">We established that uncertainty can be measured. The next question is: measured over what?</p><p style="margin-bottom:1.8em;">The document introduces the concept of an <strong>experiment</strong>. Not, as I had assumed, something conducted in a laboratory with a white coat. The word has a precise meaning here.</p><p style="margin-bottom:1.8em;">An experiment is any phenomenon that is inherently characterised by uncertainty. The outcome is not known in advance. It could go one way. It could go another.</p><p style="margin-bottom:1.8em;">Tossing a coin is an experiment. Rolling a die is an experiment. Presenting oneself at the casino is an experiment.</p><div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div><p style="margin-bottom:1.8em;">I note that going to the casino last October was, technically, an experiment. I did not know this at the time. I have updated the file.</p><p style="margin-bottom:1.8em;">An experiment produces a result. Before it does, we do not know which result. That is what makes it an experiment. That is what makes probability necessary.</p>'},{label:'Middle Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">An experiment produces a result. The possible results are called <strong>sample outcomes</strong>, denoted \(\omega\). The collection of all possible outcomes is the <strong>sample space</strong>, denoted \(\Omega\):</p><p style="text-align:center;margin:1.8em 0;">\(\Omega = \{\omega_1, \omega_2, \ldots\}\)</p><p style="margin-bottom:1.8em;">Every outcome that can occur must appear in \(\Omega\). No outcome may be omitted. This is not a suggestion.</p><p style="margin-bottom:1.8em;">For a coin toss: \(\Omega = \{H, T\}\). Two outcomes. Both present. Nothing omitted.</p><p style="margin-bottom:1.8em;">For a die: \(\Omega = \{1, 2, 3, 4, 5, 6\}\). Six outcomes. All present.</p><div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div><p style="margin-bottom:1.8em;">Last October, my sample space contained one outcome. \(\Omega = \{\text{Win}\}\). This is called proof by wishful thinking. It is not a recognised method.</p><p style="margin-bottom:1.8em;">The sample space must be <em>exhaustive</em> — it must contain every outcome that can occur — and outcomes must be <em>distinct and non-overlapping</em>. No outcome appears twice. No two outcomes describe the same result.</p><p style="margin-bottom:1.8em;">A single hand of Blackjack. The outcomes are: win, lose, push. Three outcomes. Distinct. Non-overlapping. \(\Omega = \{\text{Win}, \text{Lose}, \text{Push}\}\). I have updated the file.</p>'},{label:'Upper Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">The sample space \(\Omega\) contains all possible outcomes. But in practice, we are often interested not in individual outcomes, but in <em>collections</em> of outcomes. These are called <strong>events</strong>.</p><p style="margin-bottom:1.8em;">An event is any subset of the sample space. If \(\Omega = \{1, 2, 3, 4, 5, 6\}\), then \(A = \{2, 4, 6\}\) — rolling an even number — is an event. So is \(B = \{5, 6\}\) — rolling greater than four.</p><p style="margin-bottom:1.8em;">The event that <em>something</em> happens is \(\Omega\) itself. The event that <em>nothing</em> happens is the empty set \(\emptyset\). Both are events. Both must be assigned a probability.</p><div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div><p style="margin-bottom:1.8em;">Having established what outcomes are possible (\(\Omega\)) and what events we care about, we need a structure to hold all of these events. That structure is the <strong>sigma-algebra</strong>, \(\mathcal{F}\) — the collection of all events defined on \(\Omega\).</p><p style="margin-bottom:1.8em;">Together, \(\Omega\) and \(\mathcal{F}\) form a <strong>measurable space</strong> \((\Omega, \mathcal{F})\). This is the space on which probability will be defined. Each of these objects has its own room. This is Room 2. \(\mathcal{F}\) is in Room 5.</p><p style="text-align:center;font-style:italic;font-size:1.05em;padding:1.2em 2em;color:rgba(240,235,205,.65);line-height:1.7;margin-bottom:1.8em;">The experiment is the starting point. Without a well-defined experiment, there is no \(\Omega\).<br>Without \(\Omega\), there is no \(\mathcal{F}\). Without \(\mathcal{F}\), there is no \(P\).</p>'}]},
-    {l:'Bureau',s:'Real World · Room 02',b:'When Aubrey walked through the casino door, that was an experiment. He had not defined his outcome space.<br><br><em>The outcomes existed regardless.</em>'},
-    {l:'Filing',s:'Self-assessment · Room 02',b:'What is required for a process to qualify as a well-defined experiment?<br><br><em>Define your terms before you conduct it.</em>'},
+    {l:'Bookcase',s:'Room 2 \u2014 Experiment',b:'',shelves:[{label:'Lower Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">We established that uncertainty can be measured. The next question is: measured over what?</p><p style="margin-bottom:1.8em;">The document introduces the concept of an <strong>experiment</strong>. Not, as I had assumed, something conducted in a laboratory with a white coat. The word has a precise meaning here.</p><p style="margin-bottom:1.8em;">An experiment is any phenomenon that is inherently characterised by uncertainty. The outcome is not known in advance. It could go one way. It could go another.</p><p style="margin-bottom:1.8em;">Tossing a coin is an experiment. Rolling a die is an experiment. Presenting oneself at the casino is an experiment.</p><div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div><p style="margin-bottom:1.8em;">I note that going to the casino last October was, technically, an experiment. I did not know this at the time. I have updated the file.</p><p style="margin-bottom:1.8em;">An experiment produces a result. Before it does, we do not know which result. That is what makes it an experiment. That is what makes probability necessary.</p>'},{label:'Middle Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">An experiment produces a result. The possible results are called <strong>sample outcomes</strong>, denoted \(\omega\). The collection of all possible outcomes is the <strong>sample space</strong>, denoted \(\Omega\):</p><p style="text-align:center;margin:1.8em 0;">\(\Omega = \{\omega_1, \omega_2, \ldots\}\)</p><p style="margin-bottom:1.8em;">Every outcome that can occur must appear in \(\Omega\). No outcome may be omitted. This is not a suggestion.</p><p style="margin-bottom:1.8em;">For a coin toss: \(\Omega = \{H, T\}\). Two outcomes. Both present. Nothing omitted.</p><p style="margin-bottom:1.8em;">For a die: \(\Omega = \{1, 2, 3, 4, 5, 6\}\). Six outcomes. All present.</p><div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div><p style="margin-bottom:1.8em;">Last October, my sample space contained one outcome. \(\Omega = \{\text{Win}\}\). This is called proof by wishful thinking. It is not a recognised method.</p><p style="margin-bottom:1.8em;">The sample space must be <em>exhaustive</em> \u2014 it must contain every outcome that can occur \u2014 and outcomes must be <em>distinct and non-overlapping</em>. No outcome appears twice. No two outcomes describe the same result.</p><p style="margin-bottom:1.8em;">A single hand of Blackjack. The outcomes are: win, lose, push. Three outcomes. Distinct. Non-overlapping. \(\Omega = \{\text{Win}, \text{Lose}, \text{Push}\}\). I have updated the file.</p>'},{label:'Upper Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">The sample space \(\Omega\) contains all possible outcomes. But in practice, we are often interested not in individual outcomes, but in <em>collections</em> of outcomes. These are called <strong>events</strong>.</p><p style="margin-bottom:1.8em;">An event is any subset of the sample space. If \(\Omega = \{1, 2, 3, 4, 5, 6\}\), then \(A = \{2, 4, 6\}\) \u2014 rolling an even number \u2014 is an event. So is \(B = \{5, 6\}\) \u2014 rolling greater than four.</p><p style="margin-bottom:1.8em;">The event that <em>something</em> happens is \(\Omega\) itself. The event that <em>nothing</em> happens is the empty set \(\emptyset\). Both are events. Both must be assigned a probability.</p><div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div><p style="margin-bottom:1.8em;">Having established what outcomes are possible (\(\Omega\)) and what events we care about, we need a structure to hold all of these events. That structure is the <strong>sigma-algebra</strong>, \(\mathcal{F}\) \u2014 the collection of all events defined on \(\Omega\).</p><p style="margin-bottom:1.8em;">Together, \(\Omega\) and \(\mathcal{F}\) form a <strong>measurable space</strong> \((\Omega, \mathcal{F})\). This is the space on which probability will be defined. Each of these objects has its own room. This is Room 2. \(\mathcal{F}\) is in Room 5.</p><p style="text-align:center;font-style:italic;font-size:1.05em;padding:1.2em 2em;color:rgba(240,235,205,.65);line-height:1.7;margin-bottom:1.8em;">The experiment is the starting point. Without a well-defined experiment, there is no \(\Omega\).<br>Without \(\Omega\), there is no \(\mathcal{F}\). Without \(\mathcal{F}\), there is no \(P\).</p>'}]},
+    {l:'Bureau',s:'Real World \u00B7 Room 02',b:'When Aubrey walked through the casino door, that was an experiment. He had not defined his outcome space.<br><br><em>The outcomes existed regardless.</em>'},
+    {l:'Filing',s:'Self-assessment \u00B7 Room 02',b:'What is required for a process to qualify as a well-defined experiment?<br><br><em>Define your terms before you conduct it.</em>'},
   ]},
   {name:'Sample Space',n:[
-    {l:'Bookcase',s:'Lower Shelf · Room 03',b:'The sample space Ω contains every outcome that could occur. Not some. All.<br><br><em>And exhaustive — nothing that could happen should be left off the list.</em>'},
-    {l:'Bureau',s:'Real World · Room 03',b:'Aubrey\'s original sample space was Ω = {Win}.<br><br><em>Lose existed regardless of whether it appeared on the list.</em>'},
-    {l:'Filing',s:'Self-assessment · Room 03',b:'For Ω to be valid it must be exhaustive and its elements mutually distinct.<br><br><em>An outcome not listed does not cease to exist.</em>'},
+    {l:'Bookcase',s:'Lower Shelf \u00B7 Room 03',b:'The sample space \u03A9 contains every outcome that could occur. Not some. All.<br><br><em>And exhaustive \u2014 nothing that could happen should be left off the list.</em>'},
+    {l:'Bureau',s:'Real World \u00B7 Room 03',b:'Aubrey\'s original sample space was \u03A9 = {Win}.<br><br><em>Lose existed regardless of whether it appeared on the list.</em>'},
+    {l:'Filing',s:'Self-assessment \u00B7 Room 03',b:'For \u03A9 to be valid it must be exhaustive and its elements mutually distinct.<br><br><em>An outcome not listed does not cease to exist.</em>'},
   ]},
   ...[['Event','04'],['Sigma-Algebra','05'],['Mutual Exclusivity','06'],
       ['Probability Measure','07'],['Axiom 1','08'],['Axiom 2','09'],['Axiom 3','10']
   ].map(([nm,num])=>({name:nm,n:[
-    {l:'Bookcase',s:`Lower Shelf · Room ${num}`,b:'<em>This room has not yet been inscribed.</em>'},
-    {l:'Bureau',s:`Real World · Room ${num}`,b:'<em>This room has not yet been inscribed.</em>'},
-    {l:'Filing',s:`Self-assessment · Room ${num}`,b:'<em>This room has not yet been inscribed.</em>'},
+    {l:'Bookcase',s:`Lower Shelf \u00B7 Room ${num}`,b:'<em>This room has not yet been inscribed.</em>'},
+    {l:'Bureau',s:`Real World \u00B7 Room ${num}`,b:'<em>This room has not yet been inscribed.</em>'},
+    {l:'Filing',s:`Self-assessment \u00B7 Room ${num}`,b:'<em>This room has not yet been inscribed.</em>'},
   ]}))
 ];
-const CLERK={l:'Room 197A',s:'The Clerk · First Floor',b:'<div id="clerk-wrap" style="display:flex;flex-direction:column;height:100%;min-height:0;">\n  <div id="clerk-history" style="flex:1;overflow-y:auto;padding-bottom:16px;"></div>\n  <div style="flex-shrink:0;border-top:1px solid rgba(200,160,32,.12);padding-top:16px;display:flex;gap:10px;align-items:flex-end;">\n    <textarea id="clerk-input" placeholder="Your response to the Clerk." style="flex:1;resize:none;background:rgba(200,160,32,.04);border:1px solid rgba(200,160,32,.18);color:rgba(240,235,205,.82);font-family:Inter,system-ui,sans-serif;font-weight:300;font-size:clamp(15px,1.7vw,18px);line-height:1.7;padding:10px 14px;outline:none;min-height:60px;max-height:160px;box-sizing:border-box;color:rgba(240,235,205,.82);background:rgba(200,160,32,.04);border:1px solid rgba(200,160,32,.18);" rows="2" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();clerkSend();}"></textarea>\n    <button onclick="clerkSend()" style="flex-shrink:0;background:none;border:1px solid rgba(200,160,32,.22);color:rgba(200,160,32,.55);font-family:monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;padding:10px 16px;cursor:pointer;transition:all .15s;align-self:stretch;" onmouseover="this.style.borderColor=\'rgba(200,160,32,.6)\';this.style.color=\'rgba(200,160,32,.9)\';" onmouseout="this.style.borderColor=\'rgba(200,160,32,.22)\';this.style.color=\'rgba(200,160,32,.55)\';">Send</button>\n  </div>\n</div>'};
+const CLERK={l:'Room 197A',s:'The Clerk \u00B7 First Floor',b:'<div id="clerk-wrap" style="display:flex;flex-direction:column;height:100%;min-height:0;">\n  <div id="clerk-history" style="flex:1;overflow-y:auto;padding-bottom:16px;"></div>\n  <div style="flex-shrink:0;border-top:1px solid rgba(200,160,32,.12);padding-top:16px;display:flex;gap:10px;align-items:flex-end;">\n    <textarea id="clerk-input" placeholder="Your response to the Clerk." style="flex:1;resize:none;background:rgba(200,160,32,.04);border:1px solid rgba(200,160,32,.18);color:rgba(240,235,205,.82);font-family:Inter,system-ui,sans-serif;font-weight:300;font-size:clamp(15px,1.7vw,18px);line-height:1.7;padding:10px 14px;outline:none;min-height:60px;max-height:160px;box-sizing:border-box;color:rgba(240,235,205,.82);background:rgba(200,160,32,.04);border:1px solid rgba(200,160,32,.18);" rows="2" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();clerkSend();}"></textarea>\n    <button onclick="clerkSend()" style="flex-shrink:0;background:none;border:1px solid rgba(200,160,32,.22);color:rgba(200,160,32,.55);font-family:monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;padding:10px 16px;cursor:pointer;transition:all .15s;align-self:stretch;" onmouseover="this.style.borderColor=\'rgba(200,160,32,.6)\';this.style.color=\'rgba(200,160,32,.9)\';" onmouseout="this.style.borderColor=\'rgba(200,160,32,.22)\';this.style.color=\'rgba(200,160,32,.55)\';">Send</button>\n  </div>\n</div>'};
 const _CLEANER_DOCS=['<div style="font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#5A5040;margin-bottom:24px;">Form AS/001 &middot; First Floor &middot; Landing</div><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">The Cleaner passed through the first floor corridor with a mop. She did not look up.</p><p>&ldquo;I am uncertain about &mdash;&rdquo; said Aubrey.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">She stopped. Still did not look up.</p><p>&ldquo;About what?&rdquo; said the Cleaner.</p><p>&ldquo;That,&rdquo; said Aubrey, &ldquo;is rather the question.&rdquo;</p><p>&ldquo;And how uncertain are you?&rdquo;</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">He had not thought about it in those terms. He looked at the empty dossier in his hand.</p><p>&ldquo;I don&rsquo;t know.&rdquo;</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">The Cleaner resumed moving.</p><p>&ldquo;Then you have two problems. Not one.&rdquo;</p>','<div style="font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#5A5040;margin-bottom:24px;">Form AS/002 &middot; First Floor</div><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">The Cleaner was in the corridor when Aubrey completed the Room 1 filing. She was not waiting for him. She was cleaning the corridor. These are different things.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">She did not stop.</p><p>&ldquo;What did you read?&rdquo; she said.</p><p>&ldquo;That uncertainty can be quantified,&rdquo; said Aubrey.</p><p>&ldquo;Can it now,&rdquo; said the Cleaner.</p><p>&ldquo;Yes,&rdquo; said Aubrey. &ldquo;Using an axiomatic framework.&rdquo;</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">She moved the mop.</p><p>&ldquo;And what are you going to do with that?&rdquo;</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">Aubrey thought about it. The framework was sound. He had not yet identified what required it.</p><p>&ldquo;What creates the uncertainty?&rdquo; she said.</p><p>&ldquo;Other than you?&rdquo; said Aubrey.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">She did not answer. She left.</p><p style="font-style:italic;color:#3C3020;margin-bottom:.8em;">Aubrey stood in the corridor for a moment. Room 2 was on his left. The door was open.</p>'];
-const CLEANER={l:'The Cleaner',s:'The Cleaner · First Floor',b:'',
+const CLEANER={l:'The Cleaner',s:'The Cleaner \u00B7 First Floor',b:'',
   get shelves(){
     var issued=_issuedDocs().sort(function(a,b){return a-b;});
     if(issued.length===0) return [{label:'The Encounter',sub:'First Floor',html:''}];
@@ -2910,7 +2911,7 @@ const CLEANER={l:'The Cleaner',s:'The Cleaner · First Floor',b:'',
   }
 };
 
-// ── LAYOUT ──
+// -- LAYOUT --
 const HH=0,BH=0;
 let L={};
 function buildL(){
@@ -2931,16 +2932,16 @@ function buildL(){
   function nodePts(box){
     const r=10;
     const cy=box.y+box.h*.5;
-    // equal spacing: corridor wall → pip0 → pip1 → pip2
+    // equal spacing: corridor wall \u2192 pip0 \u2192 pip1 \u2192 pip2
     // gap = box.w / 4 so all three gaps are equal
     const gap=box.w*.25;
     const p0=box.side==='L'?box.x+box.w-gap  :box.x+gap;
     const p1=box.side==='L'?box.x+box.w-gap*2 :box.x+gap*2;
     const p2=box.side==='L'?box.x+box.w-gap*3 :box.x+gap*3;
     return[
-      {x:p0,y:cy,r,shape:'square'},   // Bookcase — nearest door
-      {x:p1,y:cy,r,shape:'circle'},   // Bureau — middle
-      {x:p2,y:cy,r,shape:'diamond'},  // Examination — far wall
+      {x:p0,y:cy,r,shape:'square'},   // Bookcase \u2014 nearest door
+      {x:p1,y:cy,r,shape:'circle'},   // Bureau \u2014 middle
+      {x:p2,y:cy,r,shape:'diamond'},  // Examination \u2014 far wall
     ];
   }
   L={av,cw,cx,ST,zone,rH,bH,boxes,nodePts,
@@ -2949,53 +2950,53 @@ function buildL(){
     botY:HH+av-ST,topY:HH};
 }
 
-// ── ROOM COLOURS ──
+// -- ROOM COLOURS --
 const ROOM_COLS=[
-  '#162844', // 01 Uncertainty      — cool blue
-  '#172e3a', // 02 Experiment       — teal-blue
-  '#141e3c', // 03 Sample Space     — deep indigo
-  '#181e38', // 04 Event            — slate blue
-  '#142a38', // 05 Sigma-Algebra    — teal
-  '#101e30', // 06 Mutual Exclusivity — dark steel
-  '#16244c', // 07 Probability Measure — royal blue
-  '#1c2438', // 08 Axiom 1          — grey-blue
-  '#121e40', // 09 Axiom 2          — midnight blue
-  '#162040', // 10 Axiom 3          — cobalt
+  '#162844', // 01 Uncertainty      \u2014 cool blue
+  '#172e3a', // 02 Experiment       \u2014 teal-blue
+  '#141e3c', // 03 Sample Space     \u2014 deep indigo
+  '#181e38', // 04 Event            \u2014 slate blue
+  '#142a38', // 05 Sigma-Algebra    \u2014 teal
+  '#101e30', // 06 Mutual Exclusivity \u2014 dark steel
+  '#16244c', // 07 Probability Measure \u2014 royal blue
+  '#1c2438', // 08 Axiom 1          \u2014 grey-blue
+  '#121e40', // 09 Axiom 2          \u2014 midnight blue
+  '#162040', // 10 Axiom 3          \u2014 cobalt
 ];
-const ROOM_COLS_HI=[ // visited — clearly brighter
-  '#1e3c64', // hi 01 — cool blue
-  '#1e4050', // hi 02 — teal-blue
-  '#1a2e58', // hi 03 — deep indigo
-  '#202e54', // hi 04 — slate blue
-  '#183c50', // hi 05 — teal
-  '#162e48', // hi 06 — dark steel
-  '#1c3468', // hi 07 — royal blue
-  '#263454', // hi 08 — grey-blue
-  '#182e5c', // hi 09 — midnight blue
-  '#1c305c', // hi 10 — cobalt
+const ROOM_COLS_HI=[ // visited \u2014 clearly brighter
+  '#1e3c64', // hi 01 \u2014 cool blue
+  '#1e4050', // hi 02 \u2014 teal-blue
+  '#1a2e58', // hi 03 \u2014 deep indigo
+  '#202e54', // hi 04 \u2014 slate blue
+  '#183c50', // hi 05 \u2014 teal
+  '#162e48', // hi 06 \u2014 dark steel
+  '#1c3468', // hi 07 \u2014 royal blue
+  '#263454', // hi 08 \u2014 grey-blue
+  '#182e5c', // hi 09 \u2014 midnight blue
+  '#1c305c', // hi 10 \u2014 cobalt
 ];
-// Blueprint accent colours — cool blue-white spectrum
+// Blueprint accent colours \u2014 cool blue-white spectrum
 const ROOM_ACCENTS=[
-  [140,185,255], // 01 — ice blue
-  [120,175,245], // 02 — cornflower
-  [160,200,255], // 03 — pale blue
-  [130,165,235], // 04 — slate blue
-  [150,195,250], // 05 — periwinkle
-  [110,160,230], // 06 — steel blue
-  [145,190,255], // 07 — cobalt
-  [155,200,255], // 08 — sky
-  [135,180,245], // 09 — azure
-  [165,205,255], // 10 — powder blue
+  [140,185,255], // 01 \u2014 ice blue
+  [120,175,245], // 02 \u2014 cornflower
+  [160,200,255], // 03 \u2014 pale blue
+  [130,165,235], // 04 \u2014 slate blue
+  [150,195,250], // 05 \u2014 periwinkle
+  [110,160,230], // 06 \u2014 steel blue
+  [145,190,255], // 07 \u2014 cobalt
+  [155,200,255], // 08 \u2014 sky
+  [135,180,245], // 09 \u2014 azure
+  [165,205,255], // 10 \u2014 powder blue
 ];
 function roomCol(ri,visited,heat){return visited?ROOM_COLS_HI[ri%10]:ROOM_COLS[ri%10];}
 function roomAccent(ri,a=1){const [r,g,b]=ROOM_ACCENTS[ri%10];return `rgba(${r},${g},${b},${a})`;}
 
-// ── INHABITANT JOURNEY SYSTEM ──
-// Very slow — all timings in frames at 60fps
+// -- INHABITANT JOURNEY SYSTEM --
+// Very slow \u2014 all timings in frames at 60fps
 // SPEED constants: multiply to slow down globally
-const SPD=0.004; // global ease speed — lower = slower sunrise
+const SPD=0.004; // global ease speed \u2014 lower = slower sunrise
 
-// footstep patches — each: {y, side(0/1), a(alpha), target}
+// footstep patches \u2014 each: {y, side(0/1), a(alpha), target}
 const STEPS=[];
 let _stepTimer=0, _stepSide=0;
 
@@ -3107,19 +3108,19 @@ function updateJourney(){
   }
 }
 
-// ── PER-BOX STATE ──
-// heat: 0=dormant→1=fully awake
+// -- PER-BOX STATE --
+// heat: 0=dormant\u21921=fully awake
 // coinSpin[ni]: angle for coin-flip effect per node
 const BS=Array.from({length:10},()=>({heat:0,lissT:0}));
-const NV={}; // nodeVis: 'ri-ni'→bool
-const NVE={}; // nodeVis ease: 0→1
+const NV={}; // nodeVis: 'ri-ni'\u2192bool
+const NVE={}; // nodeVis ease: 0\u21921
 let activeRoom=-1; // only one room lit at a time
 let activeStrip=null;
 let _lastPipHover=null;
-let clerkVisited=0,cleanerVisited=0; // 0→1 ease in
+let clerkVisited=0,cleanerVisited=0; // 0\u21921 ease in
 const SH={ground:0,cleaner:0,clerk:0,floor2:0}; // strip heat
 
-// ── MOUSE ──
+// -- MOUSE --
 let mX=0,mY=0,hotBox=null,hotNode=null,hotStrip=null;
 cv.addEventListener('mouseleave',()=>{hotBox=null;hotNode=null;hotStrip=null;});
 cv.addEventListener('mousemove',e=>{
@@ -3158,10 +3159,10 @@ cv.addEventListener('mousemove',e=>{
 
 });
 
-// ── CLICK ──
+// -- CLICK --
 cv.addEventListener('click',e=>{
   if(!_corridorActive) return;
-  // ── IN A ROOM — only allow clicking outside to return to corridor ──
+  // -- IN A ROOM \u2014 only allow clicking outside to return to corridor --
   if(activeRoom>=0){
     const inActiveRoom=(hotBox&&hotBox.ri===activeRoom)||(hotNode&&hotNode.ri===activeRoom);
     if(!inActiveRoom){
@@ -3181,7 +3182,7 @@ cv.addEventListener('click',e=>{
       }
       setLocation('The Corridor');
     }
-    // if inActiveRoom — node click handled below, everything else blocked
+    // if inActiveRoom \u2014 node click handled below, everything else blocked
     else if(hotNode&&activeRoom===hotNode.ri){
       NV[hotNode.ri+'-'+hotNode.ni]=true;
       if(!NVE[hotNode.ri+'-'+hotNode.ni]) NVE[hotNode.ri+'-'+hotNode.ni]=0.001;
@@ -3191,7 +3192,7 @@ cv.addEventListener('click',e=>{
     }
     return;
   }
-  // ── IN CORRIDOR — allow room entry and strip clicks ──
+  // -- IN CORRIDOR \u2014 allow room entry and strip clicks --
   // room box click
   if((hotBox||hotNode) && activeRoom===-1){
     const ri=hotBox?hotBox.ri:hotNode.ri;
@@ -3212,13 +3213,13 @@ cv.addEventListener('click',e=>{
     roShow(ri);
     return;
   }
-  // strip clicks — corridor only
+  // strip clicks \u2014 corridor only
   if(hotStrip==='ground'){ goToGroundFloor(); return; }
   if(hotStrip==='clerk'){activeStrip='clerk';activeRoom=-1;clerkVisited=clerkVisited||0.02;openNodePopup(CLERK.s,CLERK.l,CLERK.b,null,null,-1,-1);setTimeout(function(){clerkInit();},100);return;}
   if(hotStrip==='cleaner'){activeStrip='cleaner';activeRoom=-1;cleanerVisited=cleanerVisited||0.02;_cleanerPulsing=false;_cleanerPulse=0;cleanerCutscene();return;}
 });
 
-// ── ESCAPE — exit room to corridor ──
+// -- ESCAPE \u2014 exit room to corridor --
 document.addEventListener('keydown',function(e){
   if(e.key!=='Escape') return;
   var np=document.getElementById('node-popup');
@@ -3228,11 +3229,11 @@ document.addEventListener('keydown',function(e){
   if(activeRoom>=0){ roClose(); return; }
 });
 
-// ── COUNTER ──
+// -- COUNTER --
 // node popup close handled by closeNodePopup()
 
-// ── UPDATE ──
-// ── DRAW NODE — static ──
+// -- UPDATE --
+// -- DRAW NODE \u2014 static --
 function drawNode(x,y,vis,isHot,r=9,ri=0,shape='circle'){
   function nodePath(){
     if(shape==='diamond'){
@@ -3261,8 +3262,8 @@ function drawNode(x,y,vis,isHot,r=9,ri=0,shape='circle'){
   c.beginPath();c.arc(x,y,r*.76,-Math.PI*.8,-Math.PI*.1);c.stroke();
 }
 
-// ── DRAW STRIP NODE (Clerk/Cleaner) ──
-// ── DRAW STRIP NODE ──
+// -- DRAW STRIP NODE (Clerk/Cleaner) --
+// -- DRAW STRIP NODE --
 function drawStripNode(pt,vis,label,labelSide,isHot=false){
   if(!pt)return;
   const r=isHot?12:10;
@@ -3289,14 +3290,14 @@ function drawStripNode(pt,vis,label,labelSide,isHot=false){
   c.fillText(label,lx,pt.y+4);
 }
 
-// ── UPDATE ──
+// -- UPDATE --
 function update(){
   t++;
   if(_corridorActive&&_mapReveal<1) _mapReveal=Math.min(1,_mapReveal+0.004);
   if(_cleanerPulsing){
     _cleanerPulseT++;
     var _env=Math.min(1,_cleanerPulseT/80);
-    // full sine mapped to 0→1 — continuous breath, no flash
+    // full sine mapped to 0\u21921 \u2014 continuous breath, no flash
     _cleanerPulse=(0.5+0.5*Math.sin(_cleanerPulseT*0.012))*_env;
   }
   if(!L.boxes) return;
@@ -3320,7 +3321,7 @@ function update(){
   updateSteps();
 }
 
-// ── DRAW ROOM ──
+// -- DRAW ROOM --
 function drawRoom(box){
   const s=BS[box.ri];
   const h=s.heat;
@@ -3328,7 +3329,7 @@ function drawRoom(box){
   const room=ROOMS[box.ri%ROOMS.length];
   const bcx=box.x+box.w/2, bcy=box.y+box.h/2;
 
-  // base — room colour
+  // base \u2014 room colour
   c.fillStyle=roomCol(box.ri,false,h);
   c.fillRect(box.x,box.y,box.w,box.h);
 
@@ -3341,7 +3342,7 @@ function drawRoom(box){
     c.globalAlpha=1;
   }
 
-  // ── JOURNEY LIGHT — spills in from corridor entrance, fills room slowly ──
+  // -- JOURNEY LIGHT \u2014 spills in from corridor entrance, fills room slowly --
   const isSrc=JRN.srcBox&&JRN.srcBox.ri===box.ri&&JRN.srcBox.side===box.side;
   const isDst=JRN.dstBox&&JRN.dstBox.ri===box.ri&&JRN.dstBox.side===box.side;
   const candleA=(isSrc?JRN.srcCandle:0)+(isDst?JRN.dstCandle:0);
@@ -3355,7 +3356,7 @@ function drawRoom(box){
     roomG.addColorStop(.8,`rgba(100,140,215,${candleA*.02})`);
     roomG.addColorStop(1,'transparent');
     c.fillStyle=roomG;c.fillRect(box.x,box.y,box.w,box.h);
-    // vertical fall-off — brighter at door height
+    // vertical fall-off \u2014 brighter at door height
     const heightG=c.createLinearGradient(0,box.y,0,box.y+box.h);
     heightG.addColorStop(0,`rgba(0,0,0,${candleA*.08})`);
     heightG.addColorStop(.5,'transparent');
@@ -3363,7 +3364,7 @@ function drawRoom(box){
     c.fillStyle=heightG;c.fillRect(box.x,box.y,box.w,box.h);
   }
 
-  // dot grid — parallax toward cursor
+  // dot grid \u2014 parallax toward cursor
   if(h>.01){
     c.save();c.beginPath();c.rect(box.x,box.y,box.w,box.h);c.clip();
     const gSz=Math.min(box.w,box.h)*.2;
@@ -3382,7 +3383,7 @@ function drawRoom(box){
     c.restore();
   }
 
-  // ── WATERMARK ROOM NUMBER ──
+  // -- WATERMARK ROOM NUMBER --
   c.save();c.beginPath();c.rect(box.x,box.y,box.w,box.h);c.clip();
   const wmSize=Math.min(box.h*.7,box.w*.5);
   c.font="700 "+wmSize+"px 'Helvetica Neue',Helvetica,Arial,sans-serif";
@@ -3394,18 +3395,18 @@ function drawRoom(box){
   c.fillText(String(box.ri+1).padStart(2,'0'),bcx,bcy+wmSize*.35);
   c.restore();
 
-  // ── CORRIDOR SHADOW ──
+  // -- CORRIDOR SHADOW --
   const sg=c.createLinearGradient(box.x,0,box.x+box.w,0);
   if(box.side==='L'){sg.addColorStop(0,'transparent');sg.addColorStop(.6,'transparent');sg.addColorStop(1,'rgba(0,0,0,.42)');}
   else{sg.addColorStop(0,'rgba(0,0,0,.42)');sg.addColorStop(.4,'transparent');sg.addColorStop(1,'transparent');}
   c.fillStyle=sg;c.fillRect(box.x,box.y,box.w,box.h);
 
-  // ── BRASS RULES ──
+  // -- BRASS RULES --
   c.strokeStyle=roomAccent(box.ri,vis?.85+h*.1:.2+h*.28);c.lineWidth=vis?2:1;
   c.beginPath();c.moveTo(box.x,box.y);c.lineTo(box.x+box.w,box.y);c.stroke();
   c.beginPath();c.moveTo(box.x,box.y+box.h);c.lineTo(box.x+box.w,box.y+box.h);c.stroke();
 
-  // ── OUTER WALL VISIT INDICATORS ──
+  // -- OUTER WALL VISIT INDICATORS --
   // small persistent pips on outer wall showing visited nodes
   const outerX=box.side==='L'?box.x+8:box.x+box.w-8;
   const pipR=4;
@@ -3432,7 +3433,7 @@ function drawRoom(box){
     }
   }
 
-  // ── LABEL — text zone is the non-node side ──
+  // -- LABEL \u2014 text zone is the non-node side --
   // nodes sit at corridor edge; text fills the outer 60% of room
   const tX=box.x+box.w*.5; // horizontally centred
   const tMaxW=box.w*.44;
@@ -3465,7 +3466,7 @@ function drawRoom(box){
   }
 }
 
-// ── DRAW CORRIDOR ──
+// -- DRAW CORRIDOR --
 function drawCorridor(){
   const {cx,cw,ST,botY,topY}=L;
   const corrTop=HH,corrBot=H-BH,corrH=corrBot-corrTop;
@@ -3474,7 +3475,7 @@ function drawCorridor(){
   // fill
   c.fillStyle='#060d1e';c.fillRect(cx,corrTop,cw,corrH);
 
-  // ── CEILING LIGHTS — tiny fixture dots, no clipping needed ──
+  // -- CEILING LIGHTS \u2014 tiny fixture dots, no clipping needed --
   const lightOffsets=[.08,.22,.38,.52,.67,.81,.94];
   lightOffsets.forEach((off,i)=>{
     const ly=corrTop+corrH*off;
@@ -3483,7 +3484,7 @@ function drawCorridor(){
     c.beginPath();c.arc(midX,ly,1.8,0,Math.PI*2);c.fill();
   });
 
-  // ── FOOTSTEPS — soft ovals, alternating L/R ──
+  // -- FOOTSTEPS \u2014 soft ovals, alternating L/R --
   if(STEPS.length){
     c.save();c.beginPath();c.rect(cx,corrTop,cw,corrH);c.clip();
     STEPS.forEach(s=>{
@@ -3492,7 +3493,7 @@ function drawCorridor(){
       const rx=cw*.07+s.sz*.02;
       const ex=cx+(s.side?cw*.62:cw*.28)+(s.jitter||0);
       const ey=s.y;
-      // draw oval using ellipse — no scale trick needed
+      // draw oval using ellipse \u2014 no scale trick needed
       c.save();
       // soft glow behind
       const og=c.createRadialGradient(ex,ey,0,ex,ey,rx*1.4);
@@ -3508,7 +3509,7 @@ function drawCorridor(){
     c.restore();
   }
 
-  // corridor edges — single faint line each side
+  // corridor edges \u2014 single faint line each side
   c.strokeStyle=G(.18);c.lineWidth=1;
   c.beginPath();c.moveTo(cx+.5,corrTop);c.lineTo(cx+.5,corrBot);c.stroke();
   c.beginPath();c.moveTo(cx+cw-.5,corrTop);c.lineTo(cx+cw-.5,corrBot);c.stroke();
@@ -3531,7 +3532,7 @@ function drawCorridor(){
   });
 }
 
-// ── DRAW STRIP ──
+// -- DRAW STRIP --
 function drawStrip(y,h,leftLabel,rightLabel,leftNode,leftVis,rightNode,rightVis){
   const isTop=y===L.topY;
   const _lk=isTop?'ground':'clerk', _rk=isTop?'cleaner':'floor2';
@@ -3539,7 +3540,7 @@ function drawStrip(y,h,leftLabel,rightLabel,leftNode,leftVis,rightNode,rightVis)
   const rightHot=SH[_rk]>.05;
   const lh=SH[_lk], rh=SH[_rk];
 
-  // strip — corridor spine only, same colour as main corridor
+  // strip \u2014 corridor spine only, same colour as main corridor
   c.fillStyle='#060d1e';c.fillRect(L.cx,y,L.cw,h);
 
   // hover warmth on active side only
@@ -3563,10 +3564,10 @@ function drawStrip(y,h,leftLabel,rightLabel,leftNode,leftVis,rightNode,rightVis)
 
   // nodes
   if(leftNode)drawStripNode(leftNode,leftVis,leftNode===L.clPt?'THE CLERK':'STAIRWELL','left',leftHot);
-  if(rightNode)drawStripNode(rightNode,rightVis,rightNode===L.cnPt?'THE CLEANER':'SECOND FLOOR  →','right',rightHot);
+  if(rightNode)drawStripNode(rightNode,rightVis,rightNode===L.cnPt?'THE CLEANER':'SECOND FLOOR  \u2192','right',rightHot);
 }
 
-// ── DRAW ──
+// -- DRAW --
 function draw(){
   const {cx,cw,ST,botY,topY}=L;
 
@@ -3581,12 +3582,12 @@ function draw(){
   }
 
   c.globalAlpha=_corridorActive?Math.max(0.4,_mapReveal):1;
-  // blueprint grid — hand-drawn feel, generated once
+  // blueprint grid \u2014 hand-drawn feel, generated once
   if(!_gridLines){
     _gridLines={h:[],v:[],mh:[],mv:[],Mh:[],Mv:[]};
     var _seed=42;
     function _rng(){_seed=(_seed*1664525+1013904223)&0xffffffff;return(_seed>>>0)/0xffffffff;}
-    // fine grid — 8px, wobbly
+    // fine grid \u2014 8px, wobbly
     for(let y=4;y<2000;y+=8){
       var pts=[];
       for(let x=0;x<=2000;x+=60){pts.push({x,y:y+(_rng()-.5)*1.2});}
@@ -3597,7 +3598,7 @@ function draw(){
       for(let y=0;y<=2000;y+=60){pts.push({x:x+(_rng()-.5)*1.2,y});}
       _gridLines.v.push(pts);
     }
-    // medium grid — 40px
+    // medium grid \u2014 40px
     for(let y=0;y<2000;y+=40){
       var pts=[];
       for(let x=0;x<=2000;x+=40){pts.push({x,y:y+(_rng()-.5)*1.8});}
@@ -3608,7 +3609,7 @@ function draw(){
       for(let y=0;y<=2000;y+=40){pts.push({x:x+(_rng()-.5)*1.8,y});}
       _gridLines.mv.push(pts);
     }
-    // major grid — 200px
+    // major grid \u2014 200px
     for(let y=0;y<2000;y+=200){
       var pts=[];
       for(let x=0;x<=2000;x+=30){pts.push({x,y:y+(_rng()-.5)*2.5});}
@@ -3645,7 +3646,7 @@ function draw(){
     var sc=_stairScene||0;
     c.textAlign='left';
 
-    // ── helper: chalk text ──
+    // -- helper: chalk text --
     function ct(txt,x,y,sz,a,ls){
       c.font='300 '+sz+'px "Helvetica Neue",Helvetica,Arial,sans-serif';
       c.letterSpacing=(ls||'0.18em');
@@ -3662,7 +3663,7 @@ function draw(){
     var m=W*.06; // left margin
     var mid=H*.48;
 
-    // ── Scene 0: The Institute ──
+    // -- Scene 0: The Institute --
     if(sc>=0){
       var a0=1;
       var tSz=Math.round(W*.048);
@@ -3694,7 +3695,7 @@ function draw(){
       bt('FIRST FLOOR',m,mid-tSz*1.1+subSz*2.2+flSz*2.4,flSz,.14,'0.28em');
     }
 
-    // ── Scene 1: introduce the casino across the road ──
+    // -- Scene 1: introduce the casino across the road --
     if(sc>=1){
       // rule between buildings
       c.strokeStyle='rgba(140,190,255,.1)';c.lineWidth=.5;
@@ -3703,7 +3704,7 @@ function draw(){
       // distance annotation
       var annSz=Math.round(W*.01);
       bt('ACROSS THE ROAD',m,ruleY-annSz*.6,annSz,.18,'0.3em');
-      // Gambler's Ruin — large, glowing
+      // Gambler's Ruin \u2014 large, glowing
       var grSz=Math.round(W*.052);
       var grPulse=0.55+0.1*Math.sin(t*.04);
       c.font='300 '+grSz+'px "Helvetica Neue",Helvetica,Arial,sans-serif';
@@ -3719,10 +3720,10 @@ function draw(){
       ct('The lights are always on.',m,ruleY+grSz*1.4+litSz*2.2,litSz,.28,'0.12em');
     }
 
-    // ── Scene 2: the dossier is mentioned — envelope comes forward ──
+    // -- Scene 2: the dossier is mentioned \u2014 envelope comes forward --
     // (envelope handled by map-intro-overlay HTML element)
 
-    // ── Scene 3: since October ──
+    // -- Scene 3: since October --
     if(sc>=3){
       var ocSz=Math.round(W*.015);
       bt('OCTOBER',W-m-c.measureText('OCTOBER')*ocSz,mid-Math.round(W*.048)*1.1,ocSz,.12,'0.32em');
@@ -3743,7 +3744,7 @@ function draw(){
   // strips
   drawStrip(topY,ST,'STAIRWELL',null,null,false,L.cnPt,Math.max(cleanerVisited,_cleanerPulse));
   // pulse ring on cleaner node
-  drawStrip(botY,ST,null,'SECOND FLOOR  →',L.clPt,clerkVisited,null,false);
+  drawStrip(botY,ST,null,'SECOND FLOOR  \u2192',L.clPt,clerkVisited,null,false);
 
 
 
@@ -3757,8 +3758,8 @@ function draw(){
     });
   }
 
-  // ── VIGNETTE — map recedes at edges ──
-  // vignette — linear gradients only, no arcs
+  // -- VIGNETTE \u2014 map recedes at edges --
+  // vignette \u2014 linear gradients only, no arcs
   c.globalAlpha=1;
   var _vt=c.createLinearGradient(0,0,0,H*.5);
   _vt.addColorStop(0,'rgba(0,0,0,.45)');_vt.addColorStop(1,'transparent');
@@ -3774,27 +3775,27 @@ function draw(){
   c.fillStyle=_vr;c.fillRect(0,0,W,H);
 }
 
-// ── ROOM BLEED ──
+// -- ROOM BLEED --
 function setRoomBleed(ri){
   var bb=document.getElementById('blackboard');
   if(!bb) return;
   if(ri<0){
     bb.style.backgroundColor='#0c160c';
   } else {
-    // dark grey-green tints — conventional blackboard, no colour
+    // dark grey-green tints \u2014 conventional blackboard, no colour
     var tints=['#111418','#121210','#111214','#121010','#0e1210','#111010','#101214','#111212','#0e1110','#111210'];
     bb.style.backgroundColor=tints[ri%10];
   }
 }
 
-// ── MAP ENGINE INIT — called from BMAP init below ──
+// -- MAP ENGINE INIT \u2014 called from BMAP init below --
 function initMapEngine(){
   resize();
   window.addEventListener('resize',resize);
   (function loop(){update();draw();requestAnimationFrame(loop);})();
 }
 
-// ── WIRE ROOM CLICKS TO BLACKBOARD ──
+// -- WIRE ROOM CLICKS TO BLACKBOARD --
 // Start map engine
 // Init BMAP after layout
 requestAnimationFrame(function(){ requestAnimationFrame(function(){
@@ -3802,7 +3803,7 @@ requestAnimationFrame(function(){ requestAnimationFrame(function(){
   initMapEngine();
   _setSplit(0.67);
 
-  // ── STAIRWELL SEQUENCE ──
+  // -- STAIRWELL SEQUENCE --
   function s0_intro(){ _stairScene=0;
     BB.write([
       'Allow me to introduce myself.',
@@ -3810,7 +3811,7 @@ requestAnimationFrame(function(){ requestAnimationFrame(function(){
       'The BSc is in Wine and Cheese.',
       'I am a mouse. I think it. Therefore, I must be.',
       'The facts are on file.'
-    ], [{l:'Continue →', f:s0b},{l:'Ascend to First Floor →', f:s0f}]);
+    ], [{l:'Continue \u2192', f:s0b},{l:'Ascend to First Floor \u2192', f:s0f}]);
   }
 
   function s0b(){ _stairScene=1;
@@ -3819,11 +3820,11 @@ requestAnimationFrame(function(){ requestAnimationFrame(function(){
       'I had a plan. To go to the casino.',
       'I was not admitted.',
       'I was informed that I lacked the necessary framework.'
-    ], [{l:'Continue →', f:s0c},{l:'Ascend to First Floor →', f:s0f}]);
+    ], [{l:'Continue \u2192', f:s0c},{l:'Ascend to First Floor \u2192', f:s0f}]);
   }
 
   function s0c(){ _stairScene=2;
-    // show dossier when 'I was handed a dossier.' appears — line 2
+    // show dossier when 'I was handed a dossier.' appears \u2014 line 2
     // line 1 'I enquired.' is ~12 chars, delay ~950ms + 200ms initial = ~1150ms
     setTimeout(function(){
       var ov=document.getElementById('map-intro-overlay');
@@ -3835,17 +3836,17 @@ requestAnimationFrame(function(){ requestAnimationFrame(function(){
       'I was handed a dossier. It was empty.',
       'I asked what it was for.',
       'The question was noted with interest and filed.'
-    ], [{l:'Continue →', f:s0d},{l:'Ascend to First Floor →', f:s0f}]);
+    ], [{l:'Continue \u2192', f:s0d},{l:'Ascend to First Floor \u2192', f:s0f}]);
   }
 
   function s0d(){ _stairScene=3;
     BB.write([
-      'The casino across the road is called Gambler’s Ruin.',
+      'The casino across the road is called Gambler\'s Ruin.',
       'The lights are always on.',
       'I have been here since October.',
       'The dossier remains empty.',
       'Uncertainty, it seems, plays a significant role in what comes next.'
-    ], [{l:'Ascend to First Floor →', f:s0f}]);
+    ], [{l:'Ascend to First Floor \u2192', f:s0f}]);
   }
 
   function s0f(){
