@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 <title>The Institute — First Floor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Courier+Prime:ital@0;1&family=Special+Elite&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Courier+Prime:ital@0;1&family=Special+Elite&family=Reenie+Beanie&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; overflow: hidden; background: #050705; }
@@ -191,12 +191,12 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 
 /* Chalk text */
 #bb-chalk p {
-  font-family: 'Special Elite', 'Courier Prime', monospace;
-  font-size: clamp(16px, 1.95vw, 22px);
-  line-height: 1.92;
+  font-family: 'Reenie Beanie', 'Special Elite', monospace;
+  font-size: clamp(26px, 3.2vw, 36px);
+  line-height: 1.75;
   color: rgba(240,235,205,.86);
-  margin: 0 0 0.65em;
-  letter-spacing: .035em;
+  margin: 0 0 0.55em;
+  letter-spacing: .06em;
   text-shadow:
     0 0 12px rgba(240,235,205,.08),
     0 1px 2px rgba(0,0,0,.4);
@@ -480,7 +480,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   color: rgba(26,22,16,.35); margin-bottom: 10px;
 }
 .intro-env-title {
-  font-family: 'Special Elite', 'Courier Prime', monospace;
+  font-family: 'Reenie Beanie', 'Special Elite', monospace;
   font-size: 14px; font-weight: 400; letter-spacing: .06em;
   color: rgba(26,22,16,.8); margin-bottom: 14px;
   border-bottom: 1px solid rgba(26,22,16,.1); padding-bottom: 8px;
@@ -589,7 +589,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   color: rgba(26,22,16,.35); margin-bottom: 10px;
 }
 .intro-env-title {
-  font-family: 'Special Elite', 'Courier Prime', monospace;
+  font-family: 'Reenie Beanie', 'Special Elite', monospace;
   font-size: 14px; font-weight: 400; letter-spacing: .06em;
   color: rgba(26,22,16,.8); margin-bottom: 14px;
   border-bottom: 1px solid rgba(26,22,16,.1); padding-bottom: 8px;
@@ -1332,7 +1332,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 
     <canvas id="map-canvas-main" style="display:block;width:100%;height:100%;"></canvas>
 <!-- ── NODE POPUP ── -->
-    <div id="node-popup" style="display:none;position:fixed;inset:0;z-index:500;flex-direction:column;align-items:center;background:#07090f;transform:translateY(100%);transition:transform 0.38s cubic-bezier(0.22,1,0.36,1);">
+    <div id="node-popup" style="display:none;position:fixed;inset:0;z-index:500;flex-direction:column;align-items:center;background:#07090f;transform:translateY(100%);transition:transform 0.6s cubic-bezier(0.22,1,0.36,1);">
       <div id="np-inner" style="width:100%;max-width:740px;flex:1;min-height:0;display:flex;flex-direction:column;">
         <div id="np-header" style="flex-shrink:0;padding:16px 24px 14px;border-bottom:1px solid rgba(140,190,255,.1);display:flex;align-items:center;justify-content:space-between;">
           <div>
@@ -1848,6 +1848,16 @@ function cleanerCutscene(){
     if(e.key === 'Escape'){ document.removeEventListener('keydown',_csEsc); csClose(); }
   }
   document.addEventListener('keydown', _csEsc);
+
+  // click outside cs-scroll closes
+  ov.addEventListener('click', function _csOutside(e){
+    var scroll = document.getElementById('cs-scroll');
+    if(scroll && !scroll.contains(e.target)){
+      ov.removeEventListener('click', _csOutside);
+      document.removeEventListener('keydown', _csEsc);
+      csClose();
+    }
+  });
 }
 
 function csClose(){
@@ -2701,7 +2711,7 @@ function closeNodePopup(){
     if(activeRoom>=0){
       roShow(activeRoom);
     }
-  },400);
+  },600);
 }
 
 // ── ROOM OVERLAY ──
@@ -2849,7 +2859,7 @@ const ROOMS=[
     {l:'Examination',s:'Assessment · Room 01',b:'',exam:'uncertainty'},
   ]},
   {name:'Experiment',n:[
-    {l:'Bookcase',s:'Lower Shelf · Room 02',b:'An experiment is any process that produces an observable outcome. A coin. A clinical trial. A question asked of the rain.<br><br><em>What all share: a well-defined set of possible outcomes, known before the process begins.</em>'},
+    {l:'Bookcase',s:'Room 2 — Experiment',b:'',shelves:[{label:'Lower Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">We established that uncertainty can be measured. The next question is: measured over what?</p><p style="margin-bottom:1.8em;">The document introduces the concept of an <strong>experiment</strong>. Not, as I had assumed, something conducted in a laboratory with a white coat. The word has a precise meaning here.</p><p style="margin-bottom:1.8em;">An experiment is any phenomenon that is inherently characterised by uncertainty. The outcome is not known in advance. It could go one way. It could go another.</p><p style="margin-bottom:1.8em;">Tossing a coin is an experiment. Rolling a die is an experiment. Presenting oneself at the casino is an experiment.</p><div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div><p style="margin-bottom:1.8em;">I note that going to the casino last October was, technically, an experiment. I did not know this at the time. I have updated the file.</p><p style="margin-bottom:1.8em;">An experiment produces a result. Before it does, we do not know which result. That is what makes it an experiment. That is what makes probability necessary.</p>'},{label:'Middle Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">An experiment produces a result. The possible results are called <strong>sample outcomes</strong>, denoted \(\omega\). The collection of all possible outcomes is the <strong>sample space</strong>, denoted \(\Omega\):</p><p style="text-align:center;margin:1.8em 0;">\(\Omega = \{\omega_1, \omega_2, \ldots\}\)</p><p style="margin-bottom:1.8em;">Every outcome that can occur must appear in \(\Omega\). No outcome may be omitted. This is not a suggestion.</p><p style="margin-bottom:1.8em;">For a coin toss: \(\Omega = \{H, T\}\). Two outcomes. Both present. Nothing omitted.</p><p style="margin-bottom:1.8em;">For a die: \(\Omega = \{1, 2, 3, 4, 5, 6\}\). Six outcomes. All present.</p><div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div><p style="margin-bottom:1.8em;">Last October, my sample space contained one outcome. \(\Omega = \{\text{Win}\}\). This is called proof by wishful thinking. It is not a recognised method.</p><p style="margin-bottom:1.8em;">The sample space must be <em>exhaustive</em> — it must contain every outcome that can occur — and outcomes must be <em>distinct and non-overlapping</em>. No outcome appears twice. No two outcomes describe the same result.</p><p style="margin-bottom:1.8em;">A single hand of Blackjack. The outcomes are: win, lose, push. Three outcomes. Distinct. Non-overlapping. \(\Omega = \{\text{Win}, \text{Lose}, \text{Push}\}\). I have updated the file.</p>'},{label:'Upper Shelf',html:'<p style="font-size:1.15em;line-height:1.85;margin-bottom:1.8em;">The sample space \(\Omega\) contains all possible outcomes. But in practice, we are often interested not in individual outcomes, but in <em>collections</em> of outcomes. These are called <strong>events</strong>.</p><p style="margin-bottom:1.8em;">An event is any subset of the sample space. If \(\Omega = \{1, 2, 3, 4, 5, 6\}\), then \(A = \{2, 4, 6\}\) — rolling an even number — is an event. So is \(B = \{5, 6\}\) — rolling greater than four.</p><p style="margin-bottom:1.8em;">The event that <em>something</em> happens is \(\Omega\) itself. The event that <em>nothing</em> happens is the empty set \(\emptyset\). Both are events. Both must be assigned a probability.</p><div style="border-top:1px solid rgba(200,160,32,.15);margin:2em 0;"></div><p style="margin-bottom:1.8em;">Having established what outcomes are possible (\(\Omega\)) and what events we care about, we need a structure to hold all of these events. That structure is the <strong>sigma-algebra</strong>, \(\mathcal{F}\) — the collection of all events defined on \(\Omega\).</p><p style="margin-bottom:1.8em;">Together, \(\Omega\) and \(\mathcal{F}\) form a <strong>measurable space</strong> \((\Omega, \mathcal{F})\). This is the space on which probability will be defined. Each of these objects has its own room. This is Room 2. \(\mathcal{F}\) is in Room 5.</p><p style="text-align:center;font-style:italic;font-size:1.05em;padding:1.2em 2em;color:rgba(240,235,205,.65);line-height:1.7;margin-bottom:1.8em;">The experiment is the starting point. Without a well-defined experiment, there is no \(\Omega\).<br>Without \(\Omega\), there is no \(\mathcal{F}\). Without \(\mathcal{F}\), there is no \(P\).</p>'}]},
     {l:'Bureau',s:'Real World · Room 02',b:'When Aubrey walked through the casino door, that was an experiment. He had not defined his outcome space.<br><br><em>The outcomes existed regardless.</em>'},
     {l:'Examination',s:'Assessment · Room 02',b:'What is required for a process to qualify as a well-defined experiment?<br><br><em>Define your terms before you conduct it.</em>'},
   ]},
