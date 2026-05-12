@@ -806,17 +806,73 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 }
 .map-room-pips { display: flex; gap: 3px; align-items: center; }
 
+/* ── CLEANER CUTSCENE ── */
+#cleaner-cutscene {
+  display: none;
+  position: fixed; inset: 0; z-index: 600;
+  background: #07090f;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  overflow-y: auto;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(238,232,192,.1) transparent;
+}
+#cleaner-cutscene::-webkit-scrollbar { width: 3px; }
+#cleaner-cutscene::-webkit-scrollbar-thumb { background: rgba(238,232,192,.1); border-radius: 2px; }
+#cleaner-cutscene.visible { opacity: 1; }
+#cs-scroll {
+  width: min(520px, 88%);
+  padding: clamp(48px,7vh,80px) 0 clamp(48px,7vh,80px);
+  box-sizing: border-box;
+}
+#cs-ref {
+  font-family: 'Special Elite', monospace;
+  font-size: clamp(9px,1vw,11px); letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(238,232,192,.22);
+  margin-bottom: 36px;
+}
+#cs-beats {
+  font-family: 'Special Elite', monospace;
+  font-size: clamp(15px,1.8vw,19px);
+  line-height: 2;
+  color: rgba(238,232,192,.82);
+}
+#cs-beats p { margin: 0 0 .8em; }
+#cs-beats p.stage {
+  color: rgba(200,160,32,.55);
+  font-size: clamp(13px,1.5vw,16px);
+}
+#cs-close {
+  display: block;
+  margin-top: 40px;
+  background: none; border: none;
+  border-bottom: 1px solid rgba(238,232,192,.15);
+  color: rgba(238,232,192,.25);
+  font-family: 'Special Elite', monospace;
+  font-size: clamp(10px,1.1vw,12px); letter-spacing: .18em; text-transform: uppercase;
+  padding: 4px 0; cursor: pointer;
+  transition: color .15s, border-color .15s;
+}
+#cs-close:hover { color: rgba(238,232,192,.72); border-color: rgba(238,232,192,.45); }
+
 /* ── ROOM OVERLAY ── */
 #room-overlay {
   display: none;
   position: absolute; inset: 0; z-index: 100;
-  flex-direction: column; align-items: center; justify-content: center;
+  flex-direction: column; align-items: center; justify-content: flex-start;
   background: #07090f;
   opacity: 0;
-  transition: opacity 0.28s ease;
-  padding: 16px;
-  overflow: hidden;
+  transition: opacity 0.6s ease;
+  padding: 12px 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
 }
+#room-overlay::-webkit-scrollbar { display: none; }
 #room-overlay.visible { opacity: 1; }
 /* dot grid layer */
 #ro-grid {
@@ -830,13 +886,15 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 #ro-indicator, #ro-buttons, #ro-back { position: relative; z-index: 1; }
 #ro-indicator {
   text-align: center;
-  margin-bottom: 22px;
+  margin-bottom: clamp(10px,1.8vh,22px);
   flex-shrink: 0;
+  padding-top: clamp(8px,2vh,20px);
+  width: 100%;
 }
 #ro-room-num {
   display: block;
   font-family: monospace;
-  font-size: clamp(14px,1.8vw,20px);
+  font-size: clamp(20px,2.8vw,30px);
   letter-spacing: .18em;
   color: rgba(140,190,255,.18);
   line-height: 1;
@@ -849,18 +907,18 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   letter-spacing: .14em;
   text-transform: uppercase;
   color: rgba(230,225,200,.55);
-  margin-top: 7px;
+  margin-top: 5px;
 }
 #ro-rule {
   display: block;
   height: 1px;
   width: 32px;
-  margin: 12px auto 0;
+  margin: clamp(7px,1.2vh,12px) auto 0;
   background: rgba(140,190,255,.18);
 }
 #ro-buttons {
   display: flex; flex-direction: column;
-  gap: 1px;
+  gap: 0px;
   width: min(300px, 90%);
   flex-shrink: 0;
 }
@@ -873,20 +931,18 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   cursor: pointer;
   display: flex; flex-direction: row;
   align-items: center;
-  padding: 13px 16px;
-  gap: 16px;
+  padding: clamp(7px,1.1vh,13px) 16px;
+  gap: 14px;
   width: 100%;
   transition: color .18s, border-color .18s, background .18s;
 }
-.ro-btn:hover {
-  color: rgba(240,235,205,.9);
-}
+.ro-btn:hover { color: rgba(240,235,205,.9); }
 .ro-btn-shape {
   display: flex; align-items: center; justify-content: center;
   color: rgba(140,190,255,.28);
   transition: color .18s;
   flex-shrink: 0;
-  width: 22px;
+  width: 20px;
 }
 .ro-btn:hover .ro-btn-shape { color: rgba(140,190,255,.72); }
 .ro-btn-label { flex: 1; text-align: left; }
@@ -909,7 +965,10 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 }
 .ro-btn:hover .ro-btn-sub { color: rgba(140,190,255,.5); }
 #ro-back {
-  margin-top: 48px;
+  margin-top: clamp(12px,2vh,36px);
+  margin-bottom: clamp(10px,1.5vh,20px);
+  flex-shrink: 0;
+  position: relative; z-index: 1;
   background: none; border: none;
   border-bottom: 1px solid rgba(238,232,192,.1);
   color: rgba(238,232,192,.2);
@@ -922,6 +981,16 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 #ro-back:hover {
   color: rgba(238,232,192,.55);
   border-color: rgba(238,232,192,.35);
+}
+/* ── Compact room overlay for short viewports ── */
+@media (max-height: 340px) {
+  #ro-room-num { font-size: 11px; }
+  #ro-room-name { font-size: 11px; }
+  .ro-btn-name { font-size: 13px; }
+  .ro-btn-sub { font-size: 8px; }
+  #ro-back { font-size: 9px; }
+  .ro-btn { padding: 7px 16px; }
+  #ro-indicator { margin-bottom: 10px; padding-top: 8px; }
 }
 .map-room-here {
   font-family: monospace; font-size: clamp(7px,.58vw,8px);
@@ -985,6 +1054,25 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
 .drow-notes{width:100%;margin-top:4px;padding:8px;font-family:Georgia,'Times New Roman',serif;font-size:13px;line-height:1.7;color:#3D3020;background:rgba(160,120,20,.05);border:1px dashed rgba(120,90,20,.25);outline:none;resize:vertical;min-height:80px;box-sizing:border-box;}
 .drow-notes:focus{background:rgba(160,120,20,.09);border-color:rgba(120,90,20,.5);}
 .drow-notes::placeholder{color:rgba(60,40,10,.28);font-style:italic;}
+/* Dossier tabs */
+#dossier-tabs {
+  display: flex;
+  border-bottom: 1px solid rgba(120,90,20,.14);
+  position: relative; z-index: 1;
+}
+.dos-tab {
+  font-family: monospace;
+  font-size: 8px; letter-spacing: .16em; text-transform: uppercase;
+  color: rgba(26,22,16,.35);
+  padding: 8px 16px;
+  cursor: pointer;
+  border: none; background: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color .15s, border-color .15s;
+}
+.dos-tab:hover { color: rgba(26,22,16,.65); }
+.dos-tab.active { color: rgba(26,22,16,.8); border-bottom-color: rgba(120,90,20,.45); }
 </style>
 
 <script type="text/ql-anim-b64" id="anim-room1-bureau">PGRpdiBzdHlsZT0ibWFyZ2luOjAgMCAyNHB4O2JhY2tncm91bmQ6IzA3MDkwZjtvdmVyZmxvdzpoaWRkZW47Ij4KPHN0eWxlPgoucWwtd3JhcHtiYWNrZ3JvdW5kOiMwNzA5MGY7b3ZlcmZsb3c6aGlkZGVuO30KLnFsLXdyYXAgY2FudmFze2Rpc3BsYXk6YmxvY2s7d2lkdGg6MTAwJTt9Ci5xbC1sb2d7cGFkZGluZzoxNHB4IDI0cHggNHB4O21pbi1oZWlnaHQ6ODhweDtkaXNwbGF5OmZsZXg7ZmxleC1kaXJlY3Rpb246Y29sdW1uO2dhcDowO2ZvbnQtZmFtaWx5OkludGVyLHN5c3RlbS11aSxzYW5zLXNlcmlmO2ZvbnQtd2VpZ2h0OjMwMDt9Ci5xbC1mcntkaXNwbGF5OmZsZXg7YWxpZ24taXRlbXM6YmFzZWxpbmU7Z2FwOjE0cHg7b3BhY2l0eTowO3RyYW5zZm9ybTp0cmFuc2xhdGVZKDZweCk7dHJhbnNpdGlvbjpvcGFjaXR5IC43cyBjdWJpYy1iZXppZXIoMC4xNiwxLDAuMywxKSx0cmFuc2Zvcm0gLjdzIGN1YmljLWJlemllcigwLjE2LDEsMC4zLDEpO30KLnFsLWZyLmlue29wYWNpdHk6MTt0cmFuc2Zvcm06bm9uZTt9Ci5xbC1mci5kaW0uaW57b3BhY2l0eTouMjt9Ci5xbC1mbntmb250LXNpemU6MTBweDtsZXR0ZXItc3BhY2luZzouMjJlbTt0ZXh0LXRyYW5zZm9ybTp1cHBlcmNhc2U7Y29sb3I6cmdiYSgyMzgsMjMyLDE5MiwuMzIpO21pbi13aWR0aDo0OHB4O3BhZGRpbmctdG9wOjJweDt9Ci5xbC1mb3tmb250LXNpemU6MTJweDtsZXR0ZXItc3BhY2luZzouMjJlbTt0ZXh0LXRyYW5zZm9ybTp1cHBlcmNhc2U7Y29sb3I6I0VFRThDNDtsaW5lLWhlaWdodDoxLjg7fQoucWwtc3R7Zm9udC1zaXplOjEycHg7bGV0dGVyLXNwYWNpbmc6LjE4ZW07dGV4dC10cmFuc2Zvcm06dXBwZXJjYXNlO2NvbG9yOiNFRUU4QzQ7bGluZS1oZWlnaHQ6MS45O29wYWNpdHk6MDt0cmFuc2Zvcm06dHJhbnNsYXRlWSg2cHgpO3RyYW5zaXRpb246b3BhY2l0eSAuOXMgY3ViaWMtYmV6aWVyKDAuMTYsMSwwLjMsMSksdHJhbnNmb3JtIC45cyBjdWJpYy1iZXppZXIoMC4xNiwxLDAuMywxKTt9Ci5xbC1zdC5pbntvcGFjaXR5OjE7dHJhbnNmb3JtOm5vbmU7fQoucWwtc3QuZGltLmlue29wYWNpdHk6LjI4O30KLnFsLXN0LnNwe21hcmdpbi10b3A6OHB4O30KLnFsLWZvb3R7cGFkZGluZzo2cHggMjRweCAxNHB4O30KLnFsLWJ0bntmb250LWZhbWlseTpJbnRlcixzeXN0ZW0tdWksc2Fucy1zZXJpZjtmb250LXNpemU6MTFweDtmb250LXdlaWdodDozMDA7bGV0dGVyLXNwYWNpbmc6LjJlbTt0ZXh0LXRyYW5zZm9ybTp1cHBlcmNhc2U7YmFja2dyb3VuZDp0cmFuc3BhcmVudDtib3JkZXI6MXB4IHNvbGlkIHJnYmEoMjM4LDIzMiwxOTIsLjI1KTtjb2xvcjpyZ2JhKDIzOCwyMzIsMTkyLC41KTtwYWRkaW5nOjdweCAyMnB4O2N1cnNvcjpwb2ludGVyO3RyYW5zaXRpb246YWxsIC4yczt9Ci5xbC1idG46aG92ZXJ7Ym9yZGVyLWNvbG9yOnJnYmEoMjM4LDIzMiwxOTIsLjcpO2NvbG9yOnJnYmEoMjM4LDIzMiwxOTIsLjkpO30KLnFsLWJ0bjpkaXNhYmxlZHtvcGFjaXR5Oi4xMjtjdXJzb3I6ZGVmYXVsdDt9Cjwvc3R5bGU+CjxkaXYgY2xhc3M9InFsLXdyYXAiPgo8Y2FudmFzIGlkPSJxbC1jdiIgd2lkdGg9IjcwMCIgaGVpZ2h0PSIyMzUiPjwvY2FudmFzPgo8ZGl2IGNsYXNzPSJxbC1sb2ciIGlkPSJxbC1sb2ciPjwvZGl2Pgo8ZGl2IGNsYXNzPSJxbC1mb290Ij48YnV0dG9uIGNsYXNzPSJxbC1idG4iIGlkPSJxbC1idG4iPkJlZ2luPC9idXR0b24+PC9kaXY+CjwvZGl2Pgo8c2NyaXB0IHNyYz0iaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L25wbS9yb3VnaGpzQDQuNi42L2J1bmRsZWQvcm91Z2guanMiPjwvc2NyaXB0Pgo8c2NyaXB0PgooZnVuY3Rpb24oKXsKdmFyIGN2PWRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdxbC1jdicpLGN0eD1jdi5nZXRDb250ZXh0KCcyZCcpOwp2YXIgVz03MDAsSD0yMzUsRlk9MTgyLENSPTU5MCxDVz04LENEPTMwLENSMj0yMixFUkM9RlkrQ0QtQ1IyOwp2YXIgQkc9JyMwNzA5MGYnLENLPSdyZ2JhKDIzOCwyMzIsMTkyLC45MCknLENTPSdyZ2JhKDIzOCwyMzIsMTkyLC4yMCknLENHPSdyZ2JhKDIzOCwyMzIsMTkyLC4xMCknLFdIPSdyZ2JhKDI1NSwyNTUsMjU1LC45MiknOwp2YXIgcmM9bnVsbCxzTj0wLHJhZj1udWxsLHJ1bj1mYWxzZSxTQU5TPSdJbnRlcixzeXN0ZW0tdWksc2Fucy1zZXJpZicsRlM9MTY7CmZ1bmN0aW9uIGlSQygpe2lmKCFyYyYmd2luZG93LnJvdWdoKXJjPXJvdWdoLmNhbnZhcyhjdik7fQp2YXIgcm89ZnVuY3Rpb24obyl7cmV0dXJuIE9iamVjdC5hc3NpZ24oe3N0cm9rZTpDSyxzdHJva2VXaWR0aDoxLjkscm91Z2huZXNzOjAuNyxib3dpbmc6MC41LGZpbGw6J25vbmUnfSxvfHx7fSk7fTsKdmFyIHJvZD1mdW5jdGlvbihvKXtyZXR1cm4gT2JqZWN0LmFzc2lnbih7c3Ryb2tlOkNTLHN0cm9rZVdpZHRoOjEuMSxyb3VnaG5lc3M6MS41LGJvd2luZzowLjcsZmlsbDonbm9uZSd9LG98fHt9KTt9Owp2YXIgcm9nPWZ1bmN0aW9uKG8pe3JldHVybiBPYmplY3QuYXNzaWduKHtzdHJva2U6Q0csc3Ryb2tlV2lkdGg6MS4wLHJvdWdobmVzczoxLjQsYm93aW5nOjAuOCxmaWxsOidub25lJ30sb3x8e30pO307CnZhciByb3c9ZnVuY3Rpb24obyl7cmV0dXJuIE9iamVjdC5hc3NpZ24oe3N0cm9rZTpXSCxzdHJva2VXaWR0aDoxLjgscm91Z2huZXNzOjEuMixib3dpbmc6MC45LGZpbGw6J25vbmUnfSxvfHx7fSk7fTsKdmFyIHJvYj1mdW5jdGlvbihvKXtyZXR1cm4gT2JqZWN0LmFzc2lnbih7c3Ryb2tlOkNLLHN0cm9rZVdpZHRoOjIuMCxyb3VnaG5lc3M6MC42LGJvd2luZzowLjQsZmlsbDonbm9uZSd9LG98fHt9KTt9OwpmdW5jdGlvbiBkQkcoKXtjdHguZmlsbFN0eWxlPUJHO2N0eC5maWxsUmVjdCgwLDAsVyxIKTtjdHguc3Ryb2tlU3R5bGU9J3JnYmEoMjM4LDIzMiwxOTIsLjA0KSc7Y3R4LmxpbmVXaWR0aD0xO2Zvcih2YXIgeT0yNzt5PEg7eSs9Mjcpe2N0eC5iZWdpblBhdGgoKTtjdHgubW92ZVRvKDAseSk7Y3R4LmxpbmVUbyhXLHkpO2N0eC5zdHJva2UoKTt9fQpmdW5jdGlvbiBkRmwoKXtpZighcmMpcmV0dXJuO3JjLmxpbmUoMjAsRlksQ1ItQ1csRlkscm9kKCkpO3JjLmxpbmUoQ1IrQ1csRlksNjgwLEZZLHJvZCgpKTtyYy5saW5lKENSLUNXLEZZLENSLEZZK0NELHJvdygpKTtyYy5saW5lKENSLEZZK0NELENSK0NXLEZZLHJvdygpKTt9CmZ1bmN0aW9uIGRIYWlyU3coY3gsY3kpe3ZhciBvPXJvYih7c3Ryb2tlV2lkdGg6Mi4wLHJvdWdobmVzczowLjgsYm93aW5nOjEuMn0pO3JjLmxpbmUoY3gtOCxjeS0xMSxjeC0yLGN5LTI4LG8pO3JjLmxpbmUoY3gtMyxjeS0xMSxjeCs0LGN5LTI4LG8pO3JjLmxpbmUoY3grMyxjeS0xMSxjeCsxMCxjeS0yNixvKTtyYy5saW5lKGN4KzgsY3ktMTEsY3grMTUsY3ktMjMsbyk7cmMubGluZShjeC0xMCxjeS0xMSxjeCsxMCxjeS0xMSxyb2Ioe3N0cm9rZVdpZHRoOjEuMyxyb3VnaG5lc3M6MC40fSkpO30KZnVuY3Rpb24gZEhhaXJUUihjeCxjeSl7dmFyIG89cm9iKHtzdHJva2VXaWR0aDoyLjAscm91Z2huZXNzOjAuOCxib3dpbmc6MS44fSk7cmMubGluZShjeC02LGN5LTExLGN4KzIsY3ktMjgsbyk7cmMubGluZShjeC0xLGN5LTExLGN4KzgsY3ktMjcsbyk7cmMubGluZShjeCs1LGN5LTExLGN4KzE0LGN5LTI1LG8pO3JjLmxpbmUoY3grMTAsY3ktMTEsY3grMTgsY3ktMjIsbyk7cmMubGluZShjeC04LGN5LTExLGN4KzEyLGN5LTExLHJvYih7c3Ryb2tlV2lkdGg6MS4zLHJvdWdobmVzczowLjR9KSk7fQpmdW5jdGlvbiBkSGRGKGN4LGN5KXtyYy5jaXJjbGUoY3gsY3ksMjIscm9iKHtyb3VnaG5lc3M6MC40fSkpO3JjLmNpcmNsZShjeC02LGN5LTIsMixyb2Ioe3N0cm9rZVdpZHRoOjEuNSxyb3VnaG5lc3M6MC4zfSkpO3JjLmNpcmNsZShjeCs2LGN5LTIsMixyb2Ioe3N0cm9rZVdpZHRoOjEuNSxyb3VnaG5lc3M6MC4zfSkpO2RIYWlyU3coY3gsY3kpO30KZnVuY3Rpb24gZEhkQihjeCxjeSl7cmMuY2lyY2xlKGN4LGN5LDIyLHJvYih7cm91Z2huZXNzOjAuNH0pKTtkSGFpclN3KGN4LGN5KTt9CmZ1bmN0aW9uIGRIZFRSKGN4LGN5KXtyYy5jaXJjbGUoY3gsY3ksMjIscm9iKHtyb3VnaG5lc3M6MC40fSkpO3JjLmNpcmNsZShjeCxjeS0yLDIscm9iKHtzdHJva2VXaWR0aDoxLjUscm91Z2huZXNzOjAuM30pKTtyYy5jaXJjbGUoY3grOCxjeS0yLDIscm9iKHtzdHJva2VXaWR0aDoxLjUscm91Z2huZXNzOjAuM30pKTtkSGFpclRSKGN4LGN5KTt9CmZ1bmN0aW9uIGRTdChhcm0pe2lmKCFyYylyZXR1cm47dmFyIHg9NTIseT1GWSxvPXJvYigpO3JjLmxpbmUoeC01LHktMjQseC03LHksbyk7cmMubGluZSh4KzUseS0yNCx4KzcseSxvKTtyYy5saW5lKHgtNyx5LHgtMTgseSxvKTtyYy5saW5lKHgrNyx5LHgrMTgseSxvKTtyYy5saW5lKHgseS0yNCx4LHktNjgsbyk7dmFyIGF4PXgrTWF0aC5jb3MoYXJtKSozMCxheT15LTU4K01hdGguc2luKGFybSkqMzA7cmMubGluZSh4LHktNTgsYXgsYXksbyk7cmMubGluZSh4LHktNTgseC0yNix5LTQ4LG8pO2RIZEYoeCx5LTgyKTt9CmZ1bmN0aW9uIGRXayh4LHQpe2lmKCFyYylyZXR1cm47dmFyIHk9Rlksbz1yb2IoKSxzPU1hdGguc2luKHQqMC4wNikqMC42O3JjLmxpbmUoeCx5LTI0LHgtNitzKjcseSxvKTtyYy5saW5lKHgseS0yNCx4KzYtcyo3LHksbyk7cmMubGluZSh4LTYrcyo3LHkseC0xNCtzKjcseSxvKTtyYy5saW5lKHgrNi1zKjcseSx4KzE0LXMqNyx5LG8pO3JjLmxpbmUoeCx5LTI0LHgtNCx5LTY4LG8pO3JjLmxpbmUoeC00LHktNTgseC00K3MqNSx5LTQwLG8pO3JjLmxpbmUoeC00LHktNTgseC00LXMqNSx5LTQyLG8pO2RIZEIoeC00LHktODIpO30KZnVuY3Rpb24gZFN0ZCh4LHRhKXtpZighcmMpcmV0dXJuO3ZhciB5PUZZLG89cm9iKCk7cmMubGluZSh4LHktMjQseC0xMCx5LG8pO3JjLmxpbmUoeCx5LTI0LHgrMTAseSxvKTtyYy5saW5lKHgtMTAseSx4LTIwLHksbyk7cmMubGluZSh4KzEwLHkseCsyMCx5LG8pO3JjLmxpbmUoeCx5LTI0LHgtNCx5LTY2LG8pO3JjLmxpbmUoeC00LHktNTYseC0xOCx5LTM0LG8pO3JjLmxpbmUoeC00LHktNTYseCsxMix5LTM2LG8pO3ZhciBoeD14LTQsaHk9eS04MDtpZih0YTwwLjUpZEhkQihoeCxoeSk7ZWxzZSBkSGRUUihoeCxoeSk7fQpmdW5jdGlvbiBjVHgoY3gsY3ksc3gsZmFjZSl7aWYoIWZhY2V8fE1hdGguYWJzKHN4KTwwLjE4KXJldHVybjtjdHguc2F2ZSgpO2N0eC50cmFuc2xhdGUoY3gsY3kpO2N0eC5zY2FsZShzeCwxKTtjdHguZm9udD0nMzAwICcrRlMrJ3B4ICcrU0FOUztjdHguZmlsbFN0eWxlPUNLO2N0eC5nbG9iYWxBbHBoYT1NYXRoLm1pbigxLE1hdGguYWJzKHN4KSoxLjgpO2N0eC50ZXh0QWxpZ249J2NlbnRlcic7Y3R4LnRleHRCYXNlbGluZT0nbWlkZGxlJztjdHguZmlsbFRleHQoZmFjZS50b1VwcGVyQ2FzZSgpLDAsMCk7Y3R4LnJlc3RvcmUoKTt9CmZ1bmN0aW9uIGRDVShjeCxjeSxzeCxmYWNlKXtpZighcmMpcmV0dXJuO3ZhciBydz1NYXRoLm1heCgxLjUsQ1IyKk1hdGguYWJzKHN4KSk7cmMuZWxsaXBzZShjeCxjeSxydyoyLENSMioyLHJvKCkpO2NUeChjeCxjeSxzeCxmYWNlKTt9CmZ1bmN0aW9uIGRDRihjeCxyeSl7aWYoIXJjfHxyeTwwLjQpcmV0dXJuO3JjLmVsbGlwc2UoY3gsRlksQ1IyKjMuOCxNYXRoLm1heCgwLjgscnkqMikscm8oe3N0cm9rZVdpZHRoOjEuNn0pKTt9CmZ1bmN0aW9uIGRDRShleSx0aWx0LHdoKXtpZighcmMpcmV0dXJuO2N0eC5zYXZlKCk7Y3R4LnRyYW5zbGF0ZShDUixleSk7Y3R4LnJvdGF0ZSh0aWx0fHwwKTtyYy5lbGxpcHNlKDAsMCw1LENSMioyLHdoP3Jvdyh7c3Ryb2tlV2lkdGg6Mi4yfSk6cm8oe3N0cm9rZVdpZHRoOjEuOX0pKTtjdHgucmVzdG9yZSgpO30KZnVuY3Rpb24gZEhhbmQoY3gsY3ksbGJsLGFsKXtpZighcmN8fGFsPDAuMDEpcmV0dXJuO2N0eC5zYXZlKCk7Y3R4Lmdsb2JhbEFscGhhPWFsO3ZhciBvPXtzdHJva2U6Q0ssc3Ryb2tlV2lkdGg6MS43LHJvdWdobmVzczowLjYsYm93aW5nOjAuNCxmaWxsOidub25lJ307dmFyIGZ0PWN5K0NSMiozLUNSMioxLjI7cmMubGluZShjeC0xMCxmdCxjeC0xMCxmdCtDUjIqMS40LG8pO3JjLmxpbmUoY3gsZnQsY3gsZnQrQ1IyKjEuNCxvKTtyYy5saW5lKGN4KzEwLGZ0LGN4KzEwLGZ0K0NSMioxLjQsbyk7cmMuY2lyY2xlKGN4LGN5LENSMiozLHJvYih7c3Ryb2tlV2lkdGg6Mi40LHJvdWdobmVzczowLjV9KSk7Y3R4LmZpbGxTdHlsZT1DSztjdHguZm9udD0nMzAwICcrRlMrJ3B4ICcrU0FOUztjdHgudGV4dEFsaWduPSdjZW50ZXInO2N0eC50ZXh0QmFzZWxpbmU9J21pZGRsZSc7Y3R4LmZpbGxUZXh0KGxibC50b1VwcGVyQ2FzZSgpLGN4LGN5KTtjdHgucmVzdG9yZSgpO30KZnVuY3Rpb24gZFBDKCl7c3QucGMuZm9yRWFjaChmdW5jdGlvbihjKXtpZighcmMpcmV0dXJuO3JjLmVsbGlwc2UoYy54LEZZLENSMiozLjYsOSxyb2coKSk7fSk7fQp2YXIgV1M9NTIsV0U9Q1ItNDQ7CnZhciBzdD17cGg6J2lkbGUnLHQ6MCxjeDoxMDAsY3k6RlktQ1IyLHN4OjEsY2Y6JycsY3Y6ZmFsc2Uscnk6Q1IyLGZ4OjAsZnY6ZmFsc2UsaHg6MCxoeTo4MCxobDonJyxoYTowLGh2OmZhbHNlLGV4OkZZLUNSMixldDowLGV2OmZhbHNlLGV3OmZhbHNlLHd4OldTLHdrOmZhbHNlLGFyOmZhbHNlLHRhOjAsYXJtOi1NYXRoLlBJLzUscGM6W10sbHg6MzAwLGRvbmU6bnVsbH07CmZ1bmN0aW9uIGxlcnAoYSxiLHQpe3JldHVybiBhKyhiLWEpKnQ7fQpmdW5jdGlvbiBlTyh0KXtyZXR1cm4gMS0oMS10KSooMS10KTt9CmZ1bmN0aW9uIGVPMyh0KXtyZXR1cm4gMS0oMS10KSooMS10KSooMS10KTt9CmZ1bmN0aW9uIGVJTyh0KXtyZXR1cm4gdDwwLjU/Mip0KnQ6MS0yKigxLXQpKigxLXQpO30KZnVuY3Rpb24gZUlPUyh0KXtyZXR1cm4gdDwwLjU/NCp0KnQqdDoxLTQqKDEtdCkqKDEtdCkqKDEtdCk7fQpmdW5jdGlvbiBjbGFtcCh2LGxvLGhpKXtyZXR1cm4gTWF0aC5tYXgobG8sTWF0aC5taW4oaGksdikpO30KZnVuY3Rpb24gYnoocDAscDEscDIsdCl7cmV0dXJuIGxlcnAobGVycChwMCxwMSx0KSxsZXJwKHAxLHAyLHQpLHQpO30KZnVuY3Rpb24gcmVuZGVyKCl7ZEJHKCk7ZEZsKCk7aWYoc3QuYXIpZFN0ZChzdC53eCxzdC50YSk7ZWxzZSBpZihzdC53aylkV2soc3Qud3gsc3QudCk7ZWxzZSBkU3Qoc3QuYXJtKTtkUEMoKTtpZihzdC5mdilkQ0Yoc3QuZngsc3QucnkpO2lmKHN0LmN2KWRDVShzdC5jeCxzdC5jeSxzdC5zeCxzdC5jZik7aWYoc3QuaHYpZEhhbmQoc3QuaHgsc3QuaHksc3QuaGwsc3QuaGEpO2lmKHN0LmV2KWRDRShzdC5leCxzdC5ldCxzdC5ldyk7fQp2YXIgUEg9ewogIHdpbmR1cDpmdW5jdGlvbihzKXt2YXIgZD0xOCxwPWNsYW1wKHMudC9kLDAsMSk7cy5hcm09bGVycCgtTWF0aC5QSS81LC1NYXRoLlBJKjAuMzUsZU8ocCkpO3MuY3Y9ZmFsc2U7aWYocy50Pj1kKXtzLnBoPSdhcmMnO3MudD0wO319LAogIGFyYzpmdW5jdGlvbihzKXt2YXIgZD02MixwPWNsYW1wKHMudC9kLDAsMSk7cy5jeD1ieigxMDAscy5seC8yKzQwLHMubHgscCk7cy5jeT0oRlktQ1IyKS1NYXRoLnNpbihwKk1hdGguUEkpKjE3MDtzLnN4PU1hdGguY29zKHAqTWF0aC5QSSo0LjIpO3MuY3Y9dHJ1ZTtzLmZ2PWZhbHNlO3MuaHY9ZmFsc2U7cy5hcm09bGVycCgtTWF0aC5QSSowLjM1LC1NYXRoLlBJKjEuMDUsY2xhbXAocy50LzIyLDAsMSkpO2lmKHMudD49ZCl7cy5waD0nYjEnO3MudD0wO319LAogIGIxOmZ1bmN0aW9uKHMpe3ZhciBkPTI0LHA9Y2xhbXAocy50L2QsMCwxKTtzLmN4PWxlcnAocy5seCxzLmx4KzM2LHApO3MuY3k9KEZZLUNSMiktTWF0aC5zaW4ocCpNYXRoLlBJKSozNjtzLnN4PU1hdGguY29zKHAqTWF0aC5QSSoxLjIrTWF0aC5QSSo0LjIpO2lmKHMudD49ZCl7cy5waD0nYjInO3MudD0wO319LAogIGIyOmZ1bmN0aW9uKHMpe3ZhciBkPTE2LHA9Y2xhbXAocy50L2QsMCwxKTtzLmN4PWxlcnAocy5seCszNixzLmx4KzUwLHApO3MuY3k9KEZZLUNSMiktTWF0aC5zaW4ocCpNYXRoLlBJKSoxNDtzLnN4PU1hdGguY29zKHAqTWF0aC5QSSowLjcrTWF0aC5QSSo1LjQpO2lmKHMudD49ZCl7cy5jeD1zLmx4O3MuY3k9RlktQ1IyO3Muc3g9MTtzLnBoPSd3Yic7cy50PTA7fX0sCiAgd2I6ZnVuY3Rpb24ocyl7dmFyIGQ9NTIscD1jbGFtcChzLnQvZCwwLDEpLGZsPTEtZU8zKHApO2lmKGZsPjAuMjgpe3MuY3k9RlktQ1IyKmZsO3Muc3g9MTtzLmN2PXRydWU7cy5mdj1mYWxzZTt9ZWxzZXtzLmN2PWZhbHNlO3MuZnY9dHJ1ZTtzLmZ4PXMubHg7cy5yeT1NYXRoLm1heCgyLjUsQ1IyKmZsKTt9aWYocy50Pj1kKXtzLnBoPSdzZSc7cy50PTA7cy5jdj1mYWxzZTtzLmZ2PXRydWU7cy5yeT0yLjU7fX0sCiAgc2U6ZnVuY3Rpb24ocyl7cy5yeT0yLjUrTWF0aC5zaW4ocy50Kk1hdGguUEkvMTQpKjEuMjtpZihzLnQ+PTE0KXtzLnJ5PTIuNTtzLnBoPSdsaSc7cy50PTA7cy5oeD1zLmx4O3MuaHk9RlktQ1IyKjQ7cy5obD1zLmNmO319LAogIGxpOmZ1bmN0aW9uKHMpe3ZhciBkPTQwLHA9Y2xhbXAocy50L2QsMCwxKTtzLmh2PXRydWU7cy5oYT1lTyhwKTtzLmh5PWxlcnAoRlktQ1IyKjQtMzAsRlktQ1IyKjQsZU8zKHApKTtpZihzLnQ+PWQpe3MucGg9J2hvJztzLnQ9MDt9fSwKICBobzpmdW5jdGlvbihzKXtpZihzLnQ+PTUwKXtzLnBoPSdpZGxlJztpZihzLmRvbmUpcy5kb25lKCk7fX0sCiAgZVd1OmZ1bmN0aW9uKHMpe3ZhciBkPTE4LHA9Y2xhbXAocy50L2QsMCwxKTtzLmFybT1sZXJwKC1NYXRoLlBJLzUsLU1hdGguUEkqMC4zNSxlTyhwKSk7cy5jdj1mYWxzZTtpZihzLnQ+PWQpe3MucGg9J2VBcic7cy50PTA7fX0sCiAgZUFyOmZ1bmN0aW9uKHMpe3ZhciBkPTY1LHA9Y2xhbXAocy50L2QsMCwxKTtzLmN4PWJ6KDEwMCwzNjAsQ1IscCk7cy5jeT0oRlktQ1IyKS1NYXRoLnNpbihwKk1hdGguUEkpKjE4MDtzLnN4PTAuMDg7cy5jZj0nJztzLmN2PXRydWU7cy5ldj1mYWxzZTtzLmFybT1sZXJwKC1NYXRoLlBJKjAuMzUsLU1hdGguUEkqMS4wNSxjbGFtcChzLnQvMjIsMCwxKSk7aWYocy50Pj1kKXtzLnBoPSdlQm8nO3MudD0wO319LAogIGVCbzpmdW5jdGlvbihzKXt2YXIgZD0yMixwPWNsYW1wKHMudC9kLDAsMSk7cy5jeD1sZXJwKENSLENSKzI4LHApO3MuY3k9KEZZLUNSMiktTWF0aC5zaW4ocCpNYXRoLlBJKSoyNjtpZihzLnQ+PWQpe3MucGg9J2VSbyc7cy50PTA7fX0sCiAgZVJvOmZ1bmN0aW9uKHMpe3ZhciBkPTU1LHA9Y2xhbXAocy50L2QsMCwxKTtzLmN4PWxlcnAoQ1IrMjgsQ1IsZUlPKHApKTtzLmN5PUZZLUNSMjtpZihzLnQ+PWQpe3MuY3Y9ZmFsc2U7cy5ldj10cnVlO3MuZXg9RlktQ1IyO3MuZXQ9MDtzLnBoPSdlRHInO3MudD0wO319LAogIGVEcjpmdW5jdGlvbihzKXt2YXIgZD0yNSxwPWNsYW1wKHMudC9kLDAsMSk7cy5leD1sZXJwKEZZLUNSMixFUkMsZU8ocCkpO2lmKHMudD49ZCl7cy5waD0nZVdiJztzLnQ9MDt9fSwKICBlV2I6ZnVuY3Rpb24ocyl7dmFyIGFtcD0yOCpNYXRoLmV4cCgtcy50KjAuMDM0KTtzLmV0PU1hdGguc2luKHMudCowLjI1KSphbXAqKE1hdGguUEkvMTgwKTtzLmV4PUVSQztpZihzLnQ+MTAwKXtzLmV0PTA7cy5ldz10cnVlO3MucGg9J2VSZSc7cy50PTA7fX0sCiAgZVJlOmZ1bmN0aW9uKHMpe3MuZXg9RVJDO3MuZXQ9MDtpZihzLnQ9PT04JiZzLmRvbmUpcy5kb25lKCk7fSwKICBwYXVzZTpmdW5jdGlvbihzKXtpZihzLnQ+PTgwKXtzLnBoPSd3YWxrJztzLnQ9MDtzLndrPXRydWU7cy53eD1XUzt9fSwKICB3YWxrOmZ1bmN0aW9uKHMpe3ZhciBkPTM2MCxwPWNsYW1wKHMudC9kLDAsMSk7cy53eD1sZXJwKFdTLFdFLGVJT1MocCkpO2lmKHMudD49ZCl7cy53az1mYWxzZTtzLmFyPXRydWU7cy50YT0wO3MucGg9J3R1cm4nO3MudD0wO319LAogIHR1cm46ZnVuY3Rpb24ocyl7dmFyIGQ9NjAscD1jbGFtcChzLnQvZCwwLDEpO3MudGE9ZU8ocCk7aWYocy50Pj1kKXtzLnBoPSdzbmQnO3MudD0wO319LAogIHNuZDpmdW5jdGlvbihzKXtzLmFyPXRydWU7cy50YT0xO30KfTsKZnVuY3Rpb24gdGljaygpe2lmKCFydW4pcmV0dXJuO3N0LnQrKztpZihQSFtzdC5waF0pUEhbc3QucGhdKHN0KTtyZW5kZXIoKTtyYWY9cmVxdWVzdEFuaW1hdGlvbkZyYW1lKHRpY2spO30KZnVuY3Rpb24gc3RhcnRBKCl7aWYocmFmKWNhbmNlbEFuaW1hdGlvbkZyYW1lKHJhZik7cnVuPXRydWU7cmFmPXJlcXVlc3RBbmltYXRpb25GcmFtZSh0aWNrKTt9CmZ1bmN0aW9uIHN0b3BBKCl7cnVuPWZhbHNlO2lmKHJhZil7Y2FuY2VsQW5pbWF0aW9uRnJhbWUocmFmKTtyYWY9bnVsbDt9fQp2YXIgZWw9ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3FsLWxvZycpOwpmdW5jdGlvbiBjbEwoKXtlbC5pbm5lckhUTUw9Jyc7fQpmdW5jdGlvbiBmUm93KG51bSxvdXQsY2xzLGRlbGF5KXt2YXIgcj1kb2N1bWVudC5jcmVhdGVFbGVtZW50KCdkaXYnKTtyLmNsYXNzTmFtZT0ncWwtZnIgJysoY2xzfHwnJyk7ci5pbm5lckhUTUw9JzxzcGFuIGNsYXNzPSJxbC1mbiI+JytudW0rJzwvc3Bhbj48c3BhbiBjbGFzcz0icWwtZm8iPicrb3V0Kyc8L3NwYW4+JztlbC5hcHBlbmRDaGlsZChyKTtzZXRUaW1lb3V0KGZ1bmN0aW9uKCl7ci5jbGFzc0xpc3QuYWRkKCdpbicpO30sZGVsYXl8fDApO30KZnVuY3Rpb24gc3RtdCh0eHQsY2xzLGRlbGF5KXt2YXIgZD1kb2N1bWVudC5jcmVhdGVFbGVtZW50KCdkaXYnKTtkLmNsYXNzTmFtZT0ncWwtc3QgJysoY2xzfHwnJyk7ZC50ZXh0Q29udGVudD10eHR8fCdcdTAwYTAnO2VsLmFwcGVuZENoaWxkKGQpO3NldFRpbWVvdXQoZnVuY3Rpb24oKXtkLmNsYXNzTGlzdC5hZGQoJ2luJyk7fSxkZWxheXx8MCk7fQpmdW5jdGlvbiBzQnRuKGxibCxkZWxheSl7dmFyIGI9ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3FsLWJ0bicpO2Iuc3R5bGUuZGlzcGxheT1sYmw/Jyc6J25vbmUnO2lmKGxibCl7Yi50ZXh0Q29udGVudD1sYmw7Yi5kaXNhYmxlZD10cnVlO31pZihsYmwmJmRlbGF5IT1udWxsKXNldFRpbWVvdXQoZnVuY3Rpb24oKXtiLmRpc2FibGVkPWZhbHNlO30sZGVsYXkpO30KZnVuY3Rpb24gclN0KCl7c3RvcEEoKTtPYmplY3QuYXNzaWduKHN0LHtwaDonaWRsZScsdDowLGN4OjEwMCxjeTpGWS1DUjIsc3g6MSxjZjonJyxjdjpmYWxzZSxyeTpDUjIsZng6MCxmdjpmYWxzZSxoeDowLGh5OjgwLGhsOicnLGhhOjAsaHY6ZmFsc2UsZXg6RlktQ1IyLGV0OjAsZXY6ZmFsc2UsZXc6ZmFsc2Usd3g6V1Msd2s6ZmFsc2UsYXI6ZmFsc2UsdGE6MCxhcm06LU1hdGguUEkvNX0pO30KdmFyIGx4cz1bMjAwLDMxMCw0MjBdLGxpPTA7CnZhciBzdGVwcz1bCiAgZnVuY3Rpb24oKXtyU3QoKTtzdC5wYz1bXTtyZW5kZXIoKTtjbEwoKTtzdG10KCdBIGNvaW4gaGFzIHR3byBmYWNlcy4gV2hhdCBhcmUgdGhlIHBvc3NpYmlsaXRpZXM/JywnJywzMDApO3NCdG4oJ0JlZ2luJywxMTAwKTt9LAogIGZ1bmN0aW9uKCl7clN0KCk7bGk9MDtzdC5wYz1bXTtjbEwoKTtzQnRuKCcnKTtzdC5jZj0nSCc7c3QubHg9bHhzW2xpXTtzdC5kb25lPWZ1bmN0aW9uKCl7c3QucGMucHVzaCh7eDpseHNbbGldfSk7bGkrKztjbEwoKTtmUm93KCdGbGlwIDEnLCdIZWFkcycsJycsMjAwKTtzQnRuKCdGbGlwIGFnYWluJywxMDAwKTt9O3N0LnBoPSd3aW5kdXAnO3N0YXJ0QSgpO30sCiAgZnVuY3Rpb24oKXtyU3QoKTtzdC5wYz1be3g6bHhzWzBdfV07Y2xMKCk7ZlJvdygnRmxpcCAxJywnSGVhZHMnLCdkaW0nLDApO3NCdG4oJycpO3N0LmNmPSdIJztzdC5seD1seHNbbGldO3N0LmRvbmU9ZnVuY3Rpb24oKXtzdC5wYy5wdXNoKHt4Omx4c1tsaV19KTtsaSsrO2NsTCgpO2ZSb3coJ0ZsaXAgMScsJ0hlYWRzJywnZGltJyw4MCk7ZlJvdygnRmxpcCAyJywnSGVhZHMnLCcnLDMwMCk7c0J0bignRmxpcCBhZ2FpbicsMTEwMCk7fTtzdC5waD0nd2luZHVwJztzdGFydEEoKTt9LAogIGZ1bmN0aW9uKCl7clN0KCk7c3QucGM9W3t4Omx4c1swXX0se3g6bHhzWzFdfV07Y2xMKCk7ZlJvdygnRmxpcCAxJywnSGVhZHMnLCdkaW0nLDApO2ZSb3coJ0ZsaXAgMicsJ0hlYWRzJywnZGltJywwKTtzQnRuKCcnKTtzdC5jZj0nVCc7c3QubHg9bHhzW2xpXTtzdC5kb25lPWZ1bmN0aW9uKCl7c3QucGMucHVzaCh7eDpseHNbbGldfSk7bGkrKztjbEwoKTtmUm93KCdGbGlwIDEnLCdIZWFkcycsJ2RpbScsODApO2ZSb3coJ0ZsaXAgMicsJ0hlYWRzJywnZGltJywyMjApO2ZSb3coJ0ZsaXAgMycsJ1RhaWxzJywnJywzODApO3N0bXQoJ3tILCBUfSDigJQgZXZlcnkgb3V0Y29tZSBhY2NvdW50ZWQgZm9yLicsJ3NwJywxMDAwKTtzQnRuKCdDb250aW51ZScsMjQwMCk7fTtzdC5waD0nd2luZHVwJztzdGFydEEoKTt9LAogIGZ1bmN0aW9uKCl7c3RvcEEoKTtzdC5jdj1mYWxzZTtzdC5odj1mYWxzZTtzdC5ldj1mYWxzZTtzdC5mdj10cnVlO3N0LmZ4PWx4c1syXTtzdC5yeT0yLjU7c3QucGM9W3t4Omx4c1swXX0se3g6bHhzWzFdfV07cmVuZGVyKCk7Y2xMKCk7c3RtdCgne0gsIFR9IOKAlCBldmVyeSBvdXRjb21lIGFjY291bnRlZCBmb3IuJywnJywwKTtzdG10KCdPciBzbyBpdCBhcHBlYXJzLicsJ3NwJywxMjAwKTtzdG10KCdXaGF0IGhhdmUgd2Ugbm90IHRob3VnaHQgb2Y/Jywnc3AnLDMwMDApO3NCdG4oJ0ZsaXAgNCcsNDQwMCk7fSwKICBmdW5jdGlvbigpe3JTdCgpO3N0LnBjPVt7eDpseHNbMF19LHt4Omx4c1sxXX0se3g6bHhzWzJdfV07Y2xMKCk7c3RtdCgnV2hhdCBhYm91dCB0aGlzPycsJ3NwJywwKTtzQnRuKCcnKTtzdC5kb25lPWZ1bmN0aW9uKCl7Y2xMKCk7ZlJvdygnRmxpcCA0JywnU2lkZScsJycsMzAwKTtzdG10KCd7SCwgVCwgU2lkZX0nLCdzcCcsMTEwMCk7c3RtdCgnQW4gb3V0Y29tZSB5b3UgZGlkIG5vdCBsaXN0IGRvZXMgbm90IGNlYXNlIHRvIGV4aXN0IGJlY2F1c2UgeW91IGRpZCBub3QgbGlzdCBpdC4gSXQgd2FpdHMuJywnc3AnLDIyMDApO3NldFRpbWVvdXQoZnVuY3Rpb24oKXtzdC5waD0ncGF1c2UnO30sMzgwMCk7fTtzdC5waD0nZVd1JztzdGFydEEoKTt9Cl07CihmdW5jdGlvbiB3YWl0KCl7aWYod2luZG93LnJvdWdoKXtpUkMoKTtzdGVwc1swXSgpO2RvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdxbC1idG4nKS5hZGRFdmVudExpc3RlbmVyKCdjbGljaycsZnVuY3Rpb24oKXtzTisrO2lmKHNOPHN0ZXBzLmxlbmd0aClzdGVwc1tzTl0oKTt9KTt9ZWxzZSBzZXRUaW1lb3V0KHdhaXQsODApO30pKCk7Cn0pKCk7Cjwvc2NyaXB0Pgo8L2Rpdj4K</script>
@@ -1138,8 +1226,16 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
               <div style="font-family:monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(26,22,16,.38);">Squeakwell, A. &nbsp;&middot;&nbsp; Ref: AS/001/F1 &nbsp;&middot;&nbsp; First Floor</div>
             </div>
 
+            <!-- Tab bar -->
+            <div id="dossier-tabs">
+              <button class="dos-tab active" id="dos-tab-rooms" onclick="dosSwitchTab('rooms')">Rooms</button>
+              <button class="dos-tab" id="dos-tab-cleaner" onclick="dosSwitchTab('cleaner')">The Cleaner</button>
+            </div>
+
             <!-- Room rows -->
             <div id="dossier-inner" style="padding:8px 20px 16px;position:relative;z-index:1;"></div>
+            <!-- Cleaner rows -->
+            <div id="dossier-cleaner" style="display:none;padding:8px 20px 16px;position:relative;z-index:1;"></div>
 
           </div>
         </div>
@@ -1253,6 +1349,15 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   </div>
 
 </div><!-- /shell -->
+
+<!-- ── CLEANER CUTSCENE OVERLAY ── -->
+<div id="cleaner-cutscene">
+  <div id="cs-scroll">
+    <div id="cs-ref"></div>
+    <div id="cs-beats"></div>
+    <button id="cs-close" onclick="csClose()">&mdash; close &mdash;</button>
+  </div>
+</div>
 
 <script>
 // ── GRAIN ──
@@ -1645,6 +1750,7 @@ function goToGroundFloor(){
   if(ov){ ov.style.transition='none'; ov.style.opacity='0'; ov.classList.remove('gone'); setTimeout(function(){ ov.style.transition=''; },50); }
   setLocation('Stairwell');
   _setSplit(0.67);
+  _stairScene=0;
   if(window._s0_intro) window._s0_intro();
 }
 
@@ -1694,6 +1800,67 @@ function triggerLampPulse(){
   window.addEventListener('resize', resize);
 })();
 
+
+// ── CLEANER CUTSCENE ──
+var _cleanerCutsceneActive = false;
+
+function cleanerCutscene(){
+  if(_cleanerCutsceneActive) return;
+  _cleanerCutsceneActive = true;
+
+  var issued = _issuedDocs().sort(function(a,b){ return a-b; });
+  var latestIdx = issued.length ? issued[issued.length-1] : 0;
+  var docHtml = _CLEANER_DOCS[latestIdx] || '';
+
+  var tmp = document.createElement('div');
+  tmp.innerHTML = docHtml;
+  var refText = '';
+  var beats = [];
+  tmp.childNodes.forEach(function(n){
+    if(n.nodeType !== 1) return;
+    if(n.tagName === 'DIV'){ refText = n.textContent.trim(); }
+    else if(n.tagName === 'P'){
+      beats.push({ html: n.innerHTML, stage: n.style.fontStyle === 'italic' });
+    }
+  });
+  if(!beats.length){ _cleanerCutsceneActive = false; return; }
+
+  var ov       = document.getElementById('cleaner-cutscene');
+  var refEl    = document.getElementById('cs-ref');
+  var beatsEl  = document.getElementById('cs-beats');
+  var closeBtn = document.getElementById('cs-close');
+
+  refEl.textContent = refText;
+  beatsEl.innerHTML = '';
+  beats.forEach(function(b){
+    var p = document.createElement('p');
+    p.innerHTML = b.html;
+    if(b.stage) p.classList.add('stage');
+    beatsEl.appendChild(p);
+  });
+
+  ov.style.display = 'flex';
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){ ov.classList.add('visible'); });
+  });
+
+  function _csEsc(e){
+    if(e.key === 'Escape'){ document.removeEventListener('keydown',_csEsc); csClose(); }
+  }
+  document.addEventListener('keydown', _csEsc);
+}
+
+function csClose(){
+  var ov = document.getElementById('cleaner-cutscene');
+  ov.classList.remove('visible');
+  setTimeout(function(){
+    ov.style.display = 'none';
+    _cleanerCutsceneActive = false;
+    if(typeof BB !== 'undefined' && BB.write){
+      BB.write(['First Floor. The corridor.', 'Ten rooms. One application.']);
+    }
+  }, 600);
+}
 
 // ── BLACKBOARD ──
 var BB = (function(){
@@ -1847,6 +2014,8 @@ function pipSVG(shape, filled, size){
 function openDossier(){
   var inner=document.getElementById('dossier-inner');
   if(!inner) return;
+  // reset to rooms tab
+  dosSwitchTab('rooms');
 
   var pages=_dossierLoad();
   // floors that have at least one page entry (other floors)
@@ -1901,8 +2070,68 @@ function openDossier(){
 
   inner.innerHTML=html;
   wireNotes(inner);
+
+  // ── Cleaner tab — separate panel ──
+  var cleanerPanel = document.getElementById('dossier-cleaner');
+  if(cleanerPanel){
+    var issuedDocs = _issuedDocs().sort(function(a,b){ return a-b; });
+    var cHtml = '';
+    if(issuedDocs.length === 0){
+      cHtml = '<div style="font-family:monospace;font-size:8px;letter-spacing:.1em;color:rgba(26,22,16,.28);padding:12px 0;">No encounters filed.</div>';
+    } else {
+      // collapse-all button
+      cHtml += '<div style="display:flex;justify-content:flex-end;padding:6px 0 2px;">' +
+        '<button onclick="dosCollapseAll()" style="font-family:monospace;font-size:7px;letter-spacing:.16em;text-transform:uppercase;background:none;border:none;border-bottom:1px solid rgba(26,22,16,.2);color:rgba(26,22,16,.32);padding:2px 0;cursor:pointer;">Collapse all</button>' +
+        '</div>';
+      issuedDocs.forEach(function(idx){
+        var doc = _CLEANER_DOCS[idx];
+        if(!doc) return;
+        var tmp = document.createElement('div');
+        tmp.innerHTML = doc;
+        var refEl = tmp.querySelector('div');
+        var ref = refEl ? refEl.textContent.trim() : 'Form AS/00'+(idx+1);
+        var toggleId = 'cs-enc-' + idx;
+        var numStr = (idx < 9 ? '0' : '') + (idx + 1);
+        cHtml +=
+          '<div class="drow-m" onclick="dosToggle(' + "'" + toggleId + "'" + ')" style="cursor:pointer;">' +
+            '<span style="font-family:monospace;font-size:9px;color:rgba(26,22,16,.32);width:22px;flex-shrink:0">' + numStr + '</span>' +
+            '<span style="font-family:monospace;font-size:11px;letter-spacing:.05em;color:rgba(26,22,16,.8);flex:1;padding:0 8px">' + ref.toUpperCase() + '</span>' +
+            '<span style="font-family:monospace;font-size:8px;color:rgba(26,22,16,.25);">&#9660;</span>' +
+          '</div>' +
+          '<div id="drow-notes-' + toggleId + '" style="display:none;padding:8px 0 12px 22px;">' +
+            '<div style="font-family:Georgia,serif;font-size:13px;line-height:1.8;color:#3D3020;">' + doc + '</div>' +
+          '</div>';
+      });
+    }
+    cleanerPanel.innerHTML = cHtml;
+  }
+
   var o=document.getElementById('dossier-overlay');
   o.style.display='flex';o.style.alignItems='flex-start';o.style.justifyContent='center';
+}
+
+function dosSwitchTab(tab){
+  var inner = document.getElementById('dossier-inner');
+  var cleanerPanel = document.getElementById('dossier-cleaner');
+  var tabRooms = document.getElementById('dos-tab-rooms');
+  var tabCleaner = document.getElementById('dos-tab-cleaner');
+  if(tab === 'rooms'){
+    if(inner) inner.style.display = '';
+    if(cleanerPanel) cleanerPanel.style.display = 'none';
+    if(tabRooms) tabRooms.classList.add('active');
+    if(tabCleaner) tabCleaner.classList.remove('active');
+  } else {
+    if(inner) inner.style.display = 'none';
+    if(cleanerPanel) cleanerPanel.style.display = '';
+    if(tabRooms) tabRooms.classList.remove('active');
+    if(tabCleaner) tabCleaner.classList.add('active');
+  }
+}
+
+function dosCollapseAll(){
+  document.querySelectorAll('[id^="drow-notes-cs-enc-"]').forEach(function(el){
+    el.style.display = 'none';
+  });
 }
 
 function dosToggle(id){
@@ -1986,6 +2215,7 @@ function resetFloor(){
   if(ov){ ov.style.transition='none'; ov.style.opacity='0'; ov.classList.remove('gone'); setTimeout(function(){ ov.style.transition=''; },50); }
   setLocation('Stairwell');
   _setSplit(0.67);
+  _stairScene=0;
   if(window._s0_intro) window._s0_intro();
 }
 function resetGame(){
@@ -2241,6 +2471,7 @@ function bbUpdateChevrons(){
   // Poll every 300ms — catches content changes
   setInterval(bbUpdateChevrons, 300);
 })();
+
 
 // ── INTEGRATED MAP ENGINE ──
 // Replaces BMAP with our canvas navigation system
@@ -2507,36 +2738,21 @@ function roShow(ri){
       if(typeof BB !== 'undefined' && BB.write){
         var ni = parseInt(btn.id.replace('ro-btn-',''));
         var labels = [['The Bookcase.','What others have written.'],['The Bureau.','What actually happened.'],['The Examination.','What you now know.']];
-        BB.write(labels[ni]);
       }
     }; })(b);
     b.onmouseleave = (function(btn){ return function(){
       btn.style.borderLeftColor = 'transparent';
       btn.style.background = 'none';
-      if(activeRoom < 0) return;
-      var rm = ROOMS[activeRoom % ROOMS.length];
-      if(typeof BB !== 'undefined' && BB.write){
-        if(activeRoom === 0)
-          BB.write(['Three stations per room. Lower shelf first.','The Institute has noted that candidates who proceed out of order arrive at the same destination.']);
-        else
-          BB.write(['I am in Room '+(activeRoom+1)+'.', (rm && rm.name ? rm.name+'.' : '')]);
-      }
     }; })(b);
   });
   // ro-back tint
   var rb = document.getElementById('ro-back');
   if(rb){ rb.style.borderBottomColor = acc2+'0.15)'; rb.style.color = acc2+'0.28)'; }
+  ov.style.transition = '';
   ov.style.display = 'flex';
   requestAnimationFrame(function(){ ov.classList.add('visible'); });
-  // BB text
-  var r = ROOMS[ri % ROOMS.length];
-  if(typeof BB !== 'undefined' && BB.write){
-    if(ri === 0)
-      BB.write(['Three stations per room. Lower shelf first.','The Institute has noted that candidates who proceed out of order arrive at the same destination.']);
-    else
-      BB.write(['I am in Room '+(ri+1)+'.', (r && r.name ? r.name+'.' : '')]);
-  }
 }
+
 
 function roHide(cb){
   var ov = _getOverlay();
@@ -2544,7 +2760,7 @@ function roHide(cb){
   setTimeout(function(){
     ov.style.display = 'none';
     if(cb) cb();
-  }, 280);
+  }, 600);
 }
 
 // Parallax dot grid on overlay
@@ -2575,7 +2791,7 @@ function roClose(){
         BB.write(['First Floor. The corridor.','The Cleaner is on the landing.'],[{l:'Speak to the Cleaner \u2192', f:function(){
           activeStrip='cleaner'; activeRoom=-1;
           cleanerVisited=1;
-          openNodePopup(CLEANER.s,CLEANER.l,CLEANER.b,CLEANER.shelves,null,-1,-1);
+          cleanerCutscene();
           setTimeout(function(){ BB.write(['First Floor. The corridor.','Ten rooms. One application.']); },400);
         }}]);
       } else {
@@ -2604,6 +2820,7 @@ const c=cv.getContext('2d');
 let W,H,t=0;
 let _corridorActive=false;
 var _dustY=0;
+var _stairScene=0; // 0–3 controls typographic card
 var _gridLines=null;
 var _DUST=Array.from({length:6},function(){
   return{x:Math.random(),vx:0,
@@ -2932,8 +3149,7 @@ cv.addEventListener('click',e=>{
           BB.write(['First Floor. The corridor.','The Cleaner is on the landing.'],[{l:'Speak to the Cleaner \u2192', f:function(){
             activeStrip='cleaner';activeRoom=-1;
             cleanerVisited=1;
-            openNodePopup(CLEANER.s,CLEANER.l,CLEANER.b,CLEANER.shelves,null,-1,-1);
-            setTimeout(function(){ BB.write(['First Floor. The corridor.','Ten rooms. One application.']); },400);
+            cleanerCutscene();
           }}]);
         } else {
           BB.write(['First Floor. The corridor.','Ten rooms. One application.']);
@@ -2975,7 +3191,7 @@ cv.addEventListener('click',e=>{
   // strip clicks — corridor only
   if(hotStrip==='ground'){ goToGroundFloor(); return; }
   if(hotStrip==='clerk'){activeStrip='clerk';activeRoom=-1;clerkVisited=clerkVisited||0.02;openNodePopup(CLERK.s,CLERK.l,CLERK.b,null,null,-1,-1);setTimeout(function(){clerkInit();},100);return;}
-  if(hotStrip==='cleaner'){activeStrip='cleaner';activeRoom=-1;cleanerVisited=cleanerVisited||0.02;_cleanerPulsing=false;_cleanerPulse=0;openNodePopup(CLEANER.s,CLEANER.l,CLEANER.b,CLEANER.shelves,null,-1,-1);return;}
+  if(hotStrip==='cleaner'){activeStrip='cleaner';activeRoom=-1;cleanerVisited=cleanerVisited||0.02;_cleanerPulsing=false;_cleanerPulse=0;cleanerCutscene();return;}
 });
 
 // ── ESCAPE — exit room to corridor ──
@@ -3058,7 +3274,7 @@ function update(){
     _cleanerPulseT++;
     // slow continuous sine — ease in over first 40 frames, then loop forever
     var _env=Math.min(1,_cleanerPulseT/40);
-    _cleanerPulse=Math.max(0,Math.sin(_cleanerPulseT*0.038))*_env;
+    _cleanerPulse=Math.max(0,Math.sin(_cleanerPulseT*0.018))*_env;
   }
   if(!L.boxes) return;
   L.boxes.forEach(b=>{
@@ -3190,32 +3406,6 @@ function drawRoom(box){
     } else {
       c.beginPath();c.arc(px,py,pipR,0,Math.PI*2);
       c.stroke();
-    }
-  }
-
-  // ── NODES + TRAMLINE — only when room active ──
-  const pts=L.nodePts(box);
-  if(vis){
-    const cy2=box.y+box.h*.5;
-    // tramline: from corridor wall to centre of last pip (diamond)
-    // left rooms: corridor is on RIGHT, pips go right→left
-    // right rooms: corridor is on LEFT, pips go left→right
-    const tramStart=box.side==='L'?box.x+box.w:box.x;
-    const tramEnd=pts[2].x; // ends at diamond centre
-    c.save();
-    c.setLineDash([3,7]);
-    c.strokeStyle=roomAccent(box.ri,.5);
-    c.lineWidth=1;
-    c.beginPath();c.moveTo(tramStart,cy2);c.lineTo(tramEnd,cy2);c.stroke();
-    c.setLineDash([]);
-
-    c.restore();
-    // pips
-    for(let ni=0;ni<3;ni++){
-      const pt=pts[ni];
-      const nvis=NV[box.ri+'-'+ni];
-      const isHot=hotNode&&hotNode.ri===box.ri&&hotNode.ni===ni;
-      drawNode(pt.x,pt.y,nvis,isHot,pt.r,box.ri,pt.shape||'circle');
     }
   }
 
@@ -3422,44 +3612,100 @@ function draw(){
   _drawLines(_gridLines.Mh,.08,.55);
   _drawLines(_gridLines.Mv,.08,.55);
   if(!_corridorActive){
-    // Title — top left, all stairwell scenes
     c.save();
+    // dark vignette over grid
+    var vg=c.createRadialGradient(W*.5,H*.5,H*.1,W*.5,H*.5,H*.85);
+    vg.addColorStop(0,'rgba(6,11,24,.55)');
+    vg.addColorStop(1,'rgba(2,4,10,.88)');
+    c.fillStyle=vg; c.fillRect(0,0,W,H);
+
+    var sc=_stairScene||0;
     c.textAlign='left';
-    c.letterSpacing='0.18em';
-    c.font="300 "+Math.round(W*.032)+"px 'Helvetica Neue',Helvetica,Arial,sans-serif";
-    c.fillStyle='rgba(140,190,255,.22)';
-    c.fillText('THE INSTITUTE',18,Math.round(W*.032)*1.8);
-    // Subtitle — fades out mid-sentence using gradient fill on text
-    var subSize=Math.round(W*.022);
-    c.font="300 "+subSize+"px 'Helvetica Neue',Helvetica,Arial,sans-serif";
-    c.letterSpacing='0.22em';
-    var subY=Math.round(W*.032)*1.8+subSize*1.8;
-    var subText='ESTABLISHED 198';
-    var subW=c.measureText(subText).width+subSize*3;
-    var subGrad=c.createLinearGradient(18,0,18+subW,0);
-    subGrad.addColorStop(0,'rgba(140,190,255,.18)');
-    subGrad.addColorStop(0.5,'rgba(140,190,255,.18)');
-    subGrad.addColorStop(0.78,'rgba(140,190,255,.04)');
-    subGrad.addColorStop(1,'rgba(140,190,255,0)');
-    c.fillStyle=subGrad;
-    c.fillText(subText,18,subY);
-    // store subY for dust
-    _dustY=subY;
-    // dust motes — anchored to actual text end position
-    var dustBaseX=18+c.measureText(subText).width;
-    var dustSpread=subSize*2;
-    _DUST.forEach(function(d){
-      var px=dustBaseX+d.x*dustSpread;
-      var py=(_dustY>0?_dustY:H*.25)-subSize*0.3+d.phase%1*subSize*.8+Math.sin(t*.022+d.phase)*2;
-      var pulse=0.5+0.5*Math.sin(t*.018+d.phase);
-      c.beginPath();
-      c.arc(px,py,d.r,0,Math.PI*2);
-      c.fillStyle='rgba(140,190,255,'+(d.a*pulse)+')';
-      c.fill();
-    });
+
+    // ── helper: chalk text ──
+    function ct(txt,x,y,sz,a,ls){
+      c.font='300 '+sz+'px "Helvetica Neue",Helvetica,Arial,sans-serif';
+      c.letterSpacing=(ls||'0.18em');
+      c.fillStyle='rgba(238,232,192,'+a+')';
+      c.fillText(txt,x,y);
+    }
+    function bt(txt,x,y,sz,a,ls){
+      c.font='300 '+sz+'px "Helvetica Neue",Helvetica,Arial,sans-serif';
+      c.letterSpacing=(ls||'0.18em');
+      c.fillStyle='rgba(140,190,255,'+a+')';
+      c.fillText(txt,x,y);
+    }
+
+    var m=W*.06; // left margin
+    var mid=H*.48;
+
+    // ── Scene 0: The Institute ──
+    if(sc>=0){
+      var a0=1;
+      var tSz=Math.round(W*.048);
+      bt('THE INSTITUTE',m,mid-tSz*1.1,tSz,a0*.45,'0.22em');
+      var subSz=Math.round(W*.018);
+      // established line with fade
+      var subText='ESTABLISHED 198';
+      c.font='300 '+subSz+'px "Helvetica Neue",Helvetica,Arial,sans-serif';
+      c.letterSpacing='0.22em';
+      var subW=c.measureText(subText).width+subSz*3;
+      var sg=c.createLinearGradient(m,0,m+subW,0);
+      sg.addColorStop(0,'rgba(140,190,255,.18)');
+      sg.addColorStop(.6,'rgba(140,190,255,.18)');
+      sg.addColorStop(1,'rgba(140,190,255,0)');
+      c.fillStyle=sg;
+      c.fillText(subText,m,mid-tSz*1.1+subSz*2.2);
+      _dustY=mid-tSz*1.1+subSz*2.2;
+      var dustBaseX=m+c.measureText(subText).width;
+      _DUST.forEach(function(d){
+        var px=dustBaseX+d.x*subSz*2;
+        var py=_dustY-subSz*.3+d.phase%1*subSz*.8+Math.sin(t*.022+d.phase)*2;
+        var pulse=0.5+0.5*Math.sin(t*.018+d.phase);
+        c.beginPath();c.arc(px,py,d.r,0,Math.PI*2);
+        c.fillStyle='rgba(140,190,255,'+(d.a*pulse)+')';
+        c.fill();
+      });
+      // floor line
+      var flSz=Math.round(W*.014);
+      bt('FIRST FLOOR',m,mid-tSz*1.1+subSz*2.2+flSz*2.4,flSz,.14,'0.28em');
+    }
+
+    // ── Scene 1: introduce the casino across the road ──
+    if(sc>=1){
+      // rule between buildings
+      c.strokeStyle='rgba(140,190,255,.1)';c.lineWidth=.5;
+      var ruleY=mid+H*.08;
+      c.beginPath();c.moveTo(m,ruleY);c.lineTo(W-m,ruleY);c.stroke();
+      // distance annotation
+      var annSz=Math.round(W*.01);
+      bt('ACROSS THE ROAD',m,ruleY-annSz*.6,annSz,.18,'0.3em');
+      // Gambler's Ruin — large, glowing
+      var grSz=Math.round(W*.052);
+      var grPulse=0.55+0.1*Math.sin(t*.04);
+      c.font='300 '+grSz+'px "Helvetica Neue",Helvetica,Arial,sans-serif';
+      c.letterSpacing='0.16em';
+      // outer glow pass
+      c.shadowColor='rgba(140,190,255,.25)';
+      c.shadowBlur=grSz*.4;
+      c.fillStyle='rgba(140,190,255,'+grPulse+')';
+      c.fillText("GAMBLER'S RUIN",m,ruleY+grSz*1.4);
+      c.shadowBlur=0;
+      // "The lights are always on."
+      var litSz=Math.round(W*.013);
+      ct('The lights are always on.',m,ruleY+grSz*1.4+litSz*2.2,litSz,.28,'0.12em');
+    }
+
+    // ── Scene 2: the dossier is mentioned — envelope comes forward ──
+    // (envelope handled by map-intro-overlay HTML element)
+
+    // ── Scene 3: since October ──
+    if(sc>=3){
+      var ocSz=Math.round(W*.015);
+      bt('OCTOBER',W-m-c.measureText('OCTOBER')*ocSz,mid-Math.round(W*.048)*1.1,ocSz,.12,'0.32em');
+    }
+
     c.restore();
-    // simple dark overlay — no radial arcs
-    c.fillStyle='rgba(0,0,0,.45)';c.fillRect(0,0,W,H);
     return;
   }
 
@@ -3475,15 +3721,15 @@ function draw(){
   drawStrip(topY,ST,'STAIRWELL',null,null,false,L.cnPt,Math.max(cleanerVisited,_cleanerPulse));
   // pulse ring on cleaner node
   if(_cleanerPulse>0.01&&L.cnPt){
-    const _pr=10+_cleanerPulse*16;
+    const _pr=10+_cleanerPulse*8;
     c.save();
     c.globalAlpha=1;
-    c.strokeStyle=G(_cleanerPulse*0.85);
-    c.lineWidth=1.5;
+    c.strokeStyle=G(_cleanerPulse*0.5);
+    c.lineWidth=1;
     c.beginPath();c.arc(L.cnPt.x,L.cnPt.y,_pr,0,Math.PI*2);c.stroke();
     // soft inner glow
-    c.strokeStyle=G(_cleanerPulse*0.4);
-    c.lineWidth=6;
+    c.strokeStyle=G(_cleanerPulse*0.2);
+    c.lineWidth=4;
     c.beginPath();c.arc(L.cnPt.x,L.cnPt.y,10,0,Math.PI*2);c.stroke();
     c.restore();
   }
@@ -3539,35 +3785,15 @@ function initMapEngine(){
 }
 
 // ── WIRE ROOM CLICKS TO BLACKBOARD ──
-// Override click handler — room box click → BB.write with Aubrey's line
-cv.addEventListener('click', function(e){
-  // room box click (not node) — write to blackboard
-  // This fires before the node hit test in our engine
-  // We detect if it was a room (not node) click by checking hotNode after the event
-  setTimeout(function(){
-    if(!hotNode && hotBox){
-      const room = ROOMS[hotBox.ri % ROOMS.length];
-      const rname = room ? room.name : '';
-      const rnum = String(hotBox.ri+1).padStart(2,'0');
-      if(typeof BB !== 'undefined' && BB.write){
-        if(hotBox.ri===0)
-          BB.write(['Three stations per room. Lower shelf first.','The Institute has noted that candidates who proceed out of order arrive at the same destination.']);
-        else
-          BB.write(['Room '+rnum+'.', rname+'.']);
-      }
-    }
-  }, 10);
-});
-
 // Start map engine
 // Init BMAP after layout
 requestAnimationFrame(function(){ requestAnimationFrame(function(){
   BB.init();
   initMapEngine();
-  _setSplit(0.67); // board starts at 2/3
+  _setSplit(0.67);
 
   // ── STAIRWELL SEQUENCE ──
-  function s0_intro(){
+  function s0_intro(){ _stairScene=0;
     BB.write([
       'Allow me to introduce myself.',
       'I am Aubrey Squeakwell, BSc.',
@@ -3577,7 +3803,7 @@ requestAnimationFrame(function(){ requestAnimationFrame(function(){
     ], [{l:'Continue →', f:s0b},{l:'Ascend to First Floor →', f:s0f}]);
   }
 
-  function s0b(){
+  function s0b(){ _stairScene=1;
     BB.write([
       'Last October, I decided to make a fortune.',
       'I had a plan. To go to the casino.',
@@ -3586,7 +3812,7 @@ requestAnimationFrame(function(){ requestAnimationFrame(function(){
     ], [{l:'Continue →', f:s0c},{l:'Ascend to First Floor →', f:s0f}]);
   }
 
-  function s0c(){
+  function s0c(){ _stairScene=2;
     // show dossier when 'I was handed a dossier.' appears — line 2
     // line 1 'I enquired.' is ~12 chars, delay ~950ms + 200ms initial = ~1150ms
     setTimeout(function(){
@@ -3602,7 +3828,7 @@ requestAnimationFrame(function(){ requestAnimationFrame(function(){
     ], [{l:'Continue →', f:s0d},{l:'Ascend to First Floor →', f:s0f}]);
   }
 
-  function s0d(){
+  function s0d(){ _stairScene=3;
     BB.write([
       'The casino across the road is called Gambler’s Ruin.',
       'The lights are always on.',
@@ -3691,8 +3917,7 @@ requestAnimationFrame(function(){ requestAnimationFrame(function(){
     ],[{l:'Speak to the Cleaner \u2192', f:function(){
       activeStrip='cleaner';activeRoom=-1;
       cleanerVisited=1;
-      openNodePopup(CLEANER.s,CLEANER.l,CLEANER.b,CLEANER.shelves,null,-1,-1);
-      setTimeout(function(){ BB.write(['First Floor. The corridor.','Ten rooms. One application.']); },400);
+      cleanerCutscene();
     }}]);
   }
 
