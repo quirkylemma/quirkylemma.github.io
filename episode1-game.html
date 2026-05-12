@@ -480,7 +480,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   color: rgba(26,22,16,.35); margin-bottom: 10px;
 }
 .intro-env-title {
-  font-family: 'Reenie Beanie', 'Special Elite', monospace;
+  font-family: 'Special Elite', monospace;
   font-size: 14px; font-weight: 400; letter-spacing: .06em;
   color: rgba(26,22,16,.8); margin-bottom: 14px;
   border-bottom: 1px solid rgba(26,22,16,.1); padding-bottom: 8px;
@@ -589,7 +589,7 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   color: rgba(26,22,16,.35); margin-bottom: 10px;
 }
 .intro-env-title {
-  font-family: 'Reenie Beanie', 'Special Elite', monospace;
+  font-family: 'Special Elite', monospace;
   font-size: 14px; font-weight: 400; letter-spacing: .06em;
   color: rgba(26,22,16,.8); margin-bottom: 14px;
   border-bottom: 1px solid rgba(26,22,16,.1); padding-bottom: 8px;
@@ -983,6 +983,10 @@ html, body { height: 100%; overflow: hidden; background: #050705; }
   border-color: rgba(238,232,192,.35);
 }
 /* ── Compact room overlay for short viewports ── */
+@media screen and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
+  #shell { filter: brightness(1.25); }
+}
+
 @media (max-height: 340px) {
   #ro-room-num { font-size: 11px; }
   #ro-room-name { font-size: 11px; }
