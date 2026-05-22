@@ -40,11 +40,16 @@ body {
 }
 @media (max-width: 389px) {
   #too-small { display:flex; }
-  
 }
 
 /* ── SCENE GRID ── */
-
+#scene {
+  display:grid;
+  width:100vw;
+  height:100vh;
+  grid-template-columns: 1fr clamp(80px, 9vw, 130px);
+  grid-template-rows: 1fr clamp(140px, 22vh, 220px);
+}
 
 /* Library background */
 #bg {
@@ -223,8 +228,6 @@ body {
   width:100%;
 }
 
-
-
 /* ════ TITLE SCREEN ════ */
 #title-screen {
   position:fixed; inset:0; z-index:500;
@@ -235,6 +238,10 @@ body {
   transition:opacity 1s;
 }
 #title-screen.hidden { opacity:0; pointer-events:none; }
+#title-group {
+  display:flex; flex-direction:column;
+  align-items:center; gap:clamp(12px,2vh,24px);
+}
 #game-title {
   font-family:'Cinzel',serif;
   font-size:clamp(22px,4vw,52px);
@@ -243,8 +250,8 @@ body {
 }
 #game-subtitle {
   font-family:'IM Fell English',serif; font-style:italic;
-  font-size:clamp(16px,1.8vw,24px);
-  color:rgba(180,150,100,0.65); text-align:center;
+  font-size:clamp(18px,2.2vw,32px);
+  color:rgba(180,150,100,0.75); text-align:center;
 }
 #start-btn {
   font-family:'Cinzel',serif;
@@ -275,7 +282,7 @@ body {
   padding:0 20px;
 }
 
-/* Portrait column — fixed width, full height */
+/* Portrait column */
 #ragvir-portrait {
   width:clamp(150px,20vw,260px);
   height:100%;
@@ -340,6 +347,58 @@ body {
   border-color:rgba(180,140,60,0.7);
 }
 
+/* ════ NARRATION OVERLAY ════ */
+#narration {
+  position:absolute;
+  inset:0;
+  z-index:10;
+  background:rgba(10,6,2,0.88);
+  backdrop-filter:blur(8px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:clamp(20px,4vh,48px) clamp(24px,6vw,100px);
+  transform:translateY(-100%);
+  transition:transform 0.9s cubic-bezier(0.4,0,0.2,1);
+}
+#narration.visible { transform:translateY(0); }
+
+#narration-text {
+  font-family:'IM Fell English',serif;
+  font-style:italic;
+  font-size:clamp(15px,1.6vw,22px);
+  line-height:1.9;
+  color:rgba(235,215,175,0.88);
+  text-align:center;
+  max-width:60ch;
+  opacity:0;
+  transition:opacity 0.9s ease;
+}
+#narration-text.visible { opacity:1; }
+
+#narration-btn {
+  font-family:'Cinzel',serif;
+  font-size:clamp(10px,1vw,13px);
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:rgba(220,190,130,0.85);
+  background:transparent;
+  border:1px solid rgba(180,140,60,0.4);
+  padding:8px 22px;
+  border-radius:3px;
+  cursor:pointer;
+  margin-top:clamp(16px,3vh,32px);
+  opacity:0;
+  transition:opacity 0.6s, background 0.2s, color 0.2s;
+}
+#narration-btn.visible { opacity:1; }
+#narration-btn:hover {
+  background:rgba(180,140,60,0.2);
+  color:rgba(240,215,160,1);
+  border-color:rgba(180,140,60,0.7);
+}
+
 </style>
 </head>
 <body>
@@ -347,35 +406,16 @@ body {
 <!-- Minimum screen message -->
 <div id="too-small">
   <p>Ragvir's Library requires a screen at least 390px wide.<br>
-  Ragvir's Library requires a screen at least 390px wide.</p>
+  Please use a larger device.</p>
 </div>
-
-
-      <div id="ragvir-name">Prof. Ragvir</div>
-    </div>
-    </div>
-    <div id="intro-text-area">
-      <div id="intro-title">The Aldric Library</div>
-      <div id="intro-text"></div>
-      <div id="intro-footer">
-        <div id="scene-dots">
-          <div class="dot active"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-        </div>
-        <button id="intro-btn" onclick="nextScene()">Continue</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 
 <!-- Title screen -->
 <div id="title-screen">
-  <div id="game-title">The Aldric Library</div>
-  <div id="game-subtitle"><em>Knowledge, uncertainty, and the occasional educated guess.</em></div>
-  <button id="start-btn" onclick="startIntro()">Start Game</button>
+  <div id="title-group">
+    <div id="game-title">The Aldric Library</div>
+    <div id="game-subtitle"><em>Knowledge, uncertainty, and the occasional educated guess.</em></div>
+  </div>
+  <button id="start-btn" onclick="startIntro()">Begin</button>
 </div>
 
 <!-- Intro sequence -->
@@ -384,7 +424,6 @@ body {
     <div id="ragvir-portrait">
       <div id="ragvir-name">Prof. Ragvir</div>
       <img id="ragvir-img" src="./aldricimages/ragvir_librarian.png" alt="Ragvir">
-    </div>
     </div>
     <div id="intro-text-area">
       <div id="intro-title">The Aldric Library</div>
@@ -404,7 +443,12 @@ body {
 
 <div id="scene" style="visibility:hidden;">
 
-  <div id="bg"></div>
+  <div id="bg">
+    <div id="narration">
+      <div id="narration-text"></div>
+      <button id="narration-btn" onclick="nextNarrationScene()">Continue</button>
+    </div>
+  </div>
 
   <div id="dock">
     <div id="dock-title">The Library</div>
@@ -432,11 +476,9 @@ const CONDITION_LABELS = {
   locked:    'Inaccessible until unlocked.',
 };
 
-// ── SCENE CONFIGURATION ──────────────────────────────────────────────────────
-// Change this object to configure any scene — no other code changes needed
 const SCENE = {
   student: 'Isolde Fenn',
-  question: 'My supervisor says my analysis is fine — the means, variances and correlations all check out. But something feels off. How do I know if I can actually trust my summary statistics?',
+  question: 'My supervisor says my analysis is fine — my formulas all check out. But something feels off. How do I know if I can actually trust my statistics?',
   cards: [
     { number: 1,  slug: 'data',          title: 'Data',          condition: 'intact'  },
     { number: 10, slug: 'graphs',        title: 'Graphs',        condition: 'intact'  },
@@ -446,15 +488,11 @@ const SCENE = {
   ]
 };
 
-// ── CARDS DATA ───────────────────────────────────────────────────────────────
-
-
-// ── RENDER ───────────────────────────────────────────────────────────────────
 function renderDock() {
   const list = document.getElementById('card-list');
   list.innerHTML = '';
 
-  SCENE.cards.forEach((card, i) => {
+  SCENE.cards.forEach((card) => {
     const num = String(card.number).padStart(2, '0');
     const src = `./aldricimages/card_${num}_${card.slug}_${card.condition}.png`;
 
@@ -474,24 +512,27 @@ function renderDock() {
 
 function openCard(card) {
   console.log('Opened:', card.title, card.condition);
-  // TODO: open card detail panel
 }
 
-// Set dialogue
 document.getElementById('speech').innerHTML = `<p>${SCENE.question}</p>`;
 
 renderDock();
 
-
 // ── INTRO ────────────────────────────────────────────────────────────────────
 const INTRO_SCENES = [
   "You found it. Good. I wasn't sure anyone would.\n\nThis is — or was — the Aldric Library's east reading room. The Great Storm took most of it. What you see now is what survived.",
-  "I've spent thirty years putting this collection together. Every shelf, every document, every method — chosen because it helped someone understand something they couldn't see before.\n\nSome of it is damaged. Some of it is gone. Some of it I'm not entirely sure you should trust.",
+  "I've spent twenty years putting this collection together. Every shelf, every document, every method — chosen because it helped someone understand something they couldn't see before.\n\nSome of it is damaged. Some of it is gone. Some of it I'm not entirely sure you should trust.",
   "People will come to you. They have questions — real ones, the kind that don't have easy answers. Your job is to find what survives, piece it together, and help them think.",
   "One more thing. Some of what's left in here — I'm not sure it's right. I may have been wrong about some things. Be careful.\n\nI won't be here to help. But the library will.\n\nGood luck."
 ];
 
 let currentScene = 0;
+let sceneTimers = [];
+
+function clearSceneTimers() {
+  sceneTimers.forEach(id => clearTimeout(id));
+  sceneTimers = [];
+}
 
 function startIntro() {
   const title = document.getElementById('title-screen');
@@ -508,24 +549,28 @@ function startIntro() {
 }
 
 function showScene(idx) {
+  clearSceneTimers();
   currentScene = idx;
   const textEl = document.getElementById('intro-text');
   const btn    = document.getElementById('intro-btn');
 
   btn.textContent = idx < INTRO_SCENES.length - 1 ? 'Continue' : 'Enter the Library';
   textEl.classList.remove('visible');
+  btn.style.transition = 'none';
+  btn.style.opacity = '0';
   btn.classList.remove('visible');
+  requestAnimationFrame(() => { btn.style.transition = ''; btn.style.opacity = ''; });
 
-  setTimeout(() => {
+  sceneTimers.push(setTimeout(() => {
     textEl.innerHTML = INTRO_SCENES[idx]
       .replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
     document.querySelectorAll('.dot').forEach((d,i) =>
       d.classList.toggle('active', i === idx));
-    setTimeout(() => {
+    sceneTimers.push(setTimeout(() => {
       textEl.classList.add('visible');
-      setTimeout(() => btn.classList.add('visible'), 1400);
-    }, 80);
-  }, 1200);
+      sceneTimers.push(setTimeout(() => btn.classList.add('visible'), 1400));
+    }, 80));
+  }, 1200));
 }
 
 function nextScene() {
@@ -536,8 +581,73 @@ function nextScene() {
     intro.style.transition = 'opacity 1.2s';
     intro.style.opacity = '0';
     document.getElementById('scene').style.visibility = 'visible';
-    setTimeout(() => intro.style.display = 'none', 1200);
+    setTimeout(() => {
+      intro.style.display = 'none';
+      startNarration();
+    }, 1200);
   }
 }
 
+// ── NARRATION ────────────────────────────────────────────────────────────────
+const NARRATION_SCENES = [
+  "The east door opens slowly. Cold air moves through the reading room. A young woman steps inside, still wearing her coat, a folder pressed against her chest. She looks at the shelves the way people do when they are hoping the answer is somewhere visible.",
+  "She has been here before — not this library, but this feeling. The numbers added up. The supervisor nodded. And yet something in the work felt like a locked room she couldn't see into."
+];
+
+let narrationIndex = 0;
+let narrationTimers = [];
+
+function clearNarrationTimers() {
+  narrationTimers.forEach(id => clearTimeout(id));
+  narrationTimers = [];
+}
+
+function startNarration() {
+  const overlay = document.getElementById('narration');
+  overlay.classList.add('visible');
+  narrationTimers.push(setTimeout(() => showNarrationScene(0), 700));
+}
+
+function showNarrationScene(idx) {
+  clearNarrationTimers();
+  narrationIndex = idx;
+  const textEl = document.getElementById('narration-text');
+  const btn    = document.getElementById('narration-btn');
+
+  btn.textContent = idx < NARRATION_SCENES.length - 1 ? 'Continue' : 'Continue';
+  textEl.classList.remove('visible');
+  btn.style.transition = 'none';
+  btn.style.opacity = '0';
+  btn.classList.remove('visible');
+  requestAnimationFrame(() => { btn.style.transition = ''; btn.style.opacity = ''; });
+
+  narrationTimers.push(setTimeout(() => {
+    textEl.textContent = NARRATION_SCENES[idx];
+    narrationTimers.push(setTimeout(() => {
+      textEl.classList.add('visible');
+      narrationTimers.push(setTimeout(() => btn.classList.add('visible'), 1200));
+    }, 80));
+  }, 400));
+}
+
+function nextNarrationScene() {
+  if (narrationIndex < NARRATION_SCENES.length - 1) {
+    showNarrationScene(narrationIndex + 1);
+  } else {
+    clearNarrationTimers();
+    const overlay  = document.getElementById('narration');
+    const textEl   = document.getElementById('narration-text');
+    const btn      = document.getElementById('narration-btn');
+
+    btn.style.transition = 'none';
+    btn.style.opacity = '0';
+    textEl.classList.remove('visible');
+
+    narrationTimers.push(setTimeout(() => {
+      overlay.classList.remove('visible');
+    }, 300));
+  }
+}
 </script>
+</body>
+</html>
