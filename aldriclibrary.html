@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ragvir's Library</title>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+  background:#1a1208;
+  font-family:'IM Fell English', serif;
+}
+
+/* ── MINIMUM SCREEN GUARD ── */
+#too-small {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#1a1208;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:16px;
+  z-index:999;
+}
+#too-small p {
+  font-family:'Cinzel', serif;
+  font-size:16px;
+  color:rgba(220,190,130,0.8);
+  letter-spacing:0.12em;
+  text-align:center;
+  padding:0 40px;
+  line-height:1.8;
+}
+@media (max-width: 389px) {
+  #too-small { display:flex; }
+  
+}
+
+/* ── SCENE GRID ── */
+
+
+/* Library background */
+#bg {
+  grid-column:1;
+  grid-row:1;
+  position:relative;
+  border-right:2px solid rgba(180,140,60,0.35);
+  box-shadow:4px 0 18px rgba(0,0,0,0.45);
+  background: url('./aldricimages/cosylibrary.png') center/cover no-repeat;
+}
+
+#bg::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  background: radial-gradient(ellipse at center, transparent 35%, rgba(8,5,2,0.78) 100%);
+  pointer-events:none;
+}
+
+/* ── DOCK ── */
+#dock {
+  grid-column:2;
+  grid-row:1 / 3;
+  display:flex;
+  flex-direction:column;
+  padding:1.2vh 0.8vw;
+  overflow-y:auto;
+  overflow-x:hidden;
+  backdrop-filter:blur(14px);
+  background:rgba(30,18,8,0.45);
+  border-left:1px solid rgba(255,220,150,0.12);
+  scrollbar-width:thin;
+  scrollbar-color:rgba(180,140,80,0.3) transparent;
+}
+
+#dock-title {
+  font-family:'Cinzel', serif;
+  font-size:clamp(8px, 0.8vw, 11px);
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:rgba(220,190,130,0.65);
+  text-align:center;
+  padding-bottom:0.8vh;
+  margin-bottom:0.8vh;
+  border-bottom:1px solid rgba(220,190,130,0.12);
+  flex-shrink:0;
+}
+
+.card-slot {
+  margin-bottom:0.6vh;
+  cursor:pointer;
+  position:relative;
+  border-radius:0.6vw;
+  transition:transform 0.15s;
+  flex-shrink:0;
+}
+
+.card-slot:hover {
+  transform:translateX(-4px);
+}
+
+.card-slot img {
+  width:100%;
+  border-radius:0.6vw;
+  display:block;
+  box-shadow:2px 2px 10px rgba(0,0,0,0.5);
+}
+
+.card-slot:hover .tooltip {
+  opacity:1;
+  pointer-events:auto;
+}
+
+.tooltip {
+  position:absolute;
+  right:calc(100% + 8px);
+  top:50%;
+  transform:translateY(-50%);
+  width:clamp(140px, 14vw, 200px);
+  background:rgba(14,9,3,0.96);
+  border:1px solid rgba(180,140,60,0.35);
+  border-radius:8px;
+  padding:0.8vh 0.8vw;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.18s;
+  z-index:100;
+}
+
+.tooltip-title {
+  font-family:'IM Fell English', serif;
+  font-size:clamp(12px, 1.2vw, 16px);
+  color:rgba(230,210,165,0.95);
+  margin-bottom:4px;
+}
+
+.tooltip-desc {
+  font-family:'IM Fell English', serif;
+  font-style:italic;
+  font-size:clamp(10px, 0.9vw, 13px);
+  line-height:1.5;
+  color:rgba(200,175,130,0.7);
+}
+
+/* ── DIALOGUE ── */
+#dialogue {
+  grid-column:1;
+  grid-row:2;
+  display:flex;
+  flex-direction:row;
+  align-items:stretch;
+  background:rgba(14,9,3,0.85);
+  backdrop-filter:blur(10px);
+  overflow:hidden;
+  border-top:2px solid rgba(180,140,60,0.35);
+  box-shadow:0 -4px 18px rgba(0,0,0,0.45);
+}
+
+#portrait {
+  width:calc(18vh * 0.78);
+  flex-shrink:0;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:flex-start;
+  border-right:1px solid rgba(220,190,130,0.15);
+  height:100%;
+  position:relative;
+  overflow:hidden;
+}
+
+#portrait img {
+  width:100%;
+  flex:1;
+  min-height:0;
+  object-fit:cover;
+  object-position:top center;
+  display:block;
+}
+
+#portrait-name {
+  font-family:'Cinzel', serif;
+  font-size:clamp(9px, 0.8vw, 12px);
+  letter-spacing:0.15em;
+  color:rgba(220,190,130,0.92);
+  text-align:center;
+  width:100%;
+  padding:8px 4px;
+  background:rgba(8,5,2,0.5);
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+#speech {
+  flex:1;
+  min-width:0;
+  padding:clamp(10px, 1.5vh, 20px) clamp(12px, 1.8vw, 24px);
+  display:flex;
+  align-items:flex-start;
+  overflow-y:auto;
+  overflow-x:hidden;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(180,140,80,0.3) transparent;
+}
+
+#speech p {
+  font-family:'IM Fell English', serif;
+  font-style:normal;
+  font-size:clamp(15px, 1.7vw, 22px);
+  line-height:1.7;
+  color:rgba(235,215,175,0.92);
+  word-wrap:break-word;
+  overflow-wrap:break-word;
+  width:100%;
+}
+
+
+
+/* ════ TITLE SCREEN ════ */
+#title-screen {
+  position:fixed; inset:0; z-index:500;
+  background:#0e0904;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:space-between;
+  padding:20vh 0 12vh;
+  transition:opacity 1s;
+}
+#title-screen.hidden { opacity:0; pointer-events:none; }
+#game-title {
+  font-family:'Cinzel',serif;
+  font-size:clamp(22px,4vw,52px);
+  letter-spacing:0.3em; text-transform:uppercase;
+  color:rgba(220,190,130,0.92); text-align:center;
+}
+#game-subtitle {
+  font-family:'IM Fell English',serif; font-style:italic;
+  font-size:clamp(16px,1.8vw,24px);
+  color:rgba(180,150,100,0.65); text-align:center;
+}
+#start-btn {
+  font-family:'Cinzel',serif;
+  font-size:clamp(14px,1.6vw,20px); letter-spacing:0.35em; text-transform:uppercase;
+  color:rgba(230,200,140,0.9); background:transparent;
+  border:1px solid rgba(180,140,60,0.5); padding:16px 48px; border-radius:4px;
+  cursor:pointer; transition:all 0.3s;
+}
+#start-btn:hover {
+  background:rgba(180,140,60,0.15); border-color:rgba(180,140,60,0.9);
+  color:rgba(255,230,170,1); box-shadow:0 0 30px rgba(180,140,60,0.2);
+}
+
+/* ════ INTRO SCREEN ════ */
+#intro {
+  position:fixed; inset:0; z-index:400;
+  background:#0e0904;
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none; transition:opacity 0.8s;
+}
+#intro.visible { opacity:1; pointer-events:auto; }
+
+#intro-inner {
+  display:flex; flex-direction:row;
+  width:90%; max-width:860px;
+  height:clamp(260px,44vh,420px);
+  gap:clamp(20px,4vw,56px);
+  padding:0 20px;
+}
+
+/* Portrait column — fixed width, full height */
+#ragvir-portrait {
+  width:clamp(150px,20vw,260px);
+  height:100%;
+  flex-shrink:0;
+  display:flex; flex-direction:column;
+  opacity:0; transition:opacity 1.2s;
+}
+#ragvir-portrait.visible { opacity:1; }
+#ragvir-portrait img {
+  width:100%; flex:1; min-height:0;
+  object-fit:contain; object-position:top center;
+  display:block; border-radius:4px;
+  box-shadow:0 4px 24px rgba(0,0,0,0.7);
+}
+#ragvir-name {
+  font-family:'Cinzel',serif;
+  font-size:clamp(9px,0.85vw,11px); letter-spacing:0.2em;
+  color:rgba(200,165,100,0.7); text-align:center; text-transform:uppercase;
+  margin-bottom:8px; flex-shrink:0;
+}
+
+/* Text column */
+#intro-text-area {
+  flex:1; min-width:0; height:100%;
+  display:flex; flex-direction:column;
+}
+#intro-title {
+  font-family:'Cinzel',serif;
+  font-size:clamp(10px,1vw,13px); letter-spacing:0.3em; text-transform:uppercase;
+  color:rgba(180,140,60,0.5); margin-bottom:clamp(10px,2vh,24px); flex-shrink:0;
+}
+#intro-text {
+  font-family:'IM Fell English',serif;
+  font-size:clamp(15px,1.8vw,22px); line-height:1.8;
+  color:rgba(230,210,170,0.92);
+  flex:1; min-height:0;
+  overflow-y:auto; overflow-x:hidden;
+  scrollbar-width:thin; scrollbar-color:rgba(180,140,60,0.3) transparent;
+  opacity:0; transition:opacity 1.2s ease;
+}
+#intro-text.visible { opacity:1; }
+#intro-footer {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-top:clamp(14px,2.5vh,28px); flex-shrink:0;
+}
+#scene-dots { display:flex; gap:8px; }
+.dot {
+  width:7px; height:7px; border-radius:50%;
+  background:rgba(180,140,60,0.25); transition:background 0.3s;
+}
+.dot.active { background:rgba(180,140,60,0.85); }
+#intro-btn {
+  font-family:'Cinzel',serif;
+  font-size:clamp(10px,1vw,13px); letter-spacing:0.2em; text-transform:uppercase;
+  color:rgba(220,190,130,0.85); background:transparent;
+  border:1px solid rgba(180,140,60,0.4); padding:8px 22px; border-radius:3px;
+  cursor:pointer; opacity:0; transition:opacity 0.6s, background 0.2s, color 0.2s;
+}
+#intro-btn.visible { opacity:1; }
+#intro-btn:hover {
+  background:rgba(180,140,60,0.2); color:rgba(240,215,160,1);
+  border-color:rgba(180,140,60,0.7);
+}
+
+</style>
+</head>
+<body>
+
+<!-- Minimum screen message -->
+<div id="too-small">
+  <p>Ragvir's Library requires a screen at least 390px wide.<br>
+  Ragvir's Library requires a screen at least 390px wide.</p>
+</div>
+
+
+      <div id="ragvir-name">Prof. Ragvir</div>
+    </div>
+    </div>
+    <div id="intro-text-area">
+      <div id="intro-title">The Aldric Library</div>
+      <div id="intro-text"></div>
+      <div id="intro-footer">
+        <div id="scene-dots">
+          <div class="dot active"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+        <button id="intro-btn" onclick="nextScene()">Continue</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Title screen -->
+<div id="title-screen">
+  <div id="game-title">The Aldric Library</div>
+  <div id="game-subtitle"><em>Knowledge, uncertainty, and the occasional educated guess.</em></div>
+  <button id="start-btn" onclick="startIntro()">Start Game</button>
+</div>
+
+<!-- Intro sequence -->
+<div id="intro">
+  <div id="intro-inner">
+    <div id="ragvir-portrait">
+      <div id="ragvir-name">Prof. Ragvir</div>
+      <img id="ragvir-img" src="./aldricimages/ragvir_librarian.png" alt="Ragvir">
+    </div>
+    </div>
+    <div id="intro-text-area">
+      <div id="intro-title">The Aldric Library</div>
+      <div id="intro-text"></div>
+      <div id="intro-footer">
+        <div id="scene-dots">
+          <div class="dot active"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+        <button id="intro-btn" onclick="nextScene()">Continue</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="scene" style="visibility:hidden;">
+
+  <div id="bg"></div>
+
+  <div id="dock">
+    <div id="dock-title">The Library</div>
+    <div id="card-list"></div>
+  </div>
+
+  <div id="dialogue">
+    <div id="portrait">
+      <img src="./aldricimages/isoldefenn.png" alt="Isolde Fenn">
+      <div id="portrait-name">Isolde Fenn</div>
+    </div>
+    <div id="speech">
+      <p>I am trying to work out whether advertising spend actually causes sales to increase, or whether they just move together. My supervisor says I need to prove causality — but I do not know how.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const CONDITION_LABELS = {
+  intact:    'Fully readable and usable.',
+  cursed:    'Looks intact — but may be unreliable.',
+  damaged:   'Partial content. Use with caution.',
+  destroyed: 'Unreadable. You know it exists.',
+  locked:    'Inaccessible until unlocked.',
+};
+
+// ── SCENE CONFIGURATION ──────────────────────────────────────────────────────
+// Change this object to configure any scene — no other code changes needed
+const SCENE = {
+  student: 'Isolde Fenn',
+  question: 'My supervisor says my analysis is fine — the means, variances and correlations all check out. But something feels off. How do I know if I can actually trust my summary statistics?',
+  cards: [
+    { number: 1,  slug: 'data',          title: 'Data',          condition: 'intact'  },
+    { number: 10, slug: 'graphs',        title: 'Graphs',        condition: 'intact'  },
+    { number: 5,  slug: 'bsc_textbook',  title: 'BSc Textbook',  condition: 'damaged' },
+    { number: 9,  slug: 'ragvirs_notes', title: "Ragvir's Notes", condition: 'cursed' },
+    { number: 2,  slug: 'methods',       title: 'Methods',        condition: 'locked' },
+  ]
+};
+
+// ── CARDS DATA ───────────────────────────────────────────────────────────────
+
+
+// ── RENDER ───────────────────────────────────────────────────────────────────
+function renderDock() {
+  const list = document.getElementById('card-list');
+  list.innerHTML = '';
+
+  SCENE.cards.forEach((card, i) => {
+    const num = String(card.number).padStart(2, '0');
+    const src = `./aldricimages/card_${num}_${card.slug}_${card.condition}.png`;
+
+    const slot = document.createElement('div');
+    slot.className = 'card-slot';
+    slot.innerHTML = `
+      <img src="${src}" alt="${card.title}">
+      <div class="tooltip">
+        <div class="tooltip-title">${card.title}</div>
+        <div class="tooltip-desc">${CONDITION_LABELS[card.condition]}</div>
+      </div>
+    `;
+    slot.addEventListener('click', () => openCard(card));
+    list.appendChild(slot);
+  });
+}
+
+function openCard(card) {
+  console.log('Opened:', card.title, card.condition);
+  // TODO: open card detail panel
+}
+
+// Set dialogue
+document.getElementById('speech').innerHTML = `<p>${SCENE.question}</p>`;
+
+renderDock();
+
+
+// ── INTRO ────────────────────────────────────────────────────────────────────
+const INTRO_SCENES = [
+  "You found it. Good. I wasn't sure anyone would.\n\nThis is — or was — the Aldric Library's east reading room. The Great Storm took most of it. What you see now is what survived.",
+  "I've spent thirty years putting this collection together. Every shelf, every document, every method — chosen because it helped someone understand something they couldn't see before.\n\nSome of it is damaged. Some of it is gone. Some of it I'm not entirely sure you should trust.",
+  "People will come to you. They have questions — real ones, the kind that don't have easy answers. Your job is to find what survives, piece it together, and help them think.",
+  "One more thing. Some of what's left in here — I'm not sure it's right. I may have been wrong about some things. Be careful.\n\nI won't be here to help. But the library will.\n\nGood luck."
+];
+
+let currentScene = 0;
+
+function startIntro() {
+  const title = document.getElementById('title-screen');
+  title.style.opacity = '0';
+  setTimeout(() => {
+    title.style.display = 'none';
+    const intro = document.getElementById('intro');
+    intro.classList.add('visible');
+    setTimeout(() => {
+      document.getElementById('ragvir-portrait').classList.add('visible');
+      setTimeout(() => showScene(0), 1400);
+    }, 600);
+  }, 1000);
+}
+
+function showScene(idx) {
+  currentScene = idx;
+  const textEl = document.getElementById('intro-text');
+  const btn    = document.getElementById('intro-btn');
+
+  btn.textContent = idx < INTRO_SCENES.length - 1 ? 'Continue' : 'Enter the Library';
+  textEl.classList.remove('visible');
+  btn.classList.remove('visible');
+
+  setTimeout(() => {
+    textEl.innerHTML = INTRO_SCENES[idx]
+      .replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+    document.querySelectorAll('.dot').forEach((d,i) =>
+      d.classList.toggle('active', i === idx));
+    setTimeout(() => {
+      textEl.classList.add('visible');
+      setTimeout(() => btn.classList.add('visible'), 1400);
+    }, 80);
+  }, 1200);
+}
+
+function nextScene() {
+  if (currentScene < INTRO_SCENES.length - 1) {
+    showScene(currentScene + 1);
+  } else {
+    const intro = document.getElementById('intro');
+    intro.style.transition = 'opacity 1.2s';
+    intro.style.opacity = '0';
+    document.getElementById('scene').style.visibility = 'visible';
+    setTimeout(() => intro.style.display = 'none', 1200);
+  }
+}
+
+</script>
