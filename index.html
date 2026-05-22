@@ -202,12 +202,39 @@ body {
 .wcard-bg.lighthouse { background: linear-gradient(105deg, transparent 42%, rgba(255,255,255,.05) 47%, rgba(255,255,255,.07) 50%, rgba(255,255,255,.05) 53%, transparent 58%), linear-gradient(180deg, #030810 0%, #061018 55%, #020508 100%); }
 .wcard-bg.more { background: repeating-linear-gradient(45deg, rgba(255,255,255,.025) 0px, rgba(255,255,255,.025) 1px, transparent 1px, transparent 14px), #080808; }
 
+/* Aldric Library card — warm candlelit amber */
+.wcard-bg.aldric {
+  background:
+    radial-gradient(ellipse at 50% 80%, rgba(180,120,40,.18) 0%, transparent 65%),
+    radial-gradient(ellipse at 20% 20%, rgba(140,80,20,.12) 0%, transparent 50%),
+    linear-gradient(160deg, #150e04 0%, #1e1306 40%, #120b03 100%);
+}
+/* Subtle candlelight flicker lines */
+.wcard-bg.aldric::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 18px,
+      rgba(180,120,30,.025) 18px,
+      rgba(180,120,30,.025) 19px
+    );
+}
+
 .wcard-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.78) 0%, rgba(0,0,0,.08) 60%, transparent 100%); z-index: 1; }
 .wcard-badge { position: absolute; top: 14px; right: 14px; z-index: 2; font-family: 'Special Elite', monospace; font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); border: 1px solid var(--gold); padding: 4px 10px; }
 .wcard-text { position: absolute; bottom: 0; left: 0; right: 0; padding: 20px 18px 18px; z-index: 2; }
 .wcard-num { display: block; font-family: 'Cormorant SC', Georgia, serif; font-size: 12px; letter-spacing: .18em; color: var(--md); margin-bottom: 4px; }
 .wcard-title { display: block; font-family: 'Cormorant SC', Georgia, serif; font-size: clamp(15px, 1.6vw, 19px); font-weight: 300; color: var(--w); line-height: 1.25; margin-bottom: 5px; }
 .wcard-subj { display: block; font-family: 'Special Elite', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--md); }
+
+/* Aldric card — warm gold candle glow at bottom */
+a.wcard.aldric-card .wcard-overlay {
+  background: linear-gradient(to top, rgba(80,40,5,.85) 0%, rgba(30,15,2,.1) 60%, transparent 100%);
+}
 
 .s-quote { background: var(--ink); padding: 100px 48px 110px; }
 .quote-inner { max-width: 680px; margin: 0 auto; }
@@ -281,7 +308,7 @@ footer { background: var(--dark); border-top: 1px solid rgba(28,58,56,.5); paddi
     <div class="method-body rv" style="transition-delay:.36s">
       Statistics is taught through invented scenarios &#8212; dice, urns, card games. Economics assumes people are rational and their preferences are well-behaved. Econometrics assumes that latent variables cross unseen thresholds.
       <br><br>
-      What remains implicit throughout is that this is already world-building &#8212 with rules, inhabitants, and internal logic. This project makes that explicit.
+      What remains implicit throughout is that this is already world-building &#8212; with rules, inhabitants, and internal logic. This project makes that explicit.
     </div>
     <div class="ped-wrap rv" style="transition-delay:.44s">
       <button class="ped-btn" onclick="togglePed(this)">The pedagogy</button>
@@ -325,16 +352,17 @@ footer { background: var(--dark); border-top: 1px solid rgba(28,58,56,.5); paddi
         </div>
       </a>
 
-      <div class="wcard locked rv" style="transition-delay:.12s">
-        <div class="wcard-bg birds"></div>
+      <a class="wcard available aldric-card rv" href="aldriclibrary.html" style="transition-delay:.12s">
+        <div class="wcard-bg aldric"></div>
         <div class="wcard-overlay"></div>
-        <div class="wcard-desc"><p>Thirty birds in search of a king they may already be. A pilgrimage through the mathematics of inference, uncertainty, and belief.</p></div>
+        <div class="wcard-badge">Econometrics</div>
+        <div class="wcard-desc"><p>A library, a storm, a missing professor. The documents that survived may not all be trustworthy. Your job is to help those who arrive with questions.</p></div>
         <div class="wcard-text">
           <span class="wcard-num">III</span>
-          <span class="wcard-title">The Conference of Birds</span>
-          <span class="wcard-subj">Statistical Inference</span>
+          <span class="wcard-title">The Aldric Library</span>
+          <span class="wcard-subj">Data &amp; Evidence</span>
         </div>
-      </div>
+      </a>
 
       <div class="wcard locked rv" style="transition-delay:.18s">
         <div class="wcard-bg observatory"></div>
