@@ -1195,12 +1195,9 @@ body {
 <!-- How to play overlay -->
 <div id="help-overlay">
   <div id="help-inner">
-    <div id="help-title">How to Play</div>
+    <div id="help-title">As Things Stand</div>
     <div id="help-body">
-      A student has come to you with a problem.<br><br>
-      Examine the books on the shelves — hover to preview, click to read. Some are damaged. Some cannot be trusted.<br><br>
-      When you think you know what she needs to hear, open your notes and present an answer.<br><br>
-      You have three chances. The candle is already burning.
+      The rain has been falling for some time.
     </div>
     <button id="help-close" onclick="closeHelp()">Understood</button>
   </div>
@@ -1402,6 +1399,13 @@ function admitIsolde() {
   sceneState = 'active';
   closeWindowView();
   document.getElementById('isolde-hotspot').style.display = 'none';
+  // Revert help text now that window intro is done
+  const helpBody = document.getElementById('help-body');
+  if (helpBody) helpBody.innerHTML =
+    `A student has come to you with a problem.<br><br>` +
+    `Examine the books on the shelves — hover to preview, click to read. Some are damaged. Some cannot be trusted.<br><br>` +
+    `When you think you know what she needs to hear, open your notes and present an answer.<br><br>` +
+    `You have three chances. The candle is already burning.`;
   // Reveal portrait after short delay
   setTimeout(() => {
     document.getElementById('portrait').style.opacity = '1';
@@ -2002,7 +2006,7 @@ function bindTip(el, text) {
 
 bindTip(document.getElementById('window-hotspot'), 'Look outside');
 bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
-bindTip(document.getElementById('help-hotspot'), 'How to play');
+bindTip(document.getElementById('help-hotspot'), 'As Things Stand');
 bindTip(document.getElementById('book-hotspot'), 'Your notes');
 bindTip(document.getElementById('book-badge'), 'Your notes');
 bindTip(document.getElementById('candle-wrap'), 'Patience');
