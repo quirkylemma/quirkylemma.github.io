@@ -1397,37 +1397,24 @@ bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
   }
 
   // ── LAYER FACTORY ──────────────────────────────────────────────────────────
-  // blending: 'normal' (alpha), 'additive' (black = transparent)
-  // offsetY: vertical offset in px from centre (positive = up)
-  // scaleX/scaleY: multiplier on canvas size
   function makeLayer(texPath, z, scaleX, scaleY, blending, offsetX, offsetY) {
     const geo = new THREE.PlaneGeometry(W * scaleX, H * scaleY);
     const mat = new THREE.MeshBasicMaterial({
       transparent: true,
       depthWrite: false,
-      blending: blending === 'additive'
-        ? THREE.AdditiveBlending
-        : THREE.NormalBlending,
+      blending: blending === 'additive' ? THREE.AdditiveBlending : THREE.NormalBlending,
     });
     const mesh = new THREE.Mesh(geo, mat);
     mesh.position.set(offsetX || 0, offsetY || 0, z);
     scene.add(mesh);
-
     loadTex(texPath, tex => { mat.map = tex; mat.needsUpdate = true; });
-
-    return { mesh, mat, baseX: offsetX || 0, baseY: offsetY || 0 };
+    return { mesh, mat, baseX: offsetX || 0, baseY: offsetY || 0, scaleX, scaleY };
   }
 
-  // ── THE 7 LAYERS ───────────────────────────────────────────────────────────
-  // Parallax factors: background = 0 (fixed), foreground = highest
-  // Positive parallaxX: moves right when mouse goes left (correct parallax dir)
-
+  // ── THE 6 LAYERS (layer 2 / windows removed) ───────────────────────────────
   const layers = [
     // L1: background wall — full canvas, no movement
     { ...makeLayer('./aldricimages/librarylayer1.png', 0, 1, 1, 'normal', 0, 0), px: 0, py: 0 },
-
-    // L2: windows — centred, slight movement
-    { ...makeLayer('./aldricimages/librarylayer2.png', 1, 1, 0.72, 'normal', 0, H*0.12), px: 0.012, py: 0.005 },
 
     // L3: left shelf — anchored left
     { ...makeLayer('./aldricimages/librarylayer3.png', 2, 0.52, 1.05, 'normal', -W*0.25, H*0.02), px: 0.025, py: 0.008 },
@@ -1438,14 +1425,102 @@ bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
     // L5: table surface — lower centre
     { ...makeLayer('./aldricimages/librarylayer5.png', 3, 0.9, 0.55, 'normal', 0, -H*0.23), px: 0.042, py: 0.015 },
 
-    // L6: table objects — same position as table
+    // L6: table objects
     { ...makeLayer('./aldricimages/librarylayer6.png', 4, 0.85, 0.5, 'normal', -W*0.03, -H*0.23), px: 0.052, py: 0.018 },
 
     // L7: foreground frame — full canvas, most movement
     { ...makeLayer('./aldricimages/librarylayer7.png', 5, 1, 1, 'normal', 0, 0), px: 0.065, py: 0.022 },
   ];
 
-  // ── RAIN ANIMATION on L2 ───────────────────────────────────────────────────
+  // ── LIVE TUNING PANEL ──────────────────────────────────────────────────────
+  const NAMES = ['Wall','Shelf L','Shelf R','Table','Objects','Frame'];
+  const panel = document.createElement('div');
+  panel.id = 'tune-panel';
+  panel.style.cssText = `
+    position:fixed; top:10px; left:10px; z-index:9999;
+    background:rgba(10,6,2,0.92); border:1px solid rgba(180,140,60,0.4);
+    padding:12px 16px; font-family:'Cinzel',serif; font-size:12px;
+    color:rgba(220,190,130,0.9); border-radius:4px;
+    max-height:90vh; overflow-y:auto; width:280px;
+    display:none;
+  `;
+
+  let tuneHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+    <span style="letter-spacing:0.15em;font-size:11px">LAYER TUNING</span>
+    <button onclick="document.getElementById('tune-panel').style.display='none'"
+      style="background:none;border:none;color:rgba(220,190,130,0.7);cursor:pointer;font-size:14px">✕</button>
+  </div>`;
+
+  layers.forEach((layer, i) => {
+    const xVal = (layer.baseX / W).toFixed(2);
+    const yVal = (layer.baseY / H).toFixed(2);
+    const zVal = layer.scaleX.toFixed(2);
+    tuneHTML += `
+    <div style="margin-bottom:10px;border-bottom:1px solid rgba(180,140,60,0.15);padding-bottom:8px">
+      <div style="margin-bottom:5px;font-size:11px;letter-spacing:0.1em">${NAMES[i]}</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+        <span style="width:16px;font-size:10px;opacity:0.7">X</span>
+        <input type="range" min="-1" max="1" step="0.01" value="${xVal}"
+          style="flex:1;accent-color:#b48c3c"
+          oninput="window._tuneLayer(${i},'x',parseFloat(this.value));this.nextSibling.textContent=parseFloat(this.value).toFixed(2)">
+        <span style="width:36px;font-size:10px;text-align:right">${xVal}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+        <span style="width:16px;font-size:10px;opacity:0.7">Y</span>
+        <input type="range" min="-1" max="1" step="0.01" value="${yVal}"
+          style="flex:1;accent-color:#b48c3c"
+          oninput="window._tuneLayer(${i},'y',parseFloat(this.value));this.nextSibling.textContent=parseFloat(this.value).toFixed(2)">
+        <span style="width:36px;font-size:10px;text-align:right">${yVal}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="width:16px;font-size:10px;opacity:0.7">Z</span>
+        <input type="range" min="0.1" max="3" step="0.01" value="${zVal}"
+          style="flex:1;accent-color:#b48c3c"
+          oninput="window._tuneLayer(${i},'z',parseFloat(this.value));this.nextSibling.textContent=parseFloat(this.value).toFixed(2)">
+        <span style="width:36px;font-size:10px;text-align:right">${zVal}</span>
+      </div>
+    </div>`;
+  });
+
+  tuneHTML += `<button onclick="window._exportTune()"
+    style="width:100%;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.15em;
+    background:rgba(180,140,60,0.15);border:1px solid rgba(180,140,60,0.4);
+    color:rgba(220,190,130,0.9);padding:6px;cursor:pointer;border-radius:3px;margin-top:4px">
+    COPY VALUES</button>`;
+
+  panel.innerHTML = tuneHTML;
+  document.body.appendChild(panel);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 't' || e.key === 'T') {
+      panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+    }
+  });
+
+  window._tuneLayer = (i, axis, val) => {
+    const layer = layers[i];
+    if (axis === 'x') {
+      layer.baseX = val * W;
+      layer.mesh.position.x = val * W;
+    } else if (axis === 'y') {
+      layer.baseY = val * H;
+      layer.mesh.position.y = val * H;
+    } else if (axis === 'z') {
+      // Zoom — rescale the mesh geometry via scale property
+      layer.scaleX = val;
+      layer.scaleY = val;
+      layer.mesh.scale.set(val, val, 1);
+    }
+  };
+
+  window._exportTune = () => {
+    const vals = layers.map((l, i) =>
+      `L${i+1} ${NAMES[i]}: X=${(l.baseX/W).toFixed(3)} Y=${(l.baseY/H).toFixed(3)} Scale=${l.scaleX.toFixed(3)}`
+    ).join('\n');
+    console.log(vals);
+    navigator.clipboard.writeText(vals).then(() => alert('Copied to clipboard'));
+  };
+  // ── END TUNING PANEL ───────────────────────────────────────────────────────
   // We draw animated rain onto an offscreen canvas and update the texture each frame
   const rainCanvas = document.createElement('canvas');
   rainCanvas.width  = 512;
@@ -1580,16 +1655,16 @@ bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
       layer.mesh.position.x = layer.baseX - mx * layer.px * W;
       layer.mesh.position.y = layer.baseY + my * layer.py * H;
     });
-    // Rain mesh follows L2
-    rainMesh.position.x = layers[1].mesh.position.x;
-    rainMesh.position.y = layers[1].mesh.position.y;
+    // Rain mesh stays fixed (window is baked into wall layer now)
+    rainMesh.position.x = 0;
+    rainMesh.position.y = H * 0.08;
 
     // Rain animation
     drawRain(t);
 
     // Candle flicker on objects layer
     const flicker = flickerBase + Math.sin(t * 7.3) * 0.03 + Math.sin(t * 13.1) * 0.015;
-    layers[5].mat.opacity = Math.max(0.7, Math.min(1, flicker));
+    layers[4].mat.opacity = Math.max(0.7, Math.min(1, flicker));
 
     // Dust
     const pos = dustGeo.attributes.position.array;
