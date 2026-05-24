@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ragvir's Library</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
 <style>
 
@@ -205,7 +207,7 @@ body {
   justify-content:center;
 }
 
-#speech {
+#speech { 
   flex:1;
   min-width:0;
   padding:clamp(10px, 1.5vh, 20px) clamp(12px, 1.8vw, 24px);
@@ -215,6 +217,21 @@ body {
   overflow-x:hidden;
   scrollbar-width:thin;
   scrollbar-color:rgba(180,140,80,0.3) transparent;
+  cursor:pointer;
+  position:relative;
+}
+#speech::after {
+  content:'▶';
+  position:absolute;
+  bottom:12px;
+  right:16px;
+  font-size:12px;
+  color:rgba(220,190,130,0.4);
+  pointer-events:none;
+  transition:color 0.3s;
+}
+#speech:hover::after {
+  color:rgba(220,190,130,0.85);
 }
 
 #speech p {
@@ -226,6 +243,13 @@ body {
   word-wrap:break-word;
   overflow-wrap:break-word;
   width:100%;
+}
+.stage-dir {
+  display:block;
+  font-style:italic;
+  font-size:0.85em;
+  color:rgba(200,175,130,0.55);
+  margin:6px 0;
 }
 
 /* ════ TITLE SCREEN ════ */
@@ -367,7 +391,7 @@ body {
 #narration-text {
   font-family:'IM Fell English',serif;
   font-style:italic;
-  font-size:clamp(15px,1.6vw,22px);
+  font-size:clamp(15px,1.7vw,22px);
   line-height:1.9;
   color:rgba(235,215,175,0.88);
   text-align:center;
@@ -398,15 +422,327 @@ body {
   color:rgba(240,215,160,1);
   border-color:rgba(180,140,60,0.7);
 }
+/* ── WINDOW OVERLAY ── */
+#window-overlay {
+  position:fixed;
+  inset:0;
+  z-index:200;
+  background:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.6s;
+}
+#window-overlay.visible {
+  opacity:1;
+  pointer-events:auto;
+}
+#window-overlay-img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+#window-toggle {
+  position:absolute;
+  top:20px;
+  right:130px;
+  font-family:'Cinzel',serif;
+  font-size:13px;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:rgba(220,190,130,0.85);
+  background:rgba(10,6,2,0.7);
+  border:1px solid rgba(180,140,60,0.4);
+  padding:8px 18px;
+  border-radius:3px;
+  cursor:pointer;
+}
+#window-toggle:hover {
+  background:rgba(180,140,60,0.2);
+  color:rgba(240,215,160,1);
+}
+
+#window-close {
+  position:absolute;
+  top:20px;
+  right:24px;
+  font-family:'Cinzel',serif;
+  font-size:13px;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:rgba(220,190,130,0.85);
+  background:rgba(10,6,2,0.7);
+  border:1px solid rgba(180,140,60,0.4);
+  padding:8px 18px;
+  border-radius:3px;
+  cursor:pointer;
+}
+#window-close:hover {
+  background:rgba(180,140,60,0.2);
+  color:rgba(240,215,160,1);
+}
+#isolde-hotspot {
+  position:absolute;
+  left:48.6%;
+  top:42.7%;
+  width:12%;
+  height:35%;
+  cursor:pointer;
+  z-index:210;
+  border-radius:4px;
+}
+#isolde-hotspot.debug {
+  outline:3px solid rgba(50,200,50,0.8);
+  background:rgba(50,200,50,0.1);
+}
+
+/* ── CARD PANEL ── */
+#card-panel {
+  position:fixed;
+  top:0; right:0;
+  width:clamp(480px, 52vw, 700px);
+  height:100vh;
+  z-index:50;
+  display:flex;
+  flex-direction:column;
+  transform:translateX(100%);
+  transition:transform 0.45s cubic-bezier(0.4,0,0.2,1);
+  background:transparent;
+  pointer-events:none;
+}
+#card-panel.open {
+  transform:translateX(0);
+  pointer-events:auto;
+}
+#card-parchment {
+  flex:1;
+  margin:clamp(16px,3vh,40px) clamp(16px,2vw,36px);
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:-8px 0 40px rgba(0,0,0,0.5), 0 8px 32px rgba(0,0,0,0.4);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+#card-parchment-bg {
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+#card-parchment-content {
+  position:relative;
+  z-index:2;
+  padding:clamp(16px,3vh,32px) clamp(16px,2.5vw,36px);
+  display:flex;
+  flex-direction:column;
+  height:100%;
+}
+#card-panel-title {
+  font-family:'Cinzel',serif;
+  font-size:clamp(13px,1.3vw,17px);
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  color:rgba(60,35,10,0.9);
+  margin-bottom:4px;
+}
+#card-panel-subtitle {
+  font-family:'IM Fell English',serif;
+  font-style:italic;
+  font-size:clamp(12px,1.1vw,15px);
+  color:rgba(80,50,20,0.65);
+  margin-bottom:clamp(10px,2vh,20px);
+}
+#card-panel-body {
+  flex:1;
+  overflow-y:auto;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(60,35,10,0.2) transparent;
+}
+#card-panel-footer {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-top:clamp(8px,1.5vh,16px);
+  gap:8px;
+  flex-shrink:0;
+}
+.parchment-btn {
+  font-family:'Cinzel',serif;
+  font-size:clamp(10px,0.9vw,12px);
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  background:rgba(60,35,10,0.08);
+  border:1px solid rgba(60,35,10,0.25);
+  padding:6px 14px;
+  border-radius:3px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  color:rgba(60,35,10,0.75);
+}
+.parchment-btn:hover { background:rgba(60,35,10,0.16); }
+.parchment-btn.primary {
+  background:rgba(60,35,10,0.14);
+  border-color:rgba(60,35,10,0.45);
+  color:rgba(60,35,10,0.92);
+}
+.parchment-btn.primary:hover { background:rgba(60,35,10,0.24); }
+.parchment-btn.copied {
+  color:rgba(30,80,30,0.8);
+  border-color:rgba(30,80,30,0.4);
+  background:rgba(30,80,30,0.08);
+}
+#card-panel-close {
+  position:absolute;
+  top:12px; right:12px;
+  font-family:'Cinzel',serif;
+  font-size:11px; letter-spacing:0.15em; text-transform:uppercase;
+  color:rgba(60,35,10,0.6);
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  z-index:10;
+  padding:4px 8px;
+}
+#card-panel-close:hover { color:rgba(60,35,10,0.9); }
+
+/* Textbook card styles */
+.tb-chapter { font-family:'Cinzel',serif; font-size:clamp(12px,1.1vw,14px); letter-spacing:0.15em; color:rgba(60,15,10,0.75); margin:0 0 14px; }
+.tb-section { font-family:'Cinzel',serif; font-size:clamp(10px,0.9vw,12px); letter-spacing:0.12em; color:rgba(60,15,10,0.65); margin:16px 0 6px; }
+.tb-text { font-family:'IM Fell English',serif; font-size:clamp(14px,1.3vw,17px); line-height:1.85; color:rgba(40,10,5,0.85); margin-bottom:8px; }
+.tb-eq { margin:12px 0 12px 12px; padding:8px 12px; border-left:2px solid rgba(60,15,10,0.2); background:rgba(60,15,10,0.04); border-radius:0 3px 3px 0; }
+.tb-damaged { font-family:'IM Fell English',serif; font-style:italic; font-size:clamp(12px,1.1vw,14px); color:rgba(60,15,10,0.4); margin-top:16px; border-top:1px solid rgba(60,15,10,0.15); padding-top:10px; }
+
+
+.parchment-table {
+  border-collapse:collapse;
+  width:100%;
+  font-family:'IM Fell English',serif;
+  table-layout:fixed;
+}
+.parchment-table .ds-header {
+  font-family:'Cinzel',serif;
+  font-size:clamp(9px,0.85vw,11px);
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:rgba(60,35,10,0.75);
+  text-align:center;
+  padding:0 0 5px;
+  border-bottom:1px solid rgba(60,35,10,0.35);
+}
+.parchment-table th {
+  font-family:'Cinzel',serif;
+  font-size:clamp(8px,0.75vw,10px);
+  letter-spacing:0.1em;
+  color:rgba(60,35,10,0.55);
+  text-align:center;
+  padding:4px 2px 3px;
+  border-bottom:1px solid rgba(60,35,10,0.15);
+}
+.parchment-table td {
+  text-align:center;
+  padding:3px 2px;
+  color:rgba(40,20,5,0.85);
+  font-size:clamp(11px,1.1vw,14px);
+}
+.parchment-table tr:nth-child(odd) td { background:rgba(60,35,10,0.03); }
+.parchment-table .sep { background:transparent !important; width:10px; }
+
+
+#cursor-tip {
+  position:fixed;
+  pointer-events:none;
+  z-index:9999;
+  font-family:'Cinzel',serif;
+  font-size:12px;
+  letter-spacing:0.15em;
+  color:rgba(220,190,130,0.95);
+  background:rgba(10,6,2,0.85);
+  border:1px solid rgba(180,140,60,0.35);
+  padding:6px 14px;
+  border-radius:3px;
+  white-space:nowrap;
+  opacity:0;
+  transition:opacity 0.15s;
+}
+#cursor-tip.visible { opacity:1; }
+
+#window-hotspot {
+  position:absolute;
+  left:32%;
+  top:4%;
+  width:36%;
+  height:55%;
+  cursor:pointer;
+  z-index:5;
+  border-radius:4px;
+}
+#window-hotspot.debug {
+  outline:3px solid rgba(255,50,50,0.8);
+  background:rgba(255,50,50,0.08);
+}
+#window-hotspot.debug::after {
+  content:'WINDOW HOTSPOT';
+  position:absolute;
+  top:8px;
+  left:50%;
+  transform:translateX(-50%);
+  font-family:'Cinzel',serif;
+  font-size:13px;
+  color:rgba(255,80,80,0.9);
+  letter-spacing:0.15em;
+  pointer-events:none;
+  white-space:nowrap;
+}
+
+/* ── DEV BUTTONS ── */
+#dev-bar {
+  position:fixed;
+  bottom:12px;
+  right:12px;
+  display:flex;
+  gap:8px;
+  z-index:999;
+}
+.dev-btn {
+  font-family:'Cinzel',serif;
+  font-size:11px;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:rgba(255,220,100,0.9);
+  background:rgba(10,6,2,0.85);
+  border:1px solid rgba(255,180,50,0.4);
+  padding:6px 14px;
+  border-radius:3px;
+  cursor:pointer;
+}
+.dev-btn:hover {
+  background:rgba(180,140,60,0.3);
+  border-color:rgba(255,180,50,0.8);
+}
 
 </style>
 </head>
 <body>
 
+<!-- Cursor tooltip -->
+<div id="cursor-tip"></div>
+
 <!-- Minimum screen message -->
 <div id="too-small">
   <p>Ragvir's Library requires a screen at least 390px wide.<br>
   Please use a larger device.</p>
+</div>
+
+<!-- DEV BAR -->
+<div id="dev-bar">
+  <button class="dev-btn" onclick="devSkipIntro()">Skip Intro</button>
 </div>
 
 <!-- Title screen -->
@@ -426,7 +762,6 @@ body {
       <img id="ragvir-img" src="./aldricimages/ragvir_librarian.png" alt="Ragvir">
     </div>
     <div id="intro-text-area">
-      <div id="intro-title">The Aldric Library</div>
       <div id="intro-text"></div>
       <div id="intro-footer">
         <div id="scene-dots">
@@ -441,9 +776,33 @@ body {
   </div>
 </div>
 
+<!-- Card panel -->
+<div id="card-panel">
+  <div id="card-parchment">
+    <div id="card-parchment-bg"></div>
+    <button id="card-panel-close" onclick="closeCardPanel()">✕ Close</button>
+    <div id="card-parchment-content">
+      <div id="card-panel-title"></div>
+      <div id="card-panel-subtitle"></div>
+      <div id="card-panel-body"></div>
+      <div id="card-panel-footer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Window overlay -->
+<div id="window-overlay">
+  <img id="window-overlay-img" src="./aldricimages/isolderain.png" alt="Outside view">
+  <div id="isolde-hotspot" onclick="admitIsolde()"></div>
+  <button id="window-close" onclick="closeWindowView()">Close</button>
+  <button id="window-toggle" onclick="toggleWindowImage()">Switch View</button>
+</div>
+
 <div id="scene" style="visibility:hidden;">
 
   <div id="bg">
+    <canvas id="dust-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;"></canvas>
+    <div id="window-hotspot" onclick="openWindowView()"></div>
     <div id="narration">
       <div id="narration-text"></div>
       <button id="narration-btn" onclick="nextNarrationScene()">Continue</button>
@@ -452,16 +811,16 @@ body {
 
   <div id="dock">
     <div id="dock-title">The Library</div>
-    <div id="card-list"></div>
+    <div id="card-list" style="opacity:0;transition:opacity 0.8s;"></div>
   </div>
 
   <div id="dialogue">
-    <div id="portrait">
+    <div id="portrait" style="opacity:0;transition:opacity 0.8s;">
       <img src="./aldricimages/isoldefenn.png" alt="Isolde Fenn">
       <div id="portrait-name">Isolde Fenn</div>
     </div>
-    <div id="speech">
-      <p>I am trying to work out whether advertising spend actually causes sales to increase, or whether they just move together. My supervisor says I need to prove causality — but I do not know how.</p>
+    <div id="speech" style="opacity:0;transition:opacity 0.8s;">
+      <p>Forgive the intrusion. I was told someone here might be able to help.</p>
     </div>
   </div>
 
@@ -478,13 +837,13 @@ const CONDITION_LABELS = {
 
 const SCENE = {
   student: 'Isolde Fenn',
-  question: 'My supervisor says my analysis is fine — my formulas all check out. But something feels off. How do I know if I can actually trust my statistics?',
+  question: 'I have four datasets. My supervisor says the analysis is fine — my formulas all check out. But every summary I compute gives me the same number. That cannot be right. Can it?',
   cards: [
     { number: 1,  slug: 'data',          title: 'Data',          condition: 'intact'  },
-    { number: 10, slug: 'graphs',        title: 'Graphs',        condition: 'intact'  },
+    { number: 10, slug: 'graphs',        title: 'Graphs',        condition: 'locked'  },
     { number: 5,  slug: 'bsc_textbook',  title: 'BSc Textbook',  condition: 'damaged' },
     { number: 9,  slug: 'ragvirs_notes', title: "Ragvir's Notes", condition: 'cursed' },
-    { number: 2,  slug: 'methods',       title: 'Methods',        condition: 'locked' },
+    { number: 2,  slug: 'methods',       title: 'Methods',        condition: 'intact' },
   ]
 };
 
@@ -510,11 +869,310 @@ function renderDock() {
   });
 }
 
-function openCard(card) {
-  console.log('Opened:', card.title, card.condition);
+// ── DEV HELPERS ──────────────────────────────────────────────────────────────
+function devSkipIntro() {
+  document.getElementById('title-screen').style.display = 'none';
+  document.getElementById('intro').style.display = 'none';
+  document.getElementById('scene').style.visibility = 'visible';
+  document.getElementById('dev-bar').style.display = 'none';
 }
 
-document.getElementById('speech').innerHTML = `<p>${SCENE.question}</p>`;
+function devShowAnscombe() {
+  sceneState = 'resolved';
+  document.getElementById('window-overlay-img').src = './aldricimages/anscombe.png';
+  document.getElementById('isolde-hotspot').style.display = 'none';
+  document.getElementById('window-overlay').classList.add('visible');
+}
+
+// ── DRAGGABLE HOTSPOTS ───────────────────────────────────────────────────────
+function makeDraggable(el, parentSelector) {
+  let dragging = false, startX, startY, origLeft, origTop;
+
+  el.addEventListener('mousedown', e => {
+    if (e.button !== 0) return;
+    dragging = true;
+    const parent = el.closest(parentSelector) || document.body;
+    const pr = parent.getBoundingClientRect();
+    const er = el.getBoundingClientRect();
+    startX = e.clientX;
+    startY = e.clientY;
+    origLeft = ((er.left - pr.left) / pr.width) * 100;
+    origTop  = ((er.top  - pr.top)  / pr.height) * 100;
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const parent = el.closest(parentSelector) || document.body;
+    const pr = parent.getBoundingClientRect();
+    const dx = ((e.clientX - startX) / pr.width)  * 100;
+    const dy = ((e.clientY - startY) / pr.height) * 100;
+    el.style.left = (origLeft + dx) + '%';
+    el.style.top  = (origTop  + dy) + '%';
+  });
+
+  document.addEventListener('mouseup', e => {
+    if (!dragging) return;
+    dragging = false;
+    const parent = el.closest(parentSelector) || document.body;
+    const pr = parent.getBoundingClientRect();
+    const er = el.getBoundingClientRect();
+    const l = (((er.left - pr.left) / pr.width)  * 100).toFixed(1);
+    const t = (((er.top  - pr.top)  / pr.height) * 100).toFixed(1);
+    const w = ((er.width  / pr.width)  * 100).toFixed(1);
+    const h = ((er.height / pr.height) * 100).toFixed(1);
+    console.log(`${el.id}: left:${l}% top:${t}% width:${w}% height:${h}%`);
+  });
+}
+
+// Init draggable hotspots
+makeDraggable(document.getElementById('window-hotspot'), '#bg');
+makeDraggable(document.getElementById('isolde-hotspot'), '#window-overlay');
+
+
+let sceneState = 'waiting'; // waiting | active | resolved
+
+function openWindowView() {
+  const overlay = document.getElementById('window-overlay');
+  const isoldeHotspot = document.getElementById('isolde-hotspot');
+  const img = document.getElementById('window-overlay-img');
+
+  if (sceneState === 'waiting') {
+    img.src = './aldricimages/isolderain.png';
+    isoldeHotspot.style.display = 'block';
+  } else if (sceneState === 'active') {
+    img.src = './aldricimages/emptystreet.png';
+    isoldeHotspot.style.display = 'none';
+  } else {
+    img.src = './aldricimages/anscombe.png';
+    isoldeHotspot.style.display = 'none';
+  }
+  overlay.classList.add('visible');
+}
+
+function toggleWindowImage() {
+  const img = document.getElementById('window-overlay-img');
+  const isoldeHotspot = document.getElementById('isolde-hotspot');
+  if (img.src.includes('isolderain')) {
+    img.src = './aldricimages/emptystreet.png';
+    isoldeHotspot.style.display = 'none';
+  } else if (img.src.includes('emptystreet')) {
+    img.src = './aldricimages/anscombe.png';
+    isoldeHotspot.style.display = 'none';
+  } else {
+    img.src = './aldricimages/isolderain.png';
+    isoldeHotspot.style.display = 'block';
+  }
+}
+
+function closeWindowView() {
+  document.getElementById('window-overlay').classList.remove('visible');
+}
+
+function admitIsolde() {
+  sceneState = 'active';
+  closeWindowView();
+  document.getElementById('isolde-hotspot').style.display = 'none';
+  // Reveal portrait after short delay
+  setTimeout(() => {
+    document.getElementById('portrait').style.opacity = '1';
+  }, 600);
+  // Start narration
+  setTimeout(() => startNarration(), 400);
+}
+
+// ── CARD PANEL ───────────────────────────────────────────────────────────────
+const PARCHMENT_BG = {
+  intact:  './aldricimages/parchmentintact.png',
+  damaged: './aldricimages/parchmentdamaged.png',
+  cursed:  './aldricimages/parchmentcursed.png',
+  locked:  './aldricimages/parchmentintact.png',
+};
+
+const CARD_CONTENT = {
+  data: {
+    title: 'Data — Four Datasets',
+    subtitle: 'Raw observed values. Handle with care.',
+    body: `<table class="parchment-table">
+      <thead>
+        <tr>
+          <th class="ds-header" colspan="2">Dataset I</th><td class="sep"></td>
+          <th class="ds-header" colspan="2">Dataset II</th><td class="sep"></td>
+          <th class="ds-header" colspan="2">Dataset III</th><td class="sep"></td>
+          <th class="ds-header" colspan="2">Dataset IV</th>
+        </tr>
+        <tr>
+          <th>x</th><th>y</th><td class="sep"></td>
+          <th>x</th><th>y</th><td class="sep"></td>
+          <th>x</th><th>y</th><td class="sep"></td>
+          <th>x</th><th>y</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>10</td><td>8.04</td><td class="sep"></td><td>10</td><td>9.14</td><td class="sep"></td><td>10</td><td>7.46</td><td class="sep"></td><td>8</td><td>6.58</td></tr>
+        <tr><td>8</td><td>6.95</td><td class="sep"></td><td>8</td><td>8.14</td><td class="sep"></td><td>8</td><td>6.77</td><td class="sep"></td><td>8</td><td>5.76</td></tr>
+        <tr><td>13</td><td>7.58</td><td class="sep"></td><td>13</td><td>8.74</td><td class="sep"></td><td>13</td><td>12.74</td><td class="sep"></td><td>8</td><td>7.71</td></tr>
+        <tr><td>9</td><td>8.81</td><td class="sep"></td><td>9</td><td>8.77</td><td class="sep"></td><td>9</td><td>7.11</td><td class="sep"></td><td>8</td><td>8.84</td></tr>
+        <tr><td>11</td><td>8.33</td><td class="sep"></td><td>11</td><td>9.26</td><td class="sep"></td><td>11</td><td>7.81</td><td class="sep"></td><td>8</td><td>8.47</td></tr>
+        <tr><td>14</td><td>9.96</td><td class="sep"></td><td>14</td><td>8.10</td><td class="sep"></td><td>14</td><td>8.84</td><td class="sep"></td><td>8</td><td>7.04</td></tr>
+        <tr><td>6</td><td>7.24</td><td class="sep"></td><td>6</td><td>6.13</td><td class="sep"></td><td>6</td><td>6.08</td><td class="sep"></td><td>8</td><td>5.25</td></tr>
+        <tr><td>4</td><td>4.26</td><td class="sep"></td><td>4</td><td>3.10</td><td class="sep"></td><td>4</td><td>5.39</td><td class="sep"></td><td>19</td><td>12.50</td></tr>
+        <tr><td>12</td><td>10.84</td><td class="sep"></td><td>12</td><td>9.13</td><td class="sep"></td><td>12</td><td>8.15</td><td class="sep"></td><td>8</td><td>5.56</td></tr>
+        <tr><td>7</td><td>4.82</td><td class="sep"></td><td>7</td><td>7.26</td><td class="sep"></td><td>7</td><td>6.42</td><td class="sep"></td><td>8</td><td>7.91</td></tr>
+        <tr><td>5</td><td>5.68</td><td class="sep"></td><td>5</td><td>4.74</td><td class="sep"></td><td>5</td><td>5.73</td><td class="sep"></td><td>8</td><td>6.89</td></tr>
+      </tbody>
+    </table>`,
+    isoldeResponse: "Yes. These are my four datasets. I computed the means from these exact values. They are identical across all four — every one. I have checked the arithmetic. And yet I find myself wondering if I have done something wrong.",
+    csv: `x_I,y_I,x_II,y_II,x_III,y_III,x_IV,y_IV\n10,8.04,10,9.14,10,7.46,8,6.58\n8,6.95,8,8.14,8,6.77,8,5.76\n13,7.58,13,8.74,13,12.74,8,7.71\n9,8.81,9,8.77,9,7.11,8,8.84\n11,8.33,11,9.26,11,7.81,8,8.47\n14,9.96,14,8.10,14,8.84,8,7.04\n6,7.24,6,6.13,6,6.08,8,5.25\n4,4.26,4,3.10,4,5.39,19,12.50\n12,10.84,12,9.13,12,8.15,8,5.56\n7,4.82,7,7.26,7,6.42,8,7.91\n5,5.68,5,4.74,5,5.73,8,6.89`
+  },
+  bsc_textbook: {
+    title: 'BSc Textbook',
+    subtitle: 'Introductory Statistics — Chapter 3. Handle with caution.',
+    body: `<div class="tb-chapter">Chapter 3 — Descriptive Statistics</div>
+      <div class="tb-section">3.1 The Sample Mean</div>
+      <div class="tb-text">Let <span class="tb-inline" data-katex="x_1, x_2, \\ldots, x_n"></span> denote a sample of <span class="tb-inline" data-katex="n"></span> observations. The sample mean is defined as:</div>
+      <div class="tb-eq" data-katex="\\bar{x} = \\dfrac{1}{n}\\sum_{i=1}^{n} x_i"></div>
+      <div class="tb-text">The sample mean provides a measure of central tendency — the value around which observations cluster.</div>
+      <div class="tb-section">3.2 The Sample Variance</div>
+      <div class="tb-text">The sample variance measures the average squared deviation from the mean:</div>
+      <div class="tb-eq" data-katex="s^2 = \\dfrac{1}{n-1}\\sum_{i=1}^{n}(x_i - \\bar{x})^2"></div>
+      <div class="tb-text">Note the divisor <span class="tb-inline" data-katex="n-1"></span> rather than <span class="tb-inline" data-katex="n"></span>. This correction ensures the sample variance is an unbiased estimator of the population variance.</div>
+      <div class="tb-section">3.3 Interpreting Summary Statistics</div>
+      <div class="tb-text">Summary statistics reduce a dataset to a small number of values. They are useful precisely because they are concise — but this conciseness means that</div>
+      <div class="tb-damaged">[ text obscured ]</div>`,
+    isoldeResponse: `I computed the means. I stopped there. My supervisor said they were the same and I — I suppose I assumed that was enough.<stage>She looks at the formula.</stage>It wasn't enough, was it.`,
+  }
+};
+
+let currentCard = null;
+
+function openCard(card) {
+  currentCard = card;
+  const content = CARD_CONTENT[card.slug];
+  if (!content) return;
+
+  document.getElementById('card-parchment-bg').style.backgroundImage =
+    `url('${PARCHMENT_BG[card.condition]}')`;
+  document.getElementById('card-panel-title').textContent = content.title;
+  document.getElementById('card-panel-subtitle').textContent = content.subtitle;
+  document.getElementById('card-panel-body').innerHTML = content.body;
+
+  // Render KaTeX elements if present
+  if (window.katex) {
+    document.querySelectorAll('.tb-eq[data-katex]').forEach(el => {
+      katex.render(el.dataset.katex, el, {throwOnError:false, displayMode:true});
+    });
+    document.querySelectorAll('.tb-inline[data-katex]').forEach(el => {
+      katex.render(el.dataset.katex, el, {throwOnError:false, displayMode:false});
+    });
+  }
+
+  const footer = document.getElementById('card-panel-footer');
+  footer.innerHTML = '';
+
+  if (content.csv) {
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'parchment-btn';
+    copyBtn.id = 'parchment-copy-btn';
+    copyBtn.innerHTML = '⎘ Copy to clipboard';
+    copyBtn.onclick = () => {
+      navigator.clipboard.writeText(content.csv).then(() => {
+        copyBtn.classList.add('copied');
+        copyBtn.textContent = '✓ Copied';
+        setTimeout(() => {
+          copyBtn.classList.remove('copied');
+          copyBtn.innerHTML = '⎘ Copy to clipboard';
+        }, 2000);
+      });
+    };
+    footer.appendChild(copyBtn);
+  }
+
+  if (content.isoldeResponse) {
+    const showBtn = document.createElement('button');
+    showBtn.className = 'parchment-btn primary';
+    showBtn.innerHTML = '↳ Show Isolde';
+    showBtn.onclick = () => showIsoldeResponse(content.isoldeResponse);
+    footer.appendChild(showBtn);
+  }
+
+  document.getElementById('card-panel').classList.add('open');
+}
+
+function closeCardPanel() {
+  document.getElementById('card-panel').classList.remove('open');
+  currentCard = null;
+}
+
+function showIsoldeResponse(text) {
+  const speech = document.getElementById('speech');
+  speech.style.opacity = '0';
+  setTimeout(() => {
+    const formatted = text
+      .replace(/<stage>(.*?)<\/stage>/g, '<em class="stage-dir">$1</em>')
+      .replace(/\n\n/g, '</p><p>')
+      .replace(/\n/g, '<br>');
+    speech.innerHTML = `<p>${formatted}</p>`;
+    speech.style.opacity = '1';
+    speech.style.cursor = 'default';
+  }, 400);
+  closeCardPanel();
+}
+
+
+
+const ISOLDE_DIALOGUE = [
+  "Forgive the intrusion. I was told someone here might be able to help.",
+  "I have four datasets. My supervisor says the analysis is fine — my formulas all check out. But every summary I compute gives me the same number. That cannot be right. Can it?"
+];
+let dialogueIndex = 0;
+
+function advanceDialogue() {
+  dialogueIndex++;
+  if (dialogueIndex < ISOLDE_DIALOGUE.length) {
+    const speech = document.getElementById('speech');
+    speech.style.opacity = '0';
+    setTimeout(() => {
+      speech.innerHTML = `<p>${ISOLDE_DIALOGUE[dialogueIndex]}</p>`;
+      speech.style.opacity = '1';
+      if (dialogueIndex >= ISOLDE_DIALOGUE.length - 1) {
+        speech.style.cursor = 'default';
+        setTimeout(() => showCheckBookshelves(), 800);
+      }
+    }, 400);
+  }
+}
+
+function showCheckBookshelves() {
+  const speech = document.getElementById('speech');
+  const btn = document.createElement('button');
+  btn.id = 'bookshelves-btn';
+  btn.textContent = 'Check the bookshelves';
+  btn.style.cssText = `
+    display:block; margin-top:16px;
+    font-family:'Cinzel',serif; font-size:clamp(11px,1vw,13px);
+    letter-spacing:0.2em; text-transform:uppercase;
+    color:rgba(220,190,130,0.85); background:transparent;
+    border:1px solid rgba(180,140,60,0.4); padding:8px 20px;
+    border-radius:3px; cursor:pointer;
+  `;
+  btn.onmouseover = () => { btn.style.background = 'rgba(180,140,60,0.15)'; btn.style.borderColor = 'rgba(180,140,60,0.8)'; };
+  btn.onmouseout  = () => { btn.style.background = 'transparent'; btn.style.borderColor = 'rgba(180,140,60,0.4)'; };
+  btn.onclick = revealCards;
+  speech.appendChild(btn);
+}
+
+function revealCards() {
+  document.getElementById('bookshelves-btn').remove();
+  document.getElementById('card-list').style.opacity = '1';
+}
+
+document.getElementById('speech').addEventListener('click', () => {
+  if (sceneState !== 'active') return;
+  advanceDialogue();
+});
+
+
 
 renderDock();
 
@@ -583,8 +1241,10 @@ function nextScene() {
     document.getElementById('scene').style.visibility = 'visible';
     setTimeout(() => {
       intro.style.display = 'none';
-      startNarration();
-    }, 1200);
+      document.getElementById('dev-bar').style.display = 'none';
+      setTimeout(() => {
+        document.getElementById('speech').style.opacity = '1';
+      }, 600);}, 1200);
   }
 }
 
@@ -645,9 +1305,110 @@ function nextNarrationScene() {
 
     narrationTimers.push(setTimeout(() => {
       overlay.classList.remove('visible');
+      setTimeout(() => {
+        document.getElementById('speech').style.opacity = '1';
+      }, 700);
     }, 300));
   }
 }
+
+// ── CURSOR TOOLTIP ───────────────────────────────────────────────────────────
+const tip = document.getElementById('cursor-tip');
+
+function showTip(text, e) {
+  tip.textContent = text;
+  tip.classList.add('visible');
+  moveTip(e);
+}
+function moveTip(e) {
+  tip.style.left = (e.clientX - tip.offsetWidth / 2) + 'px';
+  tip.style.top  = (e.clientY - tip.offsetHeight - 12) + 'px';
+}
+function hideTip() {
+  tip.classList.remove('visible');
+}
+
+function bindTip(el, text) {
+  el.addEventListener('mouseenter', e => showTip(text, e));
+  el.addEventListener('mousemove',  e => moveTip(e));
+  el.addEventListener('mouseleave', hideTip);
+}
+
+bindTip(document.getElementById('window-hotspot'), 'Look outside');
+bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
+</script>
+
+<script>
+// ── DUST MOTES + CANDLE FLICKER ──────────────────────────────────────────────
+(function() {
+  const canvas = document.getElementById('dust-canvas');
+  const ctx    = canvas.getContext('2d');
+
+  function resize() {
+    const bg = document.getElementById('bg');
+    canvas.width  = bg.offsetWidth;
+    canvas.height = bg.offsetHeight;
+  }
+
+  const COUNT = 55;
+  const motes = Array.from({ length: COUNT }, () => ({
+    x:     Math.random(),
+    y:     Math.random(),
+    r:     Math.random() * 1.3 + 0.4,
+    vy:    Math.random() * 0.00010 + 0.00004,
+    vx:    (Math.random() - 0.5) * 0.00005,
+    phase: Math.random() * Math.PI * 2,
+  }));
+
+  // Candle flicker — drives a subtle CSS brightness filter on #bg
+  const bg = document.getElementById('bg');
+  let lastT = 0;
+
+  function tick(ts) {
+    requestAnimationFrame(tick);
+    const dt = Math.min(ts - lastT, 50);
+    lastT = ts;
+    const t = ts / 1000;
+
+    const W = canvas.width;
+    const H = canvas.height;
+    if (!W || !H) return;
+
+    // Candle flicker on bg
+    const flicker = 1 + Math.sin(t * 8.1) * 0.018 + Math.sin(t * 13.7) * 0.009;
+    bg.style.filter = `brightness(${flicker.toFixed(3)})`;
+
+    // Dust
+    ctx.clearRect(0, 0, W, H);
+    motes.forEach(m => {
+      m.y -= m.vy * dt;
+      m.x += m.vx * dt + Math.sin(t * 0.3 + m.phase) * 0.00003;
+      if (m.y < -0.02) { m.y = 1.02; m.x = Math.random(); }
+      if (m.x < 0) m.x += 1;
+      if (m.x > 1) m.x -= 1;
+
+      const px = m.x * W;
+      const py = m.y * H;
+      const edge = Math.min(px/80, (W-px)/80, py/80, (H-py)/80, 1);
+      const glow = 0.18 + (1 - m.y) * 0.22;
+      const alpha = Math.max(0, edge * glow * (0.28 + Math.sin(t * 0.6 + m.phase) * 0.10));
+
+      ctx.beginPath();
+      ctx.arc(px, py, m.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(220,185,110,${alpha.toFixed(3)})`;
+      ctx.fill();
+    });
+  }
+
+  // Start once scene is visible
+  const sceneEl = document.getElementById('scene');
+  new MutationObserver(() => {
+    if (sceneEl.style.visibility === 'visible') { resize(); requestAnimationFrame(tick); }
+  }).observe(sceneEl, { attributes: true, attributeFilter: ['style'] });
+
+  window.addEventListener('resize', resize);
+  resize();
+})();
 </script>
 </body>
 </html>
