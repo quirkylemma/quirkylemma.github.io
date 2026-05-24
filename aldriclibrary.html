@@ -715,6 +715,14 @@ body {
   user-select:none;
 }
 #book-badge.visible { display:flex; }
+#book-badge.pulse {
+  animation: badge-pulse 0.8s ease-out;
+}
+@keyframes badge-pulse {
+  0%   { box-shadow: 0 0 10px rgba(180,100,30,0.45); }
+  40%  { box-shadow: 0 0 22px rgba(255,180,60,0.95), 0 0 40px rgba(220,140,40,0.6); }
+  100% { box-shadow: 0 0 10px rgba(180,100,30,0.45); }
+}
 
 /* ── HOW TO PLAY HOTSPOT ── */
 #help-hotspot {
@@ -1190,7 +1198,7 @@ body {
 <div id="win-screen">
   <div id="win-title">She sees it.</div>
   <div id="win-text"></div>
-  <div id="win-card-reveal">Ragvir's Notes have been unlocked.</div>
+  <div id="win-card-reveal">Three shelves have unlocked — Graphs, Ragvir's Notes, and A Note on Method.</div>
 </div>
 
 <!-- How to play overlay -->
@@ -1244,16 +1252,16 @@ const SCENE = {
   student: 'Isolde Fenn',
   question: 'I have four datasets. My supervisor says the analysis is fine — my formulas all check out. But every summary I compute gives me the same number. That cannot be right. Can it?',
   cards: [
-    { number: 1,  slug: 'data',          title: 'Data',           condition: 'intact'  },  // shelf 1
-    null,                                                                                    // shelf 2
-    { number: 5,  slug: 'bsc_textbook',  title: 'BSc Textbook',   condition: 'damaged' },  // shelf 3
-    { number: 9,  slug: 'ragvirs_notes', title: "Ragvir's Notes", condition: 'locked'  },  // shelf 4
-    null,                                                                                    // shelf 5
-    null,                                                                                    // shelf 6
-    { number: 2,  slug: 'methods',       title: 'Methods',        condition: 'intact'  },  // shelf 7
-    null,                                                                                    // shelf 8
-    null,                                                                                    // shelf 9
-    { number: 10, slug: 'graphs',        title: 'Graphs',         condition: 'locked'  },  // shelf 10
+    { number: 1,  slug: 'data',            title: 'Data',              condition: 'intact'  },  // shelf 1
+    { number: 3,  slug: 'journal_article', title: 'Journal Article',   condition: 'damaged' },  // shelf 2
+    { number: 5,  slug: 'bsc_textbook',    title: 'BSc Textbook',      condition: 'damaged' },  // shelf 3
+    null,                                                                                         // shelf 4
+    { number: 6,  slug: 'humour',          title: 'A Note on Method',  condition: 'cursed'  },  // shelf 5
+    { number: 9,  slug: 'ragvirs_notes',   title: "Ragvir's Notes",    condition: 'locked'  },  // shelf 6
+    { number: 2,  slug: 'methods',         title: 'Methods',           condition: 'intact'  },  // shelf 7
+    { number: 10, slug: 'graphs',          title: 'Graphs',            condition: 'locked'  },  // shelf 8
+    null,                                                                                         // shelf 9
+    null,                                                                                         // shelf 10
   ]
 };
 
@@ -1528,14 +1536,52 @@ const CARD_CONTENT = {
       <div class="tb-text">Verify observation count. Identify missing values. Check for obvious entry errors. Confirm units are consistent.</div>
       <div class="tb-section">Step 2 — Compute summary statistics</div>
       <div class="tb-text">Calculate the mean, variance, and correlation for each variable. These give a first orientation — necessary, but not sufficient.</div>
+      <div class="tb-text">The four datasets, computed:</div>
+      <div id="methods-stats-table"></div>
       <div class="tb-section">Step 3 — <span style="opacity:0.35;filter:blur(1.5px)">&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</span></div>
       <div class="tb-text" style="opacity:0.3;filter:blur(1px)">&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608; each dataset &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608; the underlying &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608; numbers alone cannot &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;.</div>
       <div class="tb-section">Step 4 — Fit a model</div>
       <div class="tb-text">Only after Step 3 should a model be fitted. A model applied to unseen structure will describe that structure incorrectly — precisely and incorrectly.</div>
       <div class="tb-section">Step 5 — Interpret with caution</div>
       <div class="tb-text">Summary statistics and model outputs describe the data you have. They do not speak to data you do not have. State what you know, and what you are assuming.</div>
-      <div class="tb-damaged">Note: Step 3 is water-damaged. The heading and most of the body text are illegible. The word "each dataset" and the phrase "numbers alone cannot" remain visible.</div>`,
+      <div class="tb-damaged">Note: Step 3 is water-damaged. The heading and most of the body text are illegible. The words "each dataset" and the phrase "numbers alone cannot" remain visible.</div>`,
     isoldeResponse: `<stage>She reads slowly, running her finger down the list.</stage>Steps one and two — yes. I did those. But step three... it is damaged. I cannot read it.<stage>She pauses.</stage>Numbers alone cannot. Cannot what?`,
+    onOpen: 'renderMethodsStats',
+  },
+  journal_article: {
+    title: 'Graphs in Statistical Analysis',
+    subtitle: 'F.J. Anscombe, The American Statistician, 1973. Partial — pages missing.',
+    body: `<div class="tb-chapter">Graphs in Statistical Analysis</div>
+      <div class="tb-text">Few of us escape being told that graphs are a trick used by charlatans and demagogues to present data in misleading ways. The implication is that numerical calculations are good, and graphs are suspect.</div>
+      <div class="tb-text">In fact, the opposite is nearer the truth. Numerical quantities focus on expected values, and ignore distributional shape. A good graph will show up things we did not expect to see.</div>
+      <div class="tb-text">Consider the four sets of data in Table 1. The summary statistics for each are, to two decimal places:</div>
+      <div class="tb-damaged">[ Table 1 and subsequent analysis — pages missing or water-damaged ]</div>
+      <div class="tb-text" style="opacity:0.35;filter:blur(1.2px)">&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</div>
+      <div class="tb-damaged">Anscombe, F.J. (1973). Graphs in Statistical Analysis. <em>The American Statistician</em>, 27(1), 17–21.</div>`,
+    isoldeResponse: `<stage>She takes the journal and reads the first page carefully.</stage>Graphs are suspect. That is what I was told, more or less.<stage>A pause.</stage>He says the opposite is nearer the truth. But the rest of it — the pages are gone.`,
+  },
+  humour: {
+    title: 'A Note on Method',
+    subtitle: 'Found loose between the shelves. Condition uncertain.',
+    body: `<div class="tb-chapter">On the Reliable Interpretation of Numerical Results</div>
+      <div class="tb-text">It is a well-established principle of good statistical practice that summary measures — the mean, the variance, the correlation coefficient, the regression line — provide a complete and sufficient description of any dataset for most practical purposes.</div>
+      <div class="tb-text">A competent analyst who has verified these quantities may proceed directly to interpretation and inference. The construction of visual representations, while occasionally useful for presentational purposes, adds little of analytical value and may introduce subjective bias into what should be an objective process.</div>
+      <div class="tb-text">The numbers do not lie. Trust the numbers.</div>
+      <div class="tb-damaged">Note: This document has no named author or institutional affiliation. Provenance unknown. Treat with appropriate caution.</div>`,
+    isoldeResponse: `<stage>She reads it carefully.</stage>This is almost exactly what my supervisor said.<stage>She sets it down.</stage>Word for word, almost.`,
+  },
+  ragvirs_notes: {
+    title: "Ragvir's Notes",
+    subtitle: 'Personal annotation. Handle with care.',
+    body: `<div class="tb-chapter">A Note for the Student</div>
+      <div class="tb-text"><em>[ To be completed ]</em></div>`,
+    isoldeResponse: `<stage>She reads quietly, then looks up.</stage>He knew. He left this here deliberately.`,
+  },
+  graphs: {
+    title: 'Graphs — Anscombe\'s Quartet',
+    subtitle: 'Four datasets. Identical statistics. Different shapes.',
+    body: `<div id="anscombe-plots-container"></div>`,
+    onOpen: 'renderAnscombeGraphs',
   },
 };
 
@@ -1593,8 +1639,100 @@ function openCard(card) {
 
   document.getElementById('card-panel').classList.add('open');
 
+  // Call any onOpen renderer
+  if (content.onOpen === 'renderMethodsStats') renderMethodsStats();
+  if (content.onOpen === 'renderAnscombeGraphs') renderAnscombeGraphs();
+
   // Track card read and reveal associated slips
   markCardRead(card.slug);
+}
+
+// ── ANSCOMBE DATA ─────────────────────────────────────────────────────────────
+const ANSCOMBE = {
+  I:   { x:[10,8,13,9,11,14,6,4,12,7,5],   y:[8.04,6.95,7.58,8.81,8.33,9.96,7.24,4.26,10.84,4.82,5.68] },
+  II:  { x:[10,8,13,9,11,14,6,4,12,7,5],   y:[9.14,8.14,8.74,8.77,9.26,8.10,6.13,3.10,9.13,7.26,4.74] },
+  III: { x:[10,8,13,9,11,14,6,4,12,7,5],   y:[7.46,6.77,12.74,7.11,7.81,8.84,6.08,5.39,8.15,6.42,5.73] },
+  IV:  { x:[8,8,8,8,8,8,8,19,8,8,8],       y:[6.58,5.76,7.71,8.84,8.47,7.04,5.25,12.50,5.56,7.91,6.89] },
+};
+
+function aMean(arr)    { return arr.reduce((a,b)=>a+b,0)/arr.length; }
+function aVar(arr)     { const m=aMean(arr); return arr.reduce((s,v)=>s+(v-m)**2,0)/(arr.length-1); }
+function aCor(x,y)     { const mx=aMean(x),my=aMean(y),n=x.length; const num=x.reduce((s,v,i)=>s+(v-mx)*(y[i]-my),0); const den=Math.sqrt(x.reduce((s,v)=>s+(v-mx)**2,0)*y.reduce((s,v)=>s+(v-my)**2,0)); return num/den; }
+function aReg(x,y)     { const mx=aMean(x),my=aMean(y); const b=x.reduce((s,v,i)=>s+(v-mx)*(y[i]-my),0)/x.reduce((s,v)=>s+(v-mx)**2,0); return {slope:b, intercept:my-b*mx}; }
+
+function renderMethodsStats() {
+  const el = document.getElementById('methods-stats-table');
+  if (!el) return;
+  const rows = [
+    ['Mean of x',    Object.values(ANSCOMBE).map(d => aMean(d.x).toFixed(2))],
+    ['Mean of y',    Object.values(ANSCOMBE).map(d => aMean(d.y).toFixed(2))],
+    ['Variance of x',Object.values(ANSCOMBE).map(d => aVar(d.x).toFixed(2))],
+    ['Variance of y',Object.values(ANSCOMBE).map(d => aVar(d.y).toFixed(2))],
+    ['Correlation',  Object.values(ANSCOMBE).map(d => aCor(d.x,d.y).toFixed(3))],
+    ['Regression slope',    Object.values(ANSCOMBE).map(d => aReg(d.x,d.y).slope.toFixed(3))],
+    ['Regression intercept',Object.values(ANSCOMBE).map(d => aReg(d.x,d.y).intercept.toFixed(2))],
+  ];
+  el.innerHTML = `<table class="parchment-table" style="margin:10px 0 6px;">
+    <thead>
+      <tr>
+        <th style="text-align:left;padding-right:12px;"></th>
+        <th>I</th><th>II</th><th>III</th><th>IV</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${rows.map(([label, vals]) => `
+        <tr>
+          <td style="text-align:left;padding-right:12px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.08em;color:rgba(60,15,10,0.65);">${label}</td>
+          ${vals.map(v => `<td>${v}</td>`).join('')}
+        </tr>`).join('')}
+    </tbody>
+  </table>`;
+}
+
+function renderAnscombeGraphs() {
+  const container = document.getElementById('anscombe-plots-container');
+  if (!container) return;
+  container.innerHTML = '';
+  container.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:4px 0;';
+
+  const labels = ['I','II','III','IV'];
+  labels.forEach(label => {
+    const d = ANSCOMBE[label];
+    const W = 220, H = 160, PAD = 28;
+    const xs = d.x, ys = d.y;
+    const xMin=Math.min(...xs)-1, xMax=Math.max(...xs)+1;
+    const yMin=Math.min(...ys)-1, yMax=Math.max(...ys)+1;
+    const sx = v => PAD + (v-xMin)/(xMax-xMin)*(W-PAD*2);
+    const sy = v => H-PAD - (v-yMin)/(yMax-yMin)*(H-PAD*2);
+
+    const reg = aReg(xs,ys);
+    const rx1=xMin, ry1=reg.slope*rx1+reg.intercept;
+    const rx2=xMax, ry2=reg.slope*rx2+reg.intercept;
+
+    // Stats summary
+    const statsHtml = `<div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.08em;color:rgba(60,15,10,0.55);margin-top:4px;text-align:center;line-height:1.7;">
+      mean x̄ = ${aMean(xs).toFixed(2)} &nbsp;|&nbsp; ȳ = ${aMean(ys).toFixed(2)}<br>
+      r = ${aCor(xs,ys).toFixed(3)} &nbsp;|&nbsp; ŷ = ${reg.intercept.toFixed(2)} + ${reg.slope.toFixed(3)}x
+    </div>`;
+
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;';
+    wrap.innerHTML = `
+      <div style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.15em;color:rgba(60,15,10,0.75);margin-bottom:4px;">Dataset ${label}</div>
+      <svg width="${W}" height="${H}" style="background:rgba(60,35,10,0.04);border-radius:3px;border:1px solid rgba(60,35,10,0.12);">
+        <!-- Regression line -->
+        <line x1="${sx(rx1)}" y1="${sy(ry1)}" x2="${sx(rx2)}" y2="${sy(ry2)}"
+              stroke="rgba(160,80,20,0.35)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <!-- Points -->
+        ${xs.map((x,i) => `<circle cx="${sx(x)}" cy="${sy(ys[i])}" r="4"
+          fill="rgba(140,70,20,0.75)" stroke="rgba(220,160,80,0.6)" stroke-width="1"/>`).join('')}
+        <!-- Axes labels -->
+        <text x="${W/2}" y="${H-4}" text-anchor="middle" font-size="9" font-family="Cinzel,serif" fill="rgba(60,35,10,0.4)">x</text>
+        <text x="8" y="${H/2}" text-anchor="middle" font-size="9" font-family="Cinzel,serif" fill="rgba(60,35,10,0.4)" transform="rotate(-90,8,${H/2})">y</text>
+      </svg>
+      ${statsHtml}`;
+    container.appendChild(wrap);
+  });
 }
 
 function closeCardPanel() {
@@ -1684,42 +1822,60 @@ function markCardRead(slug) {
   if (cardsRead.has(slug)) return;
   cardsRead.add(slug);
   revealSlipsForCard(slug);
-  renderShelves(); // update .read state on spine
+  // "Draw it" unlocks only after both data AND methods have been read
+  if ((slug === 'data' || slug === 'methods') &&
+       cardsRead.has('data') && cardsRead.has('methods')) {
+    revealSlipsForCard('data+methods');
+  }
+  renderShelves();
 }
 
 // ── ANSWER SLIPS ─────────────────────────────────────────────────────────────
 const ALL_SLIPS = [
   // Revealed on bookshelves open
-  { id: 0, text: 'The datasets are identical.',         correct: false, trigger: 'open'        },
-  { id: 1, text: 'One dataset must contain an error.',  correct: false, trigger: 'open'        },
-  // Revealed after reading Data card
-  { id: 2, text: 'Compute the variance.',               correct: false, trigger: 'data'        },
-  { id: 3, text: 'The mean is sufficient.',             correct: false, trigger: 'data'        },
-  { id: 4, text: 'Run a linear regression.',            correct: false, trigger: 'data'        },
+  { id: 0, text: 'The datasets are identical.',              correct: false, trigger: 'open'           },
+  { id: 1, text: 'One dataset must contain an error.',       correct: false, trigger: 'open'           },
+  // Revealed after reading Data
+  { id: 2, text: 'The mean is sufficient.',                  correct: false, trigger: 'data'           },
+  { id: 3, text: 'Run a linear regression.',                 correct: false, trigger: 'data'           },
   // Revealed after reading BSc Textbook
-  { id: 5, text: 'The sample size is too small.',       correct: false, trigger: 'bsc_textbook'},
-  { id: 6, text: 'Check the correlation coefficient.',  correct: false, trigger: 'bsc_textbook'},
-  { id: 7, text: 'The supervisor is right.',            correct: false, trigger: 'bsc_textbook'},
-  // Revealed after reading Methods card
-  { id: 8, text: 'Report the results as-is.',           correct: false, trigger: 'methods'     },
-  { id: 9, text: 'Visualise the data.',                 correct: true,  trigger: 'methods'     },
+  { id: 4, text: 'The sample size is too small.',            correct: false, trigger: 'bsc_textbook'   },
+  { id: 5, text: 'The supervisor is right.',                 correct: false, trigger: 'bsc_textbook'   },
+  // Revealed after reading Journal Article
+  { id: 6, text: 'Find the missing pages.',                  correct: false, trigger: 'journal_article'},
+  // Revealed after reading Humour card
+  { id: 7, text: 'Trust the numbers.',                       correct: false, trigger: 'humour'         },
+  // Revealed after reading Methods
+  { id: 8, text: 'Report the results as-is.',                correct: false, trigger: 'methods'        },
+  // Correct — only unlocked after BOTH data AND methods are read
+  { id: 9, text: 'Draw it.',                                 correct: true,  trigger: 'data+methods'   },
 ];
 
 const WRONG_RESPONSES = [
-  "I thought of that. But the variance is also identical across all four.<stage>She looks away.</stage>I tried everything I could compute.",
-  "An error. I checked. There is no error — the numbers are what they are.",
-  "I ran the regression. Same slope, same intercept, same R-squared.<stage>A pause.</stage>All four.",
-  "The mean felt sufficient. My supervisor said so.<stage>She is quiet for a moment.</stage>That was the problem, wasn't it.",
-  "The regression fit perfectly. That was what frightened me.",
-  "With eleven observations you can still see structure — if you know how to look.",
-  "The correlation is 0.816 in all four. I know because I computed it.<stage>Quietly.</stage>Same number.",
-  "I told myself the same thing.<stage>She almost smiles.</stage>I nearly submitted it.",
+  // 0 — datasets identical
+  "That is what my supervisor said. The numbers are the same — so the datasets must be the same. But I keep thinking that cannot be the whole story.",
+  // 1 — error
+  "I checked every entry. There is no error. The numbers are what they are.",
+  // 2 — mean sufficient
+  "The mean is 9 for x and 7.50 for y in every one.<stage>She pauses.</stage>Identical. I thought if the mean was fine, everything was fine.",
+  // 3 — regression
+  "I ran the regression. Slope 0.500, intercept 3.00, R-squared 0.67.<stage>Quietly.</stage>All four. Every one.",
+  // 4 — sample size
+  "Eleven observations is not many, but it is enough to compute a mean. My supervisor said the sample was adequate.",
+  // 5 — supervisor right
+  "I almost submitted it on that basis.<stage>She almost smiles.</stage>He seemed very certain.",
+  // 6 — missing pages
+  "I looked. The pages are gone — the whole middle section. Whatever Anscombe concluded, it is not here.",
+  // 7 — trust the numbers
+  `<stage>A long pause.</stage>That is what the note says.<stage>She looks at it again.</stage>It has no author. I should have noticed that.`,
+  // 8 — report as-is
   "I did. Then I sat here.",
 ];
 
 let candleAttempts = 3;
-let slipsUnlocked  = []; // ordered list of slip ids now available
+let slipsUnlocked  = [];
 let usedSlipIds    = new Set();
+let slipsSeen      = new Set();
 let gameEnded      = false;
 
 // ── CANDLE ───────────────────────────────────────────────────────────────────
@@ -1727,7 +1883,6 @@ function updateCandle() {
   for (let i = 0; i < 3; i++) {
     const flame = document.getElementById(`flame-${i}`);
     if (!flame) continue;
-    // flames burn from last to first: attempts 3→2 kills flame-2, etc.
     flame.classList.toggle('spent', i >= candleAttempts);
   }
 }
@@ -1741,9 +1896,12 @@ function showCandleWarning(text) {
 
 // ── BADGE + BOOK ─────────────────────────────────────────────────────────────
 const TRIGGER_LABELS = {
-  data:        'Data',
-  bsc_textbook:'BSc Textbook',
-  methods:     'Methods',
+  data:            'Data',
+  bsc_textbook:    'BSc Textbook',
+  journal_article: 'Journal Article',
+  humour:          'A Note on Method',
+  methods:         'Methods',
+  'data+methods':  'Data and Methods',
 };
 
 function updateBookBadge() {
@@ -1764,10 +1922,11 @@ function openSlipDrawer() {
   ALL_SLIPS.forEach(slip => {
     const isUnlocked = slipsUnlocked.includes(slip.id);
     const isUsed     = usedSlipIds.has(slip.id);
+    const isNew      = isUnlocked && !isUsed && !slipsSeen.has(slip.id);
     const el = document.createElement('div');
 
     let cls = 'drawer-slip';
-    if (isUsed)          cls += ' used';
+    if (isUsed)           cls += ' used';
     else if (!isUnlocked) cls += ' locked';
 
     el.className = cls;
@@ -1779,6 +1938,18 @@ function openSlipDrawer() {
     const label = document.createElement('span');
     label.textContent = slip.text;
     el.appendChild(label);
+
+    if (isNew) {
+      const dot = document.createElement('span');
+      dot.style.cssText = `
+        display:inline-block; width:7px; height:7px; border-radius:50%;
+        background:rgba(220,160,40,0.9); margin-left:10px;
+        box-shadow:0 0 6px rgba(220,160,40,0.6);
+        vertical-align:middle; flex-shrink:0;
+      `;
+      label.appendChild(dot);
+      slipsSeen.add(slip.id);
+    }
 
     if (!isUnlocked) {
       const hint = document.createElement('span');
@@ -1798,14 +1969,55 @@ function closeSlipDrawer() {
 }
 
 function revealSlipsForCard(trigger) {
+  let newlyUnlocked = [];
   ALL_SLIPS.forEach(slip => {
     if (slip.trigger !== trigger) return;
     if (slipsUnlocked.includes(slip.id)) return;
     slipsUnlocked.push(slip.id);
+    newlyUnlocked.push(slip);
   });
   updateBookBadge();
   if (slipsUnlocked.length > 0) {
     document.getElementById('book-hotspot').classList.add('visible');
+  }
+  if (newlyUnlocked.length > 0) {
+    showSlipToast(newlyUnlocked.length);
+  }
+}
+
+function showSlipToast(count) {
+  let toast = document.getElementById('slip-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'slip-toast';
+    toast.style.cssText = `
+      position:fixed;
+      bottom:calc(clamp(140px,22vh,220px) + 52px);
+      left:50%; transform:translateX(-50%);
+      z-index:999;
+      font-family:'Cinzel',serif; font-size:13px;
+      letter-spacing:0.18em; text-transform:uppercase;
+      color:rgba(255,230,160,0.95);
+      background:rgba(10,6,2,0.88);
+      border:1px solid rgba(180,140,60,0.5);
+      padding:7px 20px; border-radius:3px;
+      pointer-events:none;
+      opacity:0; transition:opacity 0.3s;
+      white-space:nowrap;
+    `;
+    document.body.appendChild(toast);
+  }
+  toast.textContent = count === 1 ? 'A new note has appeared.' : `${count} new notes have appeared.`;
+  toast.style.opacity = '1';
+  clearTimeout(toast._hideTimer);
+  toast._hideTimer = setTimeout(() => { toast.style.opacity = '0'; }, 2400);
+  // Pulse the book badge
+  const badge = document.getElementById('book-badge');
+  if (badge) {
+    badge.classList.remove('pulse');
+    void badge.offsetWidth;
+    badge.classList.add('pulse');
+    setTimeout(() => badge.classList.remove('pulse'), 800);
   }
 }
 
@@ -1852,14 +2064,15 @@ function handleWrongAnswer(slip, el) {
 function handleCorrectAnswer() {
   gameEnded = true;
   showIsoldeResponse(
-    `<stage>A long silence. She sets down the folder.</stage>` +
-    `Visualise it. Of course. I never — I didn't think to draw it.<stage>She pulls out her notebook.</stage>` +
-    `If I plot each one... they would look completely different, wouldn't they. Same numbers. Different shapes. ` +
-    `The mean can't see that. Nothing I computed could see that.` +
-    `<stage>She closes her eyes briefly.</stage>` +
+    `<stage>She is still for a moment.</stage>` +
+    `Draw it.<stage>She opens her notebook slowly.</stage>` +
+    `I never — in two weeks I never once drew it. I just kept computing.<stage>She sketches, quietly.</stage>` +
+    `They are completely different. Same numbers. Completely different shapes.<stage>She sets down her pen.</stage>` +
+    `The mean cannot see this. Nothing I computed could see this. It was always there.` +
+    `<stage>She closes the notebook.</stage>` +
     `I need to go back. Thank you.`
   );
-  setTimeout(() => triggerWin(), 3800);
+  setTimeout(() => triggerWin(), 4200);
 }
 
 function triggerGameOver() {
@@ -1867,17 +2080,16 @@ function triggerGameOver() {
 }
 
 function triggerWin() {
-  const ragvirCard = SCENE.cards.find(c => c && c.slug === 'ragvirs_notes');
-  if (ragvirCard) ragvirCard.condition = 'cursed';
-  const graphsCard = SCENE.cards.find(c => c && c.slug === 'graphs');
-  if (graphsCard) graphsCard.condition = 'intact';
+  // Unlock all three reward cards simultaneously
+  const unlocks = { humour: 'cursed', ragvirs_notes: 'cursed', graphs: 'intact' };
+  SCENE.cards.forEach(c => {
+    if (c && unlocks[c.slug]) c.condition = unlocks[c.slug];
+  });
   renderShelves();
   document.getElementById('win-text').innerHTML =
     `Four datasets. Identical means, variances, correlations, regression lines.<br><br>` +
     `Completely different shapes when drawn.<br><br>` +
-    `Francis Anscombe constructed them in 1973 to show exactly this: that summary statistics ` +
-    `are not a substitute for looking at the data. They can be identical and tell you nothing about ` +
-    `what the data actually looks like.`;
+    `Francis Anscombe built them by hand in 1973. Three shelves have unlocked.`;
   document.getElementById('win-screen').classList.add('visible');
 }
 
