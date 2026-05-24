@@ -1278,10 +1278,27 @@ function cardImgSrc(card) {
   return `./aldricimages/card_${num}_${card.slug}_${card.condition}.png`;
 }
 
+let shelvesRevealed = false;
+
+// Condition badge colours
+const BADGE_COLOUR = {
+  intact:    'rgba(200,160,60,0.92)',
+  damaged:   'rgba(180,110,30,0.85)',
+  cursed:    'rgba(130,90,160,0.85)',
+  destroyed: 'rgba(80,70,60,0.7)',
+  locked:    null, // no badge
+};
+
+function polycentroid(pts) {
+  const pairs = pts.trim().split(/\s+/).map(p => p.split(',').map(Number));
+  const x = pairs.reduce((s, p) => s + p[0], 0) / pairs.length;
+  const y = pairs.reduce((s, p) => s + p[1], 0) / pairs.length;
+  return { x, y };
+}
+
 function renderShelves() {
   const svg = document.getElementById('shelf-svg');
-  // Clear any existing shelf polygons (not mapping tool outlines)
-  svg.querySelectorAll('.shelf-poly').forEach(el => el.remove());
+  svg.querySelectorAll('.shelf-poly, .shelf-badge').forEach(el => el.remove());
 
   SCENE.cards.forEach((card, i) => {
     const pts = SHELF_POLYS[i];
@@ -1292,7 +1309,6 @@ function renderShelves() {
     poly.setAttribute('class', 'shelf-poly' + (cardsRead && cardsRead.has(card.slug) ? ' read' : ''));
     poly.setAttribute('data-idx', i);
 
-    // Hover — show card preview after 300ms delay
     poly.addEventListener('mouseenter', e => {
       clearTimeout(previewTimer);
       showCardPreview(card, e);
@@ -1303,7 +1319,6 @@ function renderShelves() {
       hideCardPreview();
     });
 
-    // Click — open panel (locked cards show speech message instead)
     poly.addEventListener('click', () => {
       if (card.condition === 'locked') {
         showIsoldeResponse('The binding is sealed. Something is missing from this shelf.');
@@ -1318,6 +1333,37 @@ function renderShelves() {
     });
 
     svg.appendChild(poly);
+
+    // Draw condition badge dot if shelves are revealed
+    if (shelvesRevealed) {
+      const colour = BADGE_COLOUR[card.condition];
+      if (!colour) return;
+      const { x, y } = polycentroid(pts);
+      const isRead = cardsRead && cardsRead.has(card.slug);
+
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('cx', x);
+      circle.setAttribute('cy', y);
+      circle.setAttribute('r', '10');
+      circle.setAttribute('fill', isRead ? 'rgba(60,50,35,0.5)' : colour);
+      circle.setAttribute('class', 'shelf-badge');
+      circle.setAttribute('pointer-events', 'none');
+      svg.appendChild(circle);
+
+      if (isRead) {
+        // Checkmark
+        const tick = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        tick.setAttribute('x', x);
+        tick.setAttribute('y', y + 4);
+        tick.setAttribute('text-anchor', 'middle');
+        tick.setAttribute('font-size', '11');
+        tick.setAttribute('fill', 'rgba(180,150,80,0.6)');
+        tick.setAttribute('pointer-events', 'none');
+        tick.setAttribute('class', 'shelf-badge');
+        tick.textContent = '✓';
+        svg.appendChild(tick);
+      }
+    }
   });
 }
 
@@ -1599,20 +1645,23 @@ function advanceDialogue() {
 }
 
 function showCheckBookshelves() {
-  const speech = document.getElementById('speech');
   const btn = document.createElement('button');
   btn.id = 'bookshelves-btn';
   btn.textContent = 'Check bookshelves';
   btn.style.cssText = `
-    position:fixed; top:14px; right:14px; z-index:999;
+    position:fixed;
+    bottom:calc(clamp(140px, 22vh, 220px) + 14px);
+    left:50%; transform:translateX(-50%);
+    z-index:999;
     font-family:'Cinzel',serif; font-size:14px;
     letter-spacing:0.2em; text-transform:uppercase;
     color:rgba(220,190,130,0.85); background:rgba(10,6,2,0.7);
-    border:1px solid rgba(180,140,60,0.4); padding:6px 14px;
+    border:1px solid rgba(180,140,60,0.4); padding:8px 22px;
     border-radius:3px; cursor:pointer; opacity:0; transition:opacity 0.4s;
+    white-space:nowrap;
   `;
   btn.onmouseover = () => { btn.style.background = 'rgba(180,140,60,0.15)'; btn.style.borderColor = 'rgba(180,140,60,0.8)'; };
-  btn.onmouseout  = () => { btn.style.background = 'transparent'; btn.style.borderColor = 'rgba(180,140,60,0.4)'; };
+  btn.onmouseout  = () => { btn.style.background = 'rgba(10,6,2,0.7)'; btn.style.borderColor = 'rgba(180,140,60,0.4)'; };
   btn.onclick = revealCards;
   document.body.appendChild(btn);
   requestAnimationFrame(() => requestAnimationFrame(() => { btn.style.opacity = '1'; }));
@@ -1838,11 +1887,13 @@ function triggerWin() {
 function revealCards() {
   const btn = document.getElementById('bookshelves-btn');
   if (btn) btn.remove();
+  shelvesRevealed = true;
   document.getElementById('shelf-svg').style.pointerEvents = 'auto';
   document.getElementById('candle-wrap').classList.add('visible');
   updateCandle();
   revealSlipsForCard('open');
   document.getElementById('book-hotspot').classList.add('visible');
+  renderShelves();
 }
 
 // ── INTRO ────────────────────────────────────────────────────────────────────
