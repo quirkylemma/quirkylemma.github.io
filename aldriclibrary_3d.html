@@ -1367,8 +1367,8 @@ bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
   const bg     = document.getElementById('bg');
   const canvas = document.getElementById('three-canvas');
 
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
-  renderer.setClearColor(0x0a0602, 1);
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setClearColor(0x000000, 0);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
   const scene  = new THREE.Scene();
@@ -1416,6 +1416,72 @@ bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
     // Frame — baked position from tuning session
     { ...makeLayer('./aldricimages/librarylayer7.png', 1, 1.15, 1.15, 'normal', 0, -H*0.02), px: 0.065, py: 0.022 },
   ];
+
+  // ── TUNING PANEL ───────────────────────────────────────────────────────────
+  const panel = document.createElement('div');
+  panel.id = 'tune-panel';
+  panel.style.cssText = `
+    position:fixed; top:10px; left:10px; z-index:9999;
+    background:rgba(10,6,2,0.92); border:1px solid rgba(180,140,60,0.4);
+    padding:12px 16px; font-family:'Cinzel',serif; font-size:12px;
+    color:rgba(220,190,130,0.9); border-radius:4px; width:260px;
+    display:none; user-select:none;
+  `;
+
+  const frameL = layers[0];
+  panel.innerHTML = `
+    <div id="tune-handle" style="display:flex;justify-content:space-between;align-items:center;
+      margin-bottom:10px;cursor:grab;padding-bottom:8px;border-bottom:1px solid rgba(180,140,60,0.2)">
+      <span style="letter-spacing:0.15em;font-size:11px">⠿ FRAME</span>
+      <button onclick="document.getElementById('tune-panel').style.display='none'"
+        style="background:none;border:none;color:rgba(220,190,130,0.7);cursor:pointer;font-size:14px">✕</button>
+    </div>
+    ${['X','Y','Scale'].map((label, i) => {
+      const min = i < 2 ? -1 : 0.1;
+      const max = i < 2 ? 1 : 3;
+      const val = i === 0 ? (frameL.baseX/W).toFixed(2)
+                : i === 1 ? (frameL.baseY/H).toFixed(2)
+                : frameL.scaleX.toFixed(2);
+      const axis = ['x','y','z'][i];
+      return `<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+        <span style="width:36px;font-size:10px;opacity:0.7">${label}</span>
+        <input type="range" min="${min}" max="${max}" step="0.01" value="${val}"
+          style="flex:1;accent-color:#b48c3c"
+          oninput="window._tune('${axis}',parseFloat(this.value));this.nextSibling.textContent=parseFloat(this.value).toFixed(2)">
+        <span style="width:36px;font-size:10px;text-align:right">${val}</span>
+      </div>`;
+    }).join('')}
+    <button onclick="window._copyTune()"
+      style="width:100%;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.15em;
+      background:rgba(180,140,60,0.15);border:1px solid rgba(180,140,60,0.4);
+      color:rgba(220,190,130,0.9);padding:6px;cursor:pointer;border-radius:3px;margin-top:4px">
+      COPY VALUES</button>
+  `;
+  document.body.appendChild(panel);
+
+  // Drag
+  let _drag = false, _ox = 0, _oy = 0;
+  document.getElementById('tune-handle').addEventListener('mousedown', e => {
+    _drag = true; _ox = e.clientX - panel.offsetLeft; _oy = e.clientY - panel.offsetTop;
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => { if (_drag) { panel.style.left=(e.clientX-_ox)+'px'; panel.style.top=(e.clientY-_oy)+'px'; }});
+  document.addEventListener('mouseup', () => _drag = false);
+
+  document.addEventListener('keydown', e => {
+    if (e.key==='t'||e.key==='T') panel.style.display = panel.style.display==='none'?'block':'none';
+  });
+
+  window._tune = (axis, val) => {
+    if (axis==='x') { frameL.baseX=val*W; frameL.mesh.position.x=val*W; }
+    else if (axis==='y') { frameL.baseY=val*H; frameL.mesh.position.y=val*H; }
+    else { frameL.scaleX=val; frameL.mesh.scale.set(val,val,1); }
+  };
+  window._copyTune = () => {
+    const s = `Frame: X=${(frameL.baseX/W).toFixed(3)} Y=${(frameL.baseY/H).toFixed(3)} Scale=${frameL.scaleX.toFixed(3)}`;
+    navigator.clipboard.writeText(s).then(()=>alert('Copied: '+s));
+  };
+  // ── END TUNING PANEL ───────────────────────────────────────────────────────
 
   // ── RAIN ANIMATION ─────────────────────────────────────────────────────────
   const rainCanvas = document.createElement('canvas');
