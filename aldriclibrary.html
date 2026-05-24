@@ -1307,16 +1307,18 @@ function devShowAnscombe() {
 }
 
 // ── SHELF POLYGON MAPPING TOOL ───────────────────────────────────────────────
-let mappingActive = false;
-let mapPoints     = [];
-let mapShelfIndex = 0;
+let mappingActive  = false;
+let mapPoints      = [];
+let mapShelfIndex  = 0;
 let mapPreviewPoly = null;
 let mapDots        = [];
+let mapDonePolys   = []; // completed shelf outlines, one per shelf
 
 function devStartMapping() {
   mappingActive = true;
   mapPoints     = [];
   mapShelfIndex = 0;
+  mapDonePolys  = [];
   document.getElementById('dev-bar').style.display = 'none';
 
   const hud = document.getElementById('map-hud');
@@ -1326,12 +1328,48 @@ function devStartMapping() {
   const bg = document.getElementById('bg');
   bg.style.cursor = 'crosshair';
   bg.addEventListener('click', onMapClick);
+
+  document.addEventListener('keydown', onMapKey);
 }
 
 function updateMapHud() {
-  const hud = document.getElementById('map-hud');
   const remaining = 4 - mapPoints.length;
-  hud.textContent = `Shelf ${mapShelfIndex + 1} of 10 — click ${remaining} more point${remaining !== 1 ? 's' : ''}`;
+  const undo = mapPoints.length > 0 ? '  [Z] undo point' : (mapShelfIndex > 0 ? '  [U] undo shelf' : '');
+  document.getElementById('map-hud').textContent =
+    `Shelf ${mapShelfIndex + 1} of 10 — click ${remaining} more point${remaining !== 1 ? 's' : ''}${undo}`;
+}
+
+function onMapKey(e) {
+  if (!mappingActive) return;
+
+  // Z — undo last point
+  if (e.key === 'z' || e.key === 'Z') {
+    if (mapPoints.length === 0) return;
+    mapPoints.pop();
+    const dot = mapDots.pop();
+    if (dot) dot.remove();
+    if (mapPreviewPoly) { mapPreviewPoly.remove(); mapPreviewPoly = null; }
+    if (mapPoints.length >= 2) {
+      mapPreviewPoly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+      mapPreviewPoly.setAttribute('points', mapPoints.map(p => p.join(',')).join(' '));
+      mapPreviewPoly.setAttribute('fill', 'rgba(255,200,50,0.12)');
+      mapPreviewPoly.setAttribute('stroke', 'rgba(255,200,50,0.7)');
+      mapPreviewPoly.setAttribute('stroke-width', '2');
+      mapPreviewPoly.setAttribute('pointer-events', 'none');
+      document.getElementById('shelf-svg').insertBefore(mapPreviewPoly, document.getElementById('shelf-svg').firstChild);
+    }
+    updateMapHud();
+  }
+
+  // U — undo entire last completed shelf
+  if (e.key === 'u' || e.key === 'U') {
+    if (mapShelfIndex === 0 || mapPoints.length > 0) return; // mid-shelf, use Z instead
+    mapShelfIndex--;
+    const donePoly = mapDonePolys.pop();
+    if (donePoly) donePoly.remove();
+    updateMapHud();
+    console.log(`Undid shelf ${mapShelfIndex + 1}`);
+  }
 }
 
 function onMapClick(e) {
@@ -1340,12 +1378,10 @@ function onMapClick(e) {
   const svg = document.getElementById('shelf-svg');
   const r   = bg.getBoundingClientRect();
 
-  // Convert to 0–1000 SVG space (matches viewBox)
   const px = ((e.clientX - r.left) / r.width  * 1000).toFixed(1);
   const py = ((e.clientY - r.top)  / r.height * 1000).toFixed(1);
   mapPoints.push([px, py]);
 
-  // Draw a dot marker
   const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
   dot.setAttribute('cx', px);
   dot.setAttribute('cy', py);
@@ -1355,7 +1391,6 @@ function onMapClick(e) {
   svg.appendChild(dot);
   mapDots.push(dot);
 
-  // Update live preview polygon
   if (mapPreviewPoly) mapPreviewPoly.remove();
   if (mapPoints.length >= 2) {
     mapPreviewPoly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
@@ -1368,16 +1403,13 @@ function onMapClick(e) {
   }
 
   if (mapPoints.length === 4) {
-    // Log and reset for next shelf
     const pts = mapPoints.map(p => p.join(',')).join(' ');
     console.log(`Shelf ${mapShelfIndex + 1}: "${pts}"`);
 
-    // Clear dots and preview for next shelf
     mapDots.forEach(d => d.remove());
     mapDots = [];
     if (mapPreviewPoly) { mapPreviewPoly.remove(); mapPreviewPoly = null; }
 
-    // Keep a permanent faint outline so you can see what's mapped
     const done = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
     done.setAttribute('points', pts);
     done.setAttribute('fill', 'rgba(255,200,50,0.06)');
@@ -1385,6 +1417,7 @@ function onMapClick(e) {
     done.setAttribute('stroke-width', '1');
     done.setAttribute('pointer-events', 'none');
     svg.appendChild(done);
+    mapDonePolys.push(done);
 
     mapPoints = [];
     mapShelfIndex++;
@@ -1393,6 +1426,7 @@ function onMapClick(e) {
       document.getElementById('map-hud').textContent = 'All 10 shelves mapped. Check console for coordinates.';
       document.getElementById('bg').style.cursor = '';
       document.getElementById('bg').removeEventListener('click', onMapClick);
+      document.removeEventListener('keydown', onMapKey);
       mappingActive = false;
       return;
     }
@@ -1401,6 +1435,8 @@ function onMapClick(e) {
     updateMapHud();
   }
 }
+
+// ── DRAGGABLE HOTSPOTS ───────────────────────────────────────────────────────
 function makeDraggable(el, parentSelector) {
   let dragging = false, startX, startY, origLeft, origTop;
 
@@ -2208,4 +2244,4 @@ bindTip(document.getElementById('book-badge'), 'Open the book');
 })();
 </script>
 </body>
-</html> 
+</html>
