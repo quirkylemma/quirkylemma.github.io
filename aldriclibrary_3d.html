@@ -1426,23 +1426,23 @@ bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
     // L1: background wall — full canvas, no movement
     { ...makeLayer('./aldricimages/librarylayer1.png', 0, 1, 1, 'normal', 0, 0), px: 0, py: 0 },
 
-    // L2: windows — centred, slight movement, additive (black = transparent)
-    { ...makeLayer('./aldricimages/librarylayer2.png', 1, 1, 0.72, 'additive', 0, H*0.12), px: 0.012, py: 0.005 },
+    // L2: windows — centred, slight movement
+    { ...makeLayer('./aldricimages/librarylayer2.png', 1, 1, 0.72, 'normal', 0, H*0.12), px: 0.012, py: 0.005 },
 
-    // L3: left shelf — anchored left, moves less than table
-    { ...makeLayer('./aldricimages/librarylayer3.png', 2, 0.52, 1.05, 'additive', -W*0.25, H*0.02), px: 0.025, py: 0.008 },
+    // L3: left shelf — anchored left
+    { ...makeLayer('./aldricimages/librarylayer3.png', 2, 0.52, 1.05, 'normal', -W*0.25, H*0.02), px: 0.025, py: 0.008 },
 
     // L4: right shelf — anchored right
-    { ...makeLayer('./aldricimages/librarylayer4.png', 2, 0.52, 1.05, 'additive',  W*0.25, H*0.02), px: 0.025, py: 0.008 },
+    { ...makeLayer('./aldricimages/librarylayer4.png', 2, 0.52, 1.05, 'normal',  W*0.25, H*0.02), px: 0.025, py: 0.008 },
 
-    // L5: table surface — lower centre, most movement
-    { ...makeLayer('./aldricimages/librarylayer5.png', 3, 0.9, 0.55, 'additive', 0, -H*0.23), px: 0.042, py: 0.015 },
+    // L5: table surface — lower centre
+    { ...makeLayer('./aldricimages/librarylayer5.png', 3, 0.9, 0.55, 'normal', 0, -H*0.23), px: 0.042, py: 0.015 },
 
-    // L6: table objects — same position as table, slightly more movement
-    { ...makeLayer('./aldricimages/librarylayer6.png', 4, 0.85, 0.5, 'additive', -W*0.03, -H*0.23), px: 0.052, py: 0.018 },
+    // L6: table objects — same position as table
+    { ...makeLayer('./aldricimages/librarylayer6.png', 4, 0.85, 0.5, 'normal', -W*0.03, -H*0.23), px: 0.052, py: 0.018 },
 
-    // L7: foreground frame — full canvas, most movement (feels closest)
-    { ...makeLayer('./aldricimages/librarylayer7.png', 5, 1, 1, 'additive', 0, 0), px: 0.065, py: 0.022 },
+    // L7: foreground frame — full canvas, most movement
+    { ...makeLayer('./aldricimages/librarylayer7.png', 5, 1, 1, 'normal', 0, 0), px: 0.065, py: 0.022 },
   ];
 
   // ── RAIN ANIMATION on L2 ───────────────────────────────────────────────────
@@ -1488,9 +1488,9 @@ bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
   const rainMat = new THREE.MeshBasicMaterial({
     map: rainTex,
     transparent: true,
-    blending: THREE.AdditiveBlending,
+    blending: THREE.NormalBlending,
     depthWrite: false,
-    opacity: 0.6,
+    opacity: 0.4,
   });
   const rainMesh = new THREE.Mesh(rainGeo, rainMat);
   rainMesh.position.set(0, H * 0.08, 1.5);
