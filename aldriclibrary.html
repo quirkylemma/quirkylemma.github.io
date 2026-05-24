@@ -785,35 +785,48 @@ body {
   cursor:pointer;
   z-index:7;
   display:none;
+  border-radius:3px;
+  outline:2px dashed rgba(220,190,130,0.55);
+  background:rgba(220,190,130,0.08);
 }
 #book-hotspot.visible { display:block; }
-#book-badge {
+#book-hotspot::after {
+  content:'Open book';
   position:absolute;
-  top:-8px; right:-8px;
-  width:22px; height:22px;
-  border-radius:50%;
-  background:rgba(180,100,30,0.95);
-  border:1px solid rgba(220,160,80,0.6);
-  box-shadow:0 0 8px rgba(180,100,30,0.5);
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
   font-family:'Cinzel',serif;
-  font-size:12px;
-  color:rgba(255,230,160,0.95);
-  display:flex; align-items:center; justify-content:center;
+  font-size:11px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:rgba(220,190,130,0.7);
   pointer-events:none;
-  transition:transform 0.3s;
+  white-space:nowrap;
 }
-#book-hotspot:hover #book-badge { transform:scale(1.15); }
-#book-icon {
-  width:100%; height:100%;
-  display:flex; align-items:center; justify-content:center;
-  font-size:clamp(24px,3.5vw,42px);
-  filter:drop-shadow(0 2px 6px rgba(0,0,0,0.6));
-  transition:transform 0.2s, filter 0.2s;
+#book-hotspot:hover {
+  background:rgba(220,190,130,0.15);
+  outline-color:rgba(220,190,130,0.9);
 }
-#book-hotspot:hover #book-icon {
-  transform:translateY(-3px);
-  filter:drop-shadow(0 4px 10px rgba(180,140,60,0.5));
+#book-badge {
+  position:fixed;
+  top:20%;
+  left:48%;
+  width:28px; height:28px;
+  border-radius:50%;
+  background:rgba(140,70,20,0.92);
+  border:1px solid rgba(220,160,80,0.7);
+  box-shadow:0 0 10px rgba(180,100,30,0.45);
+  font-family:'Cinzel',serif;
+  font-size:14px;
+  color:rgba(255,230,160,0.97);
+  display:none;
+  align-items:center; justify-content:center;
+  cursor:grab;
+  z-index:21;
+  user-select:none;
 }
+#book-badge.visible { display:flex; }
+#book-badge:active { cursor:grabbing; }
 
 /* ── SLIP DRAWER OVERLAY ── */
 #slip-drawer {
@@ -1146,6 +1159,9 @@ body {
   <div id="candle-label">Patience</div>
 </div>
 
+<!-- Slip count badge — independently draggable -->
+<div id="book-badge">0</div>
+
 <!-- Slip drawer overlay -->
 <div id="slip-drawer">
   <div id="slip-drawer-inner">
@@ -1174,10 +1190,7 @@ body {
   <div id="bg">
     <canvas id="dust-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;"></canvas>
     <div id="window-hotspot" onclick="openWindowView()"></div>
-    <div id="book-hotspot" onclick="openSlipDrawer()">
-      <div id="book-icon">📓</div>
-      <div id="book-badge">0</div>
-    </div>
+    <div id="book-hotspot" onclick="openSlipDrawer()"></div>
     <div id="narration">
       <div id="narration-text"></div>
       <button id="narration-btn" onclick="nextNarrationScene()">Continue</button>
@@ -1303,6 +1316,33 @@ function makeDraggable(el, parentSelector) {
 // Init draggable hotspots
 makeDraggable(document.getElementById('window-hotspot'), '#bg');
 makeDraggable(document.getElementById('isolde-hotspot'), '#window-overlay');
+makeDraggable(document.getElementById('book-hotspot'), '#bg');
+
+// Badge is fixed-position so needs its own pixel-based drag
+(function() {
+  const badge = document.getElementById('book-badge');
+  let dragging = false, startX, startY, origLeft, origTop;
+  badge.addEventListener('mousedown', e => {
+    if (e.button !== 0) return;
+    dragging = true;
+    const r = badge.getBoundingClientRect();
+    startX = e.clientX; startY = e.clientY;
+    origLeft = r.left; origTop = r.top;
+    e.preventDefault(); e.stopPropagation();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    badge.style.left = (origLeft + e.clientX - startX) + 'px';
+    badge.style.top  = (origTop  + e.clientY - startY) + 'px';
+    badge.style.right = 'auto'; badge.style.bottom = 'auto';
+  });
+  document.addEventListener('mouseup', e => {
+    if (!dragging) return;
+    dragging = false;
+    const r = badge.getBoundingClientRect();
+    console.log(`book-badge: left:${r.left.toFixed(0)}px top:${r.top.toFixed(0)}px`);
+  });
+})();
 
 
 let sceneState = 'waiting'; // waiting | active | resolved
@@ -1636,7 +1676,9 @@ function showCandleWarning(text) {
 // ── BADGE + BOOK ─────────────────────────────────────────────────────────────
 function updateBookBadge() {
   const available = slipsUnlocked.filter(id => !usedSlipIds.has(id)).length;
-  document.getElementById('book-badge').textContent = available;
+  const badge = document.getElementById('book-badge');
+  badge.textContent = available;
+  if (available > 0) badge.classList.add('visible');
 }
 
 function openSlipDrawer() {
@@ -1924,7 +1966,8 @@ function bindTip(el, text) {
 
 bindTip(document.getElementById('window-hotspot'), 'Look outside');
 bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
-bindTip(document.getElementById('book-hotspot'), 'Review your notes');
+bindTip(document.getElementById('book-hotspot'), 'Open the book');
+bindTip(document.getElementById('book-badge'), 'Slips available');
 </script>
 
 <script>
