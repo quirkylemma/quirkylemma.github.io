@@ -1243,16 +1243,16 @@ const SCENE = {
   student: 'Isolde Fenn',
   question: 'I have four datasets. My supervisor says the analysis is fine — my formulas all check out. But every summary I compute gives me the same number. That cannot be right. Can it?',
   cards: [
-    { number: 1,  slug: 'data',          title: 'Data',           condition: 'intact'    },
-    { number: 10, slug: 'graphs',        title: 'Graphs',         condition: 'locked'    },
-    { number: 5,  slug: 'bsc_textbook',  title: 'BSc Textbook',   condition: 'damaged'   },
-    { number: 9,  slug: 'ragvirs_notes', title: "Ragvir's Notes", condition: 'cursed'    },
-    { number: 2,  slug: 'methods',       title: 'Methods',        condition: 'intact'    },
-    { number: 3,  slug: 'field_notes',   title: 'Field Notes',    condition: 'damaged'   },
-    { number: 4,  slug: 'prob_tables',   title: 'Probability Tables', condition: 'intact' },
-    { number: 6,  slug: 'proposal',      title: 'Research Proposal',  condition: 'destroyed' },
-    { number: 7,  slug: 'correspondence',title: 'Correspondence', condition: 'cursed'    },
-    { number: 8,  slug: 'almanac',       title: 'Almanac',        condition: 'intact'    },
+    { number: 1,  slug: 'data',          title: 'Data',           condition: 'intact'  },  // shelf 1
+    null,                                                                                    // shelf 2
+    { number: 5,  slug: 'bsc_textbook',  title: 'BSc Textbook',   condition: 'damaged' },  // shelf 3
+    { number: 9,  slug: 'ragvirs_notes', title: "Ragvir's Notes", condition: 'cursed'  },  // shelf 4
+    null,                                                                                    // shelf 5
+    null,                                                                                    // shelf 6
+    { number: 2,  slug: 'methods',       title: 'Methods',        condition: 'intact'  },  // shelf 7
+    null,                                                                                    // shelf 8
+    null,                                                                                    // shelf 9
+    { number: 10, slug: 'graphs',        title: 'Graphs',         condition: 'locked'  },  // shelf 10
   ]
 };
 
@@ -1280,15 +1280,6 @@ function cardImgSrc(card) {
 
 let shelvesRevealed = false;
 
-// Condition badge colours
-const BADGE_COLOUR = {
-  intact:    'rgba(200,160,60,0.92)',
-  damaged:   'rgba(180,110,30,0.85)',
-  cursed:    'rgba(130,90,160,0.85)',
-  destroyed: 'rgba(80,70,60,0.7)',
-  locked:    null, // no badge
-};
-
 function polycentroid(pts) {
   const pairs = pts.trim().split(/\s+/).map(p => p.split(',').map(Number));
   const x = pairs.reduce((s, p) => s + p[0], 0) / pairs.length;
@@ -1298,11 +1289,14 @@ function polycentroid(pts) {
 
 function renderShelves() {
   const svg = document.getElementById('shelf-svg');
-  svg.querySelectorAll('.shelf-poly, .shelf-badge').forEach(el => el.remove());
+  svg.querySelectorAll('.shelf-poly').forEach(el => el.remove());
+
+  // Remove any existing shelf badges
+  document.querySelectorAll('.shelf-card-badge').forEach(el => el.remove());
 
   SCENE.cards.forEach((card, i) => {
     const pts = SHELF_POLYS[i];
-    if (!pts) return;
+    if (!pts || !card) return;
 
     const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
     poly.setAttribute('points', pts);
@@ -1334,35 +1328,33 @@ function renderShelves() {
 
     svg.appendChild(poly);
 
-    // Draw condition badge dot if shelves are revealed
-    if (shelvesRevealed) {
-      const colour = BADGE_COLOUR[card.condition];
-      if (!colour) return;
+    // Badge — only for wired cards, only after shelves revealed
+    if (shelvesRevealed && CARD_CONTENT[card.slug]) {
       const { x, y } = polycentroid(pts);
       const isRead = cardsRead && cardsRead.has(card.slug);
-
-      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      circle.setAttribute('cx', x);
-      circle.setAttribute('cy', y);
-      circle.setAttribute('r', '10');
-      circle.setAttribute('fill', isRead ? 'rgba(60,50,35,0.5)' : colour);
-      circle.setAttribute('class', 'shelf-badge');
-      circle.setAttribute('pointer-events', 'none');
-      svg.appendChild(circle);
-
-      if (isRead) {
-        // Checkmark
-        const tick = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        tick.setAttribute('x', x);
-        tick.setAttribute('y', y + 4);
-        tick.setAttribute('text-anchor', 'middle');
-        tick.setAttribute('font-size', '11');
-        tick.setAttribute('fill', 'rgba(180,150,80,0.6)');
-        tick.setAttribute('pointer-events', 'none');
-        tick.setAttribute('class', 'shelf-badge');
-        tick.textContent = '✓';
-        svg.appendChild(tick);
-      }
+      const badge = document.createElement('div');
+      badge.className = 'shelf-card-badge';
+      badge.style.cssText = `
+        position:absolute;
+        left:${(x / 10).toFixed(2)}%;
+        top:${(y / 10).toFixed(2)}%;
+        transform:translate(-50%,-50%);
+        width:22px; height:22px;
+        border-radius:50%;
+        background:${isRead ? 'rgba(50,40,20,0.7)' : 'rgba(140,70,20,0.92)'};
+        border:1px solid ${isRead ? 'rgba(120,100,60,0.4)' : 'rgba(220,160,80,0.7)'};
+        box-shadow:${isRead ? 'none' : '0 0 8px rgba(180,100,30,0.45)'};
+        font-family:'Cinzel',serif;
+        font-size:11px;
+        color:${isRead ? 'rgba(180,150,80,0.5)' : 'rgba(255,230,160,0.97)'};
+        display:flex; align-items:center; justify-content:center;
+        pointer-events:none;
+        z-index:9;
+        user-select:none;
+        transition:background 0.4s, box-shadow 0.4s;
+      `;
+      badge.textContent = isRead ? '✓' : '!';
+      document.getElementById('bg').appendChild(badge);
     }
   });
 }
@@ -1869,7 +1861,7 @@ function triggerGameOver() {
 }
 
 function triggerWin() {
-  const ragvirCard = SCENE.cards.find(c => c.slug === 'ragvirs_notes');
+  const ragvirCard = SCENE.cards.find(c => c && c.slug === 'ragvirs_notes');
   if (ragvirCard) {
     ragvirCard.condition = 'intact';
     renderShelves();
