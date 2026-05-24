@@ -701,6 +701,208 @@ body {
   white-space:nowrap;
 }
 
+/* ── CANDLE ── */
+#candle-wrap {
+  position:fixed;
+  bottom:clamp(170px,24vh,240px);
+  right:clamp(86px,9.5vw,136px);
+  z-index:20;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity 0.8s;
+}
+#candle-wrap.visible { opacity:1; }
+#candle-pips {
+  display:flex;
+  gap:5px;
+}
+.candle-pip {
+  width:10px; height:10px;
+  border-radius:50%;
+  background:rgba(220,160,50,0.85);
+  box-shadow:0 0 6px rgba(220,160,50,0.6);
+  transition:background 0.6s, box-shadow 0.6s;
+}
+.candle-pip.spent {
+  background:rgba(60,40,20,0.5);
+  box-shadow:none;
+}
+#candle-label {
+  font-family:'Cinzel',serif;
+  font-size:14px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:rgba(220,190,130,0.5);
+}
+
+/* ── ANSWER SLIPS ── */
+#slips-overlay {
+  position:absolute;
+  inset:0;
+  z-index:6;
+  pointer-events:none;
+}
+.slip {
+  position:absolute;
+  pointer-events:auto;
+  cursor:pointer;
+  transform-origin:center center;
+  transition:transform 0.15s, filter 0.15s;
+  opacity:0;
+  animation:slip-appear 0.5s forwards;
+}
+@keyframes slip-appear {
+  from { opacity:0; transform:translateY(8px) rotate(var(--rot)); }
+  to   { opacity:1; transform:translateY(0)   rotate(var(--rot)); }
+}
+.slip:hover {
+  filter:brightness(1.15) drop-shadow(0 2px 8px rgba(180,140,60,0.4));
+  transform:rotate(var(--rot)) scale(1.06) translateY(-3px);
+  z-index:100;
+}
+.slip-inner {
+  background:rgba(240,225,185,0.92);
+  border:1px solid rgba(160,120,60,0.4);
+  border-radius:2px;
+  padding:6px 10px;
+  font-family:'IM Fell English',serif;
+  font-size:clamp(11px,1.05vw,14px);
+  line-height:1.4;
+  color:rgba(40,20,5,0.88);
+  white-space:nowrap;
+  box-shadow:1px 2px 6px rgba(0,0,0,0.35);
+  max-width:180px;
+  white-space:normal;
+  text-align:center;
+}
+.slip.correct .slip-inner {
+  background:rgba(210,235,200,0.95);
+  border-color:rgba(60,120,60,0.4);
+  color:rgba(20,60,20,0.9);
+}
+.slip.used {
+  pointer-events:none;
+  opacity:0.35;
+  filter:grayscale(0.6);
+}
+.slip.used .slip-inner {
+  text-decoration:line-through;
+  color:rgba(40,20,5,0.4);
+}
+
+/* ── WRONG ANSWER FLASH ── */
+#wrong-flash {
+  position:fixed;
+  inset:0;
+  z-index:300;
+  background:rgba(80,10,10,0.0);
+  pointer-events:none;
+  transition:background 0.15s;
+}
+#wrong-flash.flash { background:rgba(80,10,10,0.35); }
+
+/* ── GAME OVER ── */
+#game-over {
+  position:fixed;
+  inset:0;
+  z-index:600;
+  background:rgba(8,4,2,0.97);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(14px,2.5vh,28px);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 1.4s;
+}
+#game-over.visible {
+  opacity:1;
+  pointer-events:auto;
+}
+#game-over-title {
+  font-family:'Cinzel',serif;
+  font-size:clamp(18px,2.5vw,32px);
+  letter-spacing:0.3em;
+  text-transform:uppercase;
+  color:rgba(180,130,80,0.85);
+}
+#game-over-text {
+  font-family:'IM Fell English',serif;
+  font-style:italic;
+  font-size:clamp(15px,1.6vw,20px);
+  line-height:1.9;
+  color:rgba(200,175,130,0.7);
+  text-align:center;
+  max-width:52ch;
+}
+#game-over-btn {
+  font-family:'Cinzel',serif;
+  font-size:clamp(14px,1.2vw,16px);
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  color:rgba(220,190,130,0.85);
+  background:transparent;
+  border:1px solid rgba(180,140,60,0.4);
+  padding:10px 28px;
+  border-radius:3px;
+  cursor:pointer;
+  margin-top:8px;
+  transition:background 0.2s, color 0.2s, border-color 0.2s;
+}
+#game-over-btn:hover {
+  background:rgba(180,140,60,0.15);
+  color:rgba(255,230,170,1);
+  border-color:rgba(180,140,60,0.8);
+}
+
+/* ── WIN SCREEN ── */
+#win-screen {
+  position:fixed;
+  inset:0;
+  z-index:600;
+  background:rgba(8,4,2,0.97);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(14px,2.5vh,28px);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 1.4s;
+}
+#win-screen.visible {
+  opacity:1;
+  pointer-events:auto;
+}
+#win-title {
+  font-family:'Cinzel',serif;
+  font-size:clamp(18px,2.5vw,32px);
+  letter-spacing:0.3em;
+  text-transform:uppercase;
+  color:rgba(220,190,130,0.92);
+}
+#win-text {
+  font-family:'IM Fell English',serif;
+  font-style:italic;
+  font-size:clamp(15px,1.6vw,20px);
+  line-height:1.9;
+  color:rgba(210,185,140,0.8);
+  text-align:center;
+  max-width:56ch;
+}
+#win-card-reveal {
+  font-family:'Cinzel',serif;
+  font-size:clamp(14px,1.2vw,16px);
+  letter-spacing:0.2em;
+  color:rgba(220,190,130,0.6);
+  text-align:center;
+}
+
 /* ── DEV BUTTONS ── */
 #dev-bar {
   position:fixed;
@@ -798,11 +1000,39 @@ body {
   <button id="window-toggle" onclick="toggleWindowImage()">Switch View</button>
 </div>
 
+<!-- Wrong answer flash -->
+<div id="wrong-flash"></div>
+
+<!-- Candle attempts indicator -->
+<div id="candle-wrap">
+  <div id="candle-pips">
+    <div class="candle-pip" id="pip-0"></div>
+    <div class="candle-pip" id="pip-1"></div>
+    <div class="candle-pip" id="pip-2"></div>
+  </div>
+  <div id="candle-label">Attempts</div>
+</div>
+
+<!-- Game over -->
+<div id="game-over">
+  <div id="game-over-title">She is gone.</div>
+  <div id="game-over-text">Isolde waited as long as she could. The candle burned down. She gathered her folder and left without a word — still unsure whether her supervisor was right, still without an answer.<br><br>The library remains. Perhaps next time.</div>
+  <button id="game-over-btn" onclick="location.reload()">Try Again</button>
+</div>
+
+<!-- Win screen -->
+<div id="win-screen">
+  <div id="win-title">She sees it.</div>
+  <div id="win-text"></div>
+  <div id="win-card-reveal">Ragvir's Notes have been unlocked.</div>
+</div>
+
 <div id="scene" style="visibility:hidden;">
 
   <div id="bg">
     <canvas id="dust-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;"></canvas>
     <div id="window-hotspot" onclick="openWindowView()"></div>
+    <div id="slips-overlay"></div>
     <div id="narration">
       <div id="narration-text"></div>
       <button id="narration-btn" onclick="nextNarrationScene()">Continue</button>
@@ -1041,7 +1271,25 @@ const CARD_CONTENT = {
       <div class="tb-text">Summary statistics reduce a dataset to a small number of values. They are useful precisely because they are concise — but this conciseness means that</div>
       <div class="tb-damaged">[ text obscured ]</div>`,
     isoldeResponse: `I computed the means. I stopped there. My supervisor said they were the same and I — I suppose I assumed that was enough.<stage>She looks at the formula.</stage>It wasn't enough, was it.`,
-  }
+  },
+  methods: {
+    title: 'Methods',
+    subtitle: 'A working checklist for data analysis. Intact.',
+    body: `<div class="tb-chapter">Standard Analytical Procedure</div>
+      <div class="tb-text">Before drawing conclusions from any dataset, work through the following steps in order. Steps skipped are assumptions made.</div>
+      <div class="tb-section">Step 1 — Check the data</div>
+      <div class="tb-text">Verify observation count. Identify missing values. Check for obvious entry errors. Confirm units are consistent.</div>
+      <div class="tb-section">Step 2 — Compute summary statistics</div>
+      <div class="tb-text">Calculate the mean, variance, and correlation for each variable. These give a first orientation — necessary, but not sufficient.</div>
+      <div class="tb-section">Step 3 — <span style="opacity:0.35;filter:blur(1.5px)">&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</span></div>
+      <div class="tb-text" style="opacity:0.3;filter:blur(1px)">&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608; each dataset &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608; the underlying &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608; numbers alone cannot &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;.</div>
+      <div class="tb-section">Step 4 — Fit a model</div>
+      <div class="tb-text">Only after Step 3 should a model be fitted. A model applied to unseen structure will describe that structure incorrectly — precisely and incorrectly.</div>
+      <div class="tb-section">Step 5 — Interpret with caution</div>
+      <div class="tb-text">Summary statistics and model outputs describe the data you have. They do not speak to data you do not have. State what you know, and what you are assuming.</div>
+      <div class="tb-damaged">Note: Step 3 is water-damaged. The heading and most of the body text are illegible. The word "each dataset" and the phrase "numbers alone cannot" remain visible.</div>`,
+    isoldeResponse: `<stage>She reads slowly, running her finger down the list.</stage>Steps one and two — yes. I did those. But step three... it is damaged. I cannot read it.<stage>She pauses.</stage>Numbers alone cannot. Cannot what?`,
+  },
 };
 
 let currentCard = null;
@@ -1097,6 +1345,9 @@ function openCard(card) {
   }
 
   document.getElementById('card-panel').classList.add('open');
+
+  // Track card read and reveal associated slips
+  markCardRead(card.slug);
 }
 
 function closeCardPanel() {
@@ -1175,6 +1426,162 @@ document.getElementById('speech').addEventListener('click', () => {
 
 
 renderDock();
+
+// ── CARDS READ TRACKING ──────────────────────────────────────────────────────
+const cardsRead = new Set();
+
+function markCardRead(slug) {
+  if (cardsRead.has(slug)) return;
+  cardsRead.add(slug);
+  revealSlipsForCard(slug);
+}
+
+// ── ANSWER SLIPS ─────────────────────────────────────────────────────────────
+// Desk area is roughly bottom-right of #bg.
+// Positions are % of #bg width/height — clustered in lower-centre area.
+const ALL_SLIPS = [
+  // Revealed on bookshelves open (no card required)
+  { id: 0, text: 'The datasets are identical.',         correct: false, trigger: 'open',       top: 68, left: 18, rot: -3  },
+  { id: 1, text: 'One dataset must contain an error.',  correct: false, trigger: 'open',       top: 74, left: 28, rot:  2  },
+  // Revealed after reading Data card
+  { id: 2, text: 'Compute the variance.',               correct: false, trigger: 'data',       top: 70, left: 42, rot: -2  },
+  { id: 3, text: 'The mean is sufficient.',             correct: false, trigger: 'data',       top: 76, left: 52, rot:  3  },
+  { id: 4, text: 'Run a linear regression.',            correct: false, trigger: 'data',       top: 68, left: 62, rot: -1  },
+  // Revealed after reading BSc Textbook
+  { id: 5, text: 'The sample size is too small.',       correct: false, trigger: 'bsc_textbook', top: 72, left: 14, rot:  2  },
+  { id: 6, text: 'Check the correlation coefficient.', correct: false, trigger: 'bsc_textbook', top: 78, left: 36, rot: -3  },
+  { id: 7, text: 'The supervisor is right.',            correct: false, trigger: 'bsc_textbook', top: 74, left: 58, rot:  1  },
+  // Revealed after reading Methods card
+  { id: 8, text: 'Report the results as-is.',          correct: false, trigger: 'methods',    top: 80, left: 24, rot: -2  },
+  { id: 9, text: 'Visualise the data.',                correct: true,  trigger: 'methods',    top: 80, left: 46, rot:  1  },
+];
+
+const WRONG_RESPONSES = [
+  "I thought of that. But the variance is also identical across all four.<stage>She looks away.</stage>I tried everything I could compute.",
+  "An error. I checked. There is no error — the numbers are what they are.",
+  "I ran the regression. Same slope, same intercept, same R-squared.<stage>A pause.</stage>All four.",
+  "The mean felt sufficient. My supervisor said so.<stage>She is quiet for a moment.</stage>That was the problem, wasn't it.",
+  "The regression fit perfectly. That was what frightened me.",
+  "With eleven observations you can still see structure — if you know how to look.",
+  "The correlation is 0.816 in all four. I know because I computed it.<stage>Quietly.</stage>Same number.",
+  "I told myself the same thing.<stage>She almost smiles.</stage>I nearly submitted it.",
+  "I did. Then I sat here.",
+];
+
+let candleAttempts = 3;
+let slipsRevealed = new Set();
+let gameEnded = false;
+
+function revealSlipsForCard(trigger) {
+  const overlay = document.getElementById('slips-overlay');
+  ALL_SLIPS.forEach(slip => {
+    if (slip.trigger !== trigger) return;
+    if (slipsRevealed.has(slip.id)) return;
+    slipsRevealed.add(slip.id);
+
+    const el = document.createElement('div');
+    el.className = 'slip' + (slip.correct ? ' correct' : '');
+    el.id = `slip-${slip.id}`;
+    el.style.cssText = `top:${slip.top}%;left:${slip.left}%;--rot:${slip.rot}deg;animation-delay:${Math.random()*0.3}s;`;
+    el.innerHTML = `<div class="slip-inner">${slip.text}</div>`;
+    el.addEventListener('click', () => handleSlipClick(slip));
+    overlay.appendChild(el);
+
+    bindTip(el, slip.correct ? 'Submit this answer' : 'Submit this answer');
+  });
+}
+
+function handleSlipClick(slip) {
+  if (gameEnded) return;
+  if (slip.correct) {
+    handleCorrectAnswer();
+  } else {
+    handleWrongAnswer(slip);
+  }
+}
+
+function handleWrongAnswer(slip) {
+  // Mark slip as used
+  const el = document.getElementById(`slip-${slip.id}`);
+  if (el) el.classList.add('used');
+
+  // Burn a candle pip
+  candleAttempts--;
+  const pip = document.getElementById(`pip-${2 - candleAttempts}`);
+  if (pip) pip.classList.add('spent');
+
+  // Flash screen red
+  const flash = document.getElementById('wrong-flash');
+  flash.classList.add('flash');
+  setTimeout(() => flash.classList.remove('flash'), 400);
+
+  // Find Isolde's response
+  const responseIdx = ALL_SLIPS.filter(s => !s.correct).findIndex(s => s.id === slip.id);
+  const response = WRONG_RESPONSES[responseIdx] || "That is not it.";
+
+  // Show Isolde response in speech
+  showIsoldeResponse(response);
+
+  // Check game over
+  if (candleAttempts <= 0) {
+    gameEnded = true;
+    setTimeout(() => triggerGameOver(), 2200);
+  }
+}
+
+function handleCorrectAnswer() {
+  gameEnded = true;
+
+  // Mark all slips inert
+  document.querySelectorAll('.slip').forEach(el => el.classList.add('used'));
+
+  // Show Isolde's realisation in speech
+  showIsoldeResponse(
+    `<stage>A long silence. She sets down the folder.</stage>` +
+    `Visualise it. Of course. I never — I didn't think to draw it.<stage>She pulls out her notebook.</stage>` +
+    `If I plot each one... they would look completely different, wouldn't they. Same numbers. Different shapes. ` +
+    `The mean can't see that. Nothing I computed could see that.` +
+    `<stage>She closes her eyes briefly.</stage>` +
+    `I need to go back. Thank you.`
+  );
+
+  // Reveal win screen after a pause
+  setTimeout(() => triggerWin(), 3800);
+}
+
+function triggerGameOver() {
+  document.getElementById('game-over').classList.add('visible');
+}
+
+function triggerWin() {
+  // Unlock Ragvir's Notes in the dock
+  const ragvirCard = SCENE.cards.find(c => c.slug === 'ragvirs_notes');
+  if (ragvirCard) {
+    ragvirCard.condition = 'intact';
+    renderDock();
+    document.getElementById('card-list').style.opacity = '1';
+  }
+
+  document.getElementById('win-text').innerHTML =
+    `Four datasets. Identical means, variances, correlations, regression lines.<br><br>` +
+    `Completely different shapes when drawn.<br><br>` +
+    `Francis Anscombe constructed them in 1973 to show exactly this: that summary statistics ` +
+    `are not a substitute for looking at the data. They can be identical and tell you nothing about ` +
+    `what the data actually looks like.`;
+
+  document.getElementById('win-screen').classList.add('visible');
+}
+
+// Reveal the first two slips when bookshelves are opened
+const _origRevealCards = revealCards;
+function revealCards() {
+  document.getElementById('bookshelves-btn').remove();
+  document.getElementById('card-list').style.opacity = '1';
+  // Show candle
+  document.getElementById('candle-wrap').classList.add('visible');
+  // Reveal opening slips
+  revealSlipsForCard('open');
+}
 
 // ── INTRO ────────────────────────────────────────────────────────────────────
 const INTRO_SCENES = [
@@ -1422,12 +1829,13 @@ bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
   toggleBtn.textContent = 'Sound';
   toggleBtn.style.cssText = `
     position:fixed; top:14px; left:14px; z-index:999;
-    font-family:'Cinzel',serif; font-size:11px;
+    font-family:'Cinzel',serif; font-size:14px;
     color:rgba(220,190,130,0.7); background:rgba(10,6,2,0.7);
     border:1px solid rgba(180,140,60,0.3); border-radius:3px;
     padding:6px 14px; cursor:pointer; letter-spacing:0.2em; text-transform:uppercase;
-    transition:all 0.2s; display:none;
+    transition:all 0.2s; display:block;
   `;
+  document.body.appendChild(toggleBtn);
   let muted = false;
   toggleBtn.onmouseover = () => toggleBtn.style.color = 'rgba(220,190,130,1)';
   toggleBtn.onmouseout  = () => toggleBtn.style.color = muted ? 'rgba(220,190,130,0.3)' : 'rgba(220,190,130,0.7)';
@@ -1438,12 +1846,7 @@ bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
     toggleBtn.style.textDecoration = muted ? 'line-through' : 'none';
   });
 
-  // Show toggle once scene is visible
-  new MutationObserver(() => {
-    if (document.getElementById('scene').style.visibility === 'visible') {
-      toggleBtn.style.display = 'block';
-    }
-  }).observe(document.getElementById('scene'), { attributes: true, attributeFilter: ['style'] });
+  // Fade in audio once scene is visible
   const sceneAudio = document.getElementById('scene');
   new MutationObserver(() => {
     if (sceneAudio.style.visibility === 'visible') {
