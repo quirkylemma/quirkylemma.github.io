@@ -1408,6 +1408,57 @@ bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
 
   window.addEventListener('resize', resize);
   resize();
+
+  // ── AMBIENT AUDIO ───────────────────────────────────────────────────────────
+  const audio = document.createElement('audio');
+  audio.src    = './aldricsounds/SatieGnossienne1.ogg';
+  audio.loop   = true;
+  audio.volume = 0;
+  document.body.appendChild(audio);
+
+  // ── SOUND TOGGLE ────────────────────────────────────────────────────────────
+  const toggleBtn = document.createElement('button');
+  toggleBtn.id = 'sound-toggle';
+  toggleBtn.textContent = '♪';
+  toggleBtn.style.cssText = `
+    position:fixed; bottom:16px; right:16px; z-index:999;
+    font-family:'Cinzel',serif; font-size:13px;
+    color:rgba(220,190,130,0.7); background:rgba(10,6,2,0.7);
+    border:1px solid rgba(180,140,60,0.3); border-radius:3px;
+    padding:6px 12px; cursor:pointer; letter-spacing:0.1em;
+    transition:all 0.2s; display:none;
+  `;
+  toggleBtn.onmouseover = () => toggleBtn.style.color = 'rgba(220,190,130,1)';
+  toggleBtn.onmouseout  = () => toggleBtn.style.color = muted ? 'rgba(220,190,130,0.35)' : 'rgba(220,190,130,0.7)';
+  document.body.appendChild(toggleBtn);
+
+  let muted = false;
+  toggleBtn.addEventListener('click', () => {
+    muted = !muted;
+    audio.volume = muted ? 0 : 0.45;
+    toggleBtn.textContent = muted ? '♪' : '♪';
+    toggleBtn.style.color = muted ? 'rgba(220,190,130,0.35)' : 'rgba(220,190,130,0.7)';
+    toggleBtn.style.textDecoration = muted ? 'line-through' : 'none';
+  });
+
+  // Show toggle once scene is visible
+  new MutationObserver(() => {
+    if (document.getElementById('scene').style.visibility === 'visible') {
+      toggleBtn.style.display = 'block';
+    }
+  }).observe(document.getElementById('scene'), { attributes: true, attributeFilter: ['style'] });
+  const sceneAudio = document.getElementById('scene');
+  new MutationObserver(() => {
+    if (sceneAudio.style.visibility === 'visible') {
+      audio.play().catch(() => {});
+      let vol = 0;
+      const fade = setInterval(() => {
+        vol = Math.min(vol + 0.01, 0.45);
+        audio.volume = vol;
+        if (vol >= 0.45) clearInterval(fade);
+      }, 80);
+    }
+  }).observe(sceneAudio, { attributes: true, attributeFilter: ['style'] });
 })();
 </script>
 </body>
