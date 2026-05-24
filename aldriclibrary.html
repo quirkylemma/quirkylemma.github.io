@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ragvir's Library</title>
+<title>The Aldric Library</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
@@ -1296,7 +1296,9 @@ function devSkipIntro() {
   document.getElementById('title-screen').style.display = 'none';
   document.getElementById('intro').style.display = 'none';
   document.getElementById('scene').style.visibility = 'visible';
-  document.getElementById('dev-bar').style.display = 'none';
+  // Hide just the skip button, not the whole bar
+  const skipBtn = document.querySelector('#dev-bar .dev-btn[onclick="devSkipIntro()"]');
+  if (skipBtn) skipBtn.style.display = 'none';
 }
 
 function devShowAnscombe() {
