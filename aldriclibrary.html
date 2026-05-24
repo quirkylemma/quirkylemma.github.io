@@ -701,97 +701,227 @@ body {
   white-space:nowrap;
 }
 
-/* ── CANDLE ── */
+/* ── CANDLE FLAME PIPS ── */
 #candle-wrap {
   position:fixed;
-  bottom:clamp(170px,24vh,240px);
+  top:50%;
   right:clamp(86px,9.5vw,136px);
+  transform:translateY(-50%);
   z-index:20;
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:4px;
+  gap:6px;
   pointer-events:none;
   opacity:0;
   transition:opacity 0.8s;
 }
 #candle-wrap.visible { opacity:1; }
-#candle-pips {
+#candle-flames {
   display:flex;
+  flex-direction:column;
+  align-items:center;
   gap:5px;
 }
-.candle-pip {
-  width:10px; height:10px;
-  border-radius:50%;
-  background:rgba(220,160,50,0.85);
-  box-shadow:0 0 6px rgba(220,160,50,0.6);
-  transition:background 0.6s, box-shadow 0.6s;
+.candle-flame {
+  width:14px; height:14px;
+  border-radius:50% 50% 40% 40% / 60% 60% 40% 40%;
+  background:radial-gradient(ellipse at 50% 70%, rgba(255,200,60,1) 0%, rgba(255,120,20,0.9) 60%, transparent 100%);
+  box-shadow:0 0 8px rgba(255,160,40,0.7), 0 0 20px rgba(255,120,20,0.3);
+  transition:background 0.8s, box-shadow 0.8s, opacity 0.8s;
+  animation:flicker 1.8s ease-in-out infinite alternate;
 }
-.candle-pip.spent {
-  background:rgba(60,40,20,0.5);
+.candle-flame:nth-child(2) { animation-delay:0.3s; animation-duration:2.1s; }
+.candle-flame:nth-child(3) { animation-delay:0.7s; animation-duration:1.6s; }
+@keyframes flicker {
+  from { transform:scaleY(1) scaleX(1); opacity:1; }
+  to   { transform:scaleY(0.88) scaleX(1.08); opacity:0.85; }
+}
+.candle-flame.spent {
+  background:rgba(40,25,10,0.4);
   box-shadow:none;
+  animation:none;
+  border-radius:50%;
+  opacity:0.35;
 }
 #candle-label {
   font-family:'Cinzel',serif;
   font-size:14px;
-  letter-spacing:0.18em;
+  letter-spacing:0.15em;
   text-transform:uppercase;
-  color:rgba(220,190,130,0.5);
+  color:rgba(220,190,130,0.45);
+  writing-mode:vertical-rl;
+  transform:rotate(180deg);
+  margin-top:6px;
+}
+#candle-warning {
+  font-family:'IM Fell English',serif;
+  font-style:italic;
+  font-size:14px;
+  color:rgba(200,100,60,0);
+  text-align:center;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  z-index:301;
+  transition:color 0.4s, opacity 0.6s;
+  opacity:0;
+  white-space:nowrap;
+}
+#candle-warning.show {
+  color:rgba(220,100,50,0.9);
+  opacity:1;
 }
 
-/* ── ANSWER SLIPS ── */
-#slips-overlay {
+/* ── BOOK HOTSPOT ── */
+#book-hotspot {
   position:absolute;
-  inset:0;
-  z-index:6;
-  pointer-events:none;
-}
-.slip {
-  position:absolute;
-  pointer-events:auto;
+  bottom:8%;
+  left:44%;
+  width:9%;
+  height:14%;
   cursor:pointer;
-  transform-origin:center center;
-  transition:transform 0.15s, filter 0.15s;
+  z-index:7;
+  display:none;
+}
+#book-hotspot.visible { display:block; }
+#book-badge {
+  position:absolute;
+  top:-8px; right:-8px;
+  width:22px; height:22px;
+  border-radius:50%;
+  background:rgba(180,100,30,0.95);
+  border:1px solid rgba(220,160,80,0.6);
+  box-shadow:0 0 8px rgba(180,100,30,0.5);
+  font-family:'Cinzel',serif;
+  font-size:12px;
+  color:rgba(255,230,160,0.95);
+  display:flex; align-items:center; justify-content:center;
+  pointer-events:none;
+  transition:transform 0.3s;
+}
+#book-hotspot:hover #book-badge { transform:scale(1.15); }
+#book-icon {
+  width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:clamp(24px,3.5vw,42px);
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,0.6));
+  transition:transform 0.2s, filter 0.2s;
+}
+#book-hotspot:hover #book-icon {
+  transform:translateY(-3px);
+  filter:drop-shadow(0 4px 10px rgba(180,140,60,0.5));
+}
+
+/* ── SLIP DRAWER OVERLAY ── */
+#slip-drawer {
+  position:fixed;
+  inset:0;
+  z-index:150;
+  background:rgba(8,4,2,0.82);
+  backdrop-filter:blur(6px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
   opacity:0;
-  animation:slip-appear 0.5s forwards;
+  pointer-events:none;
+  transition:opacity 0.4s;
 }
-@keyframes slip-appear {
-  from { opacity:0; transform:translateY(8px) rotate(var(--rot)); }
-  to   { opacity:1; transform:translateY(0)   rotate(var(--rot)); }
+#slip-drawer.open {
+  opacity:1;
+  pointer-events:auto;
 }
-.slip:hover {
-  filter:brightness(1.15) drop-shadow(0 2px 8px rgba(180,140,60,0.4));
-  transform:rotate(var(--rot)) scale(1.06) translateY(-3px);
-  z-index:100;
+#slip-drawer-inner {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:clamp(10px,1.8vh,20px);
+  width:clamp(320px,48vw,580px);
 }
-.slip-inner {
-  background:rgba(240,225,185,0.92);
-  border:1px solid rgba(160,120,60,0.4);
-  border-radius:2px;
-  padding:6px 10px;
-  font-family:'IM Fell English',serif;
-  font-size:clamp(11px,1.05vw,14px);
-  line-height:1.4;
-  color:rgba(40,20,5,0.88);
-  white-space:nowrap;
-  box-shadow:1px 2px 6px rgba(0,0,0,0.35);
-  max-width:180px;
-  white-space:normal;
+#slip-drawer-header {
+  font-family:'Cinzel',serif;
+  font-size:clamp(10px,0.9vw,13px);
+  letter-spacing:0.3em;
+  text-transform:uppercase;
+  color:rgba(180,140,60,0.6);
   text-align:center;
 }
-.slip.correct .slip-inner {
-  background:rgba(210,235,200,0.95);
-  border-color:rgba(60,120,60,0.4);
-  color:rgba(20,60,20,0.9);
+#slip-stack {
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  max-height:60vh;
+  overflow-y:auto;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(180,140,60,0.2) transparent;
+  padding:4px 2px;
 }
-.slip.used {
+.drawer-slip {
+  width:100%;
+  background:rgba(240,228,190,0.93);
+  border:1px solid rgba(160,120,60,0.35);
+  border-radius:3px;
+  padding:clamp(10px,1.4vh,16px) clamp(14px,2vw,24px);
+  font-family:'IM Fell English',serif;
+  font-size:clamp(14px,1.35vw,18px);
+  line-height:1.5;
+  color:rgba(35,15,5,0.88);
+  cursor:pointer;
+  transition:background 0.15s, transform 0.15s, box-shadow 0.15s;
+  box-shadow:0 2px 8px rgba(0,0,0,0.25);
+  position:relative;
+  text-align:center;
+}
+.drawer-slip:hover {
+  background:rgba(250,238,205,0.98);
+  transform:translateY(-2px);
+  box-shadow:0 4px 16px rgba(0,0,0,0.3);
+}
+.drawer-slip.correct {
+  background:rgba(220,238,210,0.93);
+  border-color:rgba(80,140,70,0.35);
+  color:rgba(20,55,15,0.9);
+}
+.drawer-slip.correct:hover {
+  background:rgba(230,248,220,0.98);
+}
+.drawer-slip.used {
+  opacity:0.3;
   pointer-events:none;
-  opacity:0.35;
-  filter:grayscale(0.6);
-}
-.slip.used .slip-inner {
   text-decoration:line-through;
-  color:rgba(40,20,5,0.4);
+  color:rgba(35,15,5,0.4);
+}
+.drawer-slip.shake {
+  animation:slip-shake 0.35s ease;
+}
+@keyframes slip-shake {
+  0%,100% { transform:translateX(0); }
+  20%     { transform:translateX(-6px); }
+  60%     { transform:translateX(5px); }
+  80%     { transform:translateX(-3px); }
+}
+#slip-drawer-close {
+  font-family:'Cinzel',serif;
+  font-size:clamp(10px,0.9vw,13px);
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:rgba(180,150,100,0.6);
+  background:transparent;
+  border:1px solid rgba(180,140,60,0.25);
+  padding:7px 20px;
+  border-radius:3px;
+  cursor:pointer;
+  transition:color 0.2s, border-color 0.2s, background 0.2s;
+  margin-top:4px;
+}
+#slip-drawer-close:hover {
+  color:rgba(220,190,130,0.9);
+  border-color:rgba(180,140,60,0.55);
+  background:rgba(180,140,60,0.08);
 }
 
 /* ── WRONG ANSWER FLASH ── */
@@ -1003,14 +1133,26 @@ body {
 <!-- Wrong answer flash -->
 <div id="wrong-flash"></div>
 
-<!-- Candle attempts indicator -->
+<!-- Candle warning toast -->
+<div id="candle-warning"></div>
+
+<!-- Candle attempts — flame pips, vertically on right edge -->
 <div id="candle-wrap">
-  <div id="candle-pips">
-    <div class="candle-pip" id="pip-0"></div>
-    <div class="candle-pip" id="pip-1"></div>
-    <div class="candle-pip" id="pip-2"></div>
+  <div id="candle-flames">
+    <div class="candle-flame" id="flame-0"></div>
+    <div class="candle-flame" id="flame-1"></div>
+    <div class="candle-flame" id="flame-2"></div>
   </div>
-  <div id="candle-label">Attempts</div>
+  <div id="candle-label">Patience</div>
+</div>
+
+<!-- Slip drawer overlay -->
+<div id="slip-drawer">
+  <div id="slip-drawer-inner">
+    <div id="slip-drawer-header">Your notes — choose one to present to Isolde</div>
+    <div id="slip-stack"></div>
+    <button id="slip-drawer-close" onclick="closeSlipDrawer()">Put them away</button>
+  </div>
 </div>
 
 <!-- Game over -->
@@ -1032,7 +1174,10 @@ body {
   <div id="bg">
     <canvas id="dust-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;"></canvas>
     <div id="window-hotspot" onclick="openWindowView()"></div>
-    <div id="slips-overlay"></div>
+    <div id="book-hotspot" onclick="openSlipDrawer()">
+      <div id="book-icon">📓</div>
+      <div id="book-badge">0</div>
+    </div>
     <div id="narration">
       <div id="narration-text"></div>
       <button id="narration-btn" onclick="nextNarrationScene()">Continue</button>
@@ -1437,23 +1582,21 @@ function markCardRead(slug) {
 }
 
 // ── ANSWER SLIPS ─────────────────────────────────────────────────────────────
-// Desk area is roughly bottom-right of #bg.
-// Positions are % of #bg width/height — clustered in lower-centre area.
 const ALL_SLIPS = [
-  // Revealed on bookshelves open (no card required)
-  { id: 0, text: 'The datasets are identical.',         correct: false, trigger: 'open',       top: 68, left: 18, rot: -3  },
-  { id: 1, text: 'One dataset must contain an error.',  correct: false, trigger: 'open',       top: 74, left: 28, rot:  2  },
+  // Revealed on bookshelves open
+  { id: 0, text: 'The datasets are identical.',         correct: false, trigger: 'open'        },
+  { id: 1, text: 'One dataset must contain an error.',  correct: false, trigger: 'open'        },
   // Revealed after reading Data card
-  { id: 2, text: 'Compute the variance.',               correct: false, trigger: 'data',       top: 70, left: 42, rot: -2  },
-  { id: 3, text: 'The mean is sufficient.',             correct: false, trigger: 'data',       top: 76, left: 52, rot:  3  },
-  { id: 4, text: 'Run a linear regression.',            correct: false, trigger: 'data',       top: 68, left: 62, rot: -1  },
+  { id: 2, text: 'Compute the variance.',               correct: false, trigger: 'data'        },
+  { id: 3, text: 'The mean is sufficient.',             correct: false, trigger: 'data'        },
+  { id: 4, text: 'Run a linear regression.',            correct: false, trigger: 'data'        },
   // Revealed after reading BSc Textbook
-  { id: 5, text: 'The sample size is too small.',       correct: false, trigger: 'bsc_textbook', top: 72, left: 14, rot:  2  },
-  { id: 6, text: 'Check the correlation coefficient.', correct: false, trigger: 'bsc_textbook', top: 78, left: 36, rot: -3  },
-  { id: 7, text: 'The supervisor is right.',            correct: false, trigger: 'bsc_textbook', top: 74, left: 58, rot:  1  },
+  { id: 5, text: 'The sample size is too small.',       correct: false, trigger: 'bsc_textbook'},
+  { id: 6, text: 'Check the correlation coefficient.',  correct: false, trigger: 'bsc_textbook'},
+  { id: 7, text: 'The supervisor is right.',            correct: false, trigger: 'bsc_textbook'},
   // Revealed after reading Methods card
-  { id: 8, text: 'Report the results as-is.',          correct: false, trigger: 'methods',    top: 80, left: 24, rot: -2  },
-  { id: 9, text: 'Visualise the data.',                correct: true,  trigger: 'methods',    top: 80, left: 46, rot:  1  },
+  { id: 8, text: 'Report the results as-is.',           correct: false, trigger: 'methods'     },
+  { id: 9, text: 'Visualise the data.',                 correct: true,  trigger: 'methods'     },
 ];
 
 const WRONG_RESPONSES = [
@@ -1469,73 +1612,118 @@ const WRONG_RESPONSES = [
 ];
 
 let candleAttempts = 3;
-let slipsRevealed = new Set();
-let gameEnded = false;
+let slipsUnlocked  = []; // ordered list of slip ids now available
+let usedSlipIds    = new Set();
+let gameEnded      = false;
 
-function revealSlipsForCard(trigger) {
-  const overlay = document.getElementById('slips-overlay');
-  ALL_SLIPS.forEach(slip => {
-    if (slip.trigger !== trigger) return;
-    if (slipsRevealed.has(slip.id)) return;
-    slipsRevealed.add(slip.id);
-
-    const el = document.createElement('div');
-    el.className = 'slip' + (slip.correct ? ' correct' : '');
-    el.id = `slip-${slip.id}`;
-    el.style.cssText = `top:${slip.top}%;left:${slip.left}%;--rot:${slip.rot}deg;animation-delay:${Math.random()*0.3}s;`;
-    el.innerHTML = `<div class="slip-inner">${slip.text}</div>`;
-    el.addEventListener('click', () => handleSlipClick(slip));
-    overlay.appendChild(el);
-
-    bindTip(el, slip.correct ? 'Submit this answer' : 'Submit this answer');
-  });
-}
-
-function handleSlipClick(slip) {
-  if (gameEnded) return;
-  if (slip.correct) {
-    handleCorrectAnswer();
-  } else {
-    handleWrongAnswer(slip);
+// ── CANDLE ───────────────────────────────────────────────────────────────────
+function updateCandle() {
+  for (let i = 0; i < 3; i++) {
+    const flame = document.getElementById(`flame-${i}`);
+    if (!flame) continue;
+    // flames burn from last to first: attempts 3→2 kills flame-2, etc.
+    flame.classList.toggle('spent', i >= candleAttempts);
   }
 }
 
-function handleWrongAnswer(slip) {
-  // Mark slip as used
-  const el = document.getElementById(`slip-${slip.id}`);
-  if (el) el.classList.add('used');
+function showCandleWarning(text) {
+  const w = document.getElementById('candle-warning');
+  w.textContent = text;
+  w.classList.add('show');
+  setTimeout(() => w.classList.remove('show'), 2200);
+}
 
-  // Burn a candle pip
+// ── BADGE + BOOK ─────────────────────────────────────────────────────────────
+function updateBookBadge() {
+  const available = slipsUnlocked.filter(id => !usedSlipIds.has(id)).length;
+  document.getElementById('book-badge').textContent = available;
+}
+
+function openSlipDrawer() {
+  if (gameEnded) return;
+  if (slipsUnlocked.length === 0) return;
+  closeCardPanel();
+
+  const stack = document.getElementById('slip-stack');
+  stack.innerHTML = '';
+
+  slipsUnlocked.forEach(id => {
+    const slip = ALL_SLIPS.find(s => s.id === id);
+    if (!slip) return;
+    const el = document.createElement('div');
+    el.className = 'drawer-slip' +
+      (slip.correct ? ' correct' : '') +
+      (usedSlipIds.has(id) ? ' used' : '');
+    el.textContent = slip.text;
+    if (!usedSlipIds.has(id)) {
+      el.addEventListener('click', () => handleSlipClick(slip, el));
+    }
+    stack.appendChild(el);
+  });
+
+  document.getElementById('slip-drawer').classList.add('open');
+}
+
+function closeSlipDrawer() {
+  document.getElementById('slip-drawer').classList.remove('open');
+}
+
+function revealSlipsForCard(trigger) {
+  ALL_SLIPS.forEach(slip => {
+    if (slip.trigger !== trigger) return;
+    if (slipsUnlocked.includes(slip.id)) return;
+    slipsUnlocked.push(slip.id);
+  });
+  updateBookBadge();
+
+  // Show book hotspot once we have slips
+  if (slipsUnlocked.length > 0) {
+    document.getElementById('book-hotspot').classList.add('visible');
+  }
+}
+
+// ── ANSWER HANDLING ───────────────────────────────────────────────────────────
+function handleSlipClick(slip, el) {
+  if (gameEnded) return;
+  closeSlipDrawer();
+
+  if (slip.correct) {
+    handleCorrectAnswer();
+  } else {
+    handleWrongAnswer(slip, el);
+  }
+}
+
+function handleWrongAnswer(slip, el) {
+  usedSlipIds.add(slip.id);
+  updateBookBadge();
+
   candleAttempts--;
-  const pip = document.getElementById(`pip-${2 - candleAttempts}`);
-  if (pip) pip.classList.add('spent');
+  updateCandle();
 
   // Flash screen red
   const flash = document.getElementById('wrong-flash');
   flash.classList.add('flash');
   setTimeout(() => flash.classList.remove('flash'), 400);
 
-  // Find Isolde's response
-  const responseIdx = ALL_SLIPS.filter(s => !s.correct).findIndex(s => s.id === slip.id);
-  const response = WRONG_RESPONSES[responseIdx] || "That is not it.";
-
-  // Show Isolde response in speech
+  // Isolde's response — matched by wrong-slip order
+  const wrongIdx = ALL_SLIPS.filter(s => !s.correct).findIndex(s => s.id === slip.id);
+  const response = WRONG_RESPONSES[wrongIdx] ?? "That is not it.";
   showIsoldeResponse(response);
 
-  // Check game over
-  if (candleAttempts <= 0) {
+  // Candle warnings
+  if (candleAttempts === 2) {
+    showCandleWarning('Isolde is losing patience.');
+  } else if (candleAttempts === 1) {
+    showCandleWarning('One chance remaining.');
+  } else if (candleAttempts <= 0) {
     gameEnded = true;
-    setTimeout(() => triggerGameOver(), 2200);
+    setTimeout(() => triggerGameOver(), 2400);
   }
 }
 
 function handleCorrectAnswer() {
   gameEnded = true;
-
-  // Mark all slips inert
-  document.querySelectorAll('.slip').forEach(el => el.classList.add('used'));
-
-  // Show Isolde's realisation in speech
   showIsoldeResponse(
     `<stage>A long silence. She sets down the folder.</stage>` +
     `Visualise it. Of course. I never — I didn't think to draw it.<stage>She pulls out her notebook.</stage>` +
@@ -1544,8 +1732,6 @@ function handleCorrectAnswer() {
     `<stage>She closes her eyes briefly.</stage>` +
     `I need to go back. Thank you.`
   );
-
-  // Reveal win screen after a pause
   setTimeout(() => triggerWin(), 3800);
 }
 
@@ -1554,32 +1740,27 @@ function triggerGameOver() {
 }
 
 function triggerWin() {
-  // Unlock Ragvir's Notes in the dock
   const ragvirCard = SCENE.cards.find(c => c.slug === 'ragvirs_notes');
   if (ragvirCard) {
     ragvirCard.condition = 'intact';
     renderDock();
     document.getElementById('card-list').style.opacity = '1';
   }
-
   document.getElementById('win-text').innerHTML =
     `Four datasets. Identical means, variances, correlations, regression lines.<br><br>` +
     `Completely different shapes when drawn.<br><br>` +
     `Francis Anscombe constructed them in 1973 to show exactly this: that summary statistics ` +
     `are not a substitute for looking at the data. They can be identical and tell you nothing about ` +
     `what the data actually looks like.`;
-
   document.getElementById('win-screen').classList.add('visible');
 }
 
-// Reveal the first two slips when bookshelves are opened
-const _origRevealCards = revealCards;
+// Override revealCards to also show candle + initial slips
 function revealCards() {
   document.getElementById('bookshelves-btn').remove();
   document.getElementById('card-list').style.opacity = '1';
-  // Show candle
   document.getElementById('candle-wrap').classList.add('visible');
-  // Reveal opening slips
+  updateCandle();
   revealSlipsForCard('open');
 }
 
@@ -1743,6 +1924,7 @@ function bindTip(el, text) {
 
 bindTip(document.getElementById('window-hotspot'), 'Look outside');
 bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
+bindTip(document.getElementById('book-hotspot'), 'Review your notes');
 </script>
 
 <script>
