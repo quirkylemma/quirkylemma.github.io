@@ -57,14 +57,14 @@ body {
   pointer-events:none;
 }
 
-/* Library background — Three.js canvas fills this */
+/* Library background — cosylibrary.png + Three.js frame overlay */
 #bg {
   grid-column:1;
   grid-row:1;
   position:relative;
   border-right:2px solid rgba(180,140,60,0.35);
   box-shadow:4px 0 18px rgba(0,0,0,0.45);
-  background: #0a0602;
+  background: url('./aldricimages/cosylibrary.png') center/cover no-repeat;
   overflow:hidden;
   pointer-events:auto;
 }
@@ -1411,137 +1411,13 @@ bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
     return { mesh, mat, baseX: offsetX || 0, baseY: offsetY || 0, scaleX, scaleY };
   }
 
-  // ── THE 6 LAYERS (layer 2 / windows removed) ───────────────────────────────
+  // ── LAYERS — just the frame overlay ───────────────────────────────────────
   const layers = [
-    // L1: background wall — full canvas, no movement
-    { ...makeLayer('./aldricimages/librarylayer1.png', 0, 1, 1, 'normal', 0, 0), px: 0, py: 0 },
-
-    // L3: left shelf — anchored left
-    { ...makeLayer('./aldricimages/librarylayer3.png', 2, 0.52, 1.05, 'normal', -W*0.25, H*0.02), px: 0.025, py: 0.008 },
-
-    // L4: right shelf — anchored right
-    { ...makeLayer('./aldricimages/librarylayer4.png', 2, 0.52, 1.05, 'normal',  W*0.25, H*0.02), px: 0.025, py: 0.008 },
-
-    // L5: table surface — lower centre
-    { ...makeLayer('./aldricimages/librarylayer5.png', 3, 0.9, 0.55, 'normal', 0, -H*0.23), px: 0.042, py: 0.015 },
-
-    // L6: table objects
-    { ...makeLayer('./aldricimages/librarylayer6.png', 4, 0.85, 0.5, 'normal', -W*0.03, -H*0.23), px: 0.052, py: 0.018 },
-
-    // L7: foreground frame — full canvas, most movement
-    { ...makeLayer('./aldricimages/librarylayer7.png', 5, 1, 1, 'normal', 0, 0), px: 0.065, py: 0.022 },
+    // Frame — baked position from tuning session
+    { ...makeLayer('./aldricimages/librarylayer7.png', 1, 1.15, 1.15, 'normal', 0, -H*0.02), px: 0.065, py: 0.022 },
   ];
 
-  // ── LIVE TUNING PANEL ──────────────────────────────────────────────────────
-  const NAMES = ['Wall','Shelf L','Shelf R','Table','Objects','Frame'];
-  const panel = document.createElement('div');
-  panel.id = 'tune-panel';
-  panel.style.cssText = `
-    position:fixed; top:10px; left:10px; z-index:9999;
-    background:rgba(10,6,2,0.92); border:1px solid rgba(180,140,60,0.4);
-    padding:12px 16px; font-family:'Cinzel',serif; font-size:12px;
-    color:rgba(220,190,130,0.9); border-radius:4px;
-    max-height:90vh; overflow-y:auto; width:280px;
-    display:none; user-select:none;
-  `;
-
-  let tuneHTML = `<div id="tune-drag-handle" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;cursor:grab;padding-bottom:8px;border-bottom:1px solid rgba(180,140,60,0.2);">
-    <span style="letter-spacing:0.15em;font-size:11px">⠿ LAYER TUNING</span>
-    <button onclick="document.getElementById('tune-panel').style.display='none'"
-      style="background:none;border:none;color:rgba(220,190,130,0.7);cursor:pointer;font-size:14px">✕</button>
-  </div>`;
-
-  layers.forEach((layer, i) => {
-    const xVal = (layer.baseX / W).toFixed(2);
-    const yVal = (layer.baseY / H).toFixed(2);
-    const zVal = layer.scaleX.toFixed(2);
-    tuneHTML += `
-    <div style="margin-bottom:10px;border-bottom:1px solid rgba(180,140,60,0.15);padding-bottom:8px">
-      <div style="margin-bottom:5px;font-size:11px;letter-spacing:0.1em">${NAMES[i]}</div>
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
-        <span style="width:16px;font-size:10px;opacity:0.7">X</span>
-        <input type="range" min="-1" max="1" step="0.01" value="${xVal}"
-          style="flex:1;accent-color:#b48c3c"
-          oninput="window._tuneLayer(${i},'x',parseFloat(this.value));this.nextSibling.textContent=parseFloat(this.value).toFixed(2)">
-        <span style="width:36px;font-size:10px;text-align:right">${xVal}</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
-        <span style="width:16px;font-size:10px;opacity:0.7">Y</span>
-        <input type="range" min="-1" max="1" step="0.01" value="${yVal}"
-          style="flex:1;accent-color:#b48c3c"
-          oninput="window._tuneLayer(${i},'y',parseFloat(this.value));this.nextSibling.textContent=parseFloat(this.value).toFixed(2)">
-        <span style="width:36px;font-size:10px;text-align:right">${yVal}</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px">
-        <span style="width:16px;font-size:10px;opacity:0.7">Z</span>
-        <input type="range" min="0.1" max="3" step="0.01" value="${zVal}"
-          style="flex:1;accent-color:#b48c3c"
-          oninput="window._tuneLayer(${i},'z',parseFloat(this.value));this.nextSibling.textContent=parseFloat(this.value).toFixed(2)">
-        <span style="width:36px;font-size:10px;text-align:right">${zVal}</span>
-      </div>
-    </div>`;
-  });
-
-  tuneHTML += `<button onclick="window._exportTune()"
-    style="width:100%;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.15em;
-    background:rgba(180,140,60,0.15);border:1px solid rgba(180,140,60,0.4);
-    color:rgba(220,190,130,0.9);padding:6px;cursor:pointer;border-radius:3px;margin-top:4px">
-    COPY VALUES</button>`;
-
-  panel.innerHTML = tuneHTML;
-  document.body.appendChild(panel);
-
-  // Drag logic
-  const handle = document.getElementById('tune-drag-handle');
-  let dragging = false, dragOffX = 0, dragOffY = 0;
-  handle.addEventListener('mousedown', e => {
-    dragging = true;
-    dragOffX = e.clientX - panel.offsetLeft;
-    dragOffY = e.clientY - panel.offsetTop;
-    handle.style.cursor = 'grabbing';
-    e.preventDefault();
-  });
-  document.addEventListener('mousemove', e => {
-    if (!dragging) return;
-    panel.style.left = (e.clientX - dragOffX) + 'px';
-    panel.style.top  = (e.clientY - dragOffY) + 'px';
-  });
-  document.addEventListener('mouseup', () => {
-    dragging = false;
-    handle.style.cursor = 'grab';
-  });
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 't' || e.key === 'T') {
-      panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
-    }
-  });
-
-  window._tuneLayer = (i, axis, val) => {
-    const layer = layers[i];
-    if (axis === 'x') {
-      layer.baseX = val * W;
-      layer.mesh.position.x = val * W;
-    } else if (axis === 'y') {
-      layer.baseY = val * H;
-      layer.mesh.position.y = val * H;
-    } else if (axis === 'z') {
-      // Zoom — rescale the mesh geometry via scale property
-      layer.scaleX = val;
-      layer.scaleY = val;
-      layer.mesh.scale.set(val, val, 1);
-    }
-  };
-
-  window._exportTune = () => {
-    const vals = layers.map((l, i) =>
-      `L${i+1} ${NAMES[i]}: X=${(l.baseX/W).toFixed(3)} Y=${(l.baseY/H).toFixed(3)} Scale=${l.scaleX.toFixed(3)}`
-    ).join('\n');
-    console.log(vals);
-    navigator.clipboard.writeText(vals).then(() => alert('Copied to clipboard'));
-  };
-  // ── END TUNING PANEL ───────────────────────────────────────────────────────
-  // We draw animated rain onto an offscreen canvas and update the texture each frame
+  // ── RAIN ANIMATION ─────────────────────────────────────────────────────────
   const rainCanvas = document.createElement('canvas');
   rainCanvas.width  = 512;
   rainCanvas.height = 512;
@@ -1682,9 +1558,8 @@ bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
     // Rain animation
     drawRain(t);
 
-    // Candle flicker on objects layer
-    const flicker = flickerBase + Math.sin(t * 7.3) * 0.03 + Math.sin(t * 13.1) * 0.015;
-    layers[4].mat.opacity = Math.max(0.7, Math.min(1, flicker));
+    // Candle flicker — subtle opacity pulse on frame
+    layers[0].mat.opacity = Math.max(0.85, Math.min(1, flickerBase + Math.sin(t * 7.3) * 0.03 + Math.sin(t * 13.1) * 0.015));
 
     // Dust
     const pos = dustGeo.attributes.position.array;
