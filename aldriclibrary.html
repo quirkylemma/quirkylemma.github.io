@@ -1239,7 +1239,7 @@ function renderShelves() {
     // Hover — show card preview after 300ms delay
     poly.addEventListener('mouseenter', e => {
       clearTimeout(previewTimer);
-      previewTimer = setTimeout(() => showCardPreview(card, e), 300);
+      showCardPreview(card, e);
       bindTip(poly, card.title + (card.condition === 'locked' ? ' — Sealed' : ''));
     });
     poly.addEventListener('mousemove', e => moveCardPreview(e));
@@ -1445,33 +1445,6 @@ function makeDraggable(el, parentSelector) {
 makeDraggable(document.getElementById('window-hotspot'), '#bg');
 makeDraggable(document.getElementById('isolde-hotspot'), '#window-overlay');
 makeDraggable(document.getElementById('book-hotspot'), '#bg');
-
-// Badge is fixed-position so needs its own pixel-based drag
-(function() {
-  const badge = document.getElementById('book-badge');
-  let dragging = false, startX, startY, origLeft, origTop;
-  badge.addEventListener('mousedown', e => {
-    if (e.button !== 0) return;
-    dragging = true;
-    const r = badge.getBoundingClientRect();
-    startX = e.clientX; startY = e.clientY;
-    origLeft = r.left; origTop = r.top;
-    e.preventDefault(); e.stopPropagation();
-  });
-  document.addEventListener('mousemove', e => {
-    if (!dragging) return;
-    badge.style.left = (origLeft + e.clientX - startX) + 'px';
-    badge.style.top  = (origTop  + e.clientY - startY) + 'px';
-    badge.style.right = 'auto'; badge.style.bottom = 'auto';
-  });
-  document.addEventListener('mouseup', e => {
-    if (!dragging) return;
-    dragging = false;
-    const r = badge.getBoundingClientRect();
-    console.log(`book-badge: left:${r.left.toFixed(0)}px top:${r.top.toFixed(0)}px`);
-  });
-})();
-
 
 let sceneState = 'waiting'; // waiting | active | resolved
 
@@ -2235,4 +2208,4 @@ bindTip(document.getElementById('book-badge'), 'Open the book');
 })();
 </script>
 </body>
-</html>
+</html> 
