@@ -593,7 +593,7 @@ body {
   width:36%;
   height:55%;
   cursor:pointer;
-  z-index:5;
+  z-index:9;
   border-radius:4px;
 }
 #window-hotspot.debug {
@@ -961,7 +961,7 @@ body {
 }
 .dev-btn {
   font-family:'Cinzel',serif;
-  font-size:11px;
+  font-size:14px;
   letter-spacing:0.15em;
   text-transform:uppercase;
   color:rgba(255,220,100,0.9);
@@ -975,6 +975,7 @@ body {
   background:rgba(180,140,60,0.3);
   border-color:rgba(255,180,50,0.8);
 }
+
 /* ── SHELF HOTSPOTS ── */
 .shelf-poly {
   fill: transparent;
@@ -1013,24 +1014,7 @@ body {
   border-radius:4px;
 }
 
-/* ── SHELF MAPPING TOOL ── */
-#map-hud {
-  position:fixed;
-  top:50px; left:50%;
-  transform:translateX(-50%);
-  z-index:1000;
-  background:rgba(10,6,2,0.9);
-  border:1px solid rgba(255,180,50,0.5);
-  border-radius:4px;
-  padding:8px 18px;
-  font-family:'Cinzel',serif;
-  font-size:14px;
-  letter-spacing:0.15em;
-  color:rgba(255,220,100,0.9);
-  pointer-events:none;
-  display:none;
-  white-space:nowrap;
-}
+
 
 </style>
 </head>
@@ -1041,7 +1025,6 @@ body {
 
 <!-- Cursor tooltip -->
 <div id="cursor-tip"></div>
-<div id="map-hud"></div>
 
 <!-- Minimum screen message -->
 <div id="too-small">
@@ -1052,7 +1035,6 @@ body {
 <!-- DEV BAR -->
 <div id="dev-bar">
   <button class="dev-btn" onclick="devSkipIntro()">Skip Intro</button>
-  <button class="dev-btn" onclick="devStartMapping()">Map Shelves</button>
 </div>
 
 <!-- Title screen -->
@@ -1299,190 +1281,7 @@ function devSkipIntro() {
   if (skipBtn) skipBtn.style.display = 'none';
 }
 
-function devShowAnscombe() {
-  sceneState = 'resolved';
-  document.getElementById('window-overlay-img').src = './aldricimages/anscombe.png';
-  document.getElementById('isolde-hotspot').style.display = 'none';
-  document.getElementById('window-overlay').classList.add('visible');
-}
-
-// ── SHELF POLYGON MAPPING TOOL ───────────────────────────────────────────────
-let mappingActive  = false;
-let mapPoints      = [];
-let mapShelfIndex  = 0;
-let mapPreviewPoly = null;
-let mapDots        = [];
-let mapDonePolys   = []; // completed shelf outlines, one per shelf
-
-function devStartMapping() {
-  mappingActive = true;
-  mapPoints     = [];
-  mapShelfIndex = 0;
-  mapDonePolys  = [];
-  document.getElementById('dev-bar').style.display = 'none';
-
-  const hud = document.getElementById('map-hud');
-  hud.style.display = 'block';
-  updateMapHud();
-
-  const bg = document.getElementById('bg');
-  bg.style.cursor = 'crosshair';
-  bg.addEventListener('click', onMapClick);
-
-  document.addEventListener('keydown', onMapKey);
-}
-
-function updateMapHud() {
-  const remaining = 4 - mapPoints.length;
-  const undo = mapPoints.length > 0 ? '  [Z] undo point' : (mapShelfIndex > 0 ? '  [U] undo shelf' : '');
-  document.getElementById('map-hud').textContent =
-    `Shelf ${mapShelfIndex + 1} of 10 — click ${remaining} more point${remaining !== 1 ? 's' : ''}${undo}`;
-}
-
-function onMapKey(e) {
-  if (!mappingActive) return;
-
-  // Z — undo last point
-  if (e.key === 'z' || e.key === 'Z') {
-    if (mapPoints.length === 0) return;
-    mapPoints.pop();
-    const dot = mapDots.pop();
-    if (dot) dot.remove();
-    if (mapPreviewPoly) { mapPreviewPoly.remove(); mapPreviewPoly = null; }
-    if (mapPoints.length >= 2) {
-      mapPreviewPoly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-      mapPreviewPoly.setAttribute('points', mapPoints.map(p => p.join(',')).join(' '));
-      mapPreviewPoly.setAttribute('fill', 'rgba(255,200,50,0.12)');
-      mapPreviewPoly.setAttribute('stroke', 'rgba(255,200,50,0.7)');
-      mapPreviewPoly.setAttribute('stroke-width', '2');
-      mapPreviewPoly.setAttribute('pointer-events', 'none');
-      document.getElementById('shelf-svg').insertBefore(mapPreviewPoly, document.getElementById('shelf-svg').firstChild);
-    }
-    updateMapHud();
-  }
-
-  // U — undo entire last completed shelf
-  if (e.key === 'u' || e.key === 'U') {
-    if (mapShelfIndex === 0 || mapPoints.length > 0) return; // mid-shelf, use Z instead
-    mapShelfIndex--;
-    const donePoly = mapDonePolys.pop();
-    if (donePoly) donePoly.remove();
-    updateMapHud();
-    console.log(`Undid shelf ${mapShelfIndex + 1}`);
-  }
-}
-
-function onMapClick(e) {
-  if (!mappingActive) return;
-  const bg  = document.getElementById('bg');
-  const svg = document.getElementById('shelf-svg');
-  const r   = bg.getBoundingClientRect();
-
-  const px = ((e.clientX - r.left) / r.width  * 1000).toFixed(1);
-  const py = ((e.clientY - r.top)  / r.height * 1000).toFixed(1);
-  mapPoints.push([px, py]);
-
-  const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-  dot.setAttribute('cx', px);
-  dot.setAttribute('cy', py);
-  dot.setAttribute('r', '6');
-  dot.setAttribute('fill', 'rgba(255,200,50,0.9)');
-  dot.setAttribute('pointer-events', 'none');
-  svg.appendChild(dot);
-  mapDots.push(dot);
-
-  if (mapPreviewPoly) mapPreviewPoly.remove();
-  if (mapPoints.length >= 2) {
-    mapPreviewPoly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-    mapPreviewPoly.setAttribute('points', mapPoints.map(p => p.join(',')).join(' '));
-    mapPreviewPoly.setAttribute('fill', 'rgba(255,200,50,0.12)');
-    mapPreviewPoly.setAttribute('stroke', 'rgba(255,200,50,0.7)');
-    mapPreviewPoly.setAttribute('stroke-width', '2');
-    mapPreviewPoly.setAttribute('pointer-events', 'none');
-    svg.insertBefore(mapPreviewPoly, svg.firstChild);
-  }
-
-  if (mapPoints.length === 4) {
-    const pts = mapPoints.map(p => p.join(',')).join(' ');
-    console.log(`Shelf ${mapShelfIndex + 1}: "${pts}"`);
-
-    mapDots.forEach(d => d.remove());
-    mapDots = [];
-    if (mapPreviewPoly) { mapPreviewPoly.remove(); mapPreviewPoly = null; }
-
-    const done = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-    done.setAttribute('points', pts);
-    done.setAttribute('fill', 'rgba(255,200,50,0.06)');
-    done.setAttribute('stroke', 'rgba(255,200,50,0.35)');
-    done.setAttribute('stroke-width', '1');
-    done.setAttribute('pointer-events', 'none');
-    svg.appendChild(done);
-    mapDonePolys.push(done);
-
-    mapPoints = [];
-    mapShelfIndex++;
-
-    if (mapShelfIndex >= 10) {
-      document.getElementById('map-hud').textContent = 'All 10 shelves mapped. Check console for coordinates.';
-      document.getElementById('bg').style.cursor = '';
-      document.getElementById('bg').removeEventListener('click', onMapClick);
-      document.removeEventListener('keydown', onMapKey);
-      mappingActive = false;
-      return;
-    }
-    updateMapHud();
-  } else {
-    updateMapHud();
-  }
-}
-
-// ── DRAGGABLE HOTSPOTS ───────────────────────────────────────────────────────
-function makeDraggable(el, parentSelector) {
-  let dragging = false, startX, startY, origLeft, origTop;
-
-  el.addEventListener('mousedown', e => {
-    if (e.button !== 0) return;
-    dragging = true;
-    const parent = el.closest(parentSelector) || document.body;
-    const pr = parent.getBoundingClientRect();
-    const er = el.getBoundingClientRect();
-    startX = e.clientX;
-    startY = e.clientY;
-    origLeft = ((er.left - pr.left) / pr.width) * 100;
-    origTop  = ((er.top  - pr.top)  / pr.height) * 100;
-    e.preventDefault();
-  });
-
-  document.addEventListener('mousemove', e => {
-    if (!dragging) return;
-    const parent = el.closest(parentSelector) || document.body;
-    const pr = parent.getBoundingClientRect();
-    const dx = ((e.clientX - startX) / pr.width)  * 100;
-    const dy = ((e.clientY - startY) / pr.height) * 100;
-    el.style.left = (origLeft + dx) + '%';
-    el.style.top  = (origTop  + dy) + '%';
-  });
-
-  document.addEventListener('mouseup', e => {
-    if (!dragging) return;
-    dragging = false;
-    const parent = el.closest(parentSelector) || document.body;
-    const pr = parent.getBoundingClientRect();
-    const er = el.getBoundingClientRect();
-    const l = (((er.left - pr.left) / pr.width)  * 100).toFixed(1);
-    const t = (((er.top  - pr.top)  / pr.height) * 100).toFixed(1);
-    const w = ((er.width  / pr.width)  * 100).toFixed(1);
-    const h = ((er.height / pr.height) * 100).toFixed(1);
-    console.log(`${el.id}: left:${l}% top:${t}% width:${w}% height:${h}%`);
-  });
-}
-
-// Init draggable hotspots
-makeDraggable(document.getElementById('window-hotspot'), '#bg');
-makeDraggable(document.getElementById('isolde-hotspot'), '#window-overlay');
-makeDraggable(document.getElementById('book-hotspot'), '#bg');
-
-let sceneState = 'waiting'; // waiting | active | resolved
+let sceneState = 'waiting'; // waiting | active | resolvedlet sceneState = 'waiting'; // waiting | active | resolved
 
 function openWindowView() {
   const overlay = document.getElementById('window-overlay');
@@ -2028,7 +1827,8 @@ function nextScene() {
     document.getElementById('scene').style.visibility = 'visible';
     setTimeout(() => {
       intro.style.display = 'none';
-      document.getElementById('dev-bar').style.display = 'none';
+      const skipBtn = document.querySelector('#dev-bar .dev-btn[onclick="devSkipIntro()"]');
+      if (skipBtn) skipBtn.style.display = 'none';
       setTimeout(() => {
         document.getElementById('speech').style.opacity = '1';
       }, 600);}, 1200);
