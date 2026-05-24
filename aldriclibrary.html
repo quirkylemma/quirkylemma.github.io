@@ -1375,7 +1375,7 @@ bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
     if (!W || !H) return;
 
     // Candle flicker on bg
-    const flicker = 1 + Math.sin(t * 8.1) * 0.018 + Math.sin(t * 13.7) * 0.009;
+    const flicker = 1 + Math.sin(t * 1.8) * 0.018 + Math.sin(t * 2.9) * 0.009;
     bg.style.filter = `brightness(${flicker.toFixed(3)})`;
 
     // Dust
