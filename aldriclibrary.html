@@ -620,17 +620,19 @@ body {
   bottom:clamp(140px,22vh,220px);
   left:0;
   width:calc(18vh * 0.78);
+  min-width:120px;
   z-index:20;
   display:flex;
   flex-direction:row;
   align-items:center;
   justify-content:center;
   gap:8px;
+  padding:0 8px;
   pointer-events:none;
   opacity:0;
   transition:opacity 0.8s;
 }
-#candle-wrap.visible { opacity:1; }
+#candle-wrap.visible { opacity:1; pointer-events:auto; }
 #candle-flames {
   display:flex;
   flex-direction:row;
@@ -657,14 +659,6 @@ body {
   animation:none;
   border-radius:50%;
   opacity:0.35;
-}
-#candle-label {
-  font-family:'Cinzel',serif;
-  font-size:14px;
-  letter-spacing:0.12em;
-  text-transform:uppercase;
-  color:rgba(220,190,130,0.45);
-  white-space:nowrap;
 }
 #candle-warning {
   font-family:'IM Fell English',serif;
@@ -984,13 +978,11 @@ body {
   transition: fill 0.15s;
 }
 .shelf-poly:hover {
-  fill: rgba(220,190,130,0.08);
-  stroke: rgba(220,190,130,0.25);
-  stroke-width: 1;
+  fill: transparent;
+  stroke: transparent;
 }
 .shelf-poly.read {
-  stroke: rgba(180,140,60,0.2);
-  stroke-width: 1;
+  stroke: transparent;
 }
 
 /* ── CARD PREVIEW ── */
@@ -1098,7 +1090,6 @@ body {
 
 <!-- Candle attempts — flame pips, vertically on right edge -->
 <div id="candle-wrap">
-  <div id="candle-label">Patience</div>
   <div id="candle-flames">
     <div class="candle-flame" id="flame-0"></div>
     <div class="candle-flame" id="flame-1"></div>
@@ -1923,8 +1914,9 @@ function bindTip(el, text) {
 
 bindTip(document.getElementById('window-hotspot'), 'Look outside');
 bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
-bindTip(document.getElementById('book-hotspot'), 'Open the book');
-bindTip(document.getElementById('book-badge'), 'Open the book');
+bindTip(document.getElementById('book-hotspot'), 'Your notes');
+bindTip(document.getElementById('book-badge'), 'Your notes');
+bindTip(document.getElementById('candle-wrap'), 'Patience');
 </script>
 
 <script>
