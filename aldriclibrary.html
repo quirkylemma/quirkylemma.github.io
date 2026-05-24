@@ -778,39 +778,23 @@ body {
 /* ── BOOK HOTSPOT ── */
 #book-hotspot {
   position:absolute;
-  bottom:8%;
-  left:44%;
-  width:9%;
-  height:14%;
+  left:46.4%;
+  top:64.8%;
+  width:9.0%;
+  height:14.0%;
   cursor:pointer;
   z-index:7;
   display:none;
   border-radius:3px;
-  outline:2px dashed rgba(220,190,130,0.55);
-  background:rgba(220,190,130,0.08);
 }
 #book-hotspot.visible { display:block; }
-#book-hotspot::after {
-  content:'Open book';
-  position:absolute;
-  top:50%; left:50%;
-  transform:translate(-50%,-50%);
-  font-family:'Cinzel',serif;
-  font-size:11px;
-  letter-spacing:0.12em;
-  text-transform:uppercase;
-  color:rgba(220,190,130,0.7);
-  pointer-events:none;
-  white-space:nowrap;
-}
 #book-hotspot:hover {
-  background:rgba(220,190,130,0.15);
-  outline-color:rgba(220,190,130,0.9);
+  background:rgba(220,190,130,0.08);
 }
 #book-badge {
   position:fixed;
-  top:20%;
-  left:48%;
+  top:446px;
+  left:659px;
   width:28px; height:28px;
   border-radius:50%;
   background:rgba(140,70,20,0.92);
@@ -1572,6 +1556,7 @@ function advanceDialogue() {
       speech.innerHTML = `<p>${ISOLDE_DIALOGUE[dialogueIndex]}</p>`;
       speech.style.opacity = '1';
       if (dialogueIndex >= ISOLDE_DIALOGUE.length - 1) {
+        dialogueFinished = true;
         speech.style.cursor = 'default';
         setTimeout(() => showCheckBookshelves(), 800);
       }
@@ -1583,19 +1568,21 @@ function showCheckBookshelves() {
   const speech = document.getElementById('speech');
   const btn = document.createElement('button');
   btn.id = 'bookshelves-btn';
-  btn.textContent = 'Check the bookshelves';
+  btn.textContent = 'Check bookshelves';
   btn.style.cssText = `
     display:block; margin-top:16px;
     font-family:'Cinzel',serif; font-size:clamp(11px,1vw,13px);
     letter-spacing:0.2em; text-transform:uppercase;
     color:rgba(220,190,130,0.85); background:transparent;
     border:1px solid rgba(180,140,60,0.4); padding:8px 20px;
-    border-radius:3px; cursor:pointer;
+    border-radius:3px; cursor:pointer; opacity:0; transition:opacity 0.4s;
   `;
   btn.onmouseover = () => { btn.style.background = 'rgba(180,140,60,0.15)'; btn.style.borderColor = 'rgba(180,140,60,0.8)'; };
   btn.onmouseout  = () => { btn.style.background = 'transparent'; btn.style.borderColor = 'rgba(180,140,60,0.4)'; };
   btn.onclick = revealCards;
   speech.appendChild(btn);
+  // Fade in after a tick so the transition fires
+  requestAnimationFrame(() => requestAnimationFrame(() => { btn.style.opacity = '1'; }));
 }
 
 function revealCards() {
@@ -1603,8 +1590,11 @@ function revealCards() {
   document.getElementById('card-list').style.opacity = '1';
 }
 
+let dialogueFinished = false;
+
 document.getElementById('speech').addEventListener('click', () => {
   if (sceneState !== 'active') return;
+  if (dialogueFinished) return;
   advanceDialogue();
 });
 
@@ -1797,13 +1787,17 @@ function triggerWin() {
   document.getElementById('win-screen').classList.add('visible');
 }
 
-// Override revealCards to also show candle + initial slips
+// Reveal all slips + candle when bookshelves open
 function revealCards() {
   document.getElementById('bookshelves-btn').remove();
   document.getElementById('card-list').style.opacity = '1';
   document.getElementById('candle-wrap').classList.add('visible');
   updateCandle();
-  revealSlipsForCard('open');
+  ALL_SLIPS.forEach(slip => {
+    if (!slipsUnlocked.includes(slip.id)) slipsUnlocked.push(slip.id);
+  });
+  updateBookBadge();
+  document.getElementById('book-hotspot').classList.add('visible');
 }
 
 // ── INTRO ────────────────────────────────────────────────────────────────────
@@ -1842,7 +1836,7 @@ function showScene(idx) {
   const textEl = document.getElementById('intro-text');
   const btn    = document.getElementById('intro-btn');
 
-  btn.textContent = idx < INTRO_SCENES.length - 1 ? 'Continue' : 'Enter the Library';
+  btn.textContent = idx < INTRO_SCENES.length - 1 ? 'Continue' : 'Enter Library';
   textEl.classList.remove('visible');
   btn.style.transition = 'none';
   btn.style.opacity = '0';
