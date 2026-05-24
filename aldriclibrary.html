@@ -1246,7 +1246,7 @@ const SCENE = {
     { number: 1,  slug: 'data',          title: 'Data',           condition: 'intact'  },  // shelf 1
     null,                                                                                    // shelf 2
     { number: 5,  slug: 'bsc_textbook',  title: 'BSc Textbook',   condition: 'damaged' },  // shelf 3
-    { number: 9,  slug: 'ragvirs_notes', title: "Ragvir's Notes", condition: 'cursed'  },  // shelf 4
+    { number: 9,  slug: 'ragvirs_notes', title: "Ragvir's Notes", condition: 'locked'  },  // shelf 4
     null,                                                                                    // shelf 5
     null,                                                                                    // shelf 6
     { number: 2,  slug: 'methods',       title: 'Methods',        condition: 'intact'  },  // shelf 7
@@ -1315,7 +1315,11 @@ function renderShelves() {
 
     poly.addEventListener('click', () => {
       if (card.condition === 'locked') {
-        showIsoldeResponse('The binding is sealed. Something is missing from this shelf.');
+        if (!gameEnded) {
+          showIsoldeResponse('The binding is sealed. Something is missing from this shelf.');
+        } else {
+          openCard(card);
+        }
         return;
       }
       if (card.condition === 'destroyed') {
@@ -1328,10 +1332,11 @@ function renderShelves() {
 
     svg.appendChild(poly);
 
-    // Badge — only for wired cards, only after shelves revealed
-    if (shelvesRevealed && CARD_CONTENT[card.slug]) {
+    // Badge — wired cards + locked cards, only after shelves revealed
+    if (shelvesRevealed && (CARD_CONTENT[card.slug] || card.condition === 'locked')) {
       const { x, y } = polycentroid(pts);
       const isRead = cardsRead && cardsRead.has(card.slug);
+      const isLocked = card.condition === 'locked';
       const badge = document.createElement('div');
       badge.className = 'shelf-card-badge';
       badge.style.cssText = `
@@ -1341,19 +1346,19 @@ function renderShelves() {
         transform:translate(-50%,-50%);
         width:22px; height:22px;
         border-radius:50%;
-        background:${isRead ? 'rgba(50,40,20,0.7)' : 'rgba(140,70,20,0.92)'};
-        border:1px solid ${isRead ? 'rgba(120,100,60,0.4)' : 'rgba(220,160,80,0.7)'};
-        box-shadow:${isRead ? 'none' : '0 0 8px rgba(180,100,30,0.45)'};
+        background:${isRead ? 'rgba(50,40,20,0.7)' : isLocked ? 'rgba(30,25,20,0.88)' : 'rgba(140,70,20,0.92)'};
+        border:1.5px solid ${isRead ? 'rgba(140,115,65,0.5)' : isLocked ? 'rgba(140,110,60,0.45)' : 'rgba(240,185,90,0.95)'};
+        box-shadow:${isRead ? '0 0 6px rgba(120,90,30,0.3)' : isLocked ? '0 0 6px rgba(100,80,40,0.3)' : '0 0 10px rgba(220,140,40,0.7), 0 0 22px rgba(180,100,20,0.4)'};
         font-family:'Cinzel',serif;
         font-size:11px;
-        color:${isRead ? 'rgba(180,150,80,0.5)' : 'rgba(255,230,160,0.97)'};
+        color:${isRead ? 'rgba(180,150,80,0.5)' : isLocked ? 'rgba(160,130,70,0.5)' : 'rgba(255,230,160,0.97)'};
         display:flex; align-items:center; justify-content:center;
         pointer-events:none;
         z-index:9;
         user-select:none;
         transition:background 0.4s, box-shadow 0.4s;
       `;
-      badge.textContent = isRead ? '✓' : '!';
+      badge.textContent = isRead ? '✓' : isLocked ? '🔒' : '!';
       document.getElementById('bg').appendChild(badge);
     }
   });
@@ -1862,10 +1867,10 @@ function triggerGameOver() {
 
 function triggerWin() {
   const ragvirCard = SCENE.cards.find(c => c && c.slug === 'ragvirs_notes');
-  if (ragvirCard) {
-    ragvirCard.condition = 'intact';
-    renderShelves();
-  }
+  if (ragvirCard) ragvirCard.condition = 'cursed';
+  const graphsCard = SCENE.cards.find(c => c && c.slug === 'graphs');
+  if (graphsCard) graphsCard.condition = 'intact';
+  renderShelves();
   document.getElementById('win-text').innerHTML =
     `Four datasets. Identical means, variances, correlations, regression lines.<br><br>` +
     `Completely different shapes when drawn.<br><br>` +
