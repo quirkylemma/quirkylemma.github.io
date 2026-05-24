@@ -49,7 +49,7 @@ body {
   display:grid;
   width:100vw;
   height:100vh;
-  grid-template-columns: 1fr clamp(80px, 9vw, 130px);
+  grid-template-columns: 1fr;
   grid-template-rows: 1fr clamp(140px, 22vh, 220px);
 }
 
@@ -58,8 +58,6 @@ body {
   grid-column:1;
   grid-row:1;
   position:relative;
-  border-right:2px solid rgba(180,140,60,0.35);
-  box-shadow:4px 0 18px rgba(0,0,0,0.45);
   background: url('./aldricimages/cosylibrary.png') center/cover no-repeat;
 }
 
@@ -709,9 +707,10 @@ body {
   width:calc(18vh * 0.78);
   z-index:20;
   display:flex;
-  flex-direction:column;
+  flex-direction:row;
   align-items:center;
-  gap:5px;
+  justify-content:center;
+  gap:8px;
   pointer-events:none;
   opacity:0;
   transition:opacity 0.8s;
@@ -721,7 +720,7 @@ body {
   display:flex;
   flex-direction:row;
   align-items:center;
-  gap:8px;
+  gap:7px;
 }
 .candle-flame {
   width:14px; height:14px;
@@ -747,12 +746,10 @@ body {
 #candle-label {
   font-family:'Cinzel',serif;
   font-size:14px;
-  letter-spacing:0.15em;
+  letter-spacing:0.12em;
   text-transform:uppercase;
   color:rgba(220,190,130,0.45);
-  writing-mode:horizontal-tb;
-  transform:none;
-  margin-top:0;
+  white-space:nowrap;
 }
 #candle-warning {
   font-family:'IM Fell English',serif;
@@ -887,11 +884,10 @@ body {
 }
 .drawer-slip-hint {
   display:block;
-  font-family:'Cinzel',serif;
-  font-size:11px;
-  letter-spacing:0.1em;
-  text-transform:uppercase;
-  color:rgba(100,70,30,0.5);
+  font-family:'IM Fell English',serif;
+  font-style:italic;
+  font-size:14px;
+  color:rgba(80,45,10,0.75);
   margin-top:5px;
 }
 .drawer-slip.used {
@@ -1063,6 +1059,24 @@ body {
   background:rgba(180,140,60,0.3);
   border-color:rgba(255,180,50,0.8);
 }
+/* ── SHELF MAPPING TOOL ── */
+#map-hud {
+  position:fixed;
+  top:50px; left:50%;
+  transform:translateX(-50%);
+  z-index:1000;
+  background:rgba(10,6,2,0.9);
+  border:1px solid rgba(255,180,50,0.5);
+  border-radius:4px;
+  padding:8px 18px;
+  font-family:'Cinzel',serif;
+  font-size:14px;
+  letter-spacing:0.15em;
+  color:rgba(255,220,100,0.9);
+  pointer-events:none;
+  display:none;
+  white-space:nowrap;
+}
 
 </style>
 </head>
@@ -1070,6 +1084,7 @@ body {
 
 <!-- Cursor tooltip -->
 <div id="cursor-tip"></div>
+<div id="map-hud"></div>
 
 <!-- Minimum screen message -->
 <div id="too-small">
@@ -1080,6 +1095,7 @@ body {
 <!-- DEV BAR -->
 <div id="dev-bar">
   <button class="dev-btn" onclick="devSkipIntro()">Skip Intro</button>
+  <button class="dev-btn" onclick="devStartMapping()">Map Shelves</button>
 </div>
 
 <!-- Title screen -->
@@ -1143,12 +1159,12 @@ body {
 
 <!-- Candle attempts — flame pips, vertically on right edge -->
 <div id="candle-wrap">
+  <div id="candle-label">Patience</div>
   <div id="candle-flames">
     <div class="candle-flame" id="flame-0"></div>
     <div class="candle-flame" id="flame-1"></div>
     <div class="candle-flame" id="flame-2"></div>
   </div>
-  <div id="candle-label">Patience</div>
 </div>
 
 <!-- Slip count badge — independently draggable -->
@@ -1181,6 +1197,7 @@ body {
 
   <div id="bg">
     <canvas id="dust-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;"></canvas>
+    <svg id="shelf-svg" style="position:absolute;inset:0;width:100%;height:100%;z-index:8;" viewBox="0 0 1000 1000" preserveAspectRatio="none"></svg>
     <div id="window-hotspot" onclick="openWindowView()"></div>
     <div id="book-hotspot" onclick="openSlipDrawer()"></div>
     <div id="narration">
@@ -1264,7 +1281,101 @@ function devShowAnscombe() {
   document.getElementById('window-overlay').classList.add('visible');
 }
 
-// ── DRAGGABLE HOTSPOTS ───────────────────────────────────────────────────────
+// ── SHELF POLYGON MAPPING TOOL ───────────────────────────────────────────────
+let mappingActive = false;
+let mapPoints     = [];
+let mapShelfIndex = 0;
+let mapPreviewPoly = null;
+let mapDots        = [];
+
+function devStartMapping() {
+  mappingActive = true;
+  mapPoints     = [];
+  mapShelfIndex = 0;
+  document.getElementById('dev-bar').style.display = 'none';
+
+  const hud = document.getElementById('map-hud');
+  hud.style.display = 'block';
+  updateMapHud();
+
+  const bg = document.getElementById('bg');
+  bg.style.cursor = 'crosshair';
+  bg.addEventListener('click', onMapClick);
+}
+
+function updateMapHud() {
+  const hud = document.getElementById('map-hud');
+  const remaining = 4 - mapPoints.length;
+  hud.textContent = `Shelf ${mapShelfIndex + 1} of 10 — click ${remaining} more point${remaining !== 1 ? 's' : ''}`;
+}
+
+function onMapClick(e) {
+  if (!mappingActive) return;
+  const bg  = document.getElementById('bg');
+  const svg = document.getElementById('shelf-svg');
+  const r   = bg.getBoundingClientRect();
+
+  // Convert to 0–1000 SVG space (matches viewBox)
+  const px = ((e.clientX - r.left) / r.width  * 1000).toFixed(1);
+  const py = ((e.clientY - r.top)  / r.height * 1000).toFixed(1);
+  mapPoints.push([px, py]);
+
+  // Draw a dot marker
+  const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  dot.setAttribute('cx', px);
+  dot.setAttribute('cy', py);
+  dot.setAttribute('r', '6');
+  dot.setAttribute('fill', 'rgba(255,200,50,0.9)');
+  dot.setAttribute('pointer-events', 'none');
+  svg.appendChild(dot);
+  mapDots.push(dot);
+
+  // Update live preview polygon
+  if (mapPreviewPoly) mapPreviewPoly.remove();
+  if (mapPoints.length >= 2) {
+    mapPreviewPoly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    mapPreviewPoly.setAttribute('points', mapPoints.map(p => p.join(',')).join(' '));
+    mapPreviewPoly.setAttribute('fill', 'rgba(255,200,50,0.12)');
+    mapPreviewPoly.setAttribute('stroke', 'rgba(255,200,50,0.7)');
+    mapPreviewPoly.setAttribute('stroke-width', '2');
+    mapPreviewPoly.setAttribute('pointer-events', 'none');
+    svg.insertBefore(mapPreviewPoly, svg.firstChild);
+  }
+
+  if (mapPoints.length === 4) {
+    // Log and reset for next shelf
+    const pts = mapPoints.map(p => p.join(',')).join(' ');
+    console.log(`Shelf ${mapShelfIndex + 1}: "${pts}"`);
+
+    // Clear dots and preview for next shelf
+    mapDots.forEach(d => d.remove());
+    mapDots = [];
+    if (mapPreviewPoly) { mapPreviewPoly.remove(); mapPreviewPoly = null; }
+
+    // Keep a permanent faint outline so you can see what's mapped
+    const done = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    done.setAttribute('points', pts);
+    done.setAttribute('fill', 'rgba(255,200,50,0.06)');
+    done.setAttribute('stroke', 'rgba(255,200,50,0.35)');
+    done.setAttribute('stroke-width', '1');
+    done.setAttribute('pointer-events', 'none');
+    svg.appendChild(done);
+
+    mapPoints = [];
+    mapShelfIndex++;
+
+    if (mapShelfIndex >= 10) {
+      document.getElementById('map-hud').textContent = 'All 10 shelves mapped. Check console for coordinates.';
+      document.getElementById('bg').style.cursor = '';
+      document.getElementById('bg').removeEventListener('click', onMapClick);
+      mappingActive = false;
+      return;
+    }
+    updateMapHud();
+  } else {
+    updateMapHud();
+  }
+}
 function makeDraggable(el, parentSelector) {
   let dragging = false, startX, startY, origLeft, origTop;
 
@@ -1578,24 +1689,18 @@ function showCheckBookshelves() {
   btn.id = 'bookshelves-btn';
   btn.textContent = 'Check bookshelves';
   btn.style.cssText = `
-    display:block; margin-top:16px;
-    font-family:'Cinzel',serif; font-size:clamp(11px,1vw,13px);
+    position:fixed; top:14px; right:14px; z-index:999;
+    font-family:'Cinzel',serif; font-size:14px;
     letter-spacing:0.2em; text-transform:uppercase;
-    color:rgba(220,190,130,0.85); background:transparent;
-    border:1px solid rgba(180,140,60,0.4); padding:8px 20px;
+    color:rgba(220,190,130,0.85); background:rgba(10,6,2,0.7);
+    border:1px solid rgba(180,140,60,0.4); padding:6px 14px;
     border-radius:3px; cursor:pointer; opacity:0; transition:opacity 0.4s;
   `;
   btn.onmouseover = () => { btn.style.background = 'rgba(180,140,60,0.15)'; btn.style.borderColor = 'rgba(180,140,60,0.8)'; };
   btn.onmouseout  = () => { btn.style.background = 'transparent'; btn.style.borderColor = 'rgba(180,140,60,0.4)'; };
   btn.onclick = revealCards;
-  speech.appendChild(btn);
-  // Fade in after a tick so the transition fires
+  document.body.appendChild(btn);
   requestAnimationFrame(() => requestAnimationFrame(() => { btn.style.opacity = '1'; }));
-}
-
-function revealCards() {
-  document.getElementById('bookshelves-btn').remove();
-  document.getElementById('card-list').style.opacity = '1';
 }
 
 let dialogueFinished = false;
@@ -1816,7 +1921,8 @@ function triggerWin() {
 
 // Show candle + unlock initial slips when bookshelves open
 function revealCards() {
-  document.getElementById('bookshelves-btn').remove();
+  const btn = document.getElementById('bookshelves-btn');
+  if (btn) btn.remove();
   document.getElementById('card-list').style.opacity = '1';
   document.getElementById('candle-wrap').classList.add('visible');
   updateCandle();
@@ -1985,6 +2091,7 @@ function bindTip(el, text) {
 bindTip(document.getElementById('window-hotspot'), 'Look outside');
 bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
 bindTip(document.getElementById('book-hotspot'), 'Open the book');
+bindTip(document.getElementById('book-badge'), 'Open the book');
 </script>
 
 <script>
