@@ -1442,11 +1442,11 @@ bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
     padding:12px 16px; font-family:'Cinzel',serif; font-size:12px;
     color:rgba(220,190,130,0.9); border-radius:4px;
     max-height:90vh; overflow-y:auto; width:280px;
-    display:none;
+    display:none; user-select:none;
   `;
 
-  let tuneHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-    <span style="letter-spacing:0.15em;font-size:11px">LAYER TUNING</span>
+  let tuneHTML = `<div id="tune-drag-handle" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;cursor:grab;padding-bottom:8px;border-bottom:1px solid rgba(180,140,60,0.2);">
+    <span style="letter-spacing:0.15em;font-size:11px">⠿ LAYER TUNING</span>
     <button onclick="document.getElementById('tune-panel').style.display='none'"
       style="background:none;border:none;color:rgba(220,190,130,0.7);cursor:pointer;font-size:14px">✕</button>
   </div>`;
@@ -1490,6 +1490,26 @@ bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
 
   panel.innerHTML = tuneHTML;
   document.body.appendChild(panel);
+
+  // Drag logic
+  const handle = document.getElementById('tune-drag-handle');
+  let dragging = false, dragOffX = 0, dragOffY = 0;
+  handle.addEventListener('mousedown', e => {
+    dragging = true;
+    dragOffX = e.clientX - panel.offsetLeft;
+    dragOffY = e.clientY - panel.offsetTop;
+    handle.style.cursor = 'grabbing';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    panel.style.left = (e.clientX - dragOffX) + 'px';
+    panel.style.top  = (e.clientY - dragOffY) + 'px';
+  });
+  document.addEventListener('mouseup', () => {
+    dragging = false;
+    handle.style.cursor = 'grab';
+  });
 
   document.addEventListener('keydown', e => {
     if (e.key === 't' || e.key === 'T') {
