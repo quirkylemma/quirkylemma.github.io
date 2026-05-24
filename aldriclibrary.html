@@ -715,6 +715,78 @@ body {
 }
 #book-badge.visible { display:flex; }
 
+/* ── HOW TO PLAY HOTSPOT ── */
+#help-hotspot {
+  position:absolute;
+  left:38%;
+  top:64%;
+  width:7%;
+  height:13%;
+  cursor:pointer;
+  z-index:7;
+  border-radius:3px;
+}
+
+/* ── HOW TO PLAY OVERLAY ── */
+#help-overlay {
+  position:fixed;
+  inset:0;
+  z-index:250;
+  background:rgba(8,4,2,0.88);
+  backdrop-filter:blur(8px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.4s;
+}
+#help-overlay.open {
+  opacity:1;
+  pointer-events:auto;
+}
+#help-inner {
+  width:clamp(300px,44vw,560px);
+  display:flex;
+  flex-direction:column;
+  gap:clamp(12px,2vh,22px);
+  align-items:center;
+}
+#help-title {
+  font-family:'Cinzel',serif;
+  font-size:clamp(13px,1.2vw,16px);
+  letter-spacing:0.3em;
+  text-transform:uppercase;
+  color:rgba(220,190,130,0.85);
+  text-align:center;
+}
+#help-body {
+  font-family:'IM Fell English',serif;
+  font-size:clamp(15px,1.5vw,19px);
+  line-height:1.85;
+  color:rgba(225,205,165,0.88);
+  text-align:center;
+}
+#help-close {
+  font-family:'Cinzel',serif;
+  font-size:clamp(10px,0.9vw,13px);
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:rgba(180,150,100,0.6);
+  background:transparent;
+  border:1px solid rgba(180,140,60,0.25);
+  padding:7px 20px;
+  border-radius:3px;
+  cursor:pointer;
+  transition:color 0.2s, border-color 0.2s, background 0.2s;
+  margin-top:4px;
+}
+#help-close:hover {
+  color:rgba(220,190,130,0.9);
+  border-color:rgba(180,140,60,0.55);
+  background:rgba(180,140,60,0.08);
+}
+
 /* ── SLIP DRAWER OVERLAY ── */
 #slip-drawer {
   position:fixed;
@@ -1120,12 +1192,27 @@ body {
   <div id="win-card-reveal">Ragvir's Notes have been unlocked.</div>
 </div>
 
+<!-- How to play overlay -->
+<div id="help-overlay">
+  <div id="help-inner">
+    <div id="help-title">How to Play</div>
+    <div id="help-body">
+      A student has come to you with a problem.<br><br>
+      Examine the books on the shelves — hover to preview, click to read. Some are damaged. Some cannot be trusted.<br><br>
+      When you think you know what she needs to hear, open your notes and present an answer.<br><br>
+      You have three chances. The candle is already burning.
+    </div>
+    <button id="help-close" onclick="closeHelp()">Understood</button>
+  </div>
+</div>
+
 <div id="scene" style="visibility:hidden;">
 
   <div id="bg">
     <canvas id="dust-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;"></canvas>
-    <svg id="shelf-svg" style="position:absolute;inset:0;width:100%;height:100%;z-index:8;" viewBox="0 0 1000 1000" preserveAspectRatio="none"></svg>
+    <svg id="shelf-svg" style="position:absolute;inset:0;width:100%;height:100%;z-index:8;pointer-events:none;" viewBox="0 0 1000 1000" preserveAspectRatio="none"></svg>
     <div id="window-hotspot" onclick="openWindowView()"></div>
+    <div id="help-hotspot" onclick="openHelp()"></div>
     <div id="book-hotspot" onclick="openSlipDrawer()"></div>
     <div id="book-badge" onclick="openSlipDrawer()">0</div>
     <div id="narration">
@@ -1747,6 +1834,7 @@ function triggerWin() {
 function revealCards() {
   const btn = document.getElementById('bookshelves-btn');
   if (btn) btn.remove();
+  document.getElementById('shelf-svg').style.pointerEvents = 'auto';
   document.getElementById('candle-wrap').classList.add('visible');
   updateCandle();
   revealSlipsForCard('open');
@@ -1914,9 +2002,17 @@ function bindTip(el, text) {
 
 bindTip(document.getElementById('window-hotspot'), 'Look outside');
 bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
+bindTip(document.getElementById('help-hotspot'), 'How to play');
 bindTip(document.getElementById('book-hotspot'), 'Your notes');
 bindTip(document.getElementById('book-badge'), 'Your notes');
 bindTip(document.getElementById('candle-wrap'), 'Patience');
+
+function openHelp() {
+  document.getElementById('help-overlay').classList.add('open');
+}
+function closeHelp() {
+  document.getElementById('help-overlay').classList.remove('open');
+}
 </script>
 
 <script>
