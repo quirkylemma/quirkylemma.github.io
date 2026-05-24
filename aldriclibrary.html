@@ -704,14 +704,14 @@ body {
 /* ── CANDLE FLAME PIPS ── */
 #candle-wrap {
   position:fixed;
-  top:50%;
-  right:clamp(86px,9.5vw,136px);
-  transform:translateY(-50%);
+  bottom:clamp(140px,22vh,220px);
+  left:0;
+  width:calc(18vh * 0.78);
   z-index:20;
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:6px;
+  gap:5px;
   pointer-events:none;
   opacity:0;
   transition:opacity 0.8s;
@@ -719,9 +719,9 @@ body {
 #candle-wrap.visible { opacity:1; }
 #candle-flames {
   display:flex;
-  flex-direction:column;
+  flex-direction:row;
   align-items:center;
-  gap:5px;
+  gap:8px;
 }
 .candle-flame {
   width:14px; height:14px;
@@ -750,9 +750,9 @@ body {
   letter-spacing:0.15em;
   text-transform:uppercase;
   color:rgba(220,190,130,0.45);
-  writing-mode:vertical-rl;
-  transform:rotate(180deg);
-  margin-top:6px;
+  writing-mode:horizontal-tb;
+  transform:none;
+  margin-top:0;
 }
 #candle-warning {
   font-family:'IM Fell English',serif;
@@ -788,9 +788,6 @@ body {
   border-radius:3px;
 }
 #book-hotspot.visible { display:block; }
-#book-hotspot:hover {
-  background:rgba(220,190,130,0.08);
-}
 #book-badge {
   position:fixed;
   top:446px;
@@ -805,12 +802,11 @@ body {
   color:rgba(255,230,160,0.97);
   display:none;
   align-items:center; justify-content:center;
-  cursor:grab;
+  cursor:pointer;
   z-index:21;
   user-select:none;
 }
 #book-badge.visible { display:flex; }
-#book-badge:active { cursor:grabbing; }
 
 /* ── SLIP DRAWER OVERLAY ── */
 #slip-drawer {
@@ -878,13 +874,25 @@ body {
   transform:translateY(-2px);
   box-shadow:0 4px 16px rgba(0,0,0,0.3);
 }
-.drawer-slip.correct {
-  background:rgba(220,238,210,0.93);
-  border-color:rgba(80,140,70,0.35);
-  color:rgba(20,55,15,0.9);
+.drawer-slip.locked {
+  opacity:0.45;
+  cursor:default;
+  pointer-events:none;
+  background:rgba(220,210,185,0.6);
 }
-.drawer-slip.correct:hover {
-  background:rgba(230,248,220,0.98);
+.drawer-slip.locked:hover {
+  transform:none;
+  box-shadow:0 2px 8px rgba(0,0,0,0.25);
+  background:rgba(220,210,185,0.6);
+}
+.drawer-slip-hint {
+  display:block;
+  font-family:'Cinzel',serif;
+  font-size:11px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:rgba(100,70,30,0.5);
+  margin-top:5px;
 }
 .drawer-slip.used {
   opacity:0.3;
@@ -1144,7 +1152,7 @@ body {
 </div>
 
 <!-- Slip count badge — independently draggable -->
-<div id="book-badge">0</div>
+<div id="book-badge" onclick="openSlipDrawer()">0</div>
 
 <!-- Slip drawer overlay -->
 <div id="slip-drawer">
@@ -1664,11 +1672,17 @@ function showCandleWarning(text) {
 }
 
 // ── BADGE + BOOK ─────────────────────────────────────────────────────────────
+const TRIGGER_LABELS = {
+  data:        'Data',
+  bsc_textbook:'BSc Textbook',
+  methods:     'Methods',
+};
+
 function updateBookBadge() {
-  const available = slipsUnlocked.filter(id => !usedSlipIds.has(id)).length;
+  const available = ALL_SLIPS.filter(s => slipsUnlocked.includes(s.id) && !usedSlipIds.has(s.id)).length;
   const badge = document.getElementById('book-badge');
   badge.textContent = available;
-  if (available > 0) badge.classList.add('visible');
+  if (slipsUnlocked.length > 0) badge.classList.add('visible');
 }
 
 function openSlipDrawer() {
@@ -1679,17 +1693,32 @@ function openSlipDrawer() {
   const stack = document.getElementById('slip-stack');
   stack.innerHTML = '';
 
-  slipsUnlocked.forEach(id => {
-    const slip = ALL_SLIPS.find(s => s.id === id);
-    if (!slip) return;
+  ALL_SLIPS.forEach(slip => {
+    const isUnlocked = slipsUnlocked.includes(slip.id);
+    const isUsed     = usedSlipIds.has(slip.id);
     const el = document.createElement('div');
-    el.className = 'drawer-slip' +
-      (slip.correct ? ' correct' : '') +
-      (usedSlipIds.has(id) ? ' used' : '');
-    el.textContent = slip.text;
-    if (!usedSlipIds.has(id)) {
+
+    let cls = 'drawer-slip';
+    if (isUsed)          cls += ' used';
+    else if (!isUnlocked) cls += ' locked';
+
+    el.className = cls;
+
+    if (isUnlocked && !isUsed) {
       el.addEventListener('click', () => handleSlipClick(slip, el));
     }
+
+    const label = document.createElement('span');
+    label.textContent = slip.text;
+    el.appendChild(label);
+
+    if (!isUnlocked) {
+      const hint = document.createElement('span');
+      hint.className = 'drawer-slip-hint';
+      hint.textContent = `Read ${TRIGGER_LABELS[slip.trigger]} to unlock`;
+      el.appendChild(hint);
+    }
+
     stack.appendChild(el);
   });
 
@@ -1707,8 +1736,6 @@ function revealSlipsForCard(trigger) {
     slipsUnlocked.push(slip.id);
   });
   updateBookBadge();
-
-  // Show book hotspot once we have slips
   if (slipsUnlocked.length > 0) {
     document.getElementById('book-hotspot').classList.add('visible');
   }
@@ -1787,16 +1814,13 @@ function triggerWin() {
   document.getElementById('win-screen').classList.add('visible');
 }
 
-// Reveal all slips + candle when bookshelves open
+// Show candle + unlock initial slips when bookshelves open
 function revealCards() {
   document.getElementById('bookshelves-btn').remove();
   document.getElementById('card-list').style.opacity = '1';
   document.getElementById('candle-wrap').classList.add('visible');
   updateCandle();
-  ALL_SLIPS.forEach(slip => {
-    if (!slipsUnlocked.includes(slip.id)) slipsUnlocked.push(slip.id);
-  });
-  updateBookBadge();
+  revealSlipsForCard('open');
   document.getElementById('book-hotspot').classList.add('visible');
 }
 
@@ -1961,7 +1985,6 @@ function bindTip(el, text) {
 bindTip(document.getElementById('window-hotspot'), 'Look outside');
 bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
 bindTip(document.getElementById('book-hotspot'), 'Open the book');
-bindTip(document.getElementById('book-badge'), 'Slips available');
 </script>
 
 <script>
