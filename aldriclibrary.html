@@ -2606,7 +2606,9 @@ function clearNarrationTimers() {
 function startNarration(scenes) {
   narrationScenes = scenes || currentScene().narration;
   narrationIndex = 0;
+  clearNarrationTimers();
   const overlay = document.getElementById('narration');
+  overlay.style.transform = ''; // clear any inline override from previous scene
   overlay.classList.add('visible');
   narrationTimers.push(setTimeout(() => showNarrationScene(0), 700));
 }
@@ -2848,7 +2850,16 @@ document.getElementById('portrait-name').textContent = SCENES[0].student;
 
 
 bindTip(document.getElementById('window-hotspot'), 'Look outside');
-bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
+document.getElementById('isolde-hotspot').addEventListener('mouseenter', e => {
+  const student = currentScene().student.split(' ')[0];
+  const scene = currentScene();
+  // Determine pronoun — Marcus uses he/him
+  const male = ['Marcus'];
+  const pronoun = male.includes(student) ? 'him' : 'her';
+  showTip('Let ' + pronoun + ' in', e);
+});
+document.getElementById('isolde-hotspot').addEventListener('mousemove', e => moveTip(e));
+document.getElementById('isolde-hotspot').addEventListener('mouseleave', hideTip);
 bindTip(document.getElementById('candle-wrap'), 'Patience');
 
 </script>
