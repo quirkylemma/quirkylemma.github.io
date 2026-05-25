@@ -2462,9 +2462,9 @@ function showBetweenScene(text, callback) {
 // ── LOAD SCENE ────────────────────────────────────────────────────────────────
 function loadScene() {
   const scene = currentScene();
-  SCENE = scene; // update alias for renderShelves
+  SCENE = scene;
 
-  // Reset scene-local state
+  // Reset all state
   sceneState = 'waiting';
   sceneDialogue = [...scene.dialogue];
   dialogueIndex = 0;
@@ -2480,45 +2480,31 @@ function loadScene() {
   const speech = document.getElementById('speech');
   const form = document.getElementById('answer-form');
   speech.style.display = '';
-  speech.style.cursor = 'pointer';
+  speech.style.cursor = 'default';
+  speech.style.opacity = '1';
+  speech.innerHTML = '<p style="font-style:italic;color:rgba(200,175,130,0.55);">The rain is still falling. Someone is waiting outside.</p>';
   form.classList.remove('visible');
   document.getElementById('shelf-svg').style.pointerEvents = 'none';
   document.getElementById('candle-wrap').classList.remove('visible');
 
-  // Remove old bookshelves button if present
+  // Remove old bookshelves button
   const oldBtn = document.getElementById('bookshelves-btn');
   if (oldBtn) oldBtn.remove();
 
-  // Update portrait — silhouette for scenes 0-2, real for scene 3
+  // Hide portrait — blank until student admitted
   const portrait = document.getElementById('portrait');
   const portraitImg = portrait.querySelector('img');
-  const portraitName = document.getElementById('portrait-name');
-  if (scene.sceneIndex === 3) {
-    portraitImg.src = './aldricimages/isoldefenn.png';
-    portraitImg.style.filter = '';
-  } else {
-    portraitImg.src = './aldricimages/isoldefenn.png';
-    portraitImg.style.filter = 'brightness(0) opacity(0.35)';
-  }
-  portraitName.textContent = scene.student;
+  portraitImg.src = '';
+  portraitImg.style.filter = '';
+  document.getElementById('portrait-name').textContent = '';
   portrait.style.opacity = '0';
   portrait.style.transition = 'opacity 0.8s';
 
-  // Set first dialogue line
-  speech.innerHTML = '<p>' + sceneDialogue[0] + '</p>';
-  speech.style.opacity = '0';
+  // Re-enable window hotspot
+  document.getElementById('isolde-hotspot').style.display = 'block';
 
-  // Render shelves
+  // Render empty shelves
   renderShelves();
-
-  // Show portrait + first dialogue after brief delay
-  setTimeout(() => {
-    portrait.style.opacity = '1';
-    speech.style.opacity = '1';
-  }, 400);
-
-  // Start narration
-  startNarration(scene.narration);
 }
 
 // Show candle when bookshelves opened
