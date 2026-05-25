@@ -50,7 +50,7 @@ body {
   width:100vw;
   height:100vh;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr clamp(140px, 22vh, 220px);
+  grid-template-rows: 1fr;
 }
 
 /* Library background */
@@ -69,31 +69,20 @@ body {
   pointer-events:none;
 }
 
-/* ── DIALOGUE ── */
-#dialogue {
-  grid-column:1;
-  grid-row:2;
-  display:flex;
-  flex-direction:row;
-  align-items:stretch;
-  background:rgba(14,9,3,0.92);
-  backdrop-filter:blur(10px);
-  overflow:hidden;
-  border-top:2px solid rgba(180,140,60,0.35);
-  box-shadow:0 -4px 18px rgba(0,0,0,0.45);
-}
-
+/* ── PORTRAIT — fixed bottom-left ── */
 #portrait {
-  width:calc(18vh * 0.78);
-  flex-shrink:0;
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:clamp(100px, 10vw, 148px);
+  height:clamp(140px, 18vh, 220px);
+  z-index:25;
   display:flex;
   flex-direction:column;
   align-items:stretch;
-  justify-content:flex-start;
-  border-right:1px solid rgba(220,190,130,0.15);
-  height:100%;
-  position:relative;
-  overflow:hidden;
+  background:rgba(8,5,2,0.82);
+  border-top:1px solid rgba(180,140,60,0.3);
+  border-right:1px solid rgba(180,140,60,0.2);
 }
 
 #portrait img {
@@ -107,23 +96,72 @@ body {
 
 #portrait-name {
   font-family:'Cinzel', serif;
-  font-size:clamp(9px, 0.8vw, 12px);
+  font-size:clamp(9px, 0.75vw, 11px);
   letter-spacing:0.15em;
   color:rgba(220,190,130,0.92);
   text-align:center;
   width:100%;
-  padding:8px 4px;
-  background:rgba(8,5,2,0.5);
+  padding:6px 4px;
+  background:rgba(8,5,2,0.6);
   flex-shrink:0;
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
+/* ── DIALOGUE — floating draggable box ── */
+#dialogue {
+  position:fixed;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%);
+  width:clamp(280px, 33vw, 520px);
+  max-height:52vh;
+  z-index:30;
+  display:flex;
+  flex-direction:column;
+  background:rgba(10,6,2,0.88);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(180,140,60,0.35);
+  border-radius:6px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.4);
+  overflow:hidden;
+  cursor:default;
+  user-select:none;
+}
+
+/* drag handle strip at top */
+#dialogue-handle {
+  height:22px;
+  background:rgba(180,140,60,0.08);
+  border-bottom:1px solid rgba(180,140,60,0.2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:grab;
+  flex-shrink:0;
+}
+#dialogue-handle:active { cursor:grabbing; }
+#dialogue-handle::before {
+  content:'';
+  width:36px;
+  height:3px;
+  border-radius:2px;
+  background:rgba(180,140,60,0.35);
+}
+
+#dialogue-body {
+  display:flex;
+  flex-direction:row;
+  flex:1;
+  min-height:0;
+  overflow:hidden;
+}
+
 #speech { 
   flex:1;
   min-width:0;
-  padding:clamp(10px, 1.5vh, 20px) clamp(12px, 1.8vw, 24px);
+  padding:clamp(10px, 1.5vh, 18px) clamp(12px, 1.8vw, 20px);
   display:flex;
   align-items:flex-start;
   overflow-y:auto;
@@ -132,6 +170,7 @@ body {
   scrollbar-color:rgba(180,140,80,0.3) transparent;
   cursor:pointer;
   position:relative;
+  max-height:40vh;
 }
 #speech::after {
   content:'▶';
@@ -150,7 +189,7 @@ body {
 #speech p {
   font-family:'IM Fell English', serif;
   font-style:normal;
-  font-size:clamp(15px, 1.7vw, 22px);
+  font-size:clamp(15px, 1.4vw, 19px);
   line-height:1.7;
   color:rgba(235,215,175,0.92);
   word-wrap:break-word;
@@ -415,13 +454,11 @@ body {
 /* ── CARD PANEL ── */
 #card-panel {
   position:fixed;
-  /* Sit above the dialogue panel, centred horizontally */
-  bottom:clamp(140px,22vh,220px);
+  bottom:16px;
   left:50%;
-  transform:translateX(-50%) translateY(calc(100% + clamp(140px,22vh,220px)));
+  transform:translateX(-50%) translateY(calc(100% + 16px));
   transition:transform 0.45s cubic-bezier(0.4,0,0.2,1);
-  /* 16:9 ratio, sized to fit available vertical space above dialogue */
-  --card-h: calc(100vh - clamp(140px,22vh,220px) - 32px);
+  --card-h: calc(100vh - 48px);
   --card-w: min(calc(var(--card-h) * 16 / 9), 96vw);
   width:var(--card-w);
   height:var(--card-h);
@@ -623,17 +660,16 @@ body {
 /* ── CANDLE FLAME PIPS ── */
 #candle-wrap {
   position:fixed;
-  bottom:clamp(140px,22vh,220px);
+  bottom:clamp(140px, 18vh, 220px);
   left:0;
-  width:calc(18vh * 0.78);
-  min-width:120px;
-  z-index:20;
+  width:clamp(100px, 10vw, 148px);
+  z-index:26;
   display:flex;
   flex-direction:row;
   align-items:center;
   justify-content:center;
   gap:8px;
-  padding:0 8px;
+  padding:8px;
   pointer-events:none;
   opacity:0;
   transition:opacity 0.8s;
@@ -689,19 +725,19 @@ body {
 
 /* ── ANSWER CHOICES ── */
 #answer-form {
-  flex:1;
-  min-width:0;
-  padding:clamp(10px,1.5vh,18px) clamp(12px,1.8vw,24px);
+  width:100%;
+  padding:clamp(10px,1.5vh,16px) clamp(12px,1.8vw,20px);
   display:none;
   flex-direction:column;
-  justify-content:center;
-  gap:8px;
+  gap:6px;
+  border-top:1px solid rgba(180,140,60,0.2);
+  flex-shrink:0;
 }
 #answer-form.visible { display:flex; }
 #answer-label {
   font-family:'IM Fell English',serif;
   font-style:italic;
-  font-size:clamp(14px,1.4vw,18px);
+  font-size:clamp(14px,1.2vw,16px);
   color:rgba(200,175,130,0.75);
   line-height:1.5;
   margin-bottom:4px;
@@ -709,21 +745,22 @@ body {
 }
 #answer-choices {
   display:flex;
-  flex-direction:row;
-  flex-wrap:wrap;
-  gap:6px;
+  flex-direction:column;
+  gap:5px;
 }
 .answer-choice {
   font-family:'IM Fell English',serif;
-  font-size:clamp(14px,1.3vw,17px);
+  font-size:clamp(14px,1.1vw,16px);
   color:rgba(230,205,160,0.88);
   background:rgba(255,255,255,0.04);
   border:1px solid rgba(180,140,60,0.35);
-  padding:5px 14px;
+  padding:5px 12px;
   border-radius:3px;
   cursor:pointer;
   transition:background 0.15s, border-color 0.15s;
-  white-space:nowrap;
+  text-align:left;
+  white-space:normal;
+  line-height:1.4;
 }
 .answer-choice:hover {
   background:rgba(180,140,60,0.15);
@@ -1024,20 +1061,26 @@ body {
     </div>
   </div>
 
-  <div id="dialogue">
-    <div id="portrait" style="opacity:0;transition:opacity 0.8s;">
-      <img src="./aldricimages/isoldefenn.png" alt="">
-      <div id="portrait-name">Seren Davies</div>
-    </div>
+</div>
+
+<!-- Portrait — fixed bottom-left, outside the scene grid -->
+<div id="portrait" style="opacity:0;transition:opacity 0.8s;">
+  <img src="./aldricimages/isoldefenn.png" alt="">
+  <div id="portrait-name">Seren Davies</div>
+</div>
+
+<!-- Dialogue — floating draggable box -->
+<div id="dialogue">
+  <div id="dialogue-handle"></div>
+  <div id="dialogue-body">
     <div id="speech" style="opacity:0;transition:opacity 0.8s;">
       <p>Forgive the intrusion. I was told someone here might be able to help.</p>
     </div>
-    <div id="answer-form">
-      <div id="answer-label">I have tried everything I can compute. What am I missing?</div>
-      <div id="answer-choices"></div>
-    </div>
   </div>
-
+  <div id="answer-form">
+    <div id="answer-label">I have tried everything I can compute. What am I missing?</div>
+    <div id="answer-choices"></div>
+  </div>
 </div>
 
 <script>
@@ -1464,9 +1507,9 @@ function admitStudent() {
   portraitImg.style.filter = isPlaceholder ? 'brightness(0) opacity(0.35)' : '';
   portraitName.textContent = scene.student;
 
-  // Blank speech while narration plays
+  // Dim speech while narration plays
   const speech = document.getElementById('speech');
-  speech.style.opacity = '0';
+  speech.style.opacity = '0.3';
   speech.style.cursor = 'default';
 
   // Fade in portrait
@@ -2192,7 +2235,7 @@ function showIsoldeResponse(text) {
     speech.innerHTML = `<p>${formatted}</p>`;
     speech.style.opacity = '1';
     speech.style.cursor = 'default';
-  }, 400);
+  }, 300);
   closeCardPanel();
 }
 
@@ -2226,8 +2269,8 @@ function showCheckBookshelves() {
   btn.textContent = 'Check bookshelves';
   btn.style.cssText = `
     position:fixed;
-    bottom:16px;
-    left:50%; transform:translateX(-50%);
+    bottom:24px;
+    right:24px;
     z-index:999;
     font-family:'Cinzel',serif; font-size:14px;
     letter-spacing:0.2em; text-transform:uppercase;
@@ -2337,16 +2380,11 @@ function shuffleArray(arr) {
 }
 
 function showAnswerInput() {
-  const speech = document.getElementById('speech');
   const form   = document.getElementById('answer-form');
   if (form.classList.contains('visible')) return;
-  speech.style.opacity = '0';
   document.getElementById('answer-label').textContent = currentScene().answerLabel;
-  setTimeout(() => {
-    speech.style.display = 'none';
-    form.classList.add('visible');
-    renderAnswerChoices();
-  }, 500);
+  form.classList.add('visible');
+  renderAnswerChoices();
 }
 
 function renderAnswerChoices() {
@@ -2488,6 +2526,12 @@ function loadScene() {
   form.classList.remove('visible');
   document.getElementById('shelf-svg').style.pointerEvents = 'none';
   document.getElementById('candle-wrap').classList.remove('visible');
+
+  // Reset dialogue position to default (in case dragged)
+  const dlg = document.getElementById('dialogue');
+  dlg.style.left = '50%';
+  dlg.style.bottom = '24px';
+  dlg.style.transform = 'translateX(-50%)';
 
   // Remove old bookshelves button
   const oldBtn = document.getElementById('bookshelves-btn');
@@ -2863,6 +2907,80 @@ document.getElementById('isolde-hotspot').addEventListener('mouseenter', e => {
 document.getElementById('isolde-hotspot').addEventListener('mousemove', e => moveTip(e));
 document.getElementById('isolde-hotspot').addEventListener('mouseleave', hideTip);
 bindTip(document.getElementById('candle-wrap'), 'Patience');
+
+// ── DIALOGUE DRAG ─────────────────────────────────────────────────────────────
+(function() {
+  const dlg    = document.getElementById('dialogue');
+  const handle = document.getElementById('dialogue-handle');
+  let dragging = false, startX = 0, startY = 0, origLeft = 0, origBottom = 0;
+
+  handle.addEventListener('mousedown', e => {
+    e.preventDefault();
+    dragging = true;
+    const rect = dlg.getBoundingClientRect();
+    // Switch from transform-centred positioning to explicit left/bottom
+    dlg.style.transform = 'none';
+    dlg.style.left   = rect.left + 'px';
+    dlg.style.bottom = (window.innerHeight - rect.bottom) + 'px';
+    startX    = e.clientX;
+    startY    = e.clientY;
+    origLeft  = rect.left;
+    origBottom = window.innerHeight - rect.bottom;
+    handle.style.cursor = 'grabbing';
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY; // positive = down
+    let newLeft   = origLeft   + dx;
+    let newBottom = origBottom - dy;
+    // Clamp to viewport
+    const w = dlg.offsetWidth;
+    const h = dlg.offsetHeight;
+    newLeft   = Math.max(0, Math.min(window.innerWidth  - w, newLeft));
+    newBottom = Math.max(0, Math.min(window.innerHeight - h, newBottom));
+    dlg.style.left   = newLeft   + 'px';
+    dlg.style.bottom = newBottom + 'px';
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!dragging) return;
+    dragging = false;
+    handle.style.cursor = 'grab';
+  });
+
+  // Touch support
+  handle.addEventListener('touchstart', e => {
+    const t = e.touches[0];
+    const rect = dlg.getBoundingClientRect();
+    dlg.style.transform = 'none';
+    dlg.style.left   = rect.left + 'px';
+    dlg.style.bottom = (window.innerHeight - rect.bottom) + 'px';
+    startX    = t.clientX;
+    startY    = t.clientY;
+    origLeft  = rect.left;
+    origBottom = window.innerHeight - rect.bottom;
+    dragging = true;
+  }, { passive: true });
+
+  document.addEventListener('touchmove', e => {
+    if (!dragging) return;
+    const t = e.touches[0];
+    const dx = t.clientX - startX;
+    const dy = t.clientY - startY;
+    let newLeft   = origLeft   + dx;
+    let newBottom = origBottom - dy;
+    const w = dlg.offsetWidth;
+    const h = dlg.offsetHeight;
+    newLeft   = Math.max(0, Math.min(window.innerWidth  - w, newLeft));
+    newBottom = Math.max(0, Math.min(window.innerHeight - h, newBottom));
+    dlg.style.left   = newLeft   + 'px';
+    dlg.style.bottom = newBottom + 'px';
+  }, { passive: true });
+
+  document.addEventListener('touchend', () => { dragging = false; });
+})();
 
 </script>
 
