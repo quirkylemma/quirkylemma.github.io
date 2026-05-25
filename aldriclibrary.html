@@ -1357,7 +1357,8 @@ const CARD_CONTENT = {
   data: {
     title: 'Data — Four Datasets',
     subtitle: 'Raw observed values. Handle with care.',
-    body: `<table class="parchment-table">
+    body: `<div class="tb-text" style="font-style:italic;color:rgba(60,35,10,0.7);margin-bottom:12px;line-height:1.7;">The data is here. Take it with you — there is a copy button below.<br>Compute the mean, variance, correlation, and regression line for each dataset. Use Excel.<br>Come back when you have the numbers. The Methods card is waiting.</div>
+    <table class="parchment-table">
       <thead>
         <tr>
           <th class="ds-header" colspan="2">Dataset I</th><td class="sep"></td>
@@ -1415,7 +1416,7 @@ const CARD_CONTENT = {
       <div class="tb-text">Verify observation count. Identify missing values. Check for obvious entry errors. Confirm units are consistent.</div>
       <div class="tb-section">Step 2 — Compute summary statistics</div>
       <div class="tb-text">Calculate the mean, variance, and correlation for each variable. These give a first orientation — necessary, but not sufficient.</div>
-      <div class="tb-text">The four datasets, computed:</div>
+      <div class="tb-text">Enter your computed values for the four datasets below:</div>
       <div id="methods-stats-table"></div>
       <div class="tb-section">Step 3 — <span style="opacity:0.35;filter:blur(1.5px)">&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</span></div>
       <div class="tb-text" style="opacity:0.3;filter:blur(1px)">&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608; each dataset &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608; the underlying &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608; numbers alone cannot &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;.</div>
@@ -1539,53 +1540,162 @@ function aVar(arr)     { const m=aMean(arr); return arr.reduce((s,v)=>s+(v-m)**2
 function aCor(x,y)     { const mx=aMean(x),my=aMean(y),n=x.length; const num=x.reduce((s,v,i)=>s+(v-mx)*(y[i]-my),0); const den=Math.sqrt(x.reduce((s,v)=>s+(v-mx)**2,0)*y.reduce((s,v)=>s+(v-my)**2,0)); return num/den; }
 function aReg(x,y)     { const mx=aMean(x),my=aMean(y); const b=x.reduce((s,v,i)=>s+(v-mx)*(y[i]-my),0)/x.reduce((s,v)=>s+(v-mx)**2,0); return {slope:b, intercept:my-b*mx}; }
 
+// ── EXPECTED VALUES FOR VALIDATION ───────────────────────────────────────────
+const EXPECTED = {
+  //            I        II       III      IV
+  'Mean of x':        [9.00,   9.00,   9.00,   9.00  ],
+  'Mean of y':        [7.50,   7.50,   7.50,   7.50  ],
+  'Variance of x':    [11.00,  11.00,  11.00,  11.00 ],
+  'Variance of y':    [4.13,   4.13,   4.12,   4.12  ],
+  'Correlation':      [0.816,  0.816,  0.816,  0.817 ],
+  'Regression slope': [0.500,  0.500,  0.500,  0.500 ],
+  'Regression intercept': [3.00, 3.00, 3.00,  3.00  ],
+};
+const TOLERANCE = {
+  'Mean of x': 0.05, 'Mean of y': 0.05,
+  'Variance of x': 0.1, 'Variance of y': 0.1,
+  'Correlation': 0.01,
+  'Regression slope': 0.01, 'Regression intercept': 0.1,
+};
+
+let statsGridComplete = false;
+
+function isApproxCorrect(value, expected, tol) {
+  const n = parseFloat(value);
+  if (isNaN(n)) return false;
+  return Math.abs(n - expected) <= tol;
+}
+
+function checkGridComplete() {
+  const rows = Object.keys(EXPECTED);
+  for (const row of rows) {
+    for (let col = 0; col < 4; col++) {
+      const cell = document.getElementById(`sg-${row}-${col}`);
+      if (!cell) return false;
+      if (!cell.dataset.correct) return false;
+    }
+  }
+  return true;
+}
+
 function renderMethodsStats() {
   const el = document.getElementById('methods-stats-table');
   if (!el) return;
-  const rows = [
-    ['Mean of x',         Object.values(ANSCOMBE).map(d => aMean(d.x).toFixed(2))],
-    ['Mean of y',         Object.values(ANSCOMBE).map(d => aMean(d.y).toFixed(2))],
-    ['Variance of x',     Object.values(ANSCOMBE).map(d => aVar(d.x).toFixed(2))],
-    ['Variance of y',     Object.values(ANSCOMBE).map(d => aVar(d.y).toFixed(2))],
-    ['Correlation',       Object.values(ANSCOMBE).map(d => aCor(d.x,d.y).toFixed(3))],
-    ['Regression slope',  Object.values(ANSCOMBE).map(d => aReg(d.x,d.y).slope.toFixed(3))],
-    ['Regression intercept', Object.values(ANSCOMBE).map(d => aReg(d.x,d.y).intercept.toFixed(2))],
-  ];
 
-  el.innerHTML = `<table class="parchment-table" style="margin:10px 0 6px;">
-    <thead>
-      <tr>
-        <th style="text-align:left;padding-right:12px;"></th>
-        <th>I</th><th>II</th><th>III</th><th>IV</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${rows.map(([label, vals]) => `
+  const rows = Object.keys(EXPECTED);
+
+  el.innerHTML = `
+    <div style="font-family:'IM Fell English',serif;font-size:clamp(13px,1.2vw,15px);color:rgba(60,15,10,0.6);margin-bottom:8px;font-style:italic;">
+      Enter your computed values below. Each cell will confirm when correct.
+    </div>
+    <table class="parchment-table" style="margin:4px 0 6px;">
+      <thead>
         <tr>
-          <td style="text-align:left;padding-right:12px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.08em;color:rgba(60,15,10,0.65);">${label}</td>
-          ${vals.map(v => `<td>${v}</td>`).join('')}
-        </tr>`).join('')}
-    </tbody>
-  </table>
-  <div id="methods-engagement" style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(60,35,10,0.15);">
-    <div style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(14px,1.3vw,17px);color:rgba(40,20,5,0.75);margin-bottom:10px;line-height:1.6;">
-      The statistics are identical across all four datasets. What does that not tell you?
-    </div>
-    <div style="display:flex;flex-direction:column;gap:6px;"></div>
-    <div id="methods-engagement-response" style="
-      font-family:'IM Fell English',serif;font-style:italic;
-      font-size:clamp(14px,1.3vw,17px);color:rgba(40,20,5,0.65);
-      margin-top:10px;line-height:1.6;display:none;">
-    </div>
-  </div>`;
+          <th style="text-align:left;padding-right:10px;min-width:130px;"></th>
+          <th>I</th><th>II</th><th>III</th><th>IV</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map(row => `
+          <tr>
+            <td style="text-align:left;padding-right:10px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.08em;color:rgba(60,15,10,0.65);">${row}</td>
+            ${[0,1,2,3].map(col => `
+              <td style="padding:2px;">
+                <input id="sg-${row}-${col}"
+                  type="text" inputmode="decimal"
+                  style="width:58px;font-family:'IM Fell English',serif;font-size:clamp(13px,1.1vw,15px);
+                         color:rgba(40,10,5,0.85);background:rgba(60,35,10,0.05);
+                         border:none;border-bottom:1.5px solid rgba(60,35,10,0.25);
+                         padding:3px 4px;outline:none;text-align:center;
+                         transition:border-color 0.2s,background 0.2s;"
+                  placeholder="—"
+                  data-row="${row}" data-col="${col}">
+              </td>`).join('')}
+          </tr>`).join('')}
+      </tbody>
+    </table>
+    <div id="methods-engagement" style="display:none;margin-top:16px;padding-top:14px;border-top:1px solid rgba(60,35,10,0.15);">
+      <div style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(14px,1.3vw,17px);color:rgba(40,20,5,0.75);margin-bottom:10px;line-height:1.6;">
+        The statistics are identical across all four datasets. What does that not tell you?
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;"></div>
+      <div id="methods-engagement-response" style="
+        font-family:'IM Fell English',serif;font-style:italic;
+        font-size:clamp(14px,1.3vw,17px);color:rgba(40,20,5,0.65);
+        margin-top:10px;line-height:1.6;display:none;">
+      </div>
+    </div>`;
 
-  // Re-enable or dim engagement section based on pass state
+  // Restore completed state if already done
+  if (statsGridComplete) {
+    rows.forEach(row => {
+      [0,1,2,3].forEach(col => {
+        const cell = document.getElementById(`sg-${row}-${col}`);
+        if (cell) {
+          cell.value = EXPECTED[row][col].toFixed(row === 'Correlation' ? 3 : row.includes('slope') ? 3 : 2);
+          cell.dataset.correct = '1';
+          cell.style.background = 'rgba(30,80,30,0.08)';
+          cell.style.borderBottomColor = 'rgba(30,120,30,0.5)';
+          cell.disabled = true;
+        }
+      });
+    });
+  }
+
+  // Show engagement if already passed
+  const eng = document.getElementById('methods-engagement');
   if (methodsEngagementPassed) {
-    const eng = document.getElementById('methods-engagement');
-    if (eng) eng.style.opacity = '0.45';
-  } else {
+    eng.style.display = 'block';
+    eng.style.opacity = '0.45';
+  } else if (statsGridComplete) {
+    eng.style.display = 'block';
     setTimeout(() => renderEngagementChoices(), 0);
   }
+
+  // Bind cell-by-cell validation
+  rows.forEach(row => {
+    [0,1,2,3].forEach(col => {
+      const cell = document.getElementById(`sg-${row}-${col}`);
+      if (!cell || cell.disabled) return;
+      cell.addEventListener('input', () => {
+        const expected = EXPECTED[row][col];
+        const tol = TOLERANCE[row];
+        if (isApproxCorrect(cell.value, expected, tol)) {
+          cell.dataset.correct = '1';
+          cell.style.background = 'rgba(30,80,30,0.08)';
+          cell.style.borderBottomColor = 'rgba(30,120,30,0.5)';
+          cell.style.color = 'rgba(20,60,20,0.85)';
+          // Check if all complete
+          if (!statsGridComplete && checkGridComplete()) {
+            statsGridComplete = true;
+            // Disable all cells
+            rows.forEach(r => [0,1,2,3].forEach(c => {
+              const cl = document.getElementById(`sg-${r}-${c}`);
+              if (cl) cl.disabled = true;
+            }));
+            // Reveal engagement after short pause
+            setTimeout(() => {
+              const eng = document.getElementById('methods-engagement');
+              if (eng) {
+                eng.style.display = 'block';
+                eng.style.opacity = '0';
+                requestAnimationFrame(() => {
+                  eng.style.transition = 'opacity 0.6s';
+                  eng.style.opacity = '1';
+                });
+                if (!methodsEngagementPassed) renderEngagementChoices();
+              }
+            }, 600);
+          }
+        } else {
+          delete cell.dataset.correct;
+          cell.style.background = 'rgba(60,35,10,0.05)';
+          cell.style.borderBottomColor = 'rgba(60,35,10,0.25)';
+          cell.style.color = 'rgba(40,10,5,0.85)';
+        }
+      });
+    });
+  });
 }
 
 function renderAnscombeGraphs() {
@@ -1863,12 +1973,12 @@ const ANSWER_OPTIONS = [
   {
     text: 'The supervisor was right all along.',
     correct: false,
-    response: `<stage>She is quiet for a moment.</stage>I told myself that too. He is careful and experienced. But I keep coming back to the Methods card — the step I cannot read.`
+    response: `<stage>She is quiet for a moment.</stage>I told myself that too. He is careful and experienced. But you computed the statistics yourself — and something is still wrong.`
   },
   {
     text: 'Check the correlation coefficient.',
     correct: false,
-    response: `The correlation is 0.816 in all four. I computed it twice.<stage>A pause.</stage>It is the same number. Everything I compute gives me the same number.`
+    response: `You entered 0.816 for all four. You computed it yourself.<stage>A pause.</stage>It is the same number. Everything computed gives the same number. That is the problem, not the solution.`
   },
   {
     text: 'Draw the data.',
@@ -1878,12 +1988,12 @@ const ANSWER_OPTIONS = [
   {
     text: 'Report the results as-is.',
     correct: false,
-    response: `I did. Then I sat here.<stage>She looks at the folder on the table.</stage>Something in the Journal Article is still troubling me — the pages that are missing.`
+    response: `I did. Then I sat here.<stage>She looks at the folder.</stage>The Journal Article is troubling me — the author says graphs are not suspect. But the rest of the pages are gone.`
   },
   {
     text: 'The sample size is too small.',
     correct: false,
-    response: `Eleven observations. My supervisor said it was adequate.<stage>She pauses.</stage>The BSc Textbook agrees. But the sentence that matters is the one that is obscured.`
+    response: `Eleven observations. You can see them — you copied the data yourself.<stage>She pauses.</stage>The BSc Textbook cuts off at exactly the wrong moment. The sentence that matters is the one that is obscured.`
   },
 ];
 
