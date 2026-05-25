@@ -76,7 +76,7 @@ body {
   display:flex;
   flex-direction:row;
   align-items:stretch;
-  background:rgba(14,9,3,0.85);
+  background:rgba(14,9,3,0.92);
   backdrop-filter:blur(10px);
   overflow:hidden;
   border-top:2px solid rgba(180,140,60,0.35);
@@ -415,28 +415,31 @@ body {
 /* ── CARD PANEL ── */
 #card-panel {
   position:fixed;
+  /* Sit above the dialogue panel, centred horizontally */
   bottom:clamp(140px,22vh,220px);
-  left:0;
-  width:100vw;
-  height:clamp(280px,42vh,480px);
+  left:50%;
+  transform:translateX(-50%) translateY(calc(100% + clamp(140px,22vh,220px)));
+  transition:transform 0.45s cubic-bezier(0.4,0,0.2,1);
+  /* 16:9 ratio, sized to fit available vertical space above dialogue */
+  --card-h: calc(100vh - clamp(140px,22vh,220px) - 32px);
+  --card-w: min(calc(var(--card-h) * 16 / 9), 96vw);
+  width:var(--card-w);
+  height:var(--card-h);
   z-index:50;
   display:flex;
   flex-direction:column;
-  transform:translateY(calc(100% + clamp(140px,22vh,220px)));
-  transition:transform 0.45s cubic-bezier(0.4,0,0.2,1);
   background:transparent;
   pointer-events:none;
 }
 #card-panel.open {
-  transform:translateY(0);
+  transform:translateX(-50%) translateY(0);
   pointer-events:auto;
 }
 #card-parchment {
   flex:1;
-  margin:0 clamp(24px,4vw,80px) 0;
-  border-radius:8px 8px 0 0;
+  border-radius:8px;
   overflow:hidden;
-  box-shadow:0 -8px 40px rgba(0,0,0,0.5), 0 0 32px rgba(0,0,0,0.4);
+  box-shadow:0 8px 48px rgba(0,0,0,0.6), 0 0 32px rgba(0,0,0,0.4);
   display:flex;
   flex-direction:column;
   position:relative;
@@ -458,7 +461,7 @@ body {
 }
 #card-panel-title {
   font-family:'Cinzel',serif;
-  font-size:clamp(13px,1.3vw,17px);
+  font-size:clamp(17px,1.5vw,22px);
   letter-spacing:0.25em;
   text-transform:uppercase;
   color:rgba(60,35,10,0.9);
@@ -467,7 +470,7 @@ body {
 #card-panel-subtitle {
   font-family:'IM Fell English',serif;
   font-style:italic;
-  font-size:clamp(12px,1.1vw,15px);
+  font-size:clamp(15px,1.2vw,18px);
   color:rgba(80,50,20,0.65);
   margin-bottom:clamp(8px,1.5vh,16px);
 }
@@ -475,8 +478,10 @@ body {
   flex:1;
   overflow-y:auto;
   scrollbar-width:thin;
-  scrollbar-color:rgba(60,35,10,0.2) transparent;
+  scrollbar-color:rgba(60,35,10,0.4) transparent;
 }
+#card-panel-body::-webkit-scrollbar { width:4px; }
+#card-panel-body::-webkit-scrollbar-thumb { background:rgba(60,35,10,0.3); border-radius:2px; }
 #card-panel-footer {
   display:flex;
   align-items:center;
@@ -487,7 +492,7 @@ body {
 }
 .parchment-btn {
   font-family:'Cinzel',serif;
-  font-size:clamp(10px,0.9vw,12px);
+  font-size:clamp(14px,1vw,16px);
   letter-spacing:0.15em;
   text-transform:uppercase;
   background:rgba(60,35,10,0.08);
@@ -527,11 +532,11 @@ body {
 #card-panel-close:hover { color:rgba(60,35,10,0.9); }
 
 /* Textbook card styles */
-.tb-chapter { font-family:'Cinzel',serif; font-size:clamp(12px,1.1vw,14px); letter-spacing:0.15em; color:rgba(60,15,10,0.75); margin:0 0 14px; }
-.tb-section { font-family:'Cinzel',serif; font-size:clamp(10px,0.9vw,12px); letter-spacing:0.12em; color:rgba(60,15,10,0.65); margin:16px 0 6px; }
-.tb-text { font-family:'IM Fell English',serif; font-size:clamp(14px,1.3vw,17px); line-height:1.85; color:rgba(40,10,5,0.85); margin-bottom:8px; }
+.tb-chapter { font-family:'Cinzel',serif; font-size:clamp(16px,1.3vw,19px); letter-spacing:0.15em; color:rgba(60,15,10,0.75); margin:0 0 14px; }
+.tb-section { font-family:'Cinzel',serif; font-size:clamp(15px,1.1vw,17px); letter-spacing:0.12em; color:rgba(60,15,10,0.65); margin:16px 0 6px; }
+.tb-text { font-family:'IM Fell English',serif; font-size:clamp(17px,1.5vw,21px); line-height:1.85; color:rgba(40,10,5,0.85); margin-bottom:8px; }
 .tb-eq { margin:12px 0 12px 12px; padding:8px 12px; border-left:2px solid rgba(60,15,10,0.2); background:rgba(60,15,10,0.04); border-radius:0 3px 3px 0; }
-.tb-damaged { font-family:'IM Fell English',serif; font-style:italic; font-size:clamp(12px,1.1vw,14px); color:rgba(60,15,10,0.4); margin-top:16px; border-top:1px solid rgba(60,15,10,0.15); padding-top:10px; }
+.tb-damaged { font-family:'IM Fell English',serif; font-style:italic; font-size:clamp(15px,1.2vw,17px); color:rgba(60,15,10,0.4); margin-top:16px; border-top:1px solid rgba(60,15,10,0.15); padding-top:10px; }
 
 
 .parchment-table {
@@ -542,7 +547,7 @@ body {
 }
 .parchment-table .ds-header {
   font-family:'Cinzel',serif;
-  font-size:clamp(9px,0.85vw,11px);
+  font-size:clamp(13px,1vw,15px);
   letter-spacing:0.15em;
   text-transform:uppercase;
   color:rgba(60,35,10,0.75);
@@ -552,7 +557,7 @@ body {
 }
 .parchment-table th {
   font-family:'Cinzel',serif;
-  font-size:clamp(8px,0.75vw,10px);
+  font-size:clamp(13px,0.9vw,15px);
   letter-spacing:0.1em;
   color:rgba(60,35,10,0.55);
   text-align:center;
@@ -563,7 +568,7 @@ body {
   text-align:center;
   padding:3px 2px;
   color:rgba(40,20,5,0.85);
-  font-size:clamp(11px,1.1vw,14px);
+  font-size:clamp(15px,1.2vw,17px);
 }
 .parchment-table tr:nth-child(odd) td { background:rgba(60,35,10,0.03); }
 .parchment-table .sep { background:transparent !important; width:10px; }
@@ -728,78 +733,6 @@ body {
   opacity:0.35;
   cursor:default;
   pointer-events:none;
-}
-
-/* ── HOW TO PLAY HOTSPOT ── */
-#help-hotspot {
-  position:absolute;
-  left:38%;
-  top:64%;
-  width:7%;
-  height:13%;
-  cursor:pointer;
-  z-index:7;
-  border-radius:3px;
-}
-
-/* ── HOW TO PLAY OVERLAY ── */
-#help-overlay {
-  position:fixed;
-  inset:0;
-  z-index:250;
-  background:rgba(8,4,2,0.88);
-  backdrop-filter:blur(8px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity 0.4s;
-}
-#help-overlay.open {
-  opacity:1;
-  pointer-events:auto;
-}
-#help-inner {
-  width:clamp(300px,44vw,560px);
-  display:flex;
-  flex-direction:column;
-  gap:clamp(12px,2vh,22px);
-  align-items:center;
-}
-#help-title {
-  font-family:'Cinzel',serif;
-  font-size:clamp(13px,1.2vw,16px);
-  letter-spacing:0.3em;
-  text-transform:uppercase;
-  color:rgba(220,190,130,0.85);
-  text-align:center;
-}
-#help-body {
-  font-family:'IM Fell English',serif;
-  font-size:clamp(15px,1.5vw,19px);
-  line-height:1.85;
-  color:rgba(225,205,165,0.88);
-  text-align:center;
-}
-#help-close {
-  font-family:'Cinzel',serif;
-  font-size:clamp(10px,0.9vw,13px);
-  letter-spacing:0.2em;
-  text-transform:uppercase;
-  color:rgba(180,150,100,0.6);
-  background:transparent;
-  border:1px solid rgba(180,140,60,0.25);
-  padding:7px 20px;
-  border-radius:3px;
-  cursor:pointer;
-  transition:color 0.2s, border-color 0.2s, background 0.2s;
-  margin-top:4px;
-}
-#help-close:hover {
-  color:rgba(220,190,130,0.9);
-  border-color:rgba(180,140,60,0.55);
-  background:rgba(180,140,60,0.08);
 }
 
 /* ── WRONG ANSWER FLASH ── */
@@ -1044,9 +977,9 @@ body {
 <!-- Window overlay -->
 <div id="window-overlay">
   <img id="window-overlay-img" src="./aldricimages/isolderain.png" alt="Outside view">
-  <div id="isolde-hotspot" onclick="admitIsolde()"></div>
+  <div id="isolde-hotspot" onclick="admitStudent()"></div>
   <button id="window-close" onclick="closeWindowView()">Close</button>
-  <button id="window-toggle" onclick="toggleWindowImage()">Switch View</button>
+  <button id="window-toggle" onclick="toggleWindowImage()" style="display:none;">Switch View</button>
 </div>
 
 <!-- Wrong answer flash -->
@@ -1078,16 +1011,6 @@ body {
   <div id="win-card-reveal">Three shelves have unlocked — Graphs, Ragvir's Notes, and A Note on Method.</div>
 </div>
 
-<!-- How to play overlay -->
-<div id="help-overlay">
-  <div id="help-inner">
-    <div id="help-title">As Things Stand</div>
-    <div id="help-body">
-      The rain has been falling for some time.
-    </div>
-    <button id="help-close" onclick="closeHelp()">Understood</button>
-  </div>
-</div>
 
 <div id="scene" style="visibility:hidden;">
 
@@ -1095,7 +1018,6 @@ body {
     <canvas id="dust-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;"></canvas>
     <svg id="shelf-svg" style="position:absolute;inset:0;width:100%;height:100%;z-index:8;pointer-events:none;" viewBox="0 0 1000 1000" preserveAspectRatio="none"></svg>
     <div id="window-hotspot" onclick="openWindowView()"></div>
-    <div id="help-hotspot" onclick="openHelp()"></div>
     <div id="narration">
       <div id="narration-text"></div>
       <button id="narration-btn" onclick="nextNarrationScene()">Continue</button>
@@ -1104,8 +1026,8 @@ body {
 
   <div id="dialogue">
     <div id="portrait" style="opacity:0;transition:opacity 0.8s;">
-      <img src="./aldricimages/isoldefenn.png" alt="Isolde Fenn">
-      <div id="portrait-name">Isolde Fenn</div>
+      <img src="./aldricimages/isoldefenn.png" alt="">
+      <div id="portrait-name">Seren Davies</div>
     </div>
     <div id="speech" style="opacity:0;transition:opacity 0.8s;">
       <p>Forgive the intrusion. I was told someone here might be able to help.</p>
@@ -1141,6 +1063,8 @@ const SCENES = [
     winText: 'Two groups. Same exam. A simple comparison of averages.<br><br>The mean is the right tool for the right question.<br><br>Group B performed better — on average.',
     winCardReveal: '',
     betweenText: 'She leaves. The library settles. Outside, the rain has not stopped.',
+    outsideImg: './aldricimages/serenrain.png',
+    portraitImg: './aldricimages/isoldefenn.png', // placeholder until seren_portrait.png exists
     narration: [
       "The door opens cautiously. A first-year — you can always tell. She holds a folder with both hands and looks at the shelves the way someone looks at a menu in a language she is still learning.",
       "She has done the right thing by coming here. She just doesn't know yet whether the question she is asking is the right question."
@@ -1184,6 +1108,8 @@ const SCENES = [
     winText: 'Two portfolios. Identical average returns.<br><br>One barely moves. The other swings wildly.<br><br>The mean told him nothing useful. Variance told him everything.',
     winCardReveal: '',
     betweenText: 'He leaves satisfied. The library is quiet again. The candle is still burning.',
+    outsideImg: './aldricimages/marcusrain.png',
+    portraitImg: './aldricimages/isoldefenn.png', // placeholder until marcus_portrait.png exists
     narration: [
       "The second student arrives with the door already open — he has been here before, or somewhere like it. He knows what he wants. He just doesn't know what it's called.",
       "The question he is carrying has a shape to it. Two things that look the same from the outside. Something different inside."
@@ -1226,6 +1152,8 @@ const SCENES = [
     winText: 'Thirty students. Revision hours and exam scores.<br><br>A relationship was there all along. Regression named it.<br><br>The slope is the finding.',
     winCardReveal: '',
     betweenText: 'She leaves without ceremony. The library holds its breath. The next one will be different.',
+    outsideImg: './aldricimages/raniarain.png',
+    portraitImg: './aldricimages/isoldefenn.png', // placeholder until rania_portrait.png exists
     narration: [
       "The third student doesn't pause at the door. She already has her notebook open. She has come here with a thesis, not just a question.",
       "She wants to prove something. That is not the same as wanting to understand something — but it is often where understanding begins."
@@ -1268,6 +1196,8 @@ const SCENES = [
     winText: 'Four datasets. Identical means, variances, correlations, regression lines.<br><br>Completely different shapes when drawn.<br><br>Francis Anscombe built them by hand in 1973. Three shelves have unlocked.',
     winCardReveal: "Three shelves have unlocked — Graphs, Ragvir's Notes, and A Note on Method.",
     betweenText: '',
+    outsideImg: './aldricimages/isolderain.png',
+    portraitImg: './aldricimages/isoldefenn.png',
     narration: [
       "The east door opens slowly. Cold air moves through the reading room. A young woman steps inside, still wearing her coat, a folder pressed against her chest. She looks at the shelves the way people do when they are hoping the answer is somewhere visible.",
       "She has been here before — not this library, but this feeling. The numbers added up. The supervisor nodded. And yet something in the work felt like a locked room she couldn't see into."
@@ -1324,9 +1254,39 @@ const SHELF_POLYS = [
 
 let previewTimer = null;
 
+// Maps card slug to the image category name used in filenames
+const SLUG_TO_IMG = {
+  // Scene 3 (Anscombe) — existing
+  'data':            '01_data',
+  'methods':         '02_methods',
+  'bsc_textbook':    '05_bsc_textbook',
+  'journal_article': '07_journal_articles',
+  'humour':          '12_humour',
+  'ragvirs_notes':   '09_ragvirs_notes',
+  'graphs':          '10_graphs',
+  // Scene 0
+  'data_s1':         '01_data',
+  'bsc_text_s1':     '05_bsc_textbook',
+  'msc_text_s1':     '06_msc_textbook',
+  'methods_s1':      '02_methods',
+  'ragvirs_notes_s1':'09_ragvirs_notes',
+  // Scene 1
+  'data_s2':         '01_data',
+  'bsc_text_s2':     '05_bsc_textbook',
+  'pseudocode_s2':   '11_pseudo_code',
+  'methods_s2':      '02_methods',
+  // Scene 2
+  'data_s3':         '01_data',
+  'bsc_text_s3':     '05_bsc_textbook',
+  'journal_s3':      '07_journal_articles',
+  'graphs_s3':       '10_graphs',
+  'methods_s3':      '02_methods',
+};
+
 function cardImgSrc(card) {
-  const num = String(card.number).padStart(2, '0');
-  return `./aldricimages/card_${num}_${card.slug}_${card.condition}.png`;
+  const cat = SLUG_TO_IMG[card.slug];
+  if (!cat) return '';
+  return `./aldricimages/card_${cat}_${card.condition}.png`;
 }
 
 let shelvesRevealed = false;
@@ -1448,9 +1408,8 @@ function devSkipIntro() {
   const skipBtn = document.querySelector('#dev-bar .dev-btn[onclick="devSkipIntro()"]');
   if (skipBtn) skipBtn.style.display = 'none';
   // Initialise scene 0
-  sceneDialogue = [...SCENES[0].dialogue];
-  document.getElementById('speech').innerHTML = '<p>' + sceneDialogue[0] + '</p>';
-  dialogueActive = true;
+  currentSceneIndex = 0;
+  loadScene();
   // Add dev skip-to-scene buttons
   const devBar = document.getElementById('dev-bar');
   [1,2,3].forEach(i => {
@@ -1470,51 +1429,49 @@ function openWindowView() {
   const img = document.getElementById('window-overlay-img');
 
   if (sceneState === 'waiting') {
-    img.src = './aldricimages/isolderain.png';
+    img.src = currentScene().outsideImg;
     isoldeHotspot.style.display = 'block';
-  } else if (sceneState === 'active') {
-    img.src = './aldricimages/emptystreet.png';
-    isoldeHotspot.style.display = 'none';
   } else {
-    img.src = './aldricimages/anscombe.png';
+    img.src = './aldricimages/emptystreet.png';
     isoldeHotspot.style.display = 'none';
   }
   overlay.classList.add('visible');
 }
 
 function toggleWindowImage() {
-  const img = document.getElementById('window-overlay-img');
-  const isoldeHotspot = document.getElementById('isolde-hotspot');
-  if (img.src.includes('isolderain')) {
-    img.src = './aldricimages/emptystreet.png';
-    isoldeHotspot.style.display = 'none';
-  } else if (img.src.includes('emptystreet')) {
-    img.src = './aldricimages/anscombe.png';
-    isoldeHotspot.style.display = 'none';
-  } else {
-    img.src = './aldricimages/isolderain.png';
-    isoldeHotspot.style.display = 'block';
-  }
+  // Not needed for multi-scene — remove toggle button behaviour
 }
 
 function closeWindowView() {
   document.getElementById('window-overlay').classList.remove('visible');
 }
 
-function admitIsolde() {
+function admitIsolde() { admitStudent(); } // legacy alias
+function admitStudent() {
   sceneState = 'active';
   closeWindowView();
   document.getElementById('isolde-hotspot').style.display = 'none';
-  const helpBody = document.getElementById('help-body');
-  if (helpBody) helpBody.innerHTML =
-    `A student has come to you with a problem.<br><br>` +
-    `Examine the books on the shelves — hover to preview, click to read. Some are damaged. Some cannot be trusted.<br><br>` +
-    `When you think you know what she needs to hear, open your notes and present an answer.<br><br>` +
-    `You have ${candleAttempts} chance${candleAttempts !== 1 ? 's' : ''} remaining. The candle is already burning.`;
-  setTimeout(() => {
-    document.getElementById('portrait').style.opacity = '1';
-  }, 600);
-  setTimeout(() => startNarration(currentScene().narration), 400);
+
+  const scene = currentScene();
+
+  // Set portrait image and name
+  const portrait = document.getElementById('portrait');
+  const portraitImg = portrait.querySelector('img');
+  const portraitName = document.getElementById('portrait-name');
+  portraitImg.src = scene.portraitImg;
+  portraitImg.style.filter = scene.sceneIndex === 3 ? '' : 'brightness(0) opacity(0.35)';
+  portraitName.textContent = scene.student;
+
+  // Blank speech while narration plays
+  const speech = document.getElementById('speech');
+  speech.style.opacity = '0';
+  speech.style.cursor = 'default';
+
+  // Fade in portrait
+  setTimeout(() => { portrait.style.opacity = '1'; }, 400);
+
+  // Start narration — first dialogue line shown when narration ends
+  setTimeout(() => startNarration(scene.narration), 500);
 }
 
 // ── CARD PANEL ───────────────────────────────────────────────────────────────
@@ -1664,7 +1621,6 @@ const CARD_CONTENT = {
         <tr><td>61</td><td class="sep"></td><td>74</td></tr>
       </tbody>
     </table>`,
-    isoldeResponse: "These are my two groups. Fifteen students each, same examination. I have checked the numbers and they are correct.",
     csv: "group_A,group_B\n58,72\n61,68\n54,75\n67,71\n63,69\n59,74\n70,66\n52,78\n65,73\n57,70\n68,65\n60,76\n55,69\n72,71\n61,74",
   },
   bsc_text_s1: {
@@ -1677,23 +1633,21 @@ const CARD_CONTENT = {
       <div class="tb-text">The sample mean provides a measure of central tendency. To compare two groups on the same measure, compute the mean for each and compare directly.</div>
       <div class="tb-section">3.2 Interpreting the Mean</div>
       <div class="tb-text">The mean summarises a distribution with a single number. It answers the question: what value is typical for this group? It does not describe variability, shape, or extreme values.</div>`,
-    isoldeResponse: `The mean. That is all I needed.<stage>She looks at the formula.</stage>Fifteen scores, one number. I can do that.`,
   },
   msc_text_s1: {
     title: 'A Pocket Reference for the Quantitative Sciences',
     subtitle: 'Advanced reference. Condition uncertain — treat with caution.',
     body: `<div class="tb-chapter">On Measures of Central Tendency</div>
-      <div class="tb-text">The mean of a random variable <span class="tb-inline" data-katex="X"></span> is defined as its <em>expected value</em>:</div>
+      <div class="tb-text">The mean of a random variable <span class="tb-inline" data-katex="X"></span> is its <em>expected value</em> — the theoretical long-run average across all possible realisations:</div>
       <div class="tb-eq" data-katex="\\mu = E[X] = \\int_{-\\infty}^{\\infty} x \\, f(x) \\, dx"></div>
-      <div class="tb-text">This quantity represents the long-run average value of the variable across all possible realisations of the underlying process. It is the value a randomly drawn observation from the population is expected to approach over many trials.</div>
-      <div class="tb-text">For practical purposes, the sample mean <span class="tb-inline" data-katex="\\bar{x}"></span> is used as an estimator of <span class="tb-inline" data-katex="\\mu"></span>. Under standard regularity conditions, this estimator is consistent and unbiased.</div>
-      <div class="tb-damaged">Note: This reference describes the population expectation E[X]. When working with observed data from a specific sample, take care to distinguish between the theoretical population quantity and its empirical sample estimate.</div>
+      <div class="tb-text">The sample mean <span class="tb-inline" data-katex="\\bar{x}"></span> estimates <span class="tb-inline" data-katex="\\mu"></span> from observed data. The two are related — but they are not the same thing.</div>
+      <div class="tb-damaged">Note: Take care to distinguish between the population parameter and its sample estimate.</div>
       <div id="msc-s1-engagement" style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(60,35,10,0.15);">
-        <div style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(14px,1.3vw,17px);color:rgba(40,20,5,0.75);margin-bottom:10px;line-height:1.6;">
+        <div style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(17px,1.5vw,20px);color:rgba(40,20,5,0.75);margin-bottom:10px;line-height:1.6;">
           Seren has fifteen exam scores for each group. Which of these correctly describes what she is computing?
         </div>
-        <div style="display:flex;flex-direction:column;gap:6px;"></div>
-        <div id="msc-s1-response" style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(14px,1.3vw,17px);color:rgba(40,20,5,0.65);margin-top:10px;line-height:1.6;display:none;"></div>
+        <div data-choice-area style="display:flex;flex-direction:column;gap:6px;"></div>
+        <div id="msc-s1-response" style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(17px,1.5vw,20px);color:rgba(40,20,5,0.65);margin-top:10px;line-height:1.6;display:none;"></div>
       </div>`,
     isoldeResponse: `<stage>She reads it carefully.</stage>Expected value. Population mean.<stage>She looks up.</stage>But I do not have a population. I have fifteen students.`,
     onOpen: 'renderMscS1Engagement',
@@ -1707,7 +1661,6 @@ const CARD_CONTENT = {
       <div class="tb-text">Verify observation count. Identify missing values. Check for obvious entry errors. Confirm units are consistent.</div>
       <div class="tb-section">Step 2 — Compute summary statistics</div>
       <div class="tb-text">Calculate the mean for each group or variable. The mean summarises central tendency and enables direct comparison between groups measured on the same scale.</div>`,
-    isoldeResponse: `Step 2. Compute the mean.<stage>She looks at both groups.</stage>And then compare them. That is it.`,
   },
   ragvirs_notes_s1: {
     title: "Ragvir's Notes",
@@ -1717,7 +1670,6 @@ const CARD_CONTENT = {
       <div class="tb-text">Most of what survives here was chosen because it helped someone understand something they could not see before. Some of it is damaged. Some of it I am no longer certain is correct.</div>
       <div class="tb-text">People will come to you with questions. Your job is not to solve the problem — it is to help them find the right tool for the right question.</div>
       <div class="tb-text">The mean is a beginning. It is not an ending.</div>`,
-    isoldeResponse: `<stage>She reads it slowly.</stage>The mean is a beginning. Not an ending.<stage>She sets it down.</stage>I think I understand what that means now.`,
   },
 
   // ── SCENE 1 cards ──────────────────────────────────────────────────────────
@@ -1742,7 +1694,6 @@ const CARD_CONTENT = {
         <tr><td>10</td><td class="sep"></td><td>7.0</td><td class="sep"></td><td>14.6</td></tr>
       </tbody>
     </table>`,
-    isoldeResponse: "These are the ten years of returns. I computed the means — both come out at approximately seven percent. And yet one of them cannot be right for a cautious investor.",
     csv: "year,portfolio_A,portfolio_B\n1,6.8,2.1\n2,7.2,14.3\n3,6.9,1.2\n4,7.1,15.8\n5,6.7,0.4\n6,7.3,13.9\n7,7.0,3.2\n8,6.8,11.7\n9,7.2,2.8\n10,7.0,14.6",
   },
   bsc_text_s2: {
@@ -1762,7 +1713,7 @@ const CARD_CONTENT = {
     title: 'Pseudocode — Variance Procedure',
     subtitle: 'Step-by-step algorithm. Condition uncertain.',
     body: `<div class="tb-chapter">Algorithm: Compute Sample Variance</div>
-      <div style="font-family:monospace;font-size:clamp(14px,1.2vw,16px);line-height:2.2;color:rgba(40,20,5,0.85);background:rgba(60,35,10,0.04);padding:14px 16px;border-radius:4px;border-left:2px solid rgba(60,35,10,0.2);margin:8px 0;">
+      <div style="font-family:monospace;font-size:clamp(16px,1.3vw,18px);line-height:2.2;color:rgba(40,20,5,0.85);background:rgba(60,35,10,0.04);padding:14px 16px;border-radius:4px;border-left:2px solid rgba(60,35,10,0.2);margin:8px 0;">
         INPUT: array x of length n<br>
         SET mean ← (1/n) × Σ xᵢ<br>
         SET sum_sq ← 0<br>
@@ -1773,11 +1724,11 @@ const CARD_CONTENT = {
       </div>
       <div class="tb-damaged">Note: This procedure was found loose in the collection. The algorithm is structurally correct but may contain an error. Verify against a primary source before use.</div>
       <div id="pseudo-s2-engagement" style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(60,35,10,0.15);">
-        <div style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(14px,1.3vw,17px);color:rgba(40,20,5,0.75);margin-bottom:10px;line-height:1.6;">
+        <div style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(17px,1.5vw,20px);color:rgba(40,20,5,0.75);margin-bottom:10px;line-height:1.6;">
           Something in this procedure is not quite right. What is it?
         </div>
-        <div style="display:flex;flex-direction:column;gap:6px;"></div>
-        <div id="pseudo-s2-response" style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(14px,1.3vw,17px);color:rgba(40,20,5,0.65);margin-top:10px;line-height:1.6;display:none;"></div>
+        <div data-choice-area style="display:flex;flex-direction:column;gap:6px;"></div>
+        <div id="pseudo-s2-response" style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(17px,1.5vw,20px);color:rgba(40,20,5,0.65);margin-top:10px;line-height:1.6;display:none;"></div>
       </div>`,
     isoldeResponse: `<stage>He reads through the steps.</stage>The algorithm looks right to me. But that note is unsettling.<stage>He looks at the divisor.</stage>Wait.`,
     onOpen: 'renderPseudoS2Engagement',
@@ -1791,7 +1742,6 @@ const CARD_CONTENT = {
       <div class="tb-text">Verify observation count. Identify missing values. Check for obvious entry errors. Confirm units are consistent.</div>
       <div class="tb-section">Step 2 — Compute summary statistics</div>
       <div class="tb-text">Calculate the mean and variance for each variable. The mean answers which is higher on average. The variance answers how consistent or volatile the values are. When two datasets share the same mean, variance becomes the decisive measure.</div>`,
-    isoldeResponse: `Mean and variance. When the means are the same, variance is what matters.<stage>He nods.</stage>That is exactly the question I have been asking.`,
   },
 
   // ── SCENE 2 cards ──────────────────────────────────────────────────────────
@@ -1822,7 +1772,6 @@ const CARD_CONTENT = {
         <tr><td>18</td><td>93</td></tr><tr><td>20</td><td>95</td></tr>
       </tbody>
     </table>`,
-    isoldeResponse: "Thirty students. Two variables. The relationship looks clear — I just need to capture it formally.",
     csv: "revision_hours,exam_score\n2,41\n3,48\n4,52\n4,55\n5,57\n5,60\n6,62\n6,65\n7,67\n7,70\n8,68\n8,72\n9,74\n9,75\n10,76\n10,78\n11,79\n11,80\n12,81\n12,83\n13,84\n13,85\n14,86\n14,87\n15,88\n15,89\n16,90\n16,91\n18,93\n20,95",
   },
   bsc_text_s3: {
@@ -1855,13 +1804,12 @@ const CARD_CONTENT = {
     subtitle: 'A scatter plot of the student data. Condition uncertain.',
     body: `<div id="graphs-s3-container"></div>
       <div id="graphs-s3-engagement" style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(60,35,10,0.15);">
-        <div style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(14px,1.3vw,17px);color:rgba(40,20,5,0.75);margin-bottom:10px;line-height:1.6;">
+        <div style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(17px,1.5vw,20px);color:rgba(40,20,5,0.75);margin-bottom:10px;line-height:1.6;">
           This plot is missing something. What would make it analytically useful?
         </div>
-        <div style="display:flex;flex-direction:column;gap:6px;"></div>
-        <div id="graphs-s3-response" style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(14px,1.3vw,17px);color:rgba(40,20,5,0.65);margin-top:10px;line-height:1.6;display:none;"></div>
+        <div data-choice-area style="display:flex;flex-direction:column;gap:6px;"></div>
+        <div id="graphs-s3-response" style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(17px,1.5vw,20px);color:rgba(40,20,5,0.65);margin-top:10px;line-height:1.6;display:none;"></div>
       </div>`,
-    isoldeResponse: `<stage>She looks at the scatter plot.</stage>There it is. The pattern is visible — I just hadn't drawn it.<stage>She looks at the engagement question.</stage>Though something here needs correcting first.`,
     onOpen: 'renderGraphsS3',
   },
 };
@@ -1913,19 +1861,20 @@ function openCard(card) {
   if (content.isoldeResponse) {
     const showBtn = document.createElement('button');
     showBtn.className = 'parchment-btn primary';
-    showBtn.innerHTML = '↳ Show Isolde';
+    const firstName = currentScene().student.split(' ')[0];
+    showBtn.innerHTML = `↳ Show ${firstName}`;
     showBtn.onclick = () => showIsoldeResponse(content.isoldeResponse);
     footer.appendChild(showBtn);
   }
 
   document.getElementById('card-panel').classList.add('open');
 
-  // Call any onOpen renderer
-  if (content.onOpen === 'renderMethodsStats') renderMethodsStats();
-  if (content.onOpen === 'renderAnscombeGraphs') renderAnscombeGraphs();
-  if (content.onOpen === 'renderMscS1Engagement') renderMscS1Engagement();
-  if (content.onOpen === 'renderPseudoS2Engagement') renderPseudoS2Engagement();
-  if (content.onOpen === 'renderGraphsS3') renderGraphsS3();
+  // Call any onOpen renderer — delay ensures DOM settled after innerHTML + KaTeX
+  if (content.onOpen === 'renderMethodsStats') setTimeout(renderMethodsStats, 50);
+  if (content.onOpen === 'renderAnscombeGraphs') setTimeout(renderAnscombeGraphs, 50);
+  if (content.onOpen === 'renderMscS1Engagement') setTimeout(renderMscS1Engagement, 50);
+  if (content.onOpen === 'renderPseudoS2Engagement') setTimeout(renderPseudoS2Engagement, 50);
+  if (content.onOpen === 'renderGraphsS3') setTimeout(renderGraphsS3, 50);
 
   // Track card read — gated card not marked until engagement complete
   if (card.slug !== currentScene().gatedCard) markCardRead(card.slug);
@@ -1989,7 +1938,7 @@ function renderMethodsStats() {
   const rows = Object.keys(EXPECTED);
 
   el.innerHTML = `
-    <div style="font-family:'IM Fell English',serif;font-size:clamp(13px,1.2vw,15px);color:rgba(60,15,10,0.6);margin-bottom:8px;font-style:italic;">
+    <div style="font-family:'IM Fell English',serif;font-size:clamp(16px,1.3vw,18px);color:rgba(60,15,10,0.6);margin-bottom:8px;font-style:italic;">
       Enter your computed values below. Each cell will confirm when correct.
     </div>
     <table class="parchment-table" style="margin:4px 0 6px;">
@@ -2019,13 +1968,13 @@ function renderMethodsStats() {
       </tbody>
     </table>
     <div id="methods-engagement" style="display:none;margin-top:16px;padding-top:14px;border-top:1px solid rgba(60,35,10,0.15);">
-      <div style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(14px,1.3vw,17px);color:rgba(40,20,5,0.75);margin-bottom:10px;line-height:1.6;">
+      <div style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(17px,1.5vw,20px);color:rgba(40,20,5,0.75);margin-bottom:10px;line-height:1.6;">
         The statistics are identical across all four datasets. What does that not tell you?
       </div>
       <div style="display:flex;flex-direction:column;gap:6px;"></div>
       <div id="methods-engagement-response" style="
         font-family:'IM Fell English',serif;font-style:italic;
-        font-size:clamp(14px,1.3vw,17px);color:rgba(40,20,5,0.65);
+        font-size:clamp(17px,1.5vw,20px);color:rgba(40,20,5,0.65);
         margin-top:10px;line-height:1.6;display:none;">
       </div>
     </div>`;
@@ -2295,8 +2244,7 @@ function showCheckBookshelves() {
 let dialogueFinished = false;
 
 document.getElementById('speech').addEventListener('click', () => {
-  // sceneState 'active' only set for Scene 3 (Isolde). Scenes 0-2 use dialogueActive flag.
-  if (sceneState !== 'active' && !dialogueActive) return;
+  if (!dialogueActive) return;
   if (dialogueFinished) return;
   advanceDialogue();
 });
@@ -2517,6 +2465,7 @@ function loadScene() {
   SCENE = scene; // update alias for renderShelves
 
   // Reset scene-local state
+  sceneState = 'waiting';
   sceneDialogue = [...scene.dialogue];
   dialogueIndex = 0;
   dialogueFinished = false;
@@ -2554,14 +2503,6 @@ function loadScene() {
   portraitName.textContent = scene.student;
   portrait.style.opacity = '0';
   portrait.style.transition = 'opacity 0.8s';
-
-  // Update help text
-  const helpBody = document.getElementById('help-body');
-  if (helpBody) helpBody.innerHTML =
-    `A student has come to you with a problem.<br><br>` +
-    `Examine the books on the shelves — hover to preview, click to read. Some are damaged. Some cannot be trusted.<br><br>` +
-    `When you think you know what they need to hear, present an answer.<br><br>` +
-    `You have ${candleAttempts} chance${candleAttempts !== 1 ? 's' : ''} remaining. The candle is already burning.`;
 
   // Set first dialogue line
   speech.innerHTML = '<p>' + sceneDialogue[0] + '</p>';
@@ -2659,13 +2600,8 @@ function nextScene() {
       const skipBtn = document.querySelector('#dev-bar .dev-btn[onclick="devSkipIntro()"]');
       if (skipBtn) skipBtn.style.display = 'none';
       // Initialise scene 0
-      sceneDialogue = [...SCENES[0].dialogue];
-      document.getElementById('speech').innerHTML = '<p>' + sceneDialogue[0] + '</p>';
-      setTimeout(() => {
-        document.getElementById('speech').style.opacity = '1';
-        // Scene 0 starts directly (no window hotspot)
-        startNarration(SCENES[0].narration);
-      }, 800);
+      currentSceneIndex = 0;
+      setTimeout(() => loadScene(), 800);
     }, 1200);
   }
 }
@@ -2703,7 +2639,7 @@ function showNarrationScene(idx) {
   requestAnimationFrame(() => { btn.style.transition = ''; btn.style.opacity = ''; });
 
   narrationTimers.push(setTimeout(() => {
-    textEl.textContent = NARRATION_SCENES[idx];
+    textEl.textContent = narrationScenes[idx];
     narrationTimers.push(setTimeout(() => {
       textEl.classList.add('visible');
       narrationTimers.push(setTimeout(() => btn.classList.add('visible'), 1200));
@@ -2726,9 +2662,13 @@ function nextNarrationScene() {
 
     narrationTimers.push(setTimeout(() => {
       overlay.classList.remove('visible');
-      if (currentSceneIndex < 3) dialogueActive = true;
+      overlay.style.transform = 'translateY(-100%)';
+      dialogueActive = true;
       setTimeout(() => {
-        document.getElementById('speech').style.opacity = '1';
+        const speech = document.getElementById('speech');
+        speech.innerHTML = '<p>' + sceneDialogue[0] + '</p>';
+        speech.style.opacity = '1';
+        speech.style.cursor = 'pointer';
       }, 700);
     }, 300));
   }
@@ -2756,28 +2696,19 @@ function bindTip(el, text) {
   el.addEventListener('mouseleave', hideTip);
 }
 
-bindTip(document.getElementById('window-hotspot'), 'Look outside');
-bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
-bindTip(document.getElementById('help-hotspot'), 'As Things Stand');
-bindTip(document.getElementById('candle-wrap'), 'Patience');
-
-function openHelp() {
-  document.getElementById('help-overlay').classList.add('open');
-}
-function closeHelp() {
-  document.getElementById('help-overlay').classList.remove('open');
-}
-</script>
-
 // ── SCENE-CARD ENGAGEMENT RENDERERS ─────────────────────────────────────────
 
 // Scene 0 — MSc Text cursed engagement (sample vs population mean)
 function renderMscS1Engagement() {
+  console.log('[MSC] renderMscS1Engagement called');
   const eng = document.getElementById('msc-s1-engagement');
-  if (!eng) return;
-  if (cardsRead.has('msc_text_s1')) { eng.style.opacity='0.45'; return; }
-  const choiceArea = eng.querySelector('div[style*="display:flex"]');
-  if (!choiceArea || choiceArea.children.length > 0) return;
+  console.log('[MSC] eng:', eng);
+  if (!eng) { console.log('[MSC] ABORT: eng not found'); return; }
+  if (cardsRead.has('msc_text_s1')) { eng.style.opacity='0.45'; console.log('[MSC] already read'); return; }
+  const choiceArea = eng.querySelector('[data-choice-area]');
+  console.log('[MSC] choiceArea:', choiceArea);
+  if (!choiceArea) { console.log('[MSC] ABORT: choiceArea not found'); return; }
+  choiceArea.innerHTML = '';
   const opts = [
     { text: 'The expected value of the distribution — E[X].', passes: false,
       response: 'E[X] is the population expectation — the theoretical mean of all possible values. Seren has fifteen observed scores. That is a sample, not a population.' },
@@ -2791,7 +2722,7 @@ function renderMscS1Engagement() {
   opts.forEach(opt => {
     const btn = document.createElement('button');
     btn.textContent = opt.text;
-    btn.style.cssText = `font-family:'IM Fell English',serif;font-size:clamp(14px,1.2vw,16px);color:rgba(40,20,5,0.82);background:rgba(60,35,10,0.06);border:1px solid rgba(60,35,10,0.22);padding:6px 12px;border-radius:3px;cursor:pointer;text-align:left;transition:background 0.15s;`;
+    btn.style.cssText = `font-family:'IM Fell English',serif;font-size:clamp(17px,1.4vw,20px);color:rgba(40,20,5,0.82);background:rgba(60,35,10,0.06);border:1px solid rgba(60,35,10,0.22);padding:6px 12px;border-radius:3px;cursor:pointer;text-align:left;transition:background 0.15s;`;
     btn.onmouseover = () => btn.style.background = 'rgba(60,35,10,0.14)';
     btn.onmouseout  = () => btn.style.background = 'rgba(60,35,10,0.06)';
     btn.onclick = () => handleCardEngagement(opt, eng, 'msc-s1-response', 'msc_text_s1');
@@ -2805,8 +2736,9 @@ function renderPseudoS2Engagement() {
   const eng = document.getElementById('pseudo-s2-engagement');
   if (!eng) return;
   if (cardsRead.has('pseudocode_s2')) { eng.style.opacity='0.45'; return; }
-  const choiceArea = eng.querySelector('div[style*="display:flex"]');
-  if (!choiceArea || choiceArea.children.length > 0) return;
+  const choiceArea = eng.querySelector('[data-choice-area]');
+  if (!choiceArea) return;
+  choiceArea.innerHTML = '';
   const opts = [
     { text: 'The mean should be subtracted after squaring, not before.', passes: false,
       response: 'The order is correct — subtract the mean, then square. The error is elsewhere in the procedure.' },
@@ -2820,7 +2752,7 @@ function renderPseudoS2Engagement() {
   opts.forEach(opt => {
     const btn = document.createElement('button');
     btn.textContent = opt.text;
-    btn.style.cssText = `font-family:'IM Fell English',serif;font-size:clamp(14px,1.2vw,16px);color:rgba(40,20,5,0.82);background:rgba(60,35,10,0.06);border:1px solid rgba(60,35,10,0.22);padding:6px 12px;border-radius:3px;cursor:pointer;text-align:left;transition:background 0.15s;`;
+    btn.style.cssText = `font-family:'IM Fell English',serif;font-size:clamp(17px,1.4vw,20px);color:rgba(40,20,5,0.82);background:rgba(60,35,10,0.06);border:1px solid rgba(60,35,10,0.22);padding:6px 12px;border-radius:3px;cursor:pointer;text-align:left;transition:background 0.15s;`;
     btn.onmouseover = () => btn.style.background = 'rgba(60,35,10,0.14)';
     btn.onmouseout  = () => btn.style.background = 'rgba(60,35,10,0.06)';
     btn.onclick = () => {
@@ -2871,8 +2803,9 @@ function renderGraphsS3() {
   // Render engagement
   const eng = document.getElementById('graphs-s3-engagement');
   if (!eng) return;
-  const choiceArea = eng.querySelector('div[style*="display:flex"]');
-  if (!choiceArea || choiceArea.children.length > 0) return;
+  const choiceArea = eng.querySelector('[data-choice-area]');
+  if (!choiceArea) return;
+  choiceArea.innerHTML = '';
   const opts = [
     { text: 'A title.', passes: false,
       response: 'A title helps, but it is not what makes a graph analytically useful. Something more fundamental is missing.' },
@@ -2886,7 +2819,7 @@ function renderGraphsS3() {
   opts.forEach(opt => {
     const btn = document.createElement('button');
     btn.textContent = opt.text;
-    btn.style.cssText = `font-family:'IM Fell English',serif;font-size:clamp(14px,1.2vw,16px);color:rgba(40,20,5,0.82);background:rgba(60,35,10,0.06);border:1px solid rgba(60,35,10,0.22);padding:6px 12px;border-radius:3px;cursor:pointer;text-align:left;transition:background 0.15s;`;
+    btn.style.cssText = `font-family:'IM Fell English',serif;font-size:clamp(17px,1.4vw,20px);color:rgba(40,20,5,0.82);background:rgba(60,35,10,0.06);border:1px solid rgba(60,35,10,0.22);padding:6px 12px;border-radius:3px;cursor:pointer;text-align:left;transition:background 0.15s;`;
     btn.onmouseover = () => btn.style.background = 'rgba(60,35,10,0.14)';
     btn.onmouseout  = () => btn.style.background = 'rgba(60,35,10,0.06)';
     btn.onclick = () => {
@@ -2927,6 +2860,12 @@ CARD_CONTENT.ragvirs_notes.body = `<div class="tb-chapter">A Note for the Studen
 // Initialise portrait name on page load
 document.getElementById('portrait-name').textContent = SCENES[0].student;
 
+
+bindTip(document.getElementById('window-hotspot'), 'Look outside');
+bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
+bindTip(document.getElementById('candle-wrap'), 'Patience');
+
+</script>
 
 <script>
 // ── DUST MOTES + CANDLE FLICKER ──────────────────────────────────────────────
