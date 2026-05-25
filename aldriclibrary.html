@@ -1064,7 +1064,7 @@ const SCENES = [
     winCardReveal: '',
     betweenText: 'She leaves. The library settles. Outside, the rain has not stopped.',
     outsideImg: './aldricimages/serenrain.png',
-    portraitImg: './aldricimages/isoldefenn.png', // placeholder until seren_portrait.png exists
+    portraitImg: './aldricimages/serendavies.png',
     narration: [
       "The door opens cautiously. A first-year — you can always tell. She holds a folder with both hands and looks at the shelves the way someone looks at a menu in a language she is still learning.",
       "She has done the right thing by coming here. She just doesn't know yet whether the question she is asking is the right question."
@@ -1109,7 +1109,7 @@ const SCENES = [
     winCardReveal: '',
     betweenText: 'He leaves satisfied. The library is quiet again. The candle is still burning.',
     outsideImg: './aldricimages/marcusrain.png',
-    portraitImg: './aldricimages/isoldefenn.png', // placeholder until marcus_portrait.png exists
+    portraitImg: './aldricimages/marcusosei.png',
     narration: [
       "The second student arrives with the door already open — he has been here before, or somewhere like it. He knows what he wants. He just doesn't know what it's called.",
       "The question he is carrying has a shape to it. Two things that look the same from the outside. Something different inside."
@@ -1153,7 +1153,7 @@ const SCENES = [
     winCardReveal: '',
     betweenText: 'She leaves without ceremony. The library holds its breath. The next one will be different.',
     outsideImg: './aldricimages/raniarain.png',
-    portraitImg: './aldricimages/isoldefenn.png', // placeholder until rania_portrait.png exists
+    portraitImg: './aldricimages/raniakhalil.png',
     narration: [
       "The third student doesn't pause at the door. She already has her notebook open. She has come here with a thesis, not just a question.",
       "She wants to prove something. That is not the same as wanting to understand something — but it is often where understanding begins."
@@ -1459,7 +1459,9 @@ function admitStudent() {
   const portraitImg = portrait.querySelector('img');
   const portraitName = document.getElementById('portrait-name');
   portraitImg.src = scene.portraitImg;
-  portraitImg.style.filter = scene.sceneIndex === 3 ? '' : 'brightness(0) opacity(0.35)';
+  // Only apply silhouette filter if using placeholder portrait
+  const isPlaceholder = scene.portraitImg.includes('isoldefenn') && scene.sceneIndex !== 3;
+  portraitImg.style.filter = isPlaceholder ? 'brightness(0) opacity(0.35)' : '';
   portraitName.textContent = scene.student;
 
   // Blank speech while narration plays
