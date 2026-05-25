@@ -422,7 +422,7 @@ body {
   z-index:50;
   display:flex;
   flex-direction:column;
-  transform:translateY(100%);
+  transform:translateY(calc(100% + clamp(140px,22vh,220px)));
   transition:transform 0.45s cubic-bezier(0.4,0,0.2,1);
   background:transparent;
   pointer-events:none;
@@ -682,46 +682,52 @@ body {
   opacity:1;
 }
 
-/* ── BOOK HOTSPOT ── */
-#book-hotspot {
-  position:absolute;
-  left:46.4%;
-  top:64.8%;
-  width:9.0%;
-  height:14.0%;
-  cursor:pointer;
-  z-index:7;
+/* ── ANSWER CHOICES ── */
+#answer-form {
+  flex:1;
+  min-width:0;
+  padding:clamp(10px,1.5vh,18px) clamp(12px,1.8vw,24px);
   display:none;
+  flex-direction:column;
+  justify-content:center;
+  gap:8px;
+}
+#answer-form.visible { display:flex; }
+#answer-label {
+  font-family:'IM Fell English',serif;
+  font-style:italic;
+  font-size:clamp(14px,1.4vw,18px);
+  color:rgba(200,175,130,0.75);
+  line-height:1.5;
+  margin-bottom:4px;
+  flex-shrink:0;
+}
+#answer-choices {
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.answer-choice {
+  font-family:'IM Fell English',serif;
+  font-size:clamp(14px,1.3vw,17px);
+  color:rgba(230,205,160,0.88);
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(180,140,60,0.35);
+  padding:5px 14px;
   border-radius:3px;
-}
-#book-hotspot.visible { display:block; }
-#book-badge {
-  position:absolute;
-  left:50.9%;
-  top:71.8%;
-  transform:translate(-50%, -50%);
-  width:28px; height:28px;
-  border-radius:50%;
-  background:rgba(140,70,20,0.92);
-  border:1px solid rgba(220,160,80,0.7);
-  box-shadow:0 0 10px rgba(180,100,30,0.45);
-  font-family:'Cinzel',serif;
-  font-size:14px;
-  color:rgba(255,230,160,0.97);
-  display:none;
-  align-items:center; justify-content:center;
   cursor:pointer;
-  z-index:21;
-  user-select:none;
+  transition:background 0.15s, border-color 0.15s;
+  white-space:nowrap;
 }
-#book-badge.visible { display:flex; }
-#book-badge.pulse {
-  animation: badge-pulse 0.8s ease-out;
+.answer-choice:hover {
+  background:rgba(180,140,60,0.15);
+  border-color:rgba(180,140,60,0.75);
 }
-@keyframes badge-pulse {
-  0%   { box-shadow: 0 0 10px rgba(180,100,30,0.45); }
-  40%  { box-shadow: 0 0 22px rgba(255,180,60,0.95), 0 0 40px rgba(220,140,40,0.6); }
-  100% { box-shadow: 0 0 10px rgba(180,100,30,0.45); }
+.answer-choice:disabled {
+  opacity:0.35;
+  cursor:default;
+  pointer-events:none;
 }
 
 /* ── HOW TO PLAY HOTSPOT ── */
@@ -791,126 +797,6 @@ body {
   margin-top:4px;
 }
 #help-close:hover {
-  color:rgba(220,190,130,0.9);
-  border-color:rgba(180,140,60,0.55);
-  background:rgba(180,140,60,0.08);
-}
-
-/* ── SLIP DRAWER OVERLAY ── */
-#slip-drawer {
-  position:fixed;
-  inset:0;
-  z-index:150;
-  background:rgba(8,4,2,0.82);
-  backdrop-filter:blur(6px);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity 0.4s;
-}
-#slip-drawer.open {
-  opacity:1;
-  pointer-events:auto;
-}
-#slip-drawer-inner {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:clamp(10px,1.8vh,20px);
-  width:clamp(320px,48vw,580px);
-}
-#slip-drawer-header {
-  font-family:'Cinzel',serif;
-  font-size:clamp(10px,0.9vw,13px);
-  letter-spacing:0.3em;
-  text-transform:uppercase;
-  color:rgba(180,140,60,0.6);
-  text-align:center;
-}
-#slip-stack {
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  max-height:60vh;
-  overflow-y:auto;
-  scrollbar-width:thin;
-  scrollbar-color:rgba(180,140,60,0.2) transparent;
-  padding:4px 2px;
-}
-.drawer-slip {
-  width:100%;
-  background:rgba(240,228,190,0.93);
-  border:1px solid rgba(160,120,60,0.35);
-  border-radius:3px;
-  padding:clamp(10px,1.4vh,16px) clamp(14px,2vw,24px);
-  font-family:'IM Fell English',serif;
-  font-size:clamp(14px,1.35vw,18px);
-  line-height:1.5;
-  color:rgba(35,15,5,0.88);
-  cursor:pointer;
-  transition:background 0.15s, transform 0.15s, box-shadow 0.15s;
-  box-shadow:0 2px 8px rgba(0,0,0,0.25);
-  position:relative;
-  text-align:center;
-}
-.drawer-slip:hover {
-  background:rgba(250,238,205,0.98);
-  transform:translateY(-2px);
-  box-shadow:0 4px 16px rgba(0,0,0,0.3);
-}
-.drawer-slip.locked {
-  opacity:0.45;
-  cursor:default;
-  pointer-events:none;
-  background:rgba(220,210,185,0.6);
-}
-.drawer-slip.locked:hover {
-  transform:none;
-  box-shadow:0 2px 8px rgba(0,0,0,0.25);
-  background:rgba(220,210,185,0.6);
-}
-.drawer-slip-hint {
-  display:block;
-  font-family:'IM Fell English',serif;
-  font-style:italic;
-  font-size:14px;
-  color:rgba(80,45,10,0.75);
-  margin-top:5px;
-}
-.drawer-slip.used {
-  opacity:0.3;
-  pointer-events:none;
-  text-decoration:line-through;
-  color:rgba(35,15,5,0.4);
-}
-.drawer-slip.shake {
-  animation:slip-shake 0.35s ease;
-}
-@keyframes slip-shake {
-  0%,100% { transform:translateX(0); }
-  20%     { transform:translateX(-6px); }
-  60%     { transform:translateX(5px); }
-  80%     { transform:translateX(-3px); }
-}
-#slip-drawer-close {
-  font-family:'Cinzel',serif;
-  font-size:clamp(10px,0.9vw,13px);
-  letter-spacing:0.2em;
-  text-transform:uppercase;
-  color:rgba(180,150,100,0.6);
-  background:transparent;
-  border:1px solid rgba(180,140,60,0.25);
-  padding:7px 20px;
-  border-radius:3px;
-  cursor:pointer;
-  transition:color 0.2s, border-color 0.2s, background 0.2s;
-  margin-top:4px;
-}
-#slip-drawer-close:hover {
   color:rgba(220,190,130,0.9);
   border-color:rgba(180,140,60,0.55);
   background:rgba(180,140,60,0.08);
@@ -1178,15 +1064,6 @@ body {
   </div>
 </div>
 
-<!-- Slip drawer overlay -->
-<div id="slip-drawer">
-  <div id="slip-drawer-inner">
-    <div id="slip-drawer-header">Your notes — choose one to present to Isolde</div>
-    <div id="slip-stack"></div>
-    <button id="slip-drawer-close" onclick="closeSlipDrawer()">Put them away</button>
-  </div>
-</div>
-
 <!-- Game over -->
 <div id="game-over">
   <div id="game-over-title">She is gone.</div>
@@ -1219,8 +1096,6 @@ body {
     <svg id="shelf-svg" style="position:absolute;inset:0;width:100%;height:100%;z-index:8;pointer-events:none;" viewBox="0 0 1000 1000" preserveAspectRatio="none"></svg>
     <div id="window-hotspot" onclick="openWindowView()"></div>
     <div id="help-hotspot" onclick="openHelp()"></div>
-    <div id="book-hotspot" onclick="openSlipDrawer()"></div>
-    <div id="book-badge" onclick="openSlipDrawer()">0</div>
     <div id="narration">
       <div id="narration-text"></div>
       <button id="narration-btn" onclick="nextNarrationScene()">Continue</button>
@@ -1234,6 +1109,10 @@ body {
     </div>
     <div id="speech" style="opacity:0;transition:opacity 0.8s;">
       <p>Forgive the intrusion. I was told someone here might be able to help.</p>
+    </div>
+    <div id="answer-form">
+      <div id="answer-label">I have tried everything I can compute. What am I missing?</div>
+      <div id="answer-choices"></div>
     </div>
   </div>
 
@@ -1469,8 +1348,8 @@ function admitIsolde() {
 // ── CARD PANEL ───────────────────────────────────────────────────────────────
 const PARCHMENT_BG = {
   intact:  './aldricimages/parchmentintact.png',
-  damaged: './aldricimages/parchmentdamaged.png',
-  cursed:  './aldricimages/parchmentcursed.png',
+  damaged: './aldricimages/parchmentintact.png',
+  cursed:  './aldricimages/parchmentintact.png',
   locked:  './aldricimages/parchmentintact.png',
 };
 
@@ -1664,14 +1543,15 @@ function renderMethodsStats() {
   const el = document.getElementById('methods-stats-table');
   if (!el) return;
   const rows = [
-    ['Mean of x',    Object.values(ANSCOMBE).map(d => aMean(d.x).toFixed(2))],
-    ['Mean of y',    Object.values(ANSCOMBE).map(d => aMean(d.y).toFixed(2))],
-    ['Variance of x',Object.values(ANSCOMBE).map(d => aVar(d.x).toFixed(2))],
-    ['Variance of y',Object.values(ANSCOMBE).map(d => aVar(d.y).toFixed(2))],
-    ['Correlation',  Object.values(ANSCOMBE).map(d => aCor(d.x,d.y).toFixed(3))],
-    ['Regression slope',    Object.values(ANSCOMBE).map(d => aReg(d.x,d.y).slope.toFixed(3))],
-    ['Regression intercept',Object.values(ANSCOMBE).map(d => aReg(d.x,d.y).intercept.toFixed(2))],
+    ['Mean of x',         Object.values(ANSCOMBE).map(d => aMean(d.x).toFixed(2))],
+    ['Mean of y',         Object.values(ANSCOMBE).map(d => aMean(d.y).toFixed(2))],
+    ['Variance of x',     Object.values(ANSCOMBE).map(d => aVar(d.x).toFixed(2))],
+    ['Variance of y',     Object.values(ANSCOMBE).map(d => aVar(d.y).toFixed(2))],
+    ['Correlation',       Object.values(ANSCOMBE).map(d => aCor(d.x,d.y).toFixed(3))],
+    ['Regression slope',  Object.values(ANSCOMBE).map(d => aReg(d.x,d.y).slope.toFixed(3))],
+    ['Regression intercept', Object.values(ANSCOMBE).map(d => aReg(d.x,d.y).intercept.toFixed(2))],
   ];
+
   el.innerHTML = `<table class="parchment-table" style="margin:10px 0 6px;">
     <thead>
       <tr>
@@ -1686,7 +1566,26 @@ function renderMethodsStats() {
           ${vals.map(v => `<td>${v}</td>`).join('')}
         </tr>`).join('')}
     </tbody>
-  </table>`;
+  </table>
+  <div id="methods-engagement" style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(60,35,10,0.15);">
+    <div style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(14px,1.3vw,17px);color:rgba(40,20,5,0.75);margin-bottom:10px;line-height:1.6;">
+      The statistics are identical across all four datasets. What does that not tell you?
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;"></div>
+    <div id="methods-engagement-response" style="
+      font-family:'IM Fell English',serif;font-style:italic;
+      font-size:clamp(14px,1.3vw,17px);color:rgba(40,20,5,0.65);
+      margin-top:10px;line-height:1.6;display:none;">
+    </div>
+  </div>`;
+
+  // Re-enable or dim engagement section based on pass state
+  if (methodsEngagementPassed) {
+    const eng = document.getElementById('methods-engagement');
+    if (eng) eng.style.opacity = '0.45';
+  } else {
+    setTimeout(() => renderEngagementChoices(), 0);
+  }
 }
 
 function renderAnscombeGraphs() {
@@ -1733,6 +1632,81 @@ function renderAnscombeGraphs() {
       ${statsHtml}`;
     container.appendChild(wrap);
   });
+}
+
+let methodsEngagementPassed = false;
+
+// ── METHODS ENGAGEMENT — STATIC CHOICES ──────────────────────────────────────
+const ENGAGEMENT_OPTIONS = [
+  {
+    text: 'The datasets are effectively the same.',
+    passes: false,
+    response: `That is what I assumed too.<stage>She pauses.</stage>But I keep wondering — can the numbers really tell me everything about the data itself?`
+  },
+  {
+    text: 'They have the same numerical properties but may differ in other ways.',
+    passes: true,
+    response: `Yes — that is the question I cannot answer.<stage>She nods slowly.</stage>The numbers are the same. But I do not know if the data is.`
+  },
+  {
+    text: 'The analysis is complete and the supervisor is right.',
+    passes: false,
+    response: `My supervisor said something similar.<stage>She looks at the damaged section of the card.</stage>But something here is still troubling me — the step I cannot read.`
+  },
+];
+
+function renderEngagementChoices() {
+  const eng = document.getElementById('methods-engagement');
+  if (!eng) return;
+  // Replace input/button with choice buttons
+  const inputArea = eng.querySelector('div[style*="display:flex"]');
+  if (!inputArea) return;
+  inputArea.innerHTML = '';
+  const choiceWrap = document.createElement('div');
+  choiceWrap.style.cssText = 'display:flex;flex-direction:column;gap:6px;margin-top:4px;';
+  ENGAGEMENT_OPTIONS.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.textContent = opt.text;
+    btn.style.cssText = `
+      font-family:'IM Fell English',serif;font-size:clamp(13px,1.2vw,16px);
+      color:rgba(40,20,5,0.82);background:rgba(60,35,10,0.06);
+      border:1px solid rgba(60,35,10,0.22);padding:6px 12px;
+      border-radius:3px;cursor:pointer;text-align:left;
+      transition:background 0.15s;
+    `;
+    btn.onmouseover = () => btn.style.background = 'rgba(60,35,10,0.14)';
+    btn.onmouseout  = () => btn.style.background = 'rgba(60,35,10,0.06)';
+    btn.onclick = () => handleEngagementChoice(opt);
+    choiceWrap.appendChild(btn);
+  });
+  inputArea.appendChild(choiceWrap);
+}
+
+function handleEngagementChoice(opt) {
+  const eng     = document.getElementById('methods-engagement');
+  const respEl  = document.getElementById('methods-engagement-response');
+  if (!eng || !respEl) return;
+
+  // Disable all buttons
+  eng.querySelectorAll('button').forEach(b => { b.disabled = true; b.style.opacity = '0.4'; });
+
+  const formatted = opt.response.replace(/<stage>(.*?)<\/stage>/g, '<em>$1</em>');
+  respEl.innerHTML = formatted;
+  respEl.style.display = 'block';
+
+  if (opt.passes) {
+    methodsEngagementPassed = true;
+    eng.style.opacity = '0.55';
+  } else {
+    // Re-enable after a beat so they can reconsider
+    setTimeout(() => {
+      eng.querySelectorAll('button').forEach(b => { b.disabled = false; b.style.opacity = '1'; });
+    }, 1800);
+  }
+}
+
+function submitEngagement() {
+  // Legacy stub — replaced by renderEngagementChoices
 }
 
 function closeCardPanel() {
@@ -1821,62 +1795,16 @@ renderShelves();
 function markCardRead(slug) {
   if (cardsRead.has(slug)) return;
   cardsRead.add(slug);
-  revealSlipsForCard(slug);
-  // "Draw it" unlocks only after both data AND methods have been read
-  if ((slug === 'data' || slug === 'methods') &&
-       cardsRead.has('data') && cardsRead.has('methods')) {
-    revealSlipsForCard('data+methods');
-  }
+  const content = CARD_CONTENT[slug];
+  if (content) showCardToast(content.title);
   renderShelves();
 }
 
-// ── ANSWER SLIPS ─────────────────────────────────────────────────────────────
-const ALL_SLIPS = [
-  // Revealed on bookshelves open
-  { id: 0, text: 'The datasets are identical.',              correct: false, trigger: 'open'           },
-  { id: 1, text: 'One dataset must contain an error.',       correct: false, trigger: 'open'           },
-  // Revealed after reading Data
-  { id: 2, text: 'The mean is sufficient.',                  correct: false, trigger: 'data'           },
-  { id: 3, text: 'Run a linear regression.',                 correct: false, trigger: 'data'           },
-  // Revealed after reading BSc Textbook
-  { id: 4, text: 'The sample size is too small.',            correct: false, trigger: 'bsc_textbook'   },
-  { id: 5, text: 'The supervisor is right.',                 correct: false, trigger: 'bsc_textbook'   },
-  // Revealed after reading Journal Article
-  { id: 6, text: 'Find the missing pages.',                  correct: false, trigger: 'journal_article'},
-  // Revealed after reading Humour card
-  { id: 7, text: 'Trust the numbers.',                       correct: false, trigger: 'humour'         },
-  // Revealed after reading Methods
-  { id: 8, text: 'Report the results as-is.',                correct: false, trigger: 'methods'        },
-  // Correct — only unlocked after BOTH data AND methods are read
-  { id: 9, text: 'Draw it.',                                 correct: true,  trigger: 'data+methods'   },
-];
-
-const WRONG_RESPONSES = [
-  // 0 — datasets identical
-  "That is what my supervisor said. The numbers are the same — so the datasets must be the same. But I keep thinking that cannot be the whole story.",
-  // 1 — error
-  "I checked every entry. There is no error. The numbers are what they are.",
-  // 2 — mean sufficient
-  "The mean is 9 for x and 7.50 for y in every one.<stage>She pauses.</stage>Identical. I thought if the mean was fine, everything was fine.",
-  // 3 — regression
-  "I ran the regression. Slope 0.500, intercept 3.00, R-squared 0.67.<stage>Quietly.</stage>All four. Every one.",
-  // 4 — sample size
-  "Eleven observations is not many, but it is enough to compute a mean. My supervisor said the sample was adequate.",
-  // 5 — supervisor right
-  "I almost submitted it on that basis.<stage>She almost smiles.</stage>He seemed very certain.",
-  // 6 — missing pages
-  "I looked. The pages are gone — the whole middle section. Whatever Anscombe concluded, it is not here.",
-  // 7 — trust the numbers
-  `<stage>A long pause.</stage>That is what the note says.<stage>She looks at it again.</stage>It has no author. I should have noticed that.`,
-  // 8 — report as-is
-  "I did. Then I sat here.",
-];
-
 let candleAttempts = 3;
-let slipsUnlocked  = [];
-let usedSlipIds    = new Set();
-let slipsSeen      = new Set();
 let gameEnded      = false;
+
+// Investigable cards — all four must be read before input appears
+const INVESTIGABLE = new Set(['data', 'bsc_textbook', 'journal_article', 'methods']);
 
 // ── CANDLE ───────────────────────────────────────────────────────────────────
 function updateCandle() {
@@ -1894,102 +1822,12 @@ function showCandleWarning(text) {
   setTimeout(() => w.classList.remove('show'), 2200);
 }
 
-// ── BADGE + BOOK ─────────────────────────────────────────────────────────────
-const TRIGGER_LABELS = {
-  data:            'Data',
-  bsc_textbook:    'BSc Textbook',
-  journal_article: 'Journal Article',
-  humour:          'A Note on Method',
-  methods:         'Methods',
-  'data+methods':  'Data and Methods',
-};
-
-function updateBookBadge() {
-  const available = ALL_SLIPS.filter(s => slipsUnlocked.includes(s.id) && !usedSlipIds.has(s.id)).length;
-  const badge = document.getElementById('book-badge');
-  badge.textContent = available;
-  if (slipsUnlocked.length > 0) badge.classList.add('visible');
-}
-
-function openSlipDrawer() {
-  if (gameEnded) return;
-  if (slipsUnlocked.length === 0) return;
-  closeCardPanel();
-
-  const stack = document.getElementById('slip-stack');
-  stack.innerHTML = '';
-
-  ALL_SLIPS.forEach(slip => {
-    const isUnlocked = slipsUnlocked.includes(slip.id);
-    const isUsed     = usedSlipIds.has(slip.id);
-    const isNew      = isUnlocked && !isUsed && !slipsSeen.has(slip.id);
-    const el = document.createElement('div');
-
-    let cls = 'drawer-slip';
-    if (isUsed)           cls += ' used';
-    else if (!isUnlocked) cls += ' locked';
-
-    el.className = cls;
-
-    if (isUnlocked && !isUsed) {
-      el.addEventListener('click', () => handleSlipClick(slip, el));
-    }
-
-    const label = document.createElement('span');
-    label.textContent = slip.text;
-    el.appendChild(label);
-
-    if (isNew) {
-      const dot = document.createElement('span');
-      dot.style.cssText = `
-        display:inline-block; width:7px; height:7px; border-radius:50%;
-        background:rgba(220,160,40,0.9); margin-left:10px;
-        box-shadow:0 0 6px rgba(220,160,40,0.6);
-        vertical-align:middle; flex-shrink:0;
-      `;
-      label.appendChild(dot);
-      slipsSeen.add(slip.id);
-    }
-
-    if (!isUnlocked) {
-      const hint = document.createElement('span');
-      hint.className = 'drawer-slip-hint';
-      hint.textContent = `Read ${TRIGGER_LABELS[slip.trigger]} to unlock`;
-      el.appendChild(hint);
-    }
-
-    stack.appendChild(el);
-  });
-
-  document.getElementById('slip-drawer').classList.add('open');
-}
-
-function closeSlipDrawer() {
-  document.getElementById('slip-drawer').classList.remove('open');
-}
-
-function revealSlipsForCard(trigger) {
-  let newlyUnlocked = [];
-  ALL_SLIPS.forEach(slip => {
-    if (slip.trigger !== trigger) return;
-    if (slipsUnlocked.includes(slip.id)) return;
-    slipsUnlocked.push(slip.id);
-    newlyUnlocked.push(slip);
-  });
-  updateBookBadge();
-  if (slipsUnlocked.length > 0) {
-    document.getElementById('book-hotspot').classList.add('visible');
-  }
-  if (newlyUnlocked.length > 0) {
-    showSlipToast(newlyUnlocked.length);
-  }
-}
-
-function showSlipToast(count) {
-  let toast = document.getElementById('slip-toast');
+// ── CARD READ TOAST ───────────────────────────────────────────────────────────
+function showCardToast(title) {
+  let toast = document.getElementById('card-toast');
   if (!toast) {
     toast = document.createElement('div');
-    toast.id = 'slip-toast';
+    toast.id = 'card-toast';
     toast.style.cssText = `
       position:fixed;
       bottom:calc(clamp(140px,22vh,220px) + 52px);
@@ -2007,72 +1845,120 @@ function showSlipToast(count) {
     `;
     document.body.appendChild(toast);
   }
-  toast.textContent = count === 1 ? 'A new note has appeared.' : `${count} new notes have appeared.`;
+  // Check if all investigable cards now read
+  const allRead = [...INVESTIGABLE].every(s => cardsRead.has(s));
+  toast.textContent = allRead
+    ? 'You have read everything available. Isolde is waiting.'
+    : `${title} read.`;
   toast.style.opacity = '1';
   clearTimeout(toast._hideTimer);
-  toast._hideTimer = setTimeout(() => { toast.style.opacity = '0'; }, 2400);
-  // Pulse the book badge
-  const badge = document.getElementById('book-badge');
-  if (badge) {
-    badge.classList.remove('pulse');
-    void badge.offsetWidth;
-    badge.classList.add('pulse');
-    setTimeout(() => badge.classList.remove('pulse'), 800);
-  }
+  toast._hideTimer = setTimeout(() => { toast.style.opacity = '0'; }, 2600);
+
+  if (allRead) showAnswerInput();
 }
 
-// ── ANSWER HANDLING ───────────────────────────────────────────────────────────
-function handleSlipClick(slip, el) {
+// ── ANSWER INPUT ──────────────────────────────────────────────────────────────
+// ── ANSWER CHOICES ───────────────────────────────────────────────────────────
+const ANSWER_OPTIONS = [
+  {
+    text: 'The supervisor was right all along.',
+    correct: false,
+    response: `<stage>She is quiet for a moment.</stage>I told myself that too. He is careful and experienced. But I keep coming back to the Methods card — the step I cannot read.`
+  },
+  {
+    text: 'Check the correlation coefficient.',
+    correct: false,
+    response: `The correlation is 0.816 in all four. I computed it twice.<stage>A pause.</stage>It is the same number. Everything I compute gives me the same number.`
+  },
+  {
+    text: 'Draw the data.',
+    correct: true,
+    response: `<stage>She is still for a moment.</stage>Draw it.<stage>She opens her notebook slowly.</stage>I never — in two weeks I never once drew it. I just kept computing.<stage>She sketches quietly.</stage>They are completely different. Same numbers. Completely different shapes.<stage>She sets down her pen.</stage>The mean cannot see this. Nothing I computed could see this. It was always there.<stage>She closes the notebook.</stage>I need to go back. Thank you.`
+  },
+  {
+    text: 'Report the results as-is.',
+    correct: false,
+    response: `I did. Then I sat here.<stage>She looks at the folder on the table.</stage>Something in the Journal Article is still troubling me — the pages that are missing.`
+  },
+  {
+    text: 'The sample size is too small.',
+    correct: false,
+    response: `Eleven observations. My supervisor said it was adequate.<stage>She pauses.</stage>The BSc Textbook agrees. But the sentence that matters is the one that is obscured.`
+  },
+];
+
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function showAnswerInput() {
+  const speech = document.getElementById('speech');
+  const form   = document.getElementById('answer-form');
+  if (form.classList.contains('visible')) return;
+  speech.style.opacity = '0';
+  setTimeout(() => {
+    speech.style.display = 'none';
+    form.classList.add('visible');
+    renderAnswerChoices();
+  }, 500);
+}
+
+function renderAnswerChoices() {
+  const container = document.getElementById('answer-choices');
+  container.innerHTML = '';
+  const shuffled = shuffleArray(ANSWER_OPTIONS);
+  shuffled.forEach(option => {
+    const btn = document.createElement('button');
+    btn.className = 'answer-choice';
+    btn.textContent = option.text;
+    btn.onclick = () => handleChoice(option);
+    container.appendChild(btn);
+  });
+}
+
+function handleChoice(option) {
   if (gameEnded) return;
-  closeSlipDrawer();
+  // Disable all choices immediately
+  document.querySelectorAll('.answer-choice').forEach(b => b.disabled = true);
 
-  if (slip.correct) {
-    handleCorrectAnswer();
+  if (option.correct) {
+    handleCorrectAnswer(option.response);
   } else {
-    handleWrongAnswer(slip, el);
+    handleWrongAnswer(option.response);
   }
 }
 
-function handleWrongAnswer(slip, el) {
-  usedSlipIds.add(slip.id);
-  updateBookBadge();
-
+function handleWrongAnswer(response) {
   candleAttempts--;
   updateCandle();
 
-  // Flash screen red
   const flash = document.getElementById('wrong-flash');
   flash.classList.add('flash');
   setTimeout(() => flash.classList.remove('flash'), 400);
 
-  // Isolde's response — matched by wrong-slip order
-  const wrongIdx = ALL_SLIPS.filter(s => !s.correct).findIndex(s => s.id === slip.id);
-  const response = WRONG_RESPONSES[wrongIdx] ?? "That is not it.";
   showIsoldeResponse(response);
 
-  // Candle warnings
   if (candleAttempts === 2) {
     showCandleWarning('Isolde is losing patience.');
+    setTimeout(() => renderAnswerChoices(), 2200);
   } else if (candleAttempts === 1) {
     showCandleWarning('One chance remaining.');
-  } else if (candleAttempts <= 0) {
+    setTimeout(() => renderAnswerChoices(), 2200);
+  } else {
     gameEnded = true;
     setTimeout(() => triggerGameOver(), 2400);
   }
 }
 
-function handleCorrectAnswer() {
+function handleCorrectAnswer(response) {
   gameEnded = true;
-  showIsoldeResponse(
-    `<stage>She is still for a moment.</stage>` +
-    `Draw it.<stage>She opens her notebook slowly.</stage>` +
-    `I never — in two weeks I never once drew it. I just kept computing.<stage>She sketches, quietly.</stage>` +
-    `They are completely different. Same numbers. Completely different shapes.<stage>She sets down her pen.</stage>` +
-    `The mean cannot see this. Nothing I computed could see this. It was always there.` +
-    `<stage>She closes the notebook.</stage>` +
-    `I need to go back. Thank you.`
-  );
-  setTimeout(() => triggerWin(), 4200);
+  showIsoldeResponse(response);
+  setTimeout(() => triggerWin(), 4800);
 }
 
 function triggerGameOver() {
@@ -2080,7 +1966,6 @@ function triggerGameOver() {
 }
 
 function triggerWin() {
-  // Unlock all three reward cards simultaneously
   const unlocks = { humour: 'cursed', ragvirs_notes: 'cursed', graphs: 'intact' };
   SCENE.cards.forEach(c => {
     if (c && unlocks[c.slug]) c.condition = unlocks[c.slug];
@@ -2093,7 +1978,7 @@ function triggerWin() {
   document.getElementById('win-screen').classList.add('visible');
 }
 
-// Show candle + unlock initial slips when bookshelves open
+// Show candle when bookshelves opened
 function revealCards() {
   const btn = document.getElementById('bookshelves-btn');
   if (btn) btn.remove();
@@ -2101,8 +1986,6 @@ function revealCards() {
   document.getElementById('shelf-svg').style.pointerEvents = 'auto';
   document.getElementById('candle-wrap').classList.add('visible');
   updateCandle();
-  revealSlipsForCard('open');
-  document.getElementById('book-hotspot').classList.add('visible');
   renderShelves();
 }
 
@@ -2268,8 +2151,6 @@ function bindTip(el, text) {
 bindTip(document.getElementById('window-hotspot'), 'Look outside');
 bindTip(document.getElementById('isolde-hotspot'), 'Let her in');
 bindTip(document.getElementById('help-hotspot'), 'As Things Stand');
-bindTip(document.getElementById('book-hotspot'), 'Your notes');
-bindTip(document.getElementById('book-badge'), 'Your notes');
 bindTip(document.getElementById('candle-wrap'), 'Patience');
 
 function openHelp() {
