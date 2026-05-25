@@ -1450,13 +1450,14 @@ function devSkipIntro() {
   // Initialise scene 0
   sceneDialogue = [...SCENES[0].dialogue];
   document.getElementById('speech').innerHTML = '<p>' + sceneDialogue[0] + '</p>';
+  dialogueActive = true;
   // Add dev skip-to-scene buttons
   const devBar = document.getElementById('dev-bar');
   [1,2,3].forEach(i => {
     const btn = document.createElement('button');
     btn.className = 'dev-btn';
     btn.textContent = 'Scene ' + (i+1);
-    btn.onclick = () => { currentSceneIndex = i; loadScene(); };
+    btn.onclick = () => { currentSceneIndex = i; loadScene(); setTimeout(() => { dialogueActive = true; }, 600); };
     devBar.appendChild(btn);
   });
 }
@@ -2249,6 +2250,7 @@ function showIsoldeResponse(text) {
 // dialogue driven from current scene
 let sceneDialogue = [];
 let dialogueIndex = 0;
+let dialogueActive = false; // true for scenes 0-2 once narration ends
 
 function advanceDialogue() {
   dialogueIndex++;
@@ -2293,7 +2295,8 @@ function showCheckBookshelves() {
 let dialogueFinished = false;
 
 document.getElementById('speech').addEventListener('click', () => {
-  if (sceneState !== 'active') return;
+  // sceneState 'active' only set for Scene 3 (Isolde). Scenes 0-2 use dialogueActive flag.
+  if (sceneState !== 'active' && !dialogueActive) return;
   if (dialogueFinished) return;
   advanceDialogue();
 });
@@ -2517,6 +2520,7 @@ function loadScene() {
   sceneDialogue = [...scene.dialogue];
   dialogueIndex = 0;
   dialogueFinished = false;
+  dialogueActive = false;
   shelvesRevealed = false;
   statsGridComplete = false;
   methodsEngagementPassed = false;
@@ -2557,10 +2561,10 @@ function loadScene() {
     `A student has come to you with a problem.<br><br>` +
     `Examine the books on the shelves — hover to preview, click to read. Some are damaged. Some cannot be trusted.<br><br>` +
     `When you think you know what they need to hear, present an answer.<br><br>` +
-    `You have \${candleAttempts} chance\${candleAttempts !== 1 ? 's' : ''} remaining. The candle is already burning.`;
+    `You have ${candleAttempts} chance${candleAttempts !== 1 ? 's' : ''} remaining. The candle is already burning.`;
 
   // Set first dialogue line
-  speech.innerHTML = `<p>\${sceneDialogue[0]}</p>`;
+  speech.innerHTML = '<p>' + sceneDialogue[0] + '</p>';
   speech.style.opacity = '0';
 
   // Render shelves
@@ -2659,7 +2663,9 @@ function nextScene() {
       document.getElementById('speech').innerHTML = '<p>' + sceneDialogue[0] + '</p>';
       setTimeout(() => {
         document.getElementById('speech').style.opacity = '1';
-      }, 600);
+        // Scene 0 starts directly (no window hotspot)
+        startNarration(SCENES[0].narration);
+      }, 800);
     }, 1200);
   }
 }
@@ -2720,6 +2726,7 @@ function nextNarrationScene() {
 
     narrationTimers.push(setTimeout(() => {
       overlay.classList.remove('visible');
+      if (currentSceneIndex < 3) dialogueActive = true;
       setTimeout(() => {
         document.getElementById('speech').style.opacity = '1';
       }, 700);
