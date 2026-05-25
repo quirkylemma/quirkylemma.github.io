@@ -50,7 +50,7 @@ body {
   width:100vw;
   height:100vh;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
+  grid-template-rows: 1fr clamp(140px, 22vh, 220px);
 }
 
 /* Library background */
@@ -69,20 +69,30 @@ body {
   pointer-events:none;
 }
 
-/* ── PORTRAIT — fixed bottom-left ── */
+/* ── DIALOGUE ── */
+#dialogue {
+  grid-column:1;
+  grid-row:2;
+  display:flex;
+  flex-direction:row;
+  align-items:stretch;
+  background:rgba(14,9,3,0.92);
+  backdrop-filter:blur(10px);
+  overflow:hidden;
+  border-top:2px solid rgba(180,140,60,0.35);
+  box-shadow:0 -4px 18px rgba(0,0,0,0.45);
+}
+
 #portrait {
-  position:fixed;
-  bottom:0;
-  left:0;
-  width:clamp(100px,10vw,148px);
-  height:clamp(140px,20vh,240px);
-  z-index:25;
+  width:calc(18vh * 0.78);
+  flex-shrink:0;
   display:flex;
   flex-direction:column;
   align-items:stretch;
-  background:rgba(8,5,2,0.82);
-  border-top:1px solid rgba(180,140,60,0.3);
-  border-right:1px solid rgba(180,140,60,0.2);
+  justify-content:flex-start;
+  border-right:1px solid rgba(220,190,130,0.15);
+  height:100%;
+  position:relative;
   overflow:hidden;
 }
 
@@ -90,227 +100,63 @@ body {
   width:100%;
   flex:1;
   min-height:0;
-  object-fit:contain;
+  object-fit:cover;
   object-position:top center;
   display:block;
-  background:#0a0602;
 }
 
 #portrait-name {
   font-family:'Cinzel', serif;
-  font-size:clamp(9px,0.75vw,11px);
+  font-size:clamp(9px, 0.8vw, 12px);
   letter-spacing:0.15em;
   color:rgba(220,190,130,0.92);
   text-align:center;
   width:100%;
-  padding:6px 4px;
-  background:rgba(8,5,2,0.6);
+  padding:8px 4px;
+  background:rgba(8,5,2,0.5);
   flex-shrink:0;
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
-/* ── DIALOGUE — floating, auto-sizing, one line at a time ── */
-#dialogue {
-  position:fixed;
-  bottom:24px;
-  left:50%;
-  transform:translateX(-50%);
-  width:clamp(280px,33vw,520px);
-  z-index:30;
-  display:flex;
-  flex-direction:column;
-  background:rgba(10,6,2,0.88);
-  backdrop-filter:blur(12px);
-  border:1px solid rgba(180,140,60,0.35);
-  border-radius:6px;
-  box-shadow:0 8px 32px rgba(0,0,0,0.6);
-  overflow:hidden;
-  user-select:none;
-}
-
-#dialogue-handle {
-  height:20px;
-  background:rgba(180,140,60,0.07);
-  border-bottom:1px solid rgba(180,140,60,0.18);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:grab;
-  flex-shrink:0;
-}
-#dialogue-handle:active { cursor:grabbing; }
-#dialogue-handle::before {
-  content:'';
-  width:32px;
-  height:3px;
-  border-radius:2px;
-  background:rgba(180,140,60,0.3);
-}
-
-#speech {
-  padding:clamp(10px,1.4vh,16px) clamp(12px,1.6vw,20px);
+#speech { 
+  flex:1;
+  min-width:0;
+  padding:clamp(10px, 1.5vh, 20px) clamp(12px, 1.8vw, 24px);
   display:flex;
   align-items:flex-start;
-  overflow:hidden;
+  overflow-y:auto;
+  overflow-x:hidden;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(180,140,80,0.3) transparent;
   cursor:pointer;
   position:relative;
 }
 #speech::after {
   content:'▶';
   position:absolute;
-  bottom:10px;
-  right:14px;
-  font-size:11px;
-  color:rgba(220,190,130,0.35);
+  bottom:12px;
+  right:16px;
+  font-size:12px;
+  color:rgba(220,190,130,0.4);
   pointer-events:none;
   transition:color 0.3s;
 }
-#speech:hover::after { color:rgba(220,190,130,0.8); }
+#speech:hover::after {
+  color:rgba(220,190,130,0.85);
+}
 
 #speech p {
   font-family:'IM Fell English', serif;
   font-style:normal;
-  font-size:clamp(15px,1.35vw,18px);
-  line-height:1.65;
+  font-size:clamp(15px, 1.7vw, 22px);
+  line-height:1.7;
   color:rgba(235,215,175,0.92);
   word-wrap:break-word;
   overflow-wrap:break-word;
   width:100%;
-  margin:0;
 }
-
-/* ── ANSWER CHOICES ── */
-#answer-form {
-  width:100%;
-  padding:clamp(8px,1.2vh,14px) clamp(12px,1.6vw,20px);
-  display:none;
-  flex-direction:column;
-  gap:5px;
-  border-top:1px solid rgba(180,140,60,0.18);
-  flex-shrink:0;
-}
-#answer-form.visible { display:flex; }
-
-#answer-label {
-  font-family:'IM Fell English',serif;
-  font-style:italic;
-  font-size:clamp(14px,1.1vw,15px);
-  color:rgba(200,175,130,0.7);
-  line-height:1.45;
-  margin-bottom:4px;
-  flex-shrink:0;
-}
-#answer-choices {
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-}
-.answer-choice {
-  font-family:'IM Fell English',serif;
-  font-size:clamp(14px,1.1vw,15px);
-  color:rgba(230,205,160,0.88);
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(180,140,60,0.3);
-  padding:5px 10px;
-  border-radius:3px;
-  cursor:pointer;
-  transition:background 0.15s, border-color 0.15s;
-  text-align:left;
-  white-space:normal;
-  line-height:1.4;
-}
-.answer-choice:hover {
-  background:rgba(180,140,60,0.13);
-  border-color:rgba(180,140,60,0.65);
-}
-.answer-choice:disabled {
-  opacity:0.35;
-  cursor:default;
-  pointer-events:none;
-}
-
-/* ── INTENSITY INDICATOR ── */
-#intensity-wrap {
-  position:fixed;
-  top:20px;
-  right:20px;
-  z-index:26;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:4px;
-  opacity:0;
-  transition:opacity 0.8s;
-  pointer-events:none;
-}
-#intensity-wrap.visible { opacity:1; pointer-events:auto; }
-#intensity-flame {
-  width:18px;
-  height:26px;
-  border-radius:50% 50% 35% 35% / 60% 60% 40% 40%;
-  background:radial-gradient(ellipse at 50% 75%, rgba(255,200,60,1) 0%, rgba(255,120,20,0.9) 55%, transparent 100%);
-  box-shadow:0 0 10px rgba(255,160,40,0.8), 0 0 28px rgba(255,120,20,0.4);
-  animation:flicker 1.8s ease-in-out infinite alternate;
-  transition:transform 0.8s, opacity 0.8s, box-shadow 0.8s, background 0.8s;
-}
-#intensity-label {
-  font-family:'Cinzel',serif;
-  font-size:9px;
-  letter-spacing:0.18em;
-  text-transform:uppercase;
-  color:rgba(220,190,130,0.45);
-}
-
-@keyframes flicker {
-  from { transform:scaleY(1) scaleX(1); opacity:1; }
-  to   { transform:scaleY(0.88) scaleX(1.08); opacity:0.85; }
-}
-
-/* ── DEV MODE FLOATABLE ── */
-.dev-float-handle {
-  position:absolute;
-  top:0; left:0; right:0;
-  height:18px;
-  background:rgba(255,180,50,0.18);
-  border-bottom:1px solid rgba(255,180,50,0.4);
-  cursor:grab;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:1000;
-  border-radius:4px 4px 0 0;
-}
-.dev-float-handle:active { cursor:grabbing; }
-.dev-float-handle::before {
-  content:'⠿';
-  color:rgba(255,180,50,0.7);
-  font-size:12px;
-}
-.dev-floatable { position:fixed !important; }
-.dev-mode .dev-float-handle { display:flex; }
-
-/* ── DEV POSITION READOUT ── */
-#dev-readout {
-  position:fixed;
-  top:60px;
-  left:14px;
-  z-index:9999;
-  background:rgba(0,0,0,0.85);
-  border:1px solid rgba(255,180,50,0.4);
-  border-radius:4px;
-  padding:10px 14px;
-  font-family:monospace;
-  font-size:12px;
-  color:rgba(255,220,100,0.9);
-  line-height:1.8;
-  display:none;
-  min-width:220px;
-}
-.dev-mode #dev-readout { display:block; }
-
-/* ── STAGE DIRECTIONS ── */
 .stage-dir {
   display:block;
   font-style:italic;
@@ -569,11 +415,13 @@ body {
 /* ── CARD PANEL ── */
 #card-panel {
   position:fixed;
-  bottom:16px;
+  /* Sit above the dialogue panel, centred horizontally */
+  bottom:clamp(140px,22vh,220px);
   left:50%;
-  transform:translateX(-50%) translateY(calc(100% + 16px));
+  transform:translateX(-50%) translateY(calc(100% + clamp(140px,22vh,220px)));
   transition:transform 0.45s cubic-bezier(0.4,0,0.2,1);
-  --card-h: calc(100vh - 48px);
+  /* 16:9 ratio, sized to fit available vertical space above dialogue */
+  --card-h: calc(100vh - clamp(140px,22vh,220px) - 32px);
   --card-w: min(calc(var(--card-h) * 16 / 9), 96vw);
   width:var(--card-w);
   height:var(--card-h);
@@ -772,9 +620,51 @@ body {
   white-space:nowrap;
 }
 
-/* ── CANDLE FLAME PIPS (legacy - hidden, replaced by intensity) ── */
+/* ── CANDLE FLAME PIPS ── */
 #candle-wrap {
-  display:none;
+  position:fixed;
+  bottom:clamp(140px,22vh,220px);
+  left:0;
+  width:calc(18vh * 0.78);
+  min-width:120px;
+  z-index:20;
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:0 8px;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity 0.8s;
+}
+#candle-wrap.visible { opacity:1; pointer-events:auto; }
+#candle-flames {
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  gap:7px;
+}
+.candle-flame {
+  width:14px; height:14px;
+  border-radius:50% 50% 40% 40% / 60% 60% 40% 40%;
+  background:radial-gradient(ellipse at 50% 70%, rgba(255,200,60,1) 0%, rgba(255,120,20,0.9) 60%, transparent 100%);
+  box-shadow:0 0 8px rgba(255,160,40,0.7), 0 0 20px rgba(255,120,20,0.3);
+  transition:background 0.8s, box-shadow 0.8s, opacity 0.8s;
+  animation:flicker 1.8s ease-in-out infinite alternate;
+}
+.candle-flame:nth-child(2) { animation-delay:0.3s; animation-duration:2.1s; }
+.candle-flame:nth-child(3) { animation-delay:0.7s; animation-duration:1.6s; }
+@keyframes flicker {
+  from { transform:scaleY(1) scaleX(1); opacity:1; }
+  to   { transform:scaleY(0.88) scaleX(1.08); opacity:0.85; }
+}
+.candle-flame.spent {
+  background:rgba(40,25,10,0.4);
+  box-shadow:none;
+  animation:none;
+  border-radius:50%;
+  opacity:0.35;
 }
 #candle-warning {
   font-family:'IM Fell English',serif;
@@ -1037,12 +927,7 @@ body {
 <!-- DEV BAR -->
 <div id="dev-bar">
   <button class="dev-btn" onclick="devSkipIntro()">Skip Intro</button>
-  <button class="dev-btn" onclick="devEpilogue()">Epilogue</button>
-  <button class="dev-btn" id="dev-float-btn" onclick="devToggleFloat()">Dev Positions</button>
 </div>
-
-<!-- Dev position readout -->
-<div id="dev-readout"></div>
 
 <!-- Title screen -->
 <div id="title-screen">
@@ -1103,28 +988,12 @@ body {
 <!-- Candle warning toast -->
 <div id="candle-warning"></div>
 
-<!-- Intensity indicator (replaces candle) -->
-<div id="intensity-wrap">
-  <div id="intensity-flame"></div>
-  <div id="intensity-label">Intensity</div>
-</div>
-
-<!-- Portrait — fixed bottom-left, outside scene grid -->
-<div id="portrait" style="opacity:0;transition:opacity 0.8s;">
-  <div class="dev-float-handle"></div>
-  <img src="./aldricimages/isoldefenn.png" alt="">
-  <div id="portrait-name">Seren Davies</div>
-</div>
-
-<!-- Dialogue — floating draggable box -->
-<div id="dialogue">
-  <div id="dialogue-handle"></div>
-  <div id="speech" style="opacity:0;transition:opacity 0.8s;">
-    <p>The rain is still falling. Someone is waiting outside.</p>
-  </div>
-  <div id="answer-form">
-    <div id="answer-label">I have tried everything I can compute. What am I missing?</div>
-    <div id="answer-choices"></div>
+<!-- Candle attempts — flame pips, vertically on right edge -->
+<div id="candle-wrap">
+  <div id="candle-flames">
+    <div class="candle-flame" id="flame-0"></div>
+    <div class="candle-flame" id="flame-1"></div>
+    <div class="candle-flame" id="flame-2"></div>
   </div>
 </div>
 
@@ -1152,6 +1021,20 @@ body {
     <div id="narration">
       <div id="narration-text"></div>
       <button id="narration-btn" onclick="nextNarrationScene()">Continue</button>
+    </div>
+  </div>
+
+  <div id="dialogue">
+    <div id="portrait" style="opacity:0;transition:opacity 0.8s;">
+      <img src="./aldricimages/isoldefenn.png" alt="">
+      <div id="portrait-name">Seren Davies</div>
+    </div>
+    <div id="speech" style="opacity:0;transition:opacity 0.8s;">
+      <p>Forgive the intrusion. I was told someone here might be able to help.</p>
+    </div>
+    <div id="answer-form">
+      <div id="answer-label">I have tried everything I can compute. What am I missing?</div>
+      <div id="answer-choices"></div>
     </div>
   </div>
 
@@ -1364,9 +1247,9 @@ const SHELF_POLYS = [
   "796.0,575.8 871.1,565.0 873.2,660.2 797.4,651.0",   // 4 methods
   "891.8,563.5 893.2,658.7 976.6,678.6 977.9,543.5",   // 5 field_notes
   "891.1,694.0 892.5,798.4 947.6,823.0 959.3,718.5",   // 6 prob_tables
-  "20.7,197.6 111.0,257.5 111.0,307.8 17.2,264.7",     // 7 proposal
-  "20.7,286.3 116.5,328.1 118.5,386.8 17.9,373.6",     // 8 correspondence
-  "19.3,391.6 115.1,402.4 117.2,470.7 21.4,473.1",     // 9 almanac
+  "20.7,253.3 111.0,330.1 111.0,394.6 17.2,339.3",     // 7 proposal
+  "20.7,367.0 116.5,420.7 118.5,495.9 17.9,479.0",     // 8 correspondence
+  "19.3,502.1 115.1,515.9 117.2,603.4 21.4,606.5",     // 9 almanac
 ];
 
 let previewTimer = null;
@@ -1524,6 +1407,7 @@ function devSkipIntro() {
   document.getElementById('scene').style.visibility = 'visible';
   const skipBtn = document.querySelector('#dev-bar .dev-btn[onclick="devSkipIntro()"]');
   if (skipBtn) skipBtn.style.display = 'none';
+  // Initialise scene 0
   currentSceneIndex = 0;
   loadScene();
   // Add dev skip-to-scene buttons
@@ -1536,167 +1420,6 @@ function devSkipIntro() {
     devBar.appendChild(btn);
   });
 }
-
-function devEpilogue() {
-  // Jump directly to Scene 3 win state
-  document.getElementById('title-screen').style.display = 'none';
-  document.getElementById('intro').style.display = 'none';
-  document.getElementById('scene').style.visibility = 'visible';
-  currentSceneIndex = 3;
-  loadScene();
-  // Immediately fire the win
-  setTimeout(() => {
-    gameEnded = true;
-    triggerWin();
-  }, 400);
-}
-
-let devFloatActive = false;
-
-function devToggleFloat() {
-  devFloatActive = !devFloatActive;
-  document.body.classList.toggle('dev-mode', devFloatActive);
-  document.getElementById('dev-float-btn').style.background =
-    devFloatActive ? 'rgba(255,180,50,0.25)' : '';
-  if (devFloatActive) updateDevReadout();
-}
-
-function updateDevReadout() {
-  if (!devFloatActive) return;
-  const readout = document.getElementById('dev-readout');
-  const els = [
-    { id: 'portrait',       label: 'portrait' },
-    { id: 'intensity-wrap', label: 'intensity' },
-    { id: 'dialogue',       label: 'dialogue' },
-  ];
-  const btn = document.getElementById('bookshelves-btn');
-  let html = '';
-  els.forEach(({ id, label }) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const left   = el.style.left   || getComputedStyle(el).left;
-    const bottom = el.style.bottom || getComputedStyle(el).bottom;
-    const top    = el.style.top    || getComputedStyle(el).top;
-    html += `<b>${label}</b><br>left:${Math.round(r.left)}px top:${Math.round(r.top)}px<br>`;
-  });
-  if (btn) {
-    const r = btn.getBoundingClientRect();
-    html += `<b>bookshelves-btn</b><br>right:${Math.round(window.innerWidth-r.right)}px bottom:${Math.round(window.innerHeight-r.bottom)}px<br>`;
-  }
-  readout.innerHTML = html;
-  if (devFloatActive) requestAnimationFrame(updateDevReadout);
-}
-
-// ── DEV DRAG SYSTEM ───────────────────────────────────────────────────────────
-(function() {
-  // Elements that get dev-float handles
-  const FLOATABLES = [
-    { id: 'portrait',       anchor: 'bottom-left'   },
-    { id: 'intensity-wrap', anchor: 'top-right'     },
-  ];
-
-  function makeDevDraggable(el) {
-    const handle = el.querySelector('.dev-float-handle');
-    if (!handle) return;
-    let dragging = false, startX = 0, startY = 0, origLeft = 0, origTop = 0;
-
-    handle.addEventListener('mousedown', e => {
-      if (!devFloatActive) return;
-      e.preventDefault();
-      e.stopPropagation();
-      const rect = el.getBoundingClientRect();
-      el.style.left   = rect.left + 'px';
-      el.style.top    = rect.top  + 'px';
-      el.style.bottom = '';
-      el.style.right  = '';
-      el.style.transform = 'none';
-      startX = e.clientX; startY = e.clientY;
-      origLeft = rect.left; origTop = rect.top;
-      dragging = true;
-      handle.style.cursor = 'grabbing';
-    });
-
-    document.addEventListener('mousemove', e => {
-      if (!dragging) return;
-      const dx = e.clientX - startX;
-      const dy = e.clientY - startY;
-      el.style.left = Math.max(0, Math.min(window.innerWidth  - el.offsetWidth,  origLeft + dx)) + 'px';
-      el.style.top  = Math.max(0, Math.min(window.innerHeight - el.offsetHeight, origTop  + dy)) + 'px';
-    });
-
-    document.addEventListener('mouseup', () => {
-      if (!dragging) return;
-      dragging = false;
-      handle.style.cursor = 'grab';
-    });
-  }
-
-  // Init draggables on load
-  FLOATABLES.forEach(({ id }) => {
-    const el = document.getElementById(id);
-    if (el) makeDevDraggable(el);
-  });
-
-  // Dialogue drag (always active, not just dev mode)
-  const dlg    = document.getElementById('dialogue');
-  const dhandle = document.getElementById('dialogue-handle');
-  let dlgDragging = false, dStartX = 0, dStartY = 0, dOrigLeft = 0, dOrigBottom = 0;
-
-  dhandle.addEventListener('mousedown', e => {
-    e.preventDefault();
-    dlgDragging = true;
-    const rect = dlg.getBoundingClientRect();
-    dlg.style.transform = 'none';
-    dlg.style.left   = rect.left + 'px';
-    dlg.style.bottom = (window.innerHeight - rect.bottom) + 'px';
-    dlg.style.top    = '';
-    dStartX = e.clientX; dStartY = e.clientY;
-    dOrigLeft   = rect.left;
-    dOrigBottom = window.innerHeight - rect.bottom;
-    dhandle.style.cursor = 'grabbing';
-  });
-
-  document.addEventListener('mousemove', e => {
-    if (!dlgDragging) return;
-    const dx = e.clientX - dStartX;
-    const dy = e.clientY - dStartY;
-    let nl = dOrigLeft   + dx;
-    let nb = dOrigBottom - dy;
-    nl = Math.max(0, Math.min(window.innerWidth  - dlg.offsetWidth,  nl));
-    nb = Math.max(0, Math.min(window.innerHeight - dlg.offsetHeight, nb));
-    dlg.style.left   = nl + 'px';
-    dlg.style.bottom = nb + 'px';
-  });
-
-  document.addEventListener('mouseup', () => {
-    if (!dlgDragging) return;
-    dlgDragging = false;
-    dhandle.style.cursor = 'grab';
-  });
-
-  // Touch for dialogue
-  dhandle.addEventListener('touchstart', e => {
-    const t = e.touches[0];
-    const rect = dlg.getBoundingClientRect();
-    dlg.style.transform = 'none';
-    dlg.style.left   = rect.left + 'px';
-    dlg.style.bottom = (window.innerHeight - rect.bottom) + 'px';
-    dStartX = t.clientX; dStartY = t.clientY;
-    dOrigLeft = rect.left; dOrigBottom = window.innerHeight - rect.bottom;
-    dlgDragging = true;
-  }, { passive: true });
-  document.addEventListener('touchmove', e => {
-    if (!dlgDragging) return;
-    const t = e.touches[0];
-    let nl = dOrigLeft   + (t.clientX - dStartX);
-    let nb = dOrigBottom - (t.clientY - dStartY);
-    nl = Math.max(0, Math.min(window.innerWidth  - dlg.offsetWidth,  nl));
-    nb = Math.max(0, Math.min(window.innerHeight - dlg.offsetHeight, nb));
-    dlg.style.left = nl + 'px'; dlg.style.bottom = nb + 'px';
-  }, { passive: true });
-  document.addEventListener('touchend', () => { dlgDragging = false; });
-})();
 
 let sceneState = 'waiting'; // waiting | active | resolvedlet sceneState = 'waiting'; // waiting | active | resolved
 
@@ -1736,12 +1459,14 @@ function admitStudent() {
   const portraitImg = portrait.querySelector('img');
   const portraitName = document.getElementById('portrait-name');
   portraitImg.src = scene.portraitImg;
-  portraitImg.style.filter = '';
+  // Only apply silhouette filter if using placeholder portrait
+  const isPlaceholder = scene.portraitImg.includes('isoldefenn') && scene.sceneIndex !== 3;
+  portraitImg.style.filter = isPlaceholder ? 'brightness(0) opacity(0.35)' : '';
   portraitName.textContent = scene.student;
 
-  // Dim speech while narration plays
+  // Blank speech while narration plays
   const speech = document.getElementById('speech');
-  speech.style.opacity = '0.25';
+  speech.style.opacity = '0';
   speech.style.cursor = 'default';
 
   // Fade in portrait
@@ -2467,7 +2192,7 @@ function showIsoldeResponse(text) {
     speech.innerHTML = `<p>${formatted}</p>`;
     speech.style.opacity = '1';
     speech.style.cursor = 'default';
-  }, 300);
+  }, 400);
   closeCardPanel();
 }
 
@@ -2501,8 +2226,8 @@ function showCheckBookshelves() {
   btn.textContent = 'Check bookshelves';
   btn.style.cssText = `
     position:fixed;
-    bottom:24px;
-    right:24px;
+    bottom:16px;
+    left:50%; transform:translateX(-50%);
     z-index:999;
     font-family:'Cinzel',serif; font-size:14px;
     letter-spacing:0.2em; text-transform:uppercase;
@@ -2547,21 +2272,13 @@ let gameEnded      = false;
 // Investigable cards — read from current scene
 function getInvestigable() { return currentScene().investigable; }
 
-// ── INTENSITY INDICATOR ──────────────────────────────────────────────────────
-function updateIntensity() {
-  const flame = document.getElementById('intensity-flame');
-  if (!flame) return;
-  // 3 attempts = full, 2 = dimmer, 1 = barely alive, 0 = out
-  const levels = [
-    { scale: 1.0, opacity: 1,    shadow: '0 0 10px rgba(255,160,40,0.8), 0 0 28px rgba(255,120,20,0.4)' },
-    { scale: 0.7, opacity: 0.65, shadow: '0 0 6px rgba(255,140,30,0.5), 0 0 14px rgba(200,80,10,0.2)' },
-    { scale: 0.45,opacity: 0.35, shadow: '0 0 4px rgba(200,100,20,0.3)' },
-    { scale: 0.2, opacity: 0.12, shadow: 'none' },
-  ];
-  const l = levels[3 - candleAttempts] || levels[3];
-  flame.style.transform = `scale(${l.scale})`;
-  flame.style.opacity = l.opacity;
-  flame.style.boxShadow = l.shadow;
+// ── CANDLE ───────────────────────────────────────────────────────────────────
+function updateCandle() {
+  for (let i = 0; i < 3; i++) {
+    const flame = document.getElementById(`flame-${i}`);
+    if (!flame) continue;
+    flame.classList.toggle('spent', i >= candleAttempts);
+  }
 }
 
 function showCandleWarning(text) {
@@ -2620,11 +2337,16 @@ function shuffleArray(arr) {
 }
 
 function showAnswerInput() {
-  const form = document.getElementById('answer-form');
+  const speech = document.getElementById('speech');
+  const form   = document.getElementById('answer-form');
   if (form.classList.contains('visible')) return;
+  speech.style.opacity = '0';
   document.getElementById('answer-label').textContent = currentScene().answerLabel;
-  form.classList.add('visible');
-  renderAnswerChoices();
+  setTimeout(() => {
+    speech.style.display = 'none';
+    form.classList.add('visible');
+    renderAnswerChoices();
+  }, 500);
 }
 
 function renderAnswerChoices() {
@@ -2654,7 +2376,7 @@ function handleChoice(option) {
 
 function handleWrongAnswer(response) {
   candleAttempts--;
-  updateIntensity();
+  updateCandle();
 
   const flash = document.getElementById('wrong-flash');
   flash.classList.add('flash');
@@ -2760,19 +2482,12 @@ function loadScene() {
   const speech = document.getElementById('speech');
   const form = document.getElementById('answer-form');
   speech.style.display = '';
-  speech.style.cursor = 'pointer';
+  speech.style.cursor = 'default';
   speech.style.opacity = '1';
   speech.innerHTML = '<p style="font-style:italic;color:rgba(200,175,130,0.55);">The rain is still falling. Someone is waiting outside.</p>';
   form.classList.remove('visible');
   document.getElementById('shelf-svg').style.pointerEvents = 'none';
-  document.getElementById('intensity-wrap').classList.remove('visible');
-
-  // Reset dialogue to default position
-  const dlg = document.getElementById('dialogue');
-  dlg.style.left = '50%';
-  dlg.style.bottom = '24px';
-  dlg.style.top = '';
-  dlg.style.transform = 'translateX(-50%)';
+  document.getElementById('candle-wrap').classList.remove('visible');
 
   // Remove old bookshelves button
   const oldBtn = document.getElementById('bookshelves-btn');
@@ -2794,14 +2509,14 @@ function loadScene() {
   renderShelves();
 }
 
-// Show intensity when bookshelves opened
+// Show candle when bookshelves opened
 function revealCards() {
   const btn = document.getElementById('bookshelves-btn');
   if (btn) btn.remove();
   shelvesRevealed = true;
   document.getElementById('shelf-svg').style.pointerEvents = 'auto';
-  document.getElementById('intensity-wrap').classList.add('visible');
-  updateIntensity();
+  document.getElementById('candle-wrap').classList.add('visible');
+  updateCandle();
   renderShelves();
 }
 
@@ -3139,13 +2854,15 @@ document.getElementById('portrait-name').textContent = SCENES[0].student;
 bindTip(document.getElementById('window-hotspot'), 'Look outside');
 document.getElementById('isolde-hotspot').addEventListener('mouseenter', e => {
   const student = currentScene().student.split(' ')[0];
+  const scene = currentScene();
+  // Determine pronoun — Marcus uses he/him
   const male = ['Marcus'];
   const pronoun = male.includes(student) ? 'him' : 'her';
   showTip('Let ' + pronoun + ' in', e);
 });
 document.getElementById('isolde-hotspot').addEventListener('mousemove', e => moveTip(e));
 document.getElementById('isolde-hotspot').addEventListener('mouseleave', hideTip);
-bindTip(document.getElementById('intensity-wrap'), 'Candle intensity');
+bindTip(document.getElementById('candle-wrap'), 'Patience');
 
 </script>
 
