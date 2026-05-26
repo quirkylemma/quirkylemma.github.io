@@ -304,7 +304,7 @@ body {
 #narration-text {
   font-family:'IM Fell English',serif;
   font-style:italic;
-  font-size:clamp(15px,1.7vw,22px);
+  font-size:clamp(19px,2.2vw,28px);
   line-height:1.9;
   color:rgba(235,215,175,0.88);
   text-align:center;
@@ -416,12 +416,12 @@ body {
 #card-panel {
   position:fixed;
   /* Sit above the dialogue panel, centred horizontally */
-  bottom:clamp(140px,22vh,220px);
+  bottom:calc(clamp(140px,22vh,220px) + 12px);
   left:50%;
-  transform:translateX(-50%) translateY(calc(100% + clamp(140px,22vh,220px)));
+  transform:translateX(-50%) translateY(calc(100% + clamp(140px,22vh,220px) + 12px));
   transition:transform 0.45s cubic-bezier(0.4,0,0.2,1);
   /* 16:9 ratio, sized to fit available vertical space above dialogue */
-  --card-h: calc(100vh - clamp(140px,22vh,220px) - 32px);
+  --card-h: calc(100vh - clamp(140px,22vh,220px) - 44px);
   --card-w: min(calc(var(--card-h) * 16 / 9), 96vw);
   width:var(--card-w);
   height:var(--card-h);
@@ -537,6 +537,40 @@ body {
 .tb-text { font-family:'IM Fell English',serif; font-size:clamp(17px,1.5vw,21px); line-height:1.85; color:rgba(40,10,5,0.85); margin-bottom:8px; }
 .tb-eq { margin:12px 0 12px 12px; padding:8px 12px; border-left:2px solid rgba(60,15,10,0.2); background:rgba(60,15,10,0.04); border-radius:0 3px 3px 0; }
 .tb-damaged { font-family:'IM Fell English',serif; font-style:italic; font-size:clamp(15px,1.2vw,17px); color:rgba(60,15,10,0.4); margin-top:16px; border-top:1px solid rgba(60,15,10,0.15); padding-top:10px; }
+
+/* Cursed parchment — high contrast text over dark purple background */
+.cursed-parchment #card-panel-title,
+.cursed-parchment #card-panel-subtitle {
+  color:rgba(255,255,255,0.95);
+  text-shadow: 0 0 8px rgba(0,0,0,0.8);
+}
+.cursed-parchment .tb-chapter,
+.cursed-parchment .tb-section,
+.cursed-parchment .tb-text,
+.cursed-parchment .tb-damaged,
+.cursed-parchment .tb-eq,
+.cursed-parchment .tb-inline {
+  color:#111 !important;
+  text-shadow:
+    -1px -1px 0 #fff,
+     1px -1px 0 #fff,
+    -1px  1px 0 #fff,
+     1px  1px 0 #fff,
+     0    0   4px rgba(255,255,255,0.8);
+}
+.cursed-parchment .tb-eq {
+  border-left-color: rgba(0,0,0,0.3);
+  background: rgba(255,255,255,0.25);
+}
+.cursed-parchment [style*="font-family:'IM Fell English'"],
+.cursed-parchment [style*='font-family:"IM Fell English"'] {
+  color:#111 !important;
+  text-shadow:
+    -1px -1px 0 #fff,
+     1px -1px 0 #fff,
+    -1px  1px 0 #fff,
+     1px  1px 0 #fff;
+}
 
 
 .parchment-table {
@@ -1428,13 +1462,21 @@ function openWindowView() {
   const isoldeHotspot = document.getElementById('isolde-hotspot');
   const img = document.getElementById('window-overlay-img');
 
-  if (sceneState === 'waiting') {
-    img.src = currentScene().outsideImg;
-    isoldeHotspot.style.display = 'block';
-  } else {
-    img.src = './aldricimages/emptystreet.png';
-    isoldeHotspot.style.display = 'none';
-  }
+  // Hide image immediately to prevent ghost of previous image showing during fade
+  img.style.opacity = '0';
+
+  const newSrc = sceneState === 'waiting'
+    ? currentScene().outsideImg
+    : './aldricimages/emptystreet.png';
+
+  isoldeHotspot.style.display = sceneState === 'waiting' ? 'block' : 'none';
+
+  img.onload = () => {
+    img.style.transition = 'opacity 0.4s';
+    img.style.opacity = '1';
+  };
+
+  img.src = newSrc;
   overlay.classList.add('visible');
 }
 
@@ -1830,6 +1872,10 @@ function openCard(card) {
   document.getElementById('card-panel-title').textContent = content.title;
   document.getElementById('card-panel-subtitle').textContent = content.subtitle;
   document.getElementById('card-panel-body').innerHTML = content.body;
+
+  // Apply cursed text style when parchment background is dark
+  const content_el = document.getElementById('card-parchment-content');
+  content_el.classList.toggle('cursed-parchment', card.condition === 'cursed');
 
   // Render KaTeX elements if present
   if (window.katex) {
