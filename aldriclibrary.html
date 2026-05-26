@@ -1043,8 +1043,8 @@ body {
 <script>
 const CONDITION_LABELS = {
   intact:    'Fully readable and usable.',
-  cursed:    'Looks intact — but may be unreliable.',
-  damaged:   'Partial content. Use with caution.',
+  cursed:    'Contains an error. Something here needs correcting.',
+  damaged:   'Incomplete. Something here needs filling in.',
   destroyed: 'Unreadable. You know it exists.',
   locked:    'Inaccessible until unlocked.',
 };
@@ -1078,7 +1078,7 @@ const SCENES = [
       null,
       { number: 2,  slug: 'bsc_text_s1',      title: 'BSc Textbook',       condition: 'intact' },
       null,
-      { number: 12, slug: 'field_notes_s1',    title: 'On Distributional Comparison', condition: 'cursed' },
+      { number: 6,  slug: 'field_notes_s1',    title: 'MSc Textbook',                 condition: 'cursed' },
       null,
       { number: 1,  slug: 'methods_s1',       title: 'Methods',            condition: 'intact' },
       { number: 3,  slug: 'ragvirs_notes_s1', title: "Ragvir's Notes",     condition: 'intact' },
@@ -1267,7 +1267,7 @@ const SLUG_TO_IMG = {
   // Scene 0
   'data_s1':         '01_data',
   'bsc_text_s1':     '05_bsc_textbook',
-  'field_notes_s1':  '12_humour',
+  'field_notes_s1':  '06_msc_textbook',
   'methods_s1':      '02_methods',
   'ragvirs_notes_s1':'09_ragvirs_notes',
   // Scene 1
@@ -1479,8 +1479,8 @@ function admitStudent() {
 // ── CARD PANEL ───────────────────────────────────────────────────────────────
 const PARCHMENT_BG = {
   intact:  './aldricimages/parchmentintact.png',
-  damaged: './aldricimages/parchmentintact.png',
-  cursed:  './aldricimages/parchmentintact.png',
+  damaged: './aldricimages/parchmentdamaged.png',
+  cursed:  './aldricimages/parchmentcursed.png',
   locked:  './aldricimages/parchmentintact.png',
 };
 
@@ -1634,12 +1634,12 @@ const CARD_CONTENT = {
       <div class="tb-eq" data-katex="\\bar{x} = \\dfrac{1}{n}\\sum_{i=1}^{n} x_i"></div>
       <div class="tb-text">The sample mean provides a measure of central tendency. To compare two groups on the same measure, compute the mean for each and compare directly.</div>
       <div class="tb-section">3.2 Interpreting the Mean</div>
-      <div class="tb-text">The mean summarises a distribution with a single number. It answers the question: what value is typical for this group? It does not describe variability, shape, or extreme values.</div>`,
+      <div class="tb-text">The mean summarises a distribution with a single number. It answers the question: what is the average value for this group? It does not describe variability, shape, or extreme values.</div>`,
   },
   field_notes_s1: {
-    title: 'On the Comparison of Empirical Distributions',
-    subtitle: 'Provenance unknown. No institutional affiliation. Treat with caution.',
-    body: `<div class="tb-chapter">On the Comparison of Empirical Distributions</div>
+    title: 'MSc Textbook',
+    subtitle: 'Advanced Statistical Methods — Chapter 4. Provenance uncertain.',
+    body: `<div class="tb-chapter">Chapter 4 — Comparing Empirical Distributions</div>
       <div class="tb-text">When two samples are drawn from the same population, a comparison of arithmetic means will often appear sufficient. It is rarely so. The mean is a first-order summary — it collapses the full distributional shape into a single value and discards all information about spread, skewness, and tail behaviour.</div>
       <div class="tb-text">Before any numerical comparison is made, the analyst should examine both distributions visually. A quantile-quantile plot — in which the quantiles of one sample are plotted against the quantiles of the other — will immediately reveal whether the two distributions share the same shape, or merely the same centre.</div>
       <div class="tb-text">If the points fall along the diagonal, the distributions are similar in form and a mean comparison may proceed. If they deviate — curves, steps, outlying tails — the mean comparison will be technically correct and substantively misleading.</div>
