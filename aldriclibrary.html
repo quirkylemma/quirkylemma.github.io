@@ -1071,21 +1071,21 @@ const SCENES = [
     ],
     dialogue: [
       "I hope I'm not interrupting. Someone in the department said the library might have something on this.",
-      "I have the exam scores for two tutorial groups — different demonstrators, same paper. My supervisor wants to know which group performed better. I don't know how to summarise it fairly."
+      "I have the exam scores for two tutorial groups — different teachers, same paper. My supervisor wants to know which group performed better. I don't know how to summarise it fairly."
     ],
     cards: [
       { number: 15, slug: 'data_s1',          title: 'Data',               condition: 'intact' },
       null,
       { number: 2,  slug: 'bsc_text_s1',      title: 'BSc Textbook',       condition: 'intact' },
       null,
-      { number: 4,  slug: 'msc_text_s1',      title: 'A Pocket Reference', condition: 'cursed' },
+      { number: 12, slug: 'field_notes_s1',    title: 'On Distributional Comparison', condition: 'cursed' },
       null,
       { number: 1,  slug: 'methods_s1',       title: 'Methods',            condition: 'intact' },
       { number: 3,  slug: 'ragvirs_notes_s1', title: "Ragvir's Notes",     condition: 'intact' },
       null, null,
     ],
-    investigable: new Set(['data_s1','bsc_text_s1','msc_text_s1','methods_s1']),
-    gatedCard: 'msc_text_s1',
+    investigable: new Set(['data_s1','bsc_text_s1','field_notes_s1','methods_s1']),
+    gatedCard: 'field_notes_s1',
     answerOptions: [
       { text: 'Compare the means.', correct: true,
         response: "<stage>She looks at the two numbers.</stage>Group B. That is it, isn't it. The mean is higher, so the group performed better on average.<stage>She writes it down.</stage>That was simpler than I expected. I thought I was missing something more complicated.<stage>A pause before she gathers her things.</stage>Though I suppose this only tells me the average. Not whether anyone in Group A did particularly well or badly." },
@@ -1095,7 +1095,7 @@ const SCENES = [
         response: "That would work — a dummy variable regression would give me the same answer. But my supervisor asked for a simple summary statistic.<stage>She pauses.</stage>I think the mean is what she has in mind." },
       { text: 'The groups are too different to compare.', correct: false,
         response: "They sat the same exam, set by the same lecturer.<stage>She looks at the data card.</stage>I think they can be compared. I just need a way to do it." },
-      { text: 'Ask the demonstrators directly.', correct: false,
+      { text: 'Ask the teachers directly.', correct: false,
         response: "I need something objective. A number I can show my supervisor.<stage>She looks at her folder.</stage>There must be a way to get that from the data itself." },
     ],
   },
@@ -1267,7 +1267,7 @@ const SLUG_TO_IMG = {
   // Scene 0
   'data_s1':         '01_data',
   'bsc_text_s1':     '05_bsc_textbook',
-  'msc_text_s1':     '06_msc_textbook',
+  'field_notes_s1':  '12_humour',
   'methods_s1':      '02_methods',
   'ragvirs_notes_s1':'09_ragvirs_notes',
   // Scene 1
@@ -1598,7 +1598,7 @@ const CARD_CONTENT = {
   // ── SCENE 0 cards ──────────────────────────────────────────────────────────
   data_s1: {
     title: 'Data — Exam Scores',
-    subtitle: 'Two tutorial groups. Same paper, different demonstrators.',
+    subtitle: 'Two tutorial groups. Same paper, different teachers.',
     body: `<div class="tb-text" style="font-style:italic;color:rgba(60,35,10,0.7);margin-bottom:12px;line-height:1.7;">The scores for both groups are here. Use the copy button below to take them with you.</div>
     <table class="parchment-table">
       <thead>
@@ -1636,23 +1636,24 @@ const CARD_CONTENT = {
       <div class="tb-section">3.2 Interpreting the Mean</div>
       <div class="tb-text">The mean summarises a distribution with a single number. It answers the question: what value is typical for this group? It does not describe variability, shape, or extreme values.</div>`,
   },
-  msc_text_s1: {
-    title: 'A Pocket Reference for the Quantitative Sciences',
-    subtitle: 'Advanced reference. Condition uncertain — treat with caution.',
-    body: `<div class="tb-chapter">On Measures of Central Tendency</div>
-      <div class="tb-text">The mean of a random variable <span class="tb-inline" data-katex="X"></span> is its <em>expected value</em> — the theoretical long-run average across all possible realisations:</div>
-      <div class="tb-eq" data-katex="\\mu = E[X] = \\int_{-\\infty}^{\\infty} x \\, f(x) \\, dx"></div>
-      <div class="tb-text">The sample mean <span class="tb-inline" data-katex="\\bar{x}"></span> estimates <span class="tb-inline" data-katex="\\mu"></span> from observed data. The two are related — but they are not the same thing.</div>
-      <div class="tb-damaged">Note: Take care to distinguish between the population parameter and its sample estimate.</div>
-      <div id="msc-s1-engagement" style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(60,35,10,0.15);">
+  field_notes_s1: {
+    title: 'On the Comparison of Empirical Distributions',
+    subtitle: 'Provenance unknown. No institutional affiliation. Treat with caution.',
+    body: `<div class="tb-chapter">On the Comparison of Empirical Distributions</div>
+      <div class="tb-text">When two samples are drawn from the same population, a comparison of arithmetic means will often appear sufficient. It is rarely so. The mean is a first-order summary — it collapses the full distributional shape into a single value and discards all information about spread, skewness, and tail behaviour.</div>
+      <div class="tb-text">Before any numerical comparison is made, the analyst should examine both distributions visually. A quantile-quantile plot — in which the quantiles of one sample are plotted against the quantiles of the other — will immediately reveal whether the two distributions share the same shape, or merely the same centre.</div>
+      <div class="tb-text">If the points fall along the diagonal, the distributions are similar in form and a mean comparison may proceed. If they deviate — curves, steps, outlying tails — the mean comparison will be technically correct and substantively misleading.</div>
+      <div class="tb-text">To compare means without first examining the distributions is to assume the answer to a question you have not yet asked.</div>
+      <div class="tb-damaged">Note: This document has no named author or institutional affiliation. Provenance unknown. The argument is internally consistent. Whether the question it is answering is the right question is a separate matter.</div>
+      <div id="field-notes-s1-engagement" style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(60,35,10,0.15);">
         <div style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(17px,1.5vw,20px);color:rgba(40,20,5,0.75);margin-bottom:10px;line-height:1.6;">
-          Seren has fifteen exam scores for each group. Which of these correctly describes what she is computing?
+          Seren's supervisor asked which group performed better on average. Does this document's argument apply to her question?
         </div>
         <div data-choice-area style="display:flex;flex-direction:column;gap:6px;"></div>
-        <div id="msc-s1-response" style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(17px,1.5vw,20px);color:rgba(40,20,5,0.65);margin-top:10px;line-height:1.6;display:none;"></div>
+        <div id="field-notes-s1-response" style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(17px,1.5vw,20px);color:rgba(40,20,5,0.65);margin-top:10px;line-height:1.6;display:none;"></div>
       </div>`,
-    isoldeResponse: `<stage>She reads it carefully.</stage>Expected value. Population mean.<stage>She looks up.</stage>But I do not have a population. I have fifteen students.`,
-    onOpen: 'renderMscS1Engagement',
+    isoldeResponse: `<stage>She reads it carefully, then reads it again.</stage>A QQ plot first. To check the shapes match before comparing the centres.<stage>She looks up.</stage>But my supervisor said "which group did better." Not "do these distributions have the same form."<stage>A pause.</stage>I think this is good advice for a different question than the one I was asked.`,
+    onOpen: 'renderFieldNotesS1Engagement',
   },
   methods_s1: {
     title: 'Methods',
@@ -1671,7 +1672,8 @@ const CARD_CONTENT = {
       <div class="tb-text">You are standing in what remains of the east reading room. The Storm took the rest.</div>
       <div class="tb-text">Most of what survives here was chosen because it helped someone understand something they could not see before. Some of it is damaged. Some of it I am no longer certain is correct.</div>
       <div class="tb-text">People will come to you with questions. Your job is not to solve the problem — it is to help them find the right tool for the right question.</div>
-      <div class="tb-text">The mean is a beginning. It is not an ending.</div>`,
+      <div class="tb-text">The mean is a beginning. It is not an ending.</div>
+      <div class="tb-damaged" style="margin-top:20px;padding-top:14px;border-top:1px solid rgba(60,35,10,0.12);font-size:clamp(14px,1.1vw,16px);line-height:1.8;">The east annex crate has been set aside. I have not yet decided what to do with it. The college has asked me to hand it over. I am not prepared to do that — not until I understand what is in it, and whether it belongs here or somewhere it cannot cause confusion.<br><br>This is not a decision I am making lightly.</div>`,
   },
 
   // ── SCENE 1 cards ──────────────────────────────────────────────────────────
@@ -1874,7 +1876,7 @@ function openCard(card) {
   // Call any onOpen renderer — delay ensures DOM settled after innerHTML + KaTeX
   if (content.onOpen === 'renderMethodsStats') setTimeout(renderMethodsStats, 50);
   if (content.onOpen === 'renderAnscombeGraphs') setTimeout(renderAnscombeGraphs, 50);
-  if (content.onOpen === 'renderMscS1Engagement') setTimeout(renderMscS1Engagement, 50);
+  if (content.onOpen === 'renderFieldNotesS1Engagement') setTimeout(renderFieldNotesS1Engagement, 50);
   if (content.onOpen === 'renderPseudoS2Engagement') setTimeout(renderPseudoS2Engagement, 50);
   if (content.onOpen === 'renderGraphsS3') setTimeout(renderGraphsS3, 50);
 
@@ -2688,24 +2690,21 @@ function bindTip(el, text) {
 
 // ── SCENE-CARD ENGAGEMENT RENDERERS ─────────────────────────────────────────
 
-// Scene 0 — MSc Text cursed engagement (sample vs population mean)
-function renderMscS1Engagement() {
-  console.log('[MSC] renderMscS1Engagement called');
-  const eng = document.getElementById('msc-s1-engagement');
-  console.log('[MSC] eng:', eng);
-  if (!eng) { console.log('[MSC] ABORT: eng not found'); return; }
-  if (cardsRead.has('msc_text_s1')) { eng.style.opacity='0.45'; console.log('[MSC] already read'); return; }
+// Scene 0 — Field Notes cursed engagement (QQ plot visual check vs descriptive mean)
+function renderFieldNotesS1Engagement() {
+  const eng = document.getElementById('field-notes-s1-engagement');
+  if (!eng) return;
+  if (cardsRead.has('field_notes_s1')) { eng.style.opacity='0.45'; return; }
   const choiceArea = eng.querySelector('[data-choice-area]');
-  console.log('[MSC] choiceArea:', choiceArea);
-  if (!choiceArea) { console.log('[MSC] ABORT: choiceArea not found'); return; }
+  if (!choiceArea) return;
   choiceArea.innerHTML = '';
   const opts = [
-    { text: 'The expected value of the distribution — E[X].', passes: false,
-      response: 'E[X] is the population expectation — the theoretical mean of all possible values. Seren has fifteen observed scores. That is a sample, not a population.' },
-    { text: 'The sample mean — the average of her fifteen observed scores.', passes: true,
-      response: '<stage>She nods slowly.</stage>Yes. She has data. Fifteen numbers. The sample mean is the right description.' },
-    { text: 'The true average of the group.', passes: false,
-      response: '"True average" implies the population parameter μ. Seren has a sample estimate x̅. They are related — but they are not the same thing.' },
+    { text: 'Yes — a QQ plot should always precede a mean comparison.', passes: false,
+      response: 'A QQ plot is good practice when the question concerns distributional form. Seren\'s supervisor asked which group performed better on average — a question about central tendency. The document\'s advice is sound in general; it does not apply to this specific question.' },
+    { text: 'No — her supervisor asked about central tendency, not distributional shape.', passes: true,
+      response: '<stage>She sets the document down.</stage>Yes. The question was which group did better on average. That is a mean comparison. The QQ plot argument is correct advice — for a different question than the one she was asked.<stage>She looks at the data card.</stage>The right tool for the right question.' },
+    { text: 'Yes — the mean is always misleading without first checking distributional shape.', passes: false,
+      response: 'The mean is a reliable measure of central tendency when the question concerns central tendency — which Seren\'s supervisor\'s question does. A QQ plot adds value when distributional form is in question. Here it is not.' },
   ];
   const wrap = document.createElement('div');
   wrap.style.cssText = 'display:flex;flex-direction:column;gap:6px;';
@@ -2715,7 +2714,7 @@ function renderMscS1Engagement() {
     btn.style.cssText = `font-family:'IM Fell English',serif;font-size:clamp(17px,1.4vw,20px);color:rgba(40,20,5,0.82);background:rgba(60,35,10,0.06);border:1px solid rgba(60,35,10,0.22);padding:6px 12px;border-radius:3px;cursor:pointer;text-align:left;transition:background 0.15s;`;
     btn.onmouseover = () => btn.style.background = 'rgba(60,35,10,0.14)';
     btn.onmouseout  = () => btn.style.background = 'rgba(60,35,10,0.06)';
-    btn.onclick = () => handleCardEngagement(opt, eng, 'msc-s1-response', 'msc_text_s1');
+    btn.onclick = () => handleCardEngagement(opt, eng, 'field-notes-s1-response', 'field_notes_s1');
     wrap.appendChild(btn);
   });
   choiceArea.appendChild(wrap);
