@@ -1092,11 +1092,10 @@ const SCENES = [
       null,
       { number: 6,  slug: 'msc_text_s1',    title: 'MSc Textbook',                 condition: 'cursed' },
       null,
-      { number: 1,  slug: 'methods_s1',       title: 'Methods',            condition: 'damaged' },
-      { number: 3,  slug: 'ragvirs_notes_s1', title: "Ragvir's Notes",     condition: 'intact' },
+      null,
       null, null,
     ],
-    investigable: new Set(['data_s1','bsc_text_s1','msc_text_s1','methods_s1']),
+    investigable: new Set(['data_s1','bsc_text_s1','msc_text_s1']),
     gatedCard: 'msc_text_s1',
     answerLabel: 'I need to show my supervisor which group did better. What do I do?',
     answerOptions: [
@@ -1116,11 +1115,11 @@ const SCENES = [
   {
     sceneIndex: 1,
     student: 'Marcus Osei',
-    answerLabel: 'Both averages are identical. How do I tell which portfolio is safer?',
-    winTitle: 'He sees it.',
-    winText: 'Two portfolios. Identical average returns.<br><br>One barely moves. The other swings wildly.<br><br>The mean told him nothing useful. Variance told him everything.',
+    answerLabel: 'The means are identical. The variances are identical. What do I tell my supervisor?',
+    winTitle: 'He has a question.',
+    winText: 'Two portfolios. Identical means. Identical variances. Every summary statistic the same.<br><br>But Marcus had looked at the data. Something was there that the numbers weren\'t saying.<br><br>He came in wanting an answer. He left with a better question.',
     winCardReveal: '',
-    betweenText: 'He leaves satisfied. The library is quiet again. The candle is still burning.',
+    betweenText: 'He leaves with more questions than he arrived with. The library settles. The candle is still burning.',
     outsideImg: './aldricimages/marcusrain.png',
     portraitImg: './aldricimages/marcusosei.png',
     narration: [
@@ -1128,80 +1127,36 @@ const SCENES = [
     ],
     dialogue: [
       "I've been going in circles on this for two days. The numbers keep coming back the same and I know that can't be the whole story.",
-      "Two investment portfolios, ten years of annual returns each. Identical averages — both sitting at around seven percent. My lecturer says one is clearly safer. I cannot see it in the means."
+      "Two investment portfolios, eleven years of annual returns each. Identical averages — both sitting at nine. My supervisor says one is clearly safer. I cannot see it in the means."
     ],
     cards: [
       null,
       { number: 15, slug: 'data_s2',      title: 'Data',         condition: 'intact'  },
       null,
       { number: 15, slug: 'bsc_text_s2',  title: 'BSc Textbook', condition: 'intact'  },
-      { number: 1,  slug: 'methods_s2',   title: 'Methods',      condition: 'damaged' },
       null,
       { number: 10, slug: 'pseudocode_s2',title: 'Pseudocode',   condition: 'cursed'  },
       null, null, null,
+      { number: 13, slug: 'mystery_s2',   title: 'Mystery Item', condition: 'intact'  },
     ],
-    investigable: new Set(['data_s2','bsc_text_s2','pseudocode_s2','methods_s2']),
+    investigable: new Set(['data_s2','bsc_text_s2','pseudocode_s2','mystery_s2']),
     gatedCard: 'pseudocode_s2',
     answerOptions: [
-      { text: 'Compare the variances.', correct: true,
-        response: "<stage>He stares at the variance figures.</stage>Portfolio A. Of course — the returns barely move. Portfolio B is all over the place, even if the average is the same.<stage>He exhales.</stage>The mean told me nothing useful here. It was the wrong question.<stage>He closes the folder.</stage>Two datasets. Same average. Completely different behaviour. I wonder how often that happens." },
-      { text: 'The portfolios are effectively the same.', correct: false,
-        response: "My lecturer specifically said one is safer. The means being identical is the problem, not the conclusion.<stage>He looks back at the shelves.</stage>There must be something the average is not showing." },
+      { text: 'I computed the variance for both portfolios. Correcting for degrees of freedom, both give the same answer. The summary statistics cannot distinguish them.', correct: true,
+        response: "<stage>He stares at the two variance figures.</stage>They are the same. The means are the same, the variances are the same. I have computed everything I know how to compute and the answer is always the same number.<stage>He looks at the data again.</stage>And yet looking at them — they are not the same. One barely moves. The other has a year that is completely different from all the others.<stage>He closes the folder.</stage>My supervisor saw something. I want to know what it was. I am going to ask him." },
+      { text: 'The variance of Portfolio B is higher — the returns are more spread out.', correct: false,
+        response: "I thought so too from looking at the data. But the numbers do not support it.<stage>He checks his calculation.</stage>The variance is the same for both. I must be reading the data wrong." },
       { text: 'Compare the means again — there must be an error.', correct: false,
-        response: "I've checked the means three times. They are both approximately seven percent.<stage>He pauses.</stage>That is exactly why I'm here. The means are not the answer." },
+        response: "I've checked the means three times. They are both exactly nine.<stage>He pauses.</stage>That is exactly why I'm here. The means are not the answer." },
       { text: 'Run a regression on the returns.', correct: false,
         response: "Regression against what? I just have the annual figures for each portfolio.<stage>He looks uncertain.</stage>I'm not sure what the second variable would be." },
-      { text: 'Choose the one with the highest single-year return.', correct: false,
-        response: "That is exactly what a risk-averse investor shouldn't do.<stage>He shakes his head.</stage>I need consistency, not the best possible year." },
+      { text: 'The variance of Portfolio A is higher — the returns are more spread out.', correct: false,
+        response: "Portfolio A does range more widely — four to fourteen. But when I compute the variance properly, both portfolios give the same answer.<stage>He frowns.</stage>The spread looks different but the numbers say otherwise." },
     ],
   },
-  // Scene 2 — Regression (Elias Berry)
+  // Scene 2 — Anscombe (Isolde Fenn)
   {
     sceneIndex: 2,
-    student: 'Elias Berry',
-    answerLabel: 'I can see the pattern in the data. How do I put a number on it?',
-    winTitle: 'He has it.',
-    winText: 'Thirty students. Revision hours and exam scores.<br><br>A relationship was there all along. Regression named it.<br><br>The slope is the finding.',
-    winCardReveal: '',
-    betweenText: 'He leaves without ceremony. The library holds its breath. The next one will be different.',
-    outsideImg: './aldricimages/eliasrain.png',
-    portraitImg: './aldricimages/eliasberry.png',
-    narration: [
-      "The third student doesn't pause at the door. He already has his notebook open. He has come here with a thesis, not just a question.",
-      "He wants to prove something. That is not the same as wanting to understand something — but it is often where understanding begins."
-    ],
-    dialogue: [
-      "I'm a teaching assistant. I've been tracking my students' revision hours and their exam scores. There's clearly a pattern — I just need to formalise it.",
-      "Mean and variance won't answer this, will they. I need to show the relationship between the two variables. Something quantitative I can put in my report."
-    ],
-    cards: [
-      { number: 15, slug: 'data_s3',    title: 'Data',            condition: 'intact'  },
-      { number: 12, slug: 'journal_s3', title: 'Journal Article', condition: 'intact'  },
-      null,
-      { number: 2,  slug: 'bsc_text_s3',title: 'BSc Textbook',   condition: 'damaged' },
-      null,
-      { number: 14, slug: 'graphs_s3',  title: 'Graphs',          condition: 'cursed'  },
-      { number: 1,  slug: 'methods_s3', title: 'Methods',         condition: 'intact'  },
-      null, null, null,
-    ],
-    investigable: new Set(['data_s3','bsc_text_s3','journal_s3','graphs_s3']),
-    gatedCard: 'graphs_s3',
-    answerOptions: [
-      { text: 'Run a linear regression.', correct: true,
-        response: "<stage>He reads the regression section carefully, then nods once.</stage>Regression. The slope is what I needed — each additional hour of revision is associated with approximately 2.3 more marks.<stage>He writes that down without looking up.</stage>I was treating the two variables as separate things. They're not separate.<stage>He closes his notebook.</stage>The model describes the relationship. Whether it explains it is a different question." },
-      { text: 'Compare the means of revision hours and exam scores separately.', correct: false,
-        response: "That would tell me the average hours and average score. But I already know students revise and students score — I need to know if one is related to the other.<stage>He looks back at the shelves.</stage>Something here must address this more directly." },
-      { text: 'Compute the variance of exam scores.', correct: false,
-        response: "The scores vary, yes. But variance doesn't tell me whether revision is driving that variation.<stage>He taps his notebook.</stage>I need something that works across both variables at once." },
-      { text: 'The sample size is too small for conclusions.', correct: false,
-        response: "Thirty observations is standard for this kind of analysis. My supervisor approved the design.<stage>He looks at the data card.</stage>The sample isn't the problem." },
-      { text: 'There is no statistical way to quantify this.', correct: false,
-        response: "There must be. The relationship is there — I can see it in the data.<stage>He looks at the shelves carefully.</stage>I just need to find the right tool." },
-    ],
-  },
-  // Scene 3 — Anscombe (Isolde Fenn)
-  {
-    sceneIndex: 3,
     student: 'Isolde Fenn',
     answerLabel: 'I have tried everything I can compute. What am I missing?',
     winTitle: 'She sees it.',
@@ -1280,19 +1235,13 @@ const SLUG_TO_IMG = {
   'data_s1':         '01_data',
   'bsc_text_s1':     '05_bsc_textbook',
   'msc_text_s1':  '06_msc_textbook',
-  'methods_s1':      '02_methods',
   'ragvirs_notes_s1':'09_ragvirs_notes',
   // Scene 1
   'data_s2':         '01_data',
   'bsc_text_s2':     '15_animations',
   'pseudocode_s2':   '11_pseudo_code',
-  'methods_s2':      '02_methods',
+  'mystery_s2':      '13_mystery_item',
   // Scene 2
-  'data_s3':         '01_data',
-  'bsc_text_s3':     '05_bsc_textbook',
-  'journal_s3':      '07_journal_articles',
-  'graphs_s3':       '10_graphs',
-  'methods_s3':      '02_methods',
 };
 
 function cardImgSrc(card) {
@@ -1424,16 +1373,16 @@ function devSkipIntro() {
   loadScene();
   // Add dev skip-to-scene buttons
   const devBar = document.getElementById('dev-bar');
-  [1,2,3].forEach(i => {
+  [1,2].forEach(i => {
     const btn = document.createElement('button');
     btn.className = 'dev-btn';
-    btn.textContent = 'Scene ' + (i+1);
+    btn.textContent = 'Scene ' + (i + 1);
     btn.onclick = () => { currentSceneIndex = i; loadScene(); setTimeout(() => { dialogueActive = true; }, 600); };
     devBar.appendChild(btn);
   });
 }
 
-let sceneState = 'waiting'; // waiting | active | resolvedlet sceneState = 'waiting'; // waiting | active | resolved
+let sceneState = 'waiting'; // waiting | active | resolved
 
 function openWindowView() {
   const overlay = document.getElementById('window-overlay');
@@ -1672,44 +1621,6 @@ const CARD_CONTENT = {
     onOpen: 'renderMscTextS1Engagement',
     isoldeResponse: 'Something about this textbook does not sit right with me. Why is it coloured so oddly?',
   },
-  methods_s1: {
-    title: 'Methods',
-    subtitle: 'A working checklist. Steps 1 and 2. Partially damaged.',
-    body: `<div class="tb-chapter">Standard Analytical Procedure</div>
-      <div class="tb-text">Before drawing conclusions from any dataset, work through the following steps in order.</div>
-      <div class="tb-section">Step 1 — Check the data</div>
-      <div class="tb-text">Verify observation count. Identify missing values. Check for obvious entry errors. Confirm units are consistent.</div>
-      <div class="tb-section">Step 2 — Compute summary statistics</div>
-      <div class="tb-text">Calculate the mean for each group using the formula from the textbook. Enter your results below.</div>
-      <div id="methods-s1-inputs" style="margin:12px 0 4px;">
-        <table style="font-family:'IM Fell English',serif;font-size:clamp(17px,1.4vw,20px);border-collapse:collapse;">
-          <tr>
-            <td style="padding:5px 14px 5px 0;color:rgba(40,20,5,0.75);">Group A mean</td>
-            <td><input id="ms1-mean-a" type="text" inputmode="decimal"
-              style="width:70px;font-family:'IM Fell English',serif;font-size:clamp(17px,1.4vw,20px);
-                     color:rgba(40,10,5,0.85);background:rgba(60,35,10,0.05);
-                     border:none;border-bottom:1.5px solid rgba(60,35,10,0.25);
-                     padding:3px 6px;outline:none;text-align:center;
-                     transition:border-color 0.2s,background 0.2s;"
-              placeholder="—"></td>
-          </tr>
-          <tr>
-            <td style="padding:5px 14px 5px 0;color:rgba(40,20,5,0.75);">Group B mean</td>
-            <td><input id="ms1-mean-b" type="text" inputmode="decimal"
-              style="width:70px;font-family:'IM Fell English',serif;font-size:clamp(17px,1.4vw,20px);
-                     color:rgba(40,10,5,0.85);background:rgba(60,35,10,0.05);
-                     border:none;border-bottom:1.5px solid rgba(60,35,10,0.25);
-                     padding:3px 6px;outline:none;text-align:center;
-                     transition:border-color 0.2s,background 0.2s;"
-              placeholder="—"></td>
-          </tr>
-        </table>
-        <div id="ms1-feedback" style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(16px,1.3vw,18px);color:rgba(40,20,5,0.6);margin-top:8px;min-height:1.4em;"></div>
-      </div>
-      <div class="tb-damaged">The remainder of this page is water-damaged and unreadable.</div>`,
-    onOpen: 'renderMethodsS1Inputs',
-    isoldeResponse: 'This looks damaged. There seems to be missing information.',
-  },
   ragvirs_notes_s1: {
     title: "Ragvir's Notes",
     subtitle: 'Personal annotation. Left here for you.',
@@ -1725,26 +1636,27 @@ const CARD_CONTENT = {
   // ── SCENE 1 cards ──────────────────────────────────────────────────────────
   data_s2: {
     title: 'Data — Portfolio Returns',
-    subtitle: 'Two investment portfolios. Ten years of annual returns.',
-    body: `<div class="tb-text" style="font-style:italic;color:rgba(60,35,10,0.7);margin-bottom:12px;line-height:1.7;">Annual returns for both portfolios over ten years. Use the copy button below.</div>
+    subtitle: 'Two investment portfolios. Eleven years of annual returns.',
+    body: `<div class="tb-text" style="font-style:italic;color:rgba(60,35,10,0.7);margin-bottom:12px;line-height:1.7;">Annual returns for both portfolios over eleven years. Use the copy button below.</div>
     <table class="parchment-table">
       <thead>
         <tr><th>Year</th><td class="sep"></td><th class="ds-header">Portfolio A (%)</th><td class="sep"></td><th class="ds-header">Portfolio B (%)</th></tr>
       </thead>
       <tbody>
-        <tr><td>1</td><td class="sep"></td><td>6.8</td><td class="sep"></td><td>2.1</td></tr>
-        <tr><td>2</td><td class="sep"></td><td>7.2</td><td class="sep"></td><td>14.3</td></tr>
-        <tr><td>3</td><td class="sep"></td><td>6.9</td><td class="sep"></td><td>1.2</td></tr>
-        <tr><td>4</td><td class="sep"></td><td>7.1</td><td class="sep"></td><td>15.8</td></tr>
-        <tr><td>5</td><td class="sep"></td><td>6.7</td><td class="sep"></td><td>0.4</td></tr>
-        <tr><td>6</td><td class="sep"></td><td>7.3</td><td class="sep"></td><td>13.9</td></tr>
-        <tr><td>7</td><td class="sep"></td><td>7.0</td><td class="sep"></td><td>3.2</td></tr>
-        <tr><td>8</td><td class="sep"></td><td>6.8</td><td class="sep"></td><td>11.7</td></tr>
-        <tr><td>9</td><td class="sep"></td><td>7.2</td><td class="sep"></td><td>2.8</td></tr>
-        <tr><td>10</td><td class="sep"></td><td>7.0</td><td class="sep"></td><td>14.6</td></tr>
+        <tr><td>1</td><td class="sep"></td><td>10</td><td class="sep"></td><td>8</td></tr>
+        <tr><td>2</td><td class="sep"></td><td>8</td><td class="sep"></td><td>8</td></tr>
+        <tr><td>3</td><td class="sep"></td><td>13</td><td class="sep"></td><td>8</td></tr>
+        <tr><td>4</td><td class="sep"></td><td>9</td><td class="sep"></td><td>8</td></tr>
+        <tr><td>5</td><td class="sep"></td><td>11</td><td class="sep"></td><td>8</td></tr>
+        <tr><td>6</td><td class="sep"></td><td>14</td><td class="sep"></td><td>8</td></tr>
+        <tr><td>7</td><td class="sep"></td><td>6</td><td class="sep"></td><td>8</td></tr>
+        <tr><td>8</td><td class="sep"></td><td>4</td><td class="sep"></td><td>19</td></tr>
+        <tr><td>9</td><td class="sep"></td><td>12</td><td class="sep"></td><td>8</td></tr>
+        <tr><td>10</td><td class="sep"></td><td>7</td><td class="sep"></td><td>8</td></tr>
+        <tr><td>11</td><td class="sep"></td><td>5</td><td class="sep"></td><td>8</td></tr>
       </tbody>
     </table>`,
-    csv: "year,portfolio_A,portfolio_B\n1,6.8,2.1\n2,7.2,14.3\n3,6.9,1.2\n4,7.1,15.8\n5,6.7,0.4\n6,7.3,13.9\n7,7.0,3.2\n8,6.8,11.7\n9,7.2,2.8\n10,7.0,14.6",
+    csv: "year,portfolio_A,portfolio_B\n1,10,8\n2,8,8\n3,13,8\n4,9,8\n5,11,8\n6,14,8\n7,6,8\n8,4,19\n9,12,8\n10,7,8\n11,5,8",
   },
   bsc_text_s2: {
     title: 'Animations',
@@ -1808,85 +1720,42 @@ const CARD_CONTENT = {
     isoldeResponse: `<stage>He reads through the steps.</stage>The algorithm looks right to me. But that note is unsettling.<stage>He looks at the divisor.</stage>Wait.`,
     onOpen: 'renderPseudoS2Engagement',
   },
-  methods_s2: {
-    title: 'Methods',
-    subtitle: 'A working checklist. Steps 1 and 2.',
-    body: `<div class="tb-chapter">Standard Analytical Procedure</div>
-      <div class="tb-text">Before drawing conclusions from any dataset, work through the following steps in order.</div>
-      <div class="tb-section">Step 1 — Check the data</div>
-      <div class="tb-text">Verify observation count. Identify missing values. Check for obvious entry errors. Confirm units are consistent.</div>
-      <div class="tb-section">Step 2 — Compute summary statistics</div>
-      <div class="tb-text">Calculate the mean and variance for each variable. The mean answers which is higher on average. The variance answers how consistent or volatile the values are. When two datasets share the same mean, variance becomes the decisive measure.</div>`,
+  mystery_s2: {
+    title: 'Mystery Item',
+    subtitle: 'Origin unknown. Handle with appropriate caution.',
+    body: `<div id="mystery-s2-chat" style="
+      display:flex;flex-direction:column;height:100%;gap:0;
+      font-family:monospace;
+    ">
+      <div id="mystery-s2-transcript" style="
+        flex:1;min-height:0;overflow-y:auto;
+        padding:8px 2px 12px;
+        scrollbar-width:thin;scrollbar-color:rgba(60,35,10,0.3) transparent;
+        display:flex;flex-direction:column;gap:14px;
+      "></div>
+      <div id="mystery-s2-input-row" style="
+        display:flex;align-items:center;gap:8px;
+        padding-top:10px;border-top:1px solid rgba(60,35,10,0.18);
+        flex-shrink:0;
+      ">
+        <span style="font-family:monospace;font-size:clamp(16px,1.3vw,18px);color:rgba(60,35,10,0.5);">&gt;</span>
+        <input id="mystery-s2-input" type="text" inputmode="decimal"
+          placeholder="enter a number"
+          style="flex:1;font-family:monospace;font-size:clamp(16px,1.3vw,18px);
+                 color:rgba(40,10,5,0.85);background:transparent;
+                 border:none;border-bottom:1.5px solid rgba(60,35,10,0.25);
+                 padding:4px 6px;outline:none;
+                 transition:border-color 0.2s;">
+      </div>
+      <div id="mystery-s2-nudge" style="
+        font-family:monospace;font-size:clamp(15px,1.2vw,17px);
+        color:rgba(140,60,20,0.7);min-height:1.4em;
+        padding:6px 2px 0;flex-shrink:0;
+      "></div>
+    </div>`,
+    onOpen: 'renderMysteryS2',
   },
 
-  // ── SCENE 2 cards ──────────────────────────────────────────────────────────
-  data_s3: {
-    title: 'Data — Revision and Exam Scores',
-    subtitle: 'Thirty students. Weekly revision hours and final exam score.',
-    body: `<div class="tb-text" style="font-style:italic;color:rgba(60,35,10,0.7);margin-bottom:12px;line-height:1.7;">Elias's student data. Thirty observations, two variables.</div>
-    <table class="parchment-table">
-      <thead>
-        <tr><th class="ds-header" colspan="2">Student Data (n=30)</th></tr>
-        <tr><th>Revision hrs/wk</th><th>Exam score</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>2</td><td>41</td></tr><tr><td>3</td><td>48</td></tr>
-        <tr><td>4</td><td>52</td></tr><tr><td>4</td><td>55</td></tr>
-        <tr><td>5</td><td>57</td></tr><tr><td>5</td><td>60</td></tr>
-        <tr><td>6</td><td>62</td></tr><tr><td>6</td><td>65</td></tr>
-        <tr><td>7</td><td>67</td></tr><tr><td>7</td><td>70</td></tr>
-        <tr><td>8</td><td>68</td></tr><tr><td>8</td><td>72</td></tr>
-        <tr><td>9</td><td>74</td></tr><tr><td>9</td><td>75</td></tr>
-        <tr><td>10</td><td>76</td></tr><tr><td>10</td><td>78</td></tr>
-        <tr><td>11</td><td>79</td></tr><tr><td>11</td><td>80</td></tr>
-        <tr><td>12</td><td>81</td></tr><tr><td>12</td><td>83</td></tr>
-        <tr><td>13</td><td>84</td></tr><tr><td>13</td><td>85</td></tr>
-        <tr><td>14</td><td>86</td></tr><tr><td>14</td><td>87</td></tr>
-        <tr><td>15</td><td>88</td></tr><tr><td>15</td><td>89</td></tr>
-        <tr><td>16</td><td>90</td></tr><tr><td>16</td><td>91</td></tr>
-        <tr><td>18</td><td>93</td></tr><tr><td>20</td><td>95</td></tr>
-      </tbody>
-    </table>`,
-    csv: "revision_hours,exam_score\n2,41\n3,48\n4,52\n4,55\n5,57\n5,60\n6,62\n6,65\n7,67\n7,70\n8,68\n8,72\n9,74\n9,75\n10,76\n10,78\n11,79\n11,80\n12,81\n12,83\n13,84\n13,85\n14,86\n14,87\n15,88\n15,89\n16,90\n16,91\n18,93\n20,95",
-  },
-  bsc_text_s3: {
-    title: 'BSc Textbook',
-    subtitle: 'Introductory Statistics — Chapter 3. Handle with caution.',
-    body: `<div class="tb-chapter">Chapter 3 — Descriptive Statistics</div>
-      <div class="tb-section">3.1–3.2 Mean and Variance (summary)</div>
-      <div class="tb-text">The mean and variance describe individual variables. When the question concerns the relationship between two variables, a different approach is required.</div>
-      <div class="tb-section">3.3 Linear Regression</div>
-      <div class="tb-text">Given two variables <span class="tb-inline" data-katex="x"></span> and <span class="tb-inline" data-katex="y"></span>, the simple linear regression model is:</div>
-      <div class="tb-eq" data-katex="y = \\alpha + \\beta x + \\varepsilon"></div>
-      <div class="tb-text">The slope <span class="tb-inline" data-katex="\\beta"></span> is estimated as:</div>
-      <div class="tb-eq" data-katex="\\hat{\\beta} = \\dfrac{\\sum(x_i - \\bar{x})(y_i - \\bar{y})}{\\sum(x_i - \\bar{x})^2}"></div>
-      <div class="tb-text">The slope quantifies the association: for each one-unit increase in <span class="tb-inline" data-katex="x"></span>, the fitted model predicts a change of <span class="tb-inline" data-katex="\\hat{\\beta}"></span> in <span class="tb-inline" data-katex="y"></span>.</div>
-      <div class="tb-damaged">[ Section 3.4 — Interpreting regression output. Pages missing. ]</div>`,
-    isoldeResponse: `The slope. That is what I needed — a number that describes how much one variable moves with the other.<stage>She looks at the formula.</stage>I have been treating them as separate things. They are not separate.`,
-  },
-  journal_s3: {
-    title: 'Journal Article — On Regression in Educational Research',
-    subtitle: 'Intact. A worked example of regression analysis.',
-    body: `<div class="tb-chapter">On the Use of Linear Regression in Educational Research</div>
-      <div class="tb-text">Regression analysis has been widely applied to questions of educational attainment. Where a researcher suspects that one variable is associated with another — study time and performance, for instance — regression provides a formal framework for quantifying that association.</div>
-      <div class="tb-text">The slope coefficient is the central finding. It answers the practical question: for a student who revises one additional hour per week, how much higher might we expect their score to be?</div>
-      <div class="tb-text">It is worth emphasising that a regression slope describes association, not causation. A well-fitted line summarises the data we have. It does not explain why the pattern exists, nor does it guarantee the pattern will hold beyond the observed range of values.</div>
-      <div class="tb-text">Before fitting a model, it is good practice to examine the data directly. Regression applied to data with unexpected structure — outliers, curvature, clustering — will describe that structure precisely and incorrectly.</div>`,
-    isoldeResponse: `<stage>She reads it carefully.</stage>The slope coefficient. That is the finding.<stage>She pauses at the last paragraph.</stage>Examine the data directly. Before fitting a model.<stage>She looks up.</stage>I skipped that step.`,
-  },
-  graphs_s3: {
-    title: 'Graphs — Student Performance',
-    subtitle: 'A scatter plot of the student data. Condition uncertain.',
-    body: `<div id="graphs-s3-container"></div>
-      <div id="graphs-s3-engagement" style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(60,35,10,0.15);">
-        <div style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(17px,1.5vw,20px);color:rgba(40,20,5,0.75);margin-bottom:10px;line-height:1.6;">
-          This plot is missing something. What would make it analytically useful?
-        </div>
-        <div data-choice-area style="display:flex;flex-direction:column;gap:6px;"></div>
-        <div id="graphs-s3-response" style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(17px,1.5vw,20px);color:rgba(40,20,5,0.65);margin-top:10px;line-height:1.6;display:none;"></div>
-      </div>`,
-    onOpen: 'renderGraphsS3',
-  },
 };
 
 let currentCard = null;
@@ -1951,14 +1820,13 @@ function openCard(card) {
   // Call any onOpen renderer — delay ensures DOM settled after innerHTML + KaTeX
   if (content.onOpen === 'renderMethodsStats') setTimeout(renderMethodsStats, 50);
   if (content.onOpen === 'renderAnscombeGraphs') setTimeout(renderAnscombeGraphs, 50);
-  if (content.onOpen === 'renderMethodsS1Inputs') setTimeout(renderMethodsS1Inputs, 50);
   if (content.onOpen === 'renderMscTextS1Engagement') setTimeout(renderMscTextS1Engagement, 50);
   if (content.onOpen === 'renderPseudoS2Engagement') setTimeout(renderPseudoS2Engagement, 50);
-  if (content.onOpen === 'renderGraphsS3') setTimeout(renderGraphsS3, 50);
+  if (content.onOpen === 'renderMysteryS2') setTimeout(renderMysteryS2, 50);
   if (content.onOpen === 'initBesselVideo') setTimeout(initBesselVideo, 50);
 
   // Track card read — gated cards not marked until engagement/input complete
-  const gated = new Set([currentScene().gatedCard, 'methods_s1', 'pseudocode_s2', 'graphs_s3', 'bsc_text_s2']);
+  const gated = new Set([currentScene().gatedCard, 'pseudocode_s2', 'bsc_text_s2', 'mystery_s2']);
   if (!gated.has(card.slug)) markCardRead(card.slug);
 }
 
@@ -2533,7 +2401,7 @@ function handleCorrectAnswer(response) {
   // Show the correct response in the speech panel
   showIsoldeResponse(response);
 
-  // After a beat, append closing line and Continue button to answer form
+  // After a beat, show closing line in speech and Continue button fixed at bottom centre
   setTimeout(() => {
     const form = document.getElementById('answer-form');
     const choices = document.getElementById('answer-choices');
@@ -2546,11 +2414,24 @@ function handleCorrectAnswer(response) {
     requestAnimationFrame(() => requestAnimationFrame(() => { closing.style.opacity = '1'; }));
 
     const continueBtn = document.createElement('button');
-    continueBtn.className = 'answer-choice';
+    continueBtn.id = 'continue-btn';
     continueBtn.textContent = 'Continue';
-    continueBtn.style.cssText += 'opacity:0;transition:opacity 0.6s;margin-top:6px;';
-    continueBtn.onclick = () => triggerWin();
-    choices.appendChild(continueBtn);
+    continueBtn.style.cssText = `
+      position:fixed;
+      bottom:16px;
+      left:50%; transform:translateX(-50%);
+      z-index:999;
+      font-family:'Cinzel',serif; font-size:14px;
+      letter-spacing:0.2em; text-transform:uppercase;
+      color:rgba(220,190,130,0.85); background:rgba(10,6,2,0.7);
+      border:1px solid rgba(180,140,60,0.4); padding:8px 22px;
+      border-radius:3px; cursor:pointer; opacity:0; transition:opacity 0.4s;
+      white-space:nowrap;
+    `;
+    continueBtn.onmouseover = () => { continueBtn.style.background = 'rgba(180,140,60,0.15)'; continueBtn.style.borderColor = 'rgba(180,140,60,0.8)'; };
+    continueBtn.onmouseout  = () => { continueBtn.style.background = 'rgba(10,6,2,0.7)'; continueBtn.style.borderColor = 'rgba(180,140,60,0.4)'; };
+    continueBtn.onclick = () => { continueBtn.remove(); triggerWin(); };
+    document.body.appendChild(continueBtn);
     setTimeout(() => { continueBtn.style.opacity = '1'; }, 600);
   }, 1600);
 }
@@ -2558,7 +2439,7 @@ function handleCorrectAnswer(response) {
 function triggerGameOver() {
   const scene = currentScene();
   const firstName = scene.student.split(' ')[0];
-  const male = ['Marcus', 'Elias'];
+  const male = ['Marcus'];
   const pronoun = male.includes(firstName) ? 'He' : 'She';
   const pronounLower = pronoun.toLowerCase();
   document.getElementById('game-over-title').textContent = pronoun + ' is gone.';
@@ -2568,7 +2449,7 @@ function triggerGameOver() {
 
 function triggerWin() {
   const scene = currentScene();
-  if (scene.sceneIndex < 3) {
+  if (scene.sceneIndex < 2) {
     // Between-scene transition
     showBetweenScene(scene.betweenText, () => {
       currentSceneIndex++;
@@ -2649,9 +2530,11 @@ function loadScene() {
   document.getElementById('shelf-svg').style.pointerEvents = 'none';
   document.getElementById('candle-wrap').classList.remove('visible');
 
-  // Remove old bookshelves button
+  // Remove old bookshelves button and continue button
   const oldBtn = document.getElementById('bookshelves-btn');
   if (oldBtn) oldBtn.remove();
+  const oldContinue = document.getElementById('continue-btn');
+  if (oldContinue) oldContinue.remove();
 
   // Hide portrait — blank until student admitted
   const portrait = document.getElementById('portrait');
@@ -2849,65 +2732,6 @@ function bindTip(el, text) {
 // ── SCENE-CARD ENGAGEMENT RENDERERS ─────────────────────────────────────────
 
 // Scene 0 — Methods damaged inputs (group means)
-function renderMethodsS1Inputs() {
-  const inputA = document.getElementById('ms1-mean-a');
-  const inputB = document.getElementById('ms1-mean-b');
-  const feedback = document.getElementById('ms1-feedback');
-  if (!inputA || !inputB || !feedback) return;
-
-  // Restore completed state
-  if (cardsRead.has('methods_s1')) {
-    inputA.value = '9.0'; inputA.disabled = true;
-    inputA.style.background = 'rgba(30,80,30,0.08)';
-    inputA.style.borderBottomColor = 'rgba(30,120,30,0.5)';
-    inputB.value = '7.5'; inputB.disabled = true;
-    inputB.style.background = 'rgba(30,80,30,0.08)';
-    inputB.style.borderBottomColor = 'rgba(30,120,30,0.5)';
-    return;
-  }
-
-  let aCorrect = false, bCorrect = false;
-
-  function check() {
-    const va = parseFloat(inputA.value);
-    const vb = parseFloat(inputB.value);
-    aCorrect = !isNaN(va) && Math.abs(va - 9.0) <= 0.1;
-    bCorrect = !isNaN(vb) && Math.abs(vb - 7.5) <= 0.1;
-
-    [{ el: inputA, ok: aCorrect }, { el: inputB, ok: bCorrect }].forEach(({ el, ok }) => {
-      if (el.value === '' || el.value === '—') {
-        el.style.background = 'rgba(60,35,10,0.05)';
-        el.style.borderBottomColor = 'rgba(60,35,10,0.25)';
-        el.style.color = 'rgba(40,10,5,0.85)';
-      } else if (ok) {
-        el.style.background = 'rgba(30,80,30,0.08)';
-        el.style.borderBottomColor = 'rgba(30,120,30,0.5)';
-        el.style.color = 'rgba(20,60,20,0.85)';
-      } else {
-        el.style.background = 'rgba(60,35,10,0.05)';
-        el.style.borderBottomColor = 'rgba(60,35,10,0.25)';
-        el.style.color = 'rgba(40,10,5,0.85)';
-        feedback.textContent = 'Check your calculation — use the formula from the textbook.';
-        feedback.style.color = 'rgba(40,20,5,0.55)';
-      }
-    });
-
-    if (aCorrect && bCorrect) {
-      inputA.disabled = true;
-      inputB.disabled = true;
-      feedback.textContent = '';
-      markCardRead('methods_s1');
-      showIsoldeResponse('Group A. That is what my supervisor wanted to know.');
-    } else if (aCorrect || bCorrect) {
-      feedback.textContent = 'One value confirmed. Check the other.';
-      feedback.style.color = 'rgba(40,20,5,0.55)';
-    }
-  }
-
-  inputA.addEventListener('input', check);
-  inputB.addEventListener('input', check);
-}
-
 // Scene 0 — MSc Textbook cursed engagement (ecological fallacy — group mean ≠ individual merit)
 function renderMscTextS1Engagement() {
   const eng = document.getElementById('msc-text-s1-engagement');
@@ -2953,7 +2777,7 @@ function renderPseudoS2Engagement() {
     { text: 'The mean should be subtracted after squaring, not before.', passes: false,
       response: 'The order is correct — subtract the mean, then square. The error is elsewhere in the procedure.' },
     { text: 'The divisor should be n−1, not n.', passes: true,
-      response: '<stage>He looks at the corrected divisor.</stage>n minus one. That is the Bessel correction — it gives the unbiased sample estimate. Dividing by n gives the biased population formula.<stage>He exhales.</stage>I would have used this as written.' },
+      response: '<stage>He looks at the corrected divisor.</stage>n minus one. That is the Bessel correction<stage>He exhales.</stage>I would have used this as written.' },
     { text: 'The sum should be divided by the number of variables, not observations.', passes: false,
       response: 'There is only one variable here. The divisor relates to the number of observations — but the current value is still wrong.' },
   ];
@@ -2978,68 +2802,114 @@ function renderPseudoS2Engagement() {
   choiceArea.appendChild(wrap);
 }
 
-// Scene 2 — Graphs cursed engagement (axes + regression line)
-function renderGraphsS3() {
-  const container = document.getElementById('graphs-s3-container');
-  if (!container) return;
-  container.innerHTML = '';
-  const xs = [2,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,14,14,15,15,16,16,18,20];
-  const ys = [41,48,52,55,57,60,62,65,67,70,68,72,74,75,76,78,79,80,81,83,84,85,86,87,88,89,90,91,93,95];
-  const W=320, H=200, PAD=30;
-  const xMin=Math.min(...xs)-1, xMax=Math.max(...xs)+1;
-  const yMin=Math.min(...ys)-5, yMax=Math.max(...ys)+5;
-  const sx = v => PAD + (v-xMin)/(xMax-xMin)*(W-PAD*2);
-  const sy = v => H-PAD - (v-yMin)/(yMax-yMin)*(H-PAD*2);
-  const mxv=xs.reduce((a,b)=>a+b,0)/xs.length;
-  const myv=ys.reduce((a,b)=>a+b,0)/ys.length;
-  const b=xs.reduce((s,v,i)=>s+(v-mxv)*(ys[i]-myv),0)/xs.reduce((s,v)=>s+(v-mxv)**2,0);
-  const a=myv-b*mxv;
-  // Cursed version — no axes labels, no regression line
-  const isUncursed = cardsRead.has('graphs_s3');
-  container.innerHTML = `<div style="text-align:center;margin-bottom:8px;">
-    <svg width="${W}" height="${H}" style="background:rgba(60,35,10,0.04);border-radius:3px;border:1px solid rgba(60,35,10,0.12);">
-      ${isUncursed ? `<line x1="${sx(xMin)}" y1="${sy(a+b*xMin)}" x2="${sx(xMax)}" y2="${sy(a+b*xMax)}" stroke="rgba(160,80,20,0.45)" stroke-width="1.5" stroke-dasharray="4 3"/>` : ''}
-      ${xs.map((x,i) => `<circle cx="${sx(x)}" cy="${sy(ys[i])}" r="4" fill="rgba(140,70,20,0.75)" stroke="rgba(220,160,80,0.6)" stroke-width="1"/>`).join('')}
-      ${isUncursed ? `
-        <text x="${W/2}" y="${H-4}" text-anchor="middle" font-size="14" font-family="Cinzel,serif" fill="rgba(60,35,10,0.55)">Revision hours per week</text>
-        <text x="10" y="${H/2}" text-anchor="middle" font-size="14" font-family="Cinzel,serif" fill="rgba(60,35,10,0.55)" transform="rotate(-90,10,${H/2})">Exam score</text>
-      ` : `
-        <text x="${W/2}" y="${H-4}" text-anchor="middle" font-size="10" font-family="Cinzel,serif" fill="rgba(60,35,10,0.2)">???</text>
-        <text x="10" y="${H/2}" text-anchor="middle" font-size="10" font-family="Cinzel,serif" fill="rgba(60,35,10,0.2)" transform="rotate(-90,10,${H/2})">???</text>
-      `}
-    </svg>
-  </div>`;
-  if (isUncursed) return;
-  // Render engagement
-  const eng = document.getElementById('graphs-s3-engagement');
-  if (!eng) return;
-  const choiceArea = eng.querySelector('[data-choice-area]');
-  if (!choiceArea) return;
-  choiceArea.innerHTML = '';
-  const opts = [
-    { text: 'A title.', passes: false,
-      response: 'A title helps, but it is not what makes a graph analytically useful. Something more fundamental is missing.' },
-    { text: 'Labelled axes and a fitted regression line.', passes: true,
-      response: '<stage>She looks at the corrected plot.</stage>Yes. Without labelled axes the graph is uninterpretable. Without the regression line there is no model to read.<stage>She nods.</stage>Now I can see what the slope means.' },
-    { text: 'A larger sample size.', passes: false,
-      response: 'Thirty observations is adequate for regression. The problem is not the data — it is what the graph is showing.' },
+// Scene 1 — Mystery Item: Socratic degrees-of-freedom chat
+function renderMysteryS2() {
+  const transcript = document.getElementById('mystery-s2-transcript');
+  const input      = document.getElementById('mystery-s2-input');
+  const nudge      = document.getElementById('mystery-s2-nudge');
+  if (!transcript || !input || !nudge) return;
+
+  // If already completed, restore closed state
+  if (cardsRead.has('mystery_s2')) {
+    input.disabled = true;
+    input.style.display = 'none';
+    nudge.style.display = 'none';
+    return;
+  }
+
+  const QUESTIONS = [
+    {
+      prompt: 'What is the mean of 2, 8 and 20?',
+      answer: 10,
+      nudge:  'Add them together and divide by 3.',
+    },
+    {
+      prompt: 'The mean is 10, and two of your observations are 2 and 8. What must the third observation be?',
+      answer: 20,
+      nudge:  'The three values must average to 10. Two of them are 2 and 8. The third has no choice.',
+    },
+    {
+      prompt: 'When estimating spread around the pre-computed mean, how many of your 3 observations were free to vary?',
+      answer: 2,
+      nudge:  'One observation was fixed once you knew the mean and the other two. How many remained free?',
+    },
+    {
+      prompt: 'The naive variance formula divides the sum of squared deviations by n. Given that only 2 observations were free, what should it divide by instead?',
+      answer: 2,
+      nudge:  'The divisor should reflect the number of free observations, not the total count.',
+    },
   ];
-  const wrap = document.createElement('div');
-  wrap.style.cssText = 'display:flex;flex-direction:column;gap:6px;';
-  opts.forEach(opt => {
-    const btn = document.createElement('button');
-    btn.textContent = opt.text;
-    btn.style.cssText = `font-family:'IM Fell English',serif;font-size:clamp(17px,1.4vw,20px);color:rgba(40,20,5,0.82);background:rgba(60,35,10,0.06);border:1px solid rgba(60,35,10,0.22);padding:6px 12px;border-radius:3px;cursor:pointer;text-align:left;transition:background 0.15s;`;
-    btn.onmouseover = () => btn.style.background = 'rgba(60,35,10,0.14)';
-    btn.onmouseout  = () => btn.style.background = 'rgba(60,35,10,0.06)';
-    btn.onclick = () => {
-      handleCardEngagement(opt, eng, 'graphs-s3-response', 'graphs_s3');
-      if (opt.passes) renderGraphsS3(); // re-render with uncursed version
-    };
-    wrap.appendChild(btn);
+
+  const CLOSING = 'Every observation was free when estimating location — all 3 contributed. But estimating spread requires the mean to already be fixed. That costs you one degree of freedom. You have n data points, but only n−1 are free when estimating spread. That is why we divide by n−1.';
+
+  const OPENING = 'You have 3 data points: 2, 8 and 20. When estimating location, every observation contributes freely. But something changes when you turn to estimating spread.';
+
+  let qIndex = 0;
+
+  function addLine(text, type) {
+    // types: 'system' | 'answer' | 'closing'
+    const line = document.createElement('div');
+    line.style.cssText = `
+      font-family:monospace;
+      font-size:clamp(16px,1.3vw,18px);
+      line-height:1.7;
+      opacity:0;
+      transition:opacity 0.5s;
+      color:${type === 'answer' ? 'rgba(40,80,30,0.85)' : type === 'closing' ? 'rgba(60,35,10,0.9)' : 'rgba(40,20,5,0.82)'};
+      ${type === 'closing' ? 'border-top:1px solid rgba(60,35,10,0.15);padding-top:12px;margin-top:4px;font-family:"IM Fell English",serif;font-style:italic;font-size:clamp(17px,1.4vw,20px);' : ''}
+    `;
+    line.textContent = text;
+    transcript.appendChild(line);
+    requestAnimationFrame(() => requestAnimationFrame(() => { line.style.opacity = '1'; }));
+    transcript.scrollTop = transcript.scrollHeight;
+    return line;
+  }
+
+  // Opening statement
+  addLine(OPENING, 'system');
+  setTimeout(() => {
+    addLine(QUESTIONS[0].prompt, 'system');
+    input.focus();
+  }, 600);
+
+  function handleSubmit() {
+    const raw = input.value.trim();
+    const val = parseFloat(raw);
+    input.value = '';
+    nudge.textContent = '';
+
+    if (isNaN(val)) { nudge.textContent = 'Enter a number.'; return; }
+
+    const q = QUESTIONS[qIndex];
+    if (Math.abs(val - q.answer) <= 0.1) {
+      // Correct
+      addLine('> ' + raw, 'answer');
+      qIndex++;
+      if (qIndex < QUESTIONS.length) {
+        setTimeout(() => addLine(QUESTIONS[qIndex].prompt, 'system'), 500);
+      } else {
+        // All done — closing statement
+        input.disabled = true;
+        setTimeout(() => {
+          const cl = addLine(CLOSING, 'closing');
+          cl.addEventListener('transitionend', () => {
+            markCardRead('mystery_s2');
+            showIsoldeResponse("<stage>He reads the closing statement twice.</stage>One degree of freedom is lost. That is all it is. I have been dividing by n my entire degree.<stage>He exhales slowly.</stage>And every variance I've ever computed has been slightly too small.");
+          }, { once: true });
+        }, 600);
+      }
+    } else {
+      // Wrong — show nudge, don't penalise candle
+      addLine('> ' + raw, 'answer');
+      setTimeout(() => { nudge.textContent = q.nudge; }, 200);
+    }
+  }
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); handleSubmit(); }
   });
-  choiceArea.appendChild(wrap);
 }
+
 
 // Generic card engagement handler
 function handleCardEngagement(opt, engEl, responseId, slug) {
@@ -3076,7 +2946,7 @@ document.getElementById('isolde-hotspot').addEventListener('mouseenter', e => {
   const student = currentScene().student.split(' ')[0];
   const scene = currentScene();
   // Determine pronoun per student
-  const male = ['Marcus', 'Elias'];
+  const male = ['Marcus'];
   const pronoun = male.includes(student) ? 'him' : 'her';
   showTip('Let ' + pronoun + ' in', e);
 });
