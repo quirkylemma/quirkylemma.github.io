@@ -107,7 +107,7 @@ body {
 
 #portrait-name {
   font-family:'Cinzel', serif;
-  font-size:clamp(9px, 0.8vw, 12px);
+  font-size:clamp(14px, 0.8vw, 14px);
   letter-spacing:0.15em;
   color:rgba(220,190,130,0.92);
   text-align:center;
@@ -138,7 +138,7 @@ body {
   position:absolute;
   bottom:12px;
   right:16px;
-  font-size:12px;
+  font-size:14px;
   color:rgba(220,190,130,0.4);
   pointer-events:none;
   transition:color 0.3s;
@@ -236,7 +236,7 @@ body {
 }
 #ragvir-name {
   font-family:'Cinzel',serif;
-  font-size:clamp(9px,0.85vw,11px); letter-spacing:0.2em;
+  font-size:clamp(14px,0.85vw,14px); letter-spacing:0.2em;
   color:rgba(200,165,100,0.7); text-align:center; text-transform:uppercase;
   margin-bottom:8px; flex-shrink:0;
 }
@@ -248,7 +248,7 @@ body {
 }
 #intro-title {
   font-family:'Cinzel',serif;
-  font-size:clamp(10px,1vw,13px); letter-spacing:0.3em; text-transform:uppercase;
+  font-size:clamp(14px,1vw,15px); letter-spacing:0.3em; text-transform:uppercase;
   color:rgba(180,140,60,0.5); margin-bottom:clamp(10px,2vh,24px); flex-shrink:0;
 }
 #intro-text {
@@ -273,7 +273,7 @@ body {
 .dot.active { background:rgba(180,140,60,0.85); }
 #intro-btn {
   font-family:'Cinzel',serif;
-  font-size:clamp(10px,1vw,13px); letter-spacing:0.2em; text-transform:uppercase;
+  font-size:clamp(14px,1vw,15px); letter-spacing:0.2em; text-transform:uppercase;
   color:rgba(220,190,130,0.85); background:transparent;
   border:1px solid rgba(180,140,60,0.4); padding:8px 22px; border-radius:3px;
   cursor:pointer; opacity:0; transition:opacity 0.6s, background 0.2s, color 0.2s;
@@ -316,7 +316,7 @@ body {
 
 #narration-btn {
   font-family:'Cinzel',serif;
-  font-size:clamp(10px,1vw,13px);
+  font-size:clamp(14px,1vw,15px);
   letter-spacing:0.2em;
   text-transform:uppercase;
   color:rgba(220,190,130,0.85);
@@ -363,7 +363,7 @@ body {
   top:20px;
   right:130px;
   font-family:'Cinzel',serif;
-  font-size:13px;
+  font-size:14px;
   letter-spacing:0.2em;
   text-transform:uppercase;
   color:rgba(220,190,130,0.85);
@@ -383,7 +383,7 @@ body {
   top:20px;
   right:24px;
   font-family:'Cinzel',serif;
-  font-size:13px;
+  font-size:14px;
   letter-spacing:0.2em;
   text-transform:uppercase;
   color:rgba(220,190,130,0.85);
@@ -559,7 +559,7 @@ body {
 }
 .parchment-table .ds-header {
   font-family:'Cinzel',serif;
-  font-size:clamp(13px,1vw,15px);
+  font-size:clamp(14px,1vw,15px);
   letter-spacing:0.15em;
   text-transform:uppercase;
   color:rgba(60,35,10,0.75);
@@ -569,7 +569,7 @@ body {
 }
 .parchment-table th {
   font-family:'Cinzel',serif;
-  font-size:clamp(13px,0.9vw,15px);
+  font-size:clamp(14px,0.9vw,15px);
   letter-spacing:0.1em;
   color:rgba(60,35,10,0.55);
   text-align:center;
@@ -591,7 +591,7 @@ body {
   pointer-events:none;
   z-index:9999;
   font-family:'Cinzel',serif;
-  font-size:12px;
+  font-size:14px;
   letter-spacing:0.15em;
   color:rgba(220,190,130,0.95);
   background:rgba(10,6,2,0.85);
@@ -625,7 +625,7 @@ body {
   left:50%;
   transform:translateX(-50%);
   font-family:'Cinzel',serif;
-  font-size:13px;
+  font-size:14px;
   color:rgba(255,80,80,0.9);
   letter-spacing:0.15em;
   pointer-events:none;
@@ -1012,7 +1012,7 @@ body {
 <!-- Game over -->
 <div id="game-over">
   <div id="game-over-title">She is gone.</div>
-  <div id="game-over-text">Isolde waited as long as she could. The candle burned down. She gathered her folder and left without a word — still unsure whether her supervisor was right, still without an answer.<br><br>The library remains. Perhaps next time.</div>
+  <div id="game-over-text"></div>
   <button id="game-over-btn" onclick="location.reload()">Try Again</button>
 </div>
 
@@ -1072,7 +1072,7 @@ const SCENES = [
     student: 'Seren Davies',
     answerLabel: 'I just need to show my supervisor which group did better. What do I do?',
     winTitle: 'She understands.',
-    winText: 'Two groups. Same exam. A simple comparison of averages.<br><br>The mean is the right tool for the right question.<br><br>Group B performed better — on average.',
+    winText: 'Two groups. Same exam. A simple comparison of averages.<br><br>The mean is the right tool for the right question.<br><br>Group A performed better — on average.',
     winCardReveal: '',
     betweenText: 'She leaves. The library settles. Outside, the rain has not stopped.',
     outsideImg: './aldricimages/serenrain.png',
@@ -1083,28 +1083,29 @@ const SCENES = [
     ],
     dialogue: [
       "I hope I'm not interrupting. Someone in the department said the library might have something on this.",
-      "I have the exam scores for two tutorial groups — different teachers, same paper. My supervisor wants to know which group performed better. I don't know how to summarise it fairly."
+      "I have exam scores for students in two different tutorial groups — two different teachers, same exam paper. My supervisor wants to know which group performed better. I don't know how to summarise it fairly."
     ],
     cards: [
       { number: 15, slug: 'data_s1',          title: 'Data',               condition: 'intact' },
       null,
       { number: 2,  slug: 'bsc_text_s1',      title: 'BSc Textbook',       condition: 'intact' },
       null,
-      { number: 6,  slug: 'field_notes_s1',    title: 'MSc Textbook',                 condition: 'cursed' },
+      { number: 6,  slug: 'msc_text_s1',    title: 'MSc Textbook',                 condition: 'cursed' },
       null,
-      { number: 1,  slug: 'methods_s1',       title: 'Methods',            condition: 'intact' },
+      { number: 1,  slug: 'methods_s1',       title: 'Methods',            condition: 'damaged' },
       { number: 3,  slug: 'ragvirs_notes_s1', title: "Ragvir's Notes",     condition: 'intact' },
       null, null,
     ],
-    investigable: new Set(['data_s1','bsc_text_s1','field_notes_s1','methods_s1']),
-    gatedCard: 'field_notes_s1',
+    investigable: new Set(['data_s1','bsc_text_s1','msc_text_s1','methods_s1']),
+    gatedCard: 'msc_text_s1',
+    answerLabel: 'I need to show my supervisor which group did better. What do I do?',
     answerOptions: [
       { text: 'Compare the means.', correct: true,
-        response: "<stage>She looks at the two numbers.</stage>Group B. That is it, isn't it. The mean is higher, so the group performed better on average.<stage>She writes it down.</stage>That was simpler than I expected. I thought I was missing something more complicated.<stage>A pause before she gathers her things.</stage>Though I suppose this only tells me the average. Not whether anyone in Group A did particularly well or badly." },
+        response: "<stage>She looks at the two numbers.</stage>Group A. That is it, isn't it. The mean is higher, so the group performed better on average.<stage>She writes it down.</stage>That was simpler than I expected. I thought I was missing something more complicated.<stage>A pause before she gathers her things.</stage>Though I suppose this only tells me the average. Not whether anyone in Group A did particularly well or badly." },
       { text: 'Compare the variances.', correct: false,
-        response: "That would tell me how consistent the scores were. But I just need to know which group did better overall — the spread isn't the question.<stage>She looks back at the shelves.</stage>There must be something simpler." },
+        response: "That would tell me how dispersed the scores were. But I just need to know which group did better overall — the spread isn't the question.<stage>She looks back at the shelves.</stage>There must be something simpler." },
       { text: 'Run a regression.', correct: false,
-        response: "That would work — a dummy variable regression would give me the same answer. But my supervisor asked for a simple summary statistic.<stage>She pauses.</stage>I think the mean is what she has in mind." },
+        response: "That would work — a dummy variable regression would give me the same answer. But I don't know how to do that yet.<stage>She pauses.</stage>I think a comparison of means is what my supervisor has in mind." },
       { text: 'The groups are too different to compare.', correct: false,
         response: "They sat the same exam, set by the same lecturer.<stage>She looks at the data card.</stage>I think they can be compared. I just need a way to do it." },
       { text: 'Ask the teachers directly.', correct: false,
@@ -1155,20 +1156,20 @@ const SCENES = [
         response: "That is exactly what a risk-averse investor shouldn't do.<stage>He shakes his head.</stage>I need consistency, not the best possible year." },
     ],
   },
-  // Scene 2 — Regression (Rania Khalil)
+  // Scene 2 — Regression (Elias Berry)
   {
     sceneIndex: 2,
-    student: 'Rania Khalil',
+    student: 'Elias Berry',
     answerLabel: 'I can see the pattern in the data. How do I put a number on it?',
-    winTitle: 'She has it.',
+    winTitle: 'He has it.',
     winText: 'Thirty students. Revision hours and exam scores.<br><br>A relationship was there all along. Regression named it.<br><br>The slope is the finding.',
     winCardReveal: '',
-    betweenText: 'She leaves without ceremony. The library holds its breath. The next one will be different.',
-    outsideImg: './aldricimages/raniarain.png',
-    portraitImg: './aldricimages/raniakhalil.png',
+    betweenText: 'He leaves without ceremony. The library holds its breath. The next one will be different.',
+    outsideImg: './aldricimages/eliasrain.png',
+    portraitImg: './aldricimages/eliasberry.png',
     narration: [
-      "The third student doesn't pause at the door. She already has her notebook open. She has come here with a thesis, not just a question.",
-      "She wants to prove something. That is not the same as wanting to understand something — but it is often where understanding begins."
+      "The third student doesn't pause at the door. He already has his notebook open. He has come here with a thesis, not just a question.",
+      "He wants to prove something. That is not the same as wanting to understand something — but it is often where understanding begins."
     ],
     dialogue: [
       "I'm a teaching assistant. I've been tracking my students' revision hours and their exam scores. There's clearly a pattern — I just need to formalise it.",
@@ -1188,15 +1189,15 @@ const SCENES = [
     gatedCard: 'graphs_s3',
     answerOptions: [
       { text: 'Run a linear regression.', correct: true,
-        response: "<stage>She reads the regression section carefully, then nods once.</stage>Regression. The slope is what I needed — each additional hour of revision is associated with approximately 2.3 more marks.<stage>She writes that down without looking up.</stage>I was treating the two variables as separate things. They're not separate.<stage>She closes her notebook.</stage>The model describes the relationship. Whether it explains it is a different question." },
+        response: "<stage>He reads the regression section carefully, then nods once.</stage>Regression. The slope is what I needed — each additional hour of revision is associated with approximately 2.3 more marks.<stage>He writes that down without looking up.</stage>I was treating the two variables as separate things. They're not separate.<stage>He closes his notebook.</stage>The model describes the relationship. Whether it explains it is a different question." },
       { text: 'Compare the means of revision hours and exam scores separately.', correct: false,
-        response: "That would tell me the average hours and average score. But I already know students revise and students score — I need to know if one is related to the other.<stage>She looks back at the shelves.</stage>Something here must address this more directly." },
+        response: "That would tell me the average hours and average score. But I already know students revise and students score — I need to know if one is related to the other.<stage>He looks back at the shelves.</stage>Something here must address this more directly." },
       { text: 'Compute the variance of exam scores.', correct: false,
-        response: "The scores vary, yes. But variance doesn't tell me whether revision is driving that variation.<stage>She taps her notebook.</stage>I need something that works across both variables at once." },
+        response: "The scores vary, yes. But variance doesn't tell me whether revision is driving that variation.<stage>He taps his notebook.</stage>I need something that works across both variables at once." },
       { text: 'The sample size is too small for conclusions.', correct: false,
-        response: "Thirty observations is standard for this kind of analysis. My supervisor approved the design.<stage>She looks at the data card.</stage>The sample isn't the problem." },
+        response: "Thirty observations is standard for this kind of analysis. My supervisor approved the design.<stage>He looks at the data card.</stage>The sample isn't the problem." },
       { text: 'There is no statistical way to quantify this.', correct: false,
-        response: "There must be. The relationship is there — I can see it in the data.<stage>She looks at the shelves carefully.</stage>I just need to find the right tool." },
+        response: "There must be. The relationship is there — I can see it in the data.<stage>He looks at the shelves carefully.</stage>I just need to find the right tool." },
     ],
   },
   // Scene 3 — Anscombe (Isolde Fenn)
@@ -1279,7 +1280,7 @@ const SLUG_TO_IMG = {
   // Scene 0
   'data_s1':         '01_data',
   'bsc_text_s1':     '05_bsc_textbook',
-  'field_notes_s1':  '06_msc_textbook',
+  'msc_text_s1':  '06_msc_textbook',
   'methods_s1':      '02_methods',
   'ragvirs_notes_s1':'09_ragvirs_notes',
   // Scene 1
@@ -1373,7 +1374,7 @@ function renderShelves() {
         border:1.5px solid ${isRead ? 'rgba(140,115,65,0.5)' : isLocked ? 'rgba(140,110,60,0.45)' : 'rgba(255,215,80,0.95)'};
         box-shadow:${isRead ? '0 0 6px rgba(120,90,30,0.3)' : isLocked ? '0 0 6px rgba(100,80,40,0.3)' : '0 0 10px rgba(255,200,50,0.7), 0 0 22px rgba(200,150,20,0.4)'};
         font-family:'Cinzel',serif;
-        font-size:11px;
+        font-size:14px;
         color:${isRead ? 'rgba(180,150,80,0.5)' : isLocked ? 'rgba(160,130,70,0.5)' : 'rgba(255,245,180,0.97)'};
         display:flex; align-items:center; justify-content:center;
         pointer-events:none;
@@ -1626,24 +1627,21 @@ const CARD_CONTENT = {
         <tr><th>Score</th><td class="sep"></td><th>Score</th></tr>
       </thead>
       <tbody>
-        <tr><td>58</td><td class="sep"></td><td>72</td></tr>
-        <tr><td>61</td><td class="sep"></td><td>68</td></tr>
-        <tr><td>54</td><td class="sep"></td><td>75</td></tr>
-        <tr><td>67</td><td class="sep"></td><td>71</td></tr>
-        <tr><td>63</td><td class="sep"></td><td>69</td></tr>
-        <tr><td>59</td><td class="sep"></td><td>74</td></tr>
-        <tr><td>70</td><td class="sep"></td><td>66</td></tr>
-        <tr><td>52</td><td class="sep"></td><td>78</td></tr>
-        <tr><td>65</td><td class="sep"></td><td>73</td></tr>
-        <tr><td>57</td><td class="sep"></td><td>70</td></tr>
-        <tr><td>68</td><td class="sep"></td><td>65</td></tr>
-        <tr><td>60</td><td class="sep"></td><td>76</td></tr>
-        <tr><td>55</td><td class="sep"></td><td>69</td></tr>
-        <tr><td>72</td><td class="sep"></td><td>71</td></tr>
-        <tr><td>61</td><td class="sep"></td><td>74</td></tr>
+        <tr><td>8</td><td class="sep"></td><td>6.58</td></tr>
+        <tr><td>8</td><td class="sep"></td><td>5.76</td></tr>
+        <tr><td>8</td><td class="sep"></td><td>7.71</td></tr>
+        <tr><td>8</td><td class="sep"></td><td>8.84</td></tr>
+        <tr><td>8</td><td class="sep"></td><td>8.47</td></tr>
+        <tr><td>8</td><td class="sep"></td><td>7.04</td></tr>
+        <tr><td>8</td><td class="sep"></td><td>5.25</td></tr>
+        <tr><td>19</td><td class="sep"></td><td>12.50</td></tr>
+        <tr><td>8</td><td class="sep"></td><td>5.56</td></tr>
+        <tr><td>8</td><td class="sep"></td><td>7.91</td></tr>
+        <tr><td>8</td><td class="sep"></td><td>6.89</td></tr>
       </tbody>
     </table>`,
-    csv: "group_A,group_B\n58,72\n61,68\n54,75\n67,71\n63,69\n59,74\n70,66\n52,78\n65,73\n57,70\n68,65\n60,76\n55,69\n72,71\n61,74",
+    csv: "group_A,group_B\n8,6.58\n8,5.76\n8,7.71\n8,8.84\n8,8.47\n8,7.04\n8,5.25\n19,12.50\n8,5.56\n8,7.91\n8,6.89",
+    isoldeResponse: 'These are the scores. Eleven students in each group.',
   },
   bsc_text_s1: {
     title: 'BSc Textbook',
@@ -1655,35 +1653,63 @@ const CARD_CONTENT = {
       <div class="tb-text">The sample mean provides a measure of central tendency. To compare two groups on the same measure, compute the mean for each and compare directly.</div>
       <div class="tb-section">3.2 Interpreting the Mean</div>
       <div class="tb-text">The mean summarises a distribution with a single number. It answers the question: what is the average value for this group? It does not describe variability, shape, or extreme values.</div>`,
+    isoldeResponse: 'This is the formula my supervisor mentioned. I think I know what to do with it.',
   },
-  field_notes_s1: {
+  msc_text_s1: {
     title: 'MSc Textbook',
     subtitle: 'Advanced Statistical Methods — Chapter 4. Provenance uncertain.',
-    body: `<div class="tb-chapter">Chapter 4 — Comparing Empirical Distributions</div>
-      <div class="tb-text">When two samples are drawn from the same population, a comparison of arithmetic means will often appear sufficient. It is rarely so. The mean is a first-order summary — it collapses the full distributional shape into a single value and discards all information about spread, skewness, and tail behaviour.</div>
-      <div class="tb-text">Before any numerical comparison is made, the analyst should examine both distributions visually. A quantile-quantile plot — in which the quantiles of one sample are plotted against the quantiles of the other — will immediately reveal whether the two distributions share the same shape, or merely the same centre.</div>
-      <div class="tb-text">If the points fall along the diagonal, the distributions are similar in form and a mean comparison may proceed. If they deviate — curves, steps, outlying tails — the mean comparison will be technically correct and substantively misleading.</div>
-      <div class="tb-text">To compare means without first examining the distributions is to assume the answer to a question you have not yet asked.</div>
-      <div class="tb-damaged">Note: This document has no named author or institutional affiliation. Provenance unknown. The argument is internally consistent. Whether the question it is answering is the right question is a separate matter.</div>
-      <div id="field-notes-s1-engagement" style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(60,35,10,0.15);">
-        <div style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(17px,1.5vw,20px);color:rgba(40,20,5,0.75);margin-bottom:10px;line-height:1.6;">
-          Seren's supervisor asked which group performed better on average. Does this document's argument apply to her question?
+    body: `<div class="tb-chapter">Chapter 4 — Group Performance and Academic Awards</div>
+      <div class="tb-text">Where two tutorial groups sit the same examination paper under different instructors, the group mean provides a reliable basis for academic distinction.</div>
+      <div class="tb-text">A group with a higher sample mean has, on average, outperformed the comparison group. For the purposes of prizes, scholarships, or departmental recognition, the group mean provides an objective and sufficient basis for decision-making.</div>
+      <div class="tb-text">The mean does not lie. It is a summary of what happened.</div>
+      <div class="tb-damaged">Note: This document has no named author or institutional affiliation. Provenance unknown.</div>
+      <div id="msc-text-s1-engagement" style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(60,35,10,0.15);">
+        <div style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(18px,1.5vw,21px);color:rgba(40,20,5,0.85);margin-bottom:10px;line-height:1.6;">
+          Seren's supervisor wants to use this to decide who gets the Dean's scholarship. What is wrong with the argument?
         </div>
         <div data-choice-area style="display:flex;flex-direction:column;gap:6px;"></div>
-        <div id="field-notes-s1-response" style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(17px,1.5vw,20px);color:rgba(40,20,5,0.65);margin-top:10px;line-height:1.6;display:none;"></div>
+        <div id="msc-text-s1-response" style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(18px,1.5vw,21px);color:rgba(40,20,5,0.85);margin-top:10px;line-height:1.6;display:none;"></div>
       </div>`,
-    isoldeResponse: `<stage>She reads it carefully, then reads it again.</stage>A QQ plot first. To check the shapes match before comparing the centres.<stage>She looks up.</stage>But my supervisor said "which group did better." Not "do these distributions have the same form."<stage>A pause.</stage>I think this is good advice for a different question than the one I was asked.`,
-    onOpen: 'renderFieldNotesS1Engagement',
+    onOpen: 'renderMscTextS1Engagement',
+    isoldeResponse: 'Something about this textbook does not sit right with me. Why is it coloured so oddly?',
   },
   methods_s1: {
     title: 'Methods',
-    subtitle: 'A working checklist. Steps 1 and 2.',
+    subtitle: 'A working checklist. Steps 1 and 2. Partially damaged.',
     body: `<div class="tb-chapter">Standard Analytical Procedure</div>
       <div class="tb-text">Before drawing conclusions from any dataset, work through the following steps in order.</div>
       <div class="tb-section">Step 1 — Check the data</div>
       <div class="tb-text">Verify observation count. Identify missing values. Check for obvious entry errors. Confirm units are consistent.</div>
       <div class="tb-section">Step 2 — Compute summary statistics</div>
-      <div class="tb-text">Calculate the mean for each group or variable. The mean summarises central tendency and enables direct comparison between groups measured on the same scale.</div>`,
+      <div class="tb-text">Calculate the mean for each group using the formula from the textbook. Enter your results below.</div>
+      <div id="methods-s1-inputs" style="margin:12px 0 4px;">
+        <table style="font-family:'IM Fell English',serif;font-size:clamp(17px,1.4vw,20px);border-collapse:collapse;">
+          <tr>
+            <td style="padding:5px 14px 5px 0;color:rgba(40,20,5,0.75);">Group A mean</td>
+            <td><input id="ms1-mean-a" type="text" inputmode="decimal"
+              style="width:70px;font-family:'IM Fell English',serif;font-size:clamp(17px,1.4vw,20px);
+                     color:rgba(40,10,5,0.85);background:rgba(60,35,10,0.05);
+                     border:none;border-bottom:1.5px solid rgba(60,35,10,0.25);
+                     padding:3px 6px;outline:none;text-align:center;
+                     transition:border-color 0.2s,background 0.2s;"
+              placeholder="—"></td>
+          </tr>
+          <tr>
+            <td style="padding:5px 14px 5px 0;color:rgba(40,20,5,0.75);">Group B mean</td>
+            <td><input id="ms1-mean-b" type="text" inputmode="decimal"
+              style="width:70px;font-family:'IM Fell English',serif;font-size:clamp(17px,1.4vw,20px);
+                     color:rgba(40,10,5,0.85);background:rgba(60,35,10,0.05);
+                     border:none;border-bottom:1.5px solid rgba(60,35,10,0.25);
+                     padding:3px 6px;outline:none;text-align:center;
+                     transition:border-color 0.2s,background 0.2s;"
+              placeholder="—"></td>
+          </tr>
+        </table>
+        <div id="ms1-feedback" style="font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(16px,1.3vw,18px);color:rgba(40,20,5,0.6);margin-top:8px;min-height:1.4em;"></div>
+      </div>
+      <div class="tb-damaged">The remainder of this page is water-damaged and unreadable.</div>`,
+    onOpen: 'renderMethodsS1Inputs',
+    isoldeResponse: 'This looks damaged. There seems to be missing information.',
   },
   ragvirs_notes_s1: {
     title: "Ragvir's Notes",
@@ -1693,7 +1719,8 @@ const CARD_CONTENT = {
       <div class="tb-text">Most of what survives here was chosen because it helped someone understand something they could not see before. Some of it is damaged. Some of it I am no longer certain is correct.</div>
       <div class="tb-text">People will come to you with questions. Your job is not to solve the problem — it is to help them find the right tool for the right question.</div>
       <div class="tb-text">The mean is a beginning. It is not an ending.</div>
-      <div class="tb-damaged" style="margin-top:20px;padding-top:14px;border-top:1px solid rgba(60,35,10,0.12);font-size:clamp(16px,1.3vw,18px);line-height:1.8;">The east annex crate has been set aside. I have not yet decided what to do with it. The college has asked me to hand it over. I am not prepared to do that — not until I understand what is in it, and whether it belongs here or somewhere it cannot cause confusion.<br><br>This is not a decision I am making lightly.</div>`,
+      <div class="tb-damaged" style="margin-top:20px;padding-top:14px;border-top:1px solid rgba(60,35,10,0.12);font-size:clamp(18px,1.5vw,21px);line-height:1.8;">The east annex crate has been set aside. I have not yet decided what to do with it. The college has asked me to hand it over. I am not prepared to do that — not until I understand what is in it, and whether it belongs here or somewhere it cannot cause confusion.<br><br>This is not a decision I am making lightly.</div>`,
+    isoldeResponse: 'The mean is a beginning. Someone went to the trouble of writing that down.',
   },
 
   // ── SCENE 1 cards ──────────────────────────────────────────────────────────
@@ -1772,7 +1799,7 @@ const CARD_CONTENT = {
   data_s3: {
     title: 'Data — Revision and Exam Scores',
     subtitle: 'Thirty students. Weekly revision hours and final exam score.',
-    body: `<div class="tb-text" style="font-style:italic;color:rgba(60,35,10,0.7);margin-bottom:12px;line-height:1.7;">Rania's student data. Thirty observations, two variables.</div>
+    body: `<div class="tb-text" style="font-style:italic;color:rgba(60,35,10,0.7);margin-bottom:12px;line-height:1.7;">Elias's student data. Thirty observations, two variables.</div>
     <table class="parchment-table">
       <thead>
         <tr><th class="ds-header" colspan="2">Student Data (n=30)</th></tr>
@@ -1900,12 +1927,14 @@ function openCard(card) {
   // Call any onOpen renderer — delay ensures DOM settled after innerHTML + KaTeX
   if (content.onOpen === 'renderMethodsStats') setTimeout(renderMethodsStats, 50);
   if (content.onOpen === 'renderAnscombeGraphs') setTimeout(renderAnscombeGraphs, 50);
-  if (content.onOpen === 'renderFieldNotesS1Engagement') setTimeout(renderFieldNotesS1Engagement, 50);
+  if (content.onOpen === 'renderMethodsS1Inputs') setTimeout(renderMethodsS1Inputs, 50);
+  if (content.onOpen === 'renderMscTextS1Engagement') setTimeout(renderMscTextS1Engagement, 50);
   if (content.onOpen === 'renderPseudoS2Engagement') setTimeout(renderPseudoS2Engagement, 50);
   if (content.onOpen === 'renderGraphsS3') setTimeout(renderGraphsS3, 50);
 
-  // Track card read — gated card not marked until engagement complete
-  if (card.slug !== currentScene().gatedCard) markCardRead(card.slug);
+  // Track card read — gated cards not marked until engagement/input complete
+  const gated = new Set([currentScene().gatedCard, 'methods_s1', 'pseudocode_s2', 'graphs_s3']);
+  if (!gated.has(card.slug)) markCardRead(card.slug);
 }
 
 // ── ANSCOMBE DATA ─────────────────────────────────────────────────────────────
@@ -1966,7 +1995,7 @@ function renderMethodsStats() {
   const rows = Object.keys(EXPECTED);
 
   el.innerHTML = `
-    <div style="font-family:'IM Fell English',serif;font-size:clamp(16px,1.3vw,18px);color:rgba(60,15,10,0.6);margin-bottom:8px;font-style:italic;">
+    <div style="font-family:'IM Fell English',serif;font-size:clamp(17px,1.5vw,20px);color:rgba(60,15,10,0.6);margin-bottom:8px;font-style:italic;">
       Enter your computed values below. Each cell will confirm when correct.
     </div>
     <table class="parchment-table" style="margin:4px 0 6px;">
@@ -1979,12 +2008,12 @@ function renderMethodsStats() {
       <tbody>
         ${rows.map(row => `
           <tr>
-            <td style="text-align:left;padding-right:10px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.08em;color:rgba(60,15,10,0.65);">${row}</td>
+            <td style="text-align:left;padding-right:10px;font-family:'Cinzel',serif;font-size:14px;letter-spacing:0.08em;color:rgba(60,15,10,0.65);">${row}</td>
             ${[0,1,2,3].map(col => `
               <td style="padding:2px;">
                 <input id="sg-${row}-${col}"
                   type="text" inputmode="decimal"
-                  style="width:58px;font-family:'IM Fell English',serif;font-size:clamp(13px,1.1vw,15px);
+                  style="width:58px;font-family:'IM Fell English',serif;font-size:clamp(16px,1.3vw,18px);
                          color:rgba(40,10,5,0.85);background:rgba(60,35,10,0.05);
                          border:none;border-bottom:1.5px solid rgba(60,35,10,0.25);
                          padding:3px 4px;outline:none;text-align:center;
@@ -2102,7 +2131,7 @@ function renderAnscombeGraphs() {
     const rx2=xMax, ry2=reg.slope*rx2+reg.intercept;
 
     // Stats summary
-    const statsHtml = `<div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.08em;color:rgba(60,15,10,0.55);margin-top:4px;text-align:center;line-height:1.7;">
+    const statsHtml = `<div style="font-family:'Cinzel',serif;font-size:14px;letter-spacing:0.08em;color:rgba(60,15,10,0.55);margin-top:4px;text-align:center;line-height:1.7;">
       mean x̄ = ${aMean(xs).toFixed(2)} &nbsp;|&nbsp; ȳ = ${aMean(ys).toFixed(2)}<br>
       r = ${aCor(xs,ys).toFixed(3)} &nbsp;|&nbsp; ŷ = ${reg.intercept.toFixed(2)} + ${reg.slope.toFixed(3)}x
     </div>`;
@@ -2110,7 +2139,7 @@ function renderAnscombeGraphs() {
     const wrap = document.createElement('div');
     wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;';
     wrap.innerHTML = `
-      <div style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.15em;color:rgba(60,15,10,0.75);margin-bottom:4px;">Dataset ${label}</div>
+      <div style="font-family:'Cinzel',serif;font-size:15px;letter-spacing:0.15em;color:rgba(60,15,10,0.75);margin-bottom:4px;">Dataset ${label}</div>
       <svg width="${W}" height="${H}" style="background:rgba(60,35,10,0.04);border-radius:3px;border:1px solid rgba(60,35,10,0.12);">
         <!-- Regression line -->
         <line x1="${sx(rx1)}" y1="${sy(ry1)}" x2="${sx(rx2)}" y2="${sy(ry2)}"
@@ -2119,8 +2148,8 @@ function renderAnscombeGraphs() {
         ${xs.map((x,i) => `<circle cx="${sx(x)}" cy="${sy(ys[i])}" r="4"
           fill="rgba(140,70,20,0.75)" stroke="rgba(220,160,80,0.6)" stroke-width="1"/>`).join('')}
         <!-- Axes labels -->
-        <text x="${W/2}" y="${H-4}" text-anchor="middle" font-size="9" font-family="Cinzel,serif" fill="rgba(60,35,10,0.4)">x</text>
-        <text x="8" y="${H/2}" text-anchor="middle" font-size="9" font-family="Cinzel,serif" fill="rgba(60,35,10,0.4)" transform="rotate(-90,8,${H/2})">y</text>
+        <text x="${W/2}" y="${H-4}" text-anchor="middle" font-size="14" font-family="Cinzel,serif" fill="rgba(60,35,10,0.4)">x</text>
+        <text x="8" y="${H/2}" text-anchor="middle" font-size="14" font-family="Cinzel,serif" fill="rgba(60,35,10,0.4)" transform="rotate(-90,8,${H/2})">y</text>
       </svg>
       ${statsHtml}`;
     container.appendChild(wrap);
@@ -2161,7 +2190,7 @@ function renderEngagementChoices() {
     const btn = document.createElement('button');
     btn.textContent = opt.text;
     btn.style.cssText = `
-      font-family:'IM Fell English',serif;font-size:clamp(13px,1.2vw,16px);
+      font-family:'IM Fell English',serif;font-size:clamp(16px,1.4vw,19px);
       color:rgba(40,20,5,0.82);background:rgba(60,35,10,0.06);
       border:1px solid rgba(60,35,10,0.22);padding:6px 12px;
       border-radius:3px;cursor:pointer;text-align:left;
@@ -2207,7 +2236,7 @@ function closeCardPanel() {
   currentCard = null;
 }
 
-function showIsoldeResponse(text) {
+function showIsoldeResponse(text, closeAfter) {
   const speech = document.getElementById('speech');
   speech.style.opacity = '0';
   setTimeout(() => {
@@ -2219,7 +2248,7 @@ function showIsoldeResponse(text) {
     speech.style.opacity = '1';
     speech.style.cursor = 'default';
   }, 400);
-  closeCardPanel();
+  if (closeAfter) closeCardPanel();
 }
 
 
@@ -2325,7 +2354,7 @@ function showCardToast(title) {
       bottom:calc(clamp(140px,22vh,220px) + 52px);
       left:50%; transform:translateX(-50%);
       z-index:999;
-      font-family:'Cinzel',serif; font-size:13px;
+      font-family:'Cinzel',serif; font-size:14px;
       letter-spacing:0.18em; text-transform:uppercase;
       color:rgba(255,230,160,0.95);
       background:rgba(10,6,2,0.88);
@@ -2340,14 +2369,13 @@ function showCardToast(title) {
   // Check if all investigable cards now read
   const allRead = [...getInvestigable()].every(s => cardsRead.has(s));
   const studentName = currentScene().student.split(' ')[0];
-  toast.textContent = allRead
-    ? `You have read everything available. ${studentName} is waiting.`
-    : `${title} read.`;
-  toast.style.opacity = '1';
-  clearTimeout(toast._hideTimer);
-  toast._hideTimer = setTimeout(() => { toast.style.opacity = '0'; }, 2600);
-
-  if (allRead) showAnswerInput();
+  if (allRead) {
+    toast.textContent = `You have read everything available. ${studentName} is waiting.`;
+    toast.style.opacity = '1';
+    clearTimeout(toast._hideTimer);
+    toast._hideTimer = setTimeout(() => { toast.style.opacity = '0'; }, 2600);
+    showAnswerInput();
+  }
 }
 
 // Answer options come from current scene
@@ -2383,24 +2411,23 @@ function renderAnswerChoices() {
     const btn = document.createElement('button');
     btn.className = 'answer-choice';
     btn.textContent = option.text;
-    btn.onclick = () => handleChoice(option);
+    btn.onclick = () => handleChoice(option, btn);
     container.appendChild(btn);
   });
 }
 
-function handleChoice(option) {
+function handleChoice(option, btn) {
   if (gameEnded) return;
-  // Disable all choices immediately
   document.querySelectorAll('.answer-choice').forEach(b => b.disabled = true);
 
   if (option.correct) {
     handleCorrectAnswer(option.response);
   } else {
-    handleWrongAnswer(option.response);
+    handleWrongAnswer(option.response, btn);
   }
 }
 
-function handleWrongAnswer(response) {
+function handleWrongAnswer(response, chosenBtn) {
   candleAttempts--;
   updateCandle();
 
@@ -2408,27 +2435,86 @@ function handleWrongAnswer(response) {
   flash.classList.add('flash');
   setTimeout(() => flash.classList.remove('flash'), 400);
 
-  showIsoldeResponse(response);
+  // Remove the chosen wrong button
+  if (chosenBtn) chosenBtn.remove();
+
+  // Show response in the answer label area temporarily
+  const label = document.getElementById('answer-label');
+  const prevLabel = label.textContent;
+  const formatted = response
+    .replace(/<stage>(.*?)<\/stage>/g, '<em class="stage-dir">$1</em>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>');
+  label.style.opacity = '0';
+  setTimeout(() => {
+    label.innerHTML = formatted;
+    label.style.color = 'rgba(220,200,160,0.88)';
+    label.style.fontStyle = 'normal';
+    label.style.opacity = '1';
+    label.style.transition = 'opacity 0.4s';
+  }, 400);
 
   if (candleAttempts === 2) {
     showCandleWarning(currentScene().student.split(' ')[0] + ' is losing patience.');
-    setTimeout(() => renderAnswerChoices(), 2200);
+    setTimeout(() => restoreAnswerForm(prevLabel), 2800);
   } else if (candleAttempts === 1) {
     showCandleWarning('One chance remaining.');
-    setTimeout(() => renderAnswerChoices(), 2200);
+    setTimeout(() => restoreAnswerForm(prevLabel), 2800);
   } else {
     gameEnded = true;
     setTimeout(() => triggerGameOver(), 2400);
   }
 }
 
+function restoreAnswerForm(prevLabel) {
+  const label = document.getElementById('answer-label');
+  label.style.opacity = '0';
+  setTimeout(() => {
+    label.innerHTML = prevLabel;
+    label.style.color = '';
+    label.style.fontStyle = '';
+    label.style.opacity = '1';
+    document.querySelectorAll('.answer-choice').forEach(b => b.disabled = false);
+  }, 400);
+}
+
 function handleCorrectAnswer(response) {
   gameEnded = true;
+  const firstName = currentScene().student.split(' ')[0];
+
+  // Show the correct response in the speech panel
   showIsoldeResponse(response);
-  setTimeout(() => triggerWin(), 4800);
+
+  // After a beat, append closing line and Continue button to answer form
+  setTimeout(() => {
+    const form = document.getElementById('answer-form');
+    const choices = document.getElementById('answer-choices');
+    choices.innerHTML = '';
+
+    const closing = document.createElement('div');
+    closing.style.cssText = `font-family:'IM Fell English',serif;font-size:clamp(15px,1.5vw,20px);color:rgba(220,200,160,0.88);line-height:1.7;margin-bottom:10px;opacity:0;transition:opacity 0.6s;`;
+    closing.textContent = 'Thank you. I think I know what to do now.';
+    choices.appendChild(closing);
+    requestAnimationFrame(() => requestAnimationFrame(() => { closing.style.opacity = '1'; }));
+
+    const continueBtn = document.createElement('button');
+    continueBtn.className = 'answer-choice';
+    continueBtn.textContent = 'Continue';
+    continueBtn.style.cssText += 'opacity:0;transition:opacity 0.6s;margin-top:6px;';
+    continueBtn.onclick = () => triggerWin();
+    choices.appendChild(continueBtn);
+    setTimeout(() => { continueBtn.style.opacity = '1'; }, 600);
+  }, 1600);
 }
 
 function triggerGameOver() {
+  const scene = currentScene();
+  const firstName = scene.student.split(' ')[0];
+  const male = ['Marcus', 'Elias'];
+  const pronoun = male.includes(firstName) ? 'He' : 'She';
+  const pronounLower = pronoun.toLowerCase();
+  document.getElementById('game-over-title').textContent = pronoun + ' is gone.';
+  document.getElementById('game-over-text').innerHTML = `${firstName} waited as long as ${pronounLower} could. The candle burned down. ${pronoun} gathered ${pronounLower === 'he' ? 'his' : 'her'} folder and left without a word — still without an answer.<br><br>The library remains. Perhaps next time.`;
   document.getElementById('game-over').classList.add('visible');
 }
 
@@ -2714,31 +2800,94 @@ function bindTip(el, text) {
 
 // ── SCENE-CARD ENGAGEMENT RENDERERS ─────────────────────────────────────────
 
-// Scene 0 — Field Notes cursed engagement (QQ plot visual check vs descriptive mean)
-function renderFieldNotesS1Engagement() {
-  const eng = document.getElementById('field-notes-s1-engagement');
+// Scene 0 — Methods damaged inputs (group means)
+function renderMethodsS1Inputs() {
+  const inputA = document.getElementById('ms1-mean-a');
+  const inputB = document.getElementById('ms1-mean-b');
+  const feedback = document.getElementById('ms1-feedback');
+  if (!inputA || !inputB || !feedback) return;
+
+  // Restore completed state
+  if (cardsRead.has('methods_s1')) {
+    inputA.value = '9.0'; inputA.disabled = true;
+    inputA.style.background = 'rgba(30,80,30,0.08)';
+    inputA.style.borderBottomColor = 'rgba(30,120,30,0.5)';
+    inputB.value = '7.5'; inputB.disabled = true;
+    inputB.style.background = 'rgba(30,80,30,0.08)';
+    inputB.style.borderBottomColor = 'rgba(30,120,30,0.5)';
+    return;
+  }
+
+  let aCorrect = false, bCorrect = false;
+
+  function check() {
+    const va = parseFloat(inputA.value);
+    const vb = parseFloat(inputB.value);
+    aCorrect = !isNaN(va) && Math.abs(va - 9.0) <= 0.1;
+    bCorrect = !isNaN(vb) && Math.abs(vb - 7.5) <= 0.1;
+
+    [{ el: inputA, ok: aCorrect }, { el: inputB, ok: bCorrect }].forEach(({ el, ok }) => {
+      if (el.value === '' || el.value === '—') {
+        el.style.background = 'rgba(60,35,10,0.05)';
+        el.style.borderBottomColor = 'rgba(60,35,10,0.25)';
+        el.style.color = 'rgba(40,10,5,0.85)';
+      } else if (ok) {
+        el.style.background = 'rgba(30,80,30,0.08)';
+        el.style.borderBottomColor = 'rgba(30,120,30,0.5)';
+        el.style.color = 'rgba(20,60,20,0.85)';
+      } else {
+        el.style.background = 'rgba(60,35,10,0.05)';
+        el.style.borderBottomColor = 'rgba(60,35,10,0.25)';
+        el.style.color = 'rgba(40,10,5,0.85)';
+        feedback.textContent = 'Check your calculation — use the formula from the textbook.';
+        feedback.style.color = 'rgba(40,20,5,0.55)';
+      }
+    });
+
+    if (aCorrect && bCorrect) {
+      inputA.disabled = true;
+      inputB.disabled = true;
+      feedback.textContent = '';
+      markCardRead('methods_s1');
+      showIsoldeResponse('Group A. That is what my supervisor wanted to know.');
+    } else if (aCorrect || bCorrect) {
+      feedback.textContent = 'One value confirmed. Check the other.';
+      feedback.style.color = 'rgba(40,20,5,0.55)';
+    }
+  }
+
+  inputA.addEventListener('input', check);
+  inputB.addEventListener('input', check);
+}
+
+// Scene 0 — MSc Textbook cursed engagement (ecological fallacy — group mean ≠ individual merit)
+function renderMscTextS1Engagement() {
+  const eng = document.getElementById('msc-text-s1-engagement');
   if (!eng) return;
-  if (cardsRead.has('field_notes_s1')) { eng.style.opacity='0.45'; return; }
+  if (cardsRead.has('msc_text_s1')) { eng.style.opacity='0.45'; return; }
   const choiceArea = eng.querySelector('[data-choice-area]');
   if (!choiceArea) return;
   choiceArea.innerHTML = '';
   const opts = [
-    { text: 'Yes — a QQ plot should always precede a mean comparison.', passes: false,
-      response: 'A QQ plot is good practice when the question concerns distributional form. Seren\'s supervisor asked which group performed better on average — a question about central tendency. The document\'s advice is sound in general; it does not apply to this specific question.' },
-    { text: 'No — her supervisor asked about central tendency, not distributional shape.', passes: true,
-      response: '<stage>She sets the document down.</stage>Yes. The question was which group did better on average. That is a mean comparison. The QQ plot argument is correct advice — for a different question than the one she was asked.<stage>She looks at the data card.</stage>The right tool for the right question.' },
-    { text: 'Yes — the mean is always misleading without first checking distributional shape.', passes: false,
-      response: 'The mean is a reliable measure of central tendency when the question concerns central tendency — which Seren\'s supervisor\'s question does. A QQ plot adds value when distributional form is in question. Here it is not.' },
+    { text: 'It relies on the sample mean, which is the wrong statistic to use since it could be pulled up by one or two outliers — it should use the sample median.',
+      passes: false,
+      response: "The median would be more robust to outliers, but switching to the median doesn't fix the argument. You would still be making an award based on which group a student belongs to, not what that student actually scored." },
+    { text: 'It assumes every student in the higher-performing group did better than every student in the other group.',
+      passes: true,
+      response: '<stage>She looks at the data.</stage>A student in Group B who scored 12.50 would be passed over in favour of students in Group A who scored 8. The argument makes a decision about individuals based on a group summary.' },
+    { text: 'It assumes better instruction caused the higher mean — but correlation isn\'t causation.',
+      passes: false,
+      response: "That is a fair concern but it is irrelevant for the scholarship decision. Even if better instruction did cause the higher mean, you would still be making an award based on which group a student belongs to, not what that student actually scored." },
   ];
   const wrap = document.createElement('div');
   wrap.style.cssText = 'display:flex;flex-direction:column;gap:6px;';
   opts.forEach(opt => {
     const btn = document.createElement('button');
     btn.textContent = opt.text;
-    btn.style.cssText = `font-family:'IM Fell English',serif;font-size:clamp(17px,1.4vw,20px);color:rgba(40,20,5,0.82);background:rgba(60,35,10,0.06);border:1px solid rgba(60,35,10,0.22);padding:6px 12px;border-radius:3px;cursor:pointer;text-align:left;transition:background 0.15s;`;
+    btn.style.cssText = `font-family:'IM Fell English',serif;font-size:clamp(18px,1.4vw,21px);color:rgba(40,20,5,0.82);background:rgba(60,35,10,0.06);border:1px solid rgba(60,35,10,0.22);padding:6px 12px;border-radius:3px;cursor:pointer;text-align:left;transition:background 0.15s;line-height:1.6;`;
     btn.onmouseover = () => btn.style.background = 'rgba(60,35,10,0.14)';
     btn.onmouseout  = () => btn.style.background = 'rgba(60,35,10,0.06)';
-    btn.onclick = () => handleCardEngagement(opt, eng, 'field-notes-s1-response', 'field_notes_s1');
+    btn.onclick = () => handleCardEngagement(opt, eng, 'msc-text-s1-response', 'msc_text_s1');
     wrap.appendChild(btn);
   });
   choiceArea.appendChild(wrap);
@@ -2804,8 +2953,8 @@ function renderGraphsS3() {
       ${isUncursed ? `<line x1="${sx(xMin)}" y1="${sy(a+b*xMin)}" x2="${sx(xMax)}" y2="${sy(a+b*xMax)}" stroke="rgba(160,80,20,0.45)" stroke-width="1.5" stroke-dasharray="4 3"/>` : ''}
       ${xs.map((x,i) => `<circle cx="${sx(x)}" cy="${sy(ys[i])}" r="4" fill="rgba(140,70,20,0.75)" stroke="rgba(220,160,80,0.6)" stroke-width="1"/>`).join('')}
       ${isUncursed ? `
-        <text x="${W/2}" y="${H-4}" text-anchor="middle" font-size="11" font-family="Cinzel,serif" fill="rgba(60,35,10,0.55)">Revision hours per week</text>
-        <text x="10" y="${H/2}" text-anchor="middle" font-size="11" font-family="Cinzel,serif" fill="rgba(60,35,10,0.55)" transform="rotate(-90,10,${H/2})">Exam score</text>
+        <text x="${W/2}" y="${H-4}" text-anchor="middle" font-size="14" font-family="Cinzel,serif" fill="rgba(60,35,10,0.55)">Revision hours per week</text>
+        <text x="10" y="${H/2}" text-anchor="middle" font-size="14" font-family="Cinzel,serif" fill="rgba(60,35,10,0.55)" transform="rotate(-90,10,${H/2})">Exam score</text>
       ` : `
         <text x="${W/2}" y="${H-4}" text-anchor="middle" font-size="10" font-family="Cinzel,serif" fill="rgba(60,35,10,0.2)">???</text>
         <text x="10" y="${H/2}" text-anchor="middle" font-size="10" font-family="Cinzel,serif" fill="rgba(60,35,10,0.2)" transform="rotate(-90,10,${H/2})">???</text>
@@ -2878,14 +3027,14 @@ bindTip(document.getElementById('window-hotspot'), 'Look outside');
 document.getElementById('isolde-hotspot').addEventListener('mouseenter', e => {
   const student = currentScene().student.split(' ')[0];
   const scene = currentScene();
-  // Determine pronoun — Marcus uses he/him
-  const male = ['Marcus'];
+  // Determine pronoun per student
+  const male = ['Marcus', 'Elias'];
   const pronoun = male.includes(student) ? 'him' : 'her';
   showTip('Let ' + pronoun + ' in', e);
 });
 document.getElementById('isolde-hotspot').addEventListener('mousemove', e => moveTip(e));
 document.getElementById('isolde-hotspot').addEventListener('mouseleave', hideTip);
-bindTip(document.getElementById('candle-wrap'), 'Patience');
+bindTip(document.getElementById('candle-wrap'), 'Candles');
 
 </script>
 
