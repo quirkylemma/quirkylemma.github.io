@@ -859,7 +859,7 @@ body {
 /* ── DEV BUTTONS ── */
 #dev-bar {
   position:fixed;
-  bottom:12px;
+  top:12px;
   right:12px;
   display:flex;
   gap:8px;
@@ -1079,7 +1079,6 @@ const SCENES = [
     portraitImg: './aldricimages/serendavies.png',
     narration: [
       "The door opens cautiously. A first-year — you can always tell. She holds a folder with both hands and looks at the shelves the way someone looks at a menu in a language she is still learning.",
-      "She has done the right thing by coming here. She just doesn't know yet whether the question she is asking is the right question."
     ],
     dialogue: [
       "I hope I'm not interrupting. Someone in the department said the library might have something on this.",
@@ -1125,7 +1124,6 @@ const SCENES = [
     portraitImg: './aldricimages/marcusosei.png',
     narration: [
       "The second student arrives with the door already open — he has been here before, or somewhere like it. He knows what he wants. He just doesn't know what it's called.",
-      "The question he is carrying has a shape to it. Two things that look the same from the outside. Something different inside."
     ],
     dialogue: [
       "I've been going in circles on this for two days. The numbers keep coming back the same and I know that can't be the whole story.",
@@ -1135,8 +1133,8 @@ const SCENES = [
       null,
       { number: 15, slug: 'data_s2',      title: 'Data',         condition: 'intact'  },
       null,
-      { number: 2,  slug: 'bsc_text_s2',  title: 'BSc Textbook', condition: 'damaged' },
-      { number: 1,  slug: 'methods_s2',   title: 'Methods',      condition: 'intact'  },
+      { number: 15, slug: 'bsc_text_s2',  title: 'BSc Textbook', condition: 'intact'  },
+      { number: 1,  slug: 'methods_s2',   title: 'Methods',      condition: 'damaged' },
       null,
       { number: 10, slug: 'pseudocode_s2',title: 'Pseudocode',   condition: 'cursed'  },
       null, null, null,
@@ -1285,7 +1283,7 @@ const SLUG_TO_IMG = {
   'ragvirs_notes_s1':'09_ragvirs_notes',
   // Scene 1
   'data_s2':         '01_data',
-  'bsc_text_s2':     '05_bsc_textbook',
+  'bsc_text_s2':     '15_animations',
   'pseudocode_s2':   '11_pseudo_code',
   'methods_s2':      '02_methods',
   // Scene 2
@@ -1748,16 +1746,41 @@ const CARD_CONTENT = {
     csv: "year,portfolio_A,portfolio_B\n1,6.8,2.1\n2,7.2,14.3\n3,6.9,1.2\n4,7.1,15.8\n5,6.7,0.4\n6,7.3,13.9\n7,7.0,3.2\n8,6.8,11.7\n9,7.2,2.8\n10,7.0,14.6",
   },
   bsc_text_s2: {
-    title: 'BSc Textbook',
-    subtitle: 'Introductory Statistics — Chapter 3. Handle with caution.',
-    body: `<div class="tb-chapter">Chapter 3 — Descriptive Statistics</div>
-      <div class="tb-section">3.1 The Sample Mean</div>
-      <div class="tb-text">The sample mean summarises central tendency. For comparing two groups on the same measure, it answers which is higher on average.</div>
-      <div class="tb-section">3.2 The Sample Variance</div>
-      <div class="tb-text">The sample variance measures the average squared deviation from the mean:</div>
-      <div class="tb-eq" data-katex="s^2 = \\dfrac{1}{n-1}\\sum_{i=1}^{n}(x_i - \\bar{x})^2"></div>
-      <div class="tb-text">Note the divisor <span class="tb-inline" data-katex="n-1"></span> rather than <span class="tb-inline" data-katex="n"></span>. This correction ensures the sample variance is an unbiased estimator of the population variance. A low variance indicates consistent, predictable values. A high variance indicates</div>
-      <div class="tb-damaged">[ page torn — remainder missing ]</div>`,
+    title: 'Animations',
+    subtitle: '',
+    body: `<div style="display:flex;flex-direction:column;height:100%;gap:0;">
+      <div style="flex:1;min-height:0;border:2px solid rgba(180,140,60,0.6);border-radius:4px;overflow:hidden;box-shadow:0 0 24px rgba(180,140,60,0.15), 0 4px 18px rgba(0,0,0,0.35);background:#000;display:flex;align-items:center;justify-content:center;position:relative;">
+        <video id="bessel-video" src="./aldricimages/BesselsCorrection.mp4"
+          style="width:100%;height:100%;object-fit:contain;display:block;"
+          controls muted playsinline>
+        </video>
+        <div id="bessel-begin" style="
+          position:absolute;inset:0;
+          background:rgba(8,5,2,0.82);
+          display:flex;align-items:center;justify-content:center;
+          transition:opacity 0.6s;
+          z-index:10;
+        ">
+          <button onclick="beginBesselVideo()" style="
+            font-family:'Cinzel',serif;
+            font-size:clamp(15px,1.4vw,20px);
+            letter-spacing:0.3em;
+            text-transform:uppercase;
+            color:rgba(230,200,140,0.9);
+            background:transparent;
+            border:1px solid rgba(180,140,60,0.5);
+            padding:16px 48px;
+            border-radius:4px;
+            cursor:pointer;
+            transition:all 0.3s;
+          "
+          onmouseover="this.style.background='rgba(180,140,60,0.15)';this.style.borderColor='rgba(180,140,60,0.9)'"
+          onmouseout="this.style.background='transparent';this.style.borderColor='rgba(180,140,60,0.5)'"
+          >Begin</button>
+        </div>
+      </div>
+    </div>`,
+    onOpen: 'initBesselVideo',
     isoldeResponse: `The variance. That is the formula.<stage>He looks at the divisor.</stage>n minus one. I will need to remember that.`,
   },
   pseudocode_s2: {
@@ -1931,9 +1954,10 @@ function openCard(card) {
   if (content.onOpen === 'renderMscTextS1Engagement') setTimeout(renderMscTextS1Engagement, 50);
   if (content.onOpen === 'renderPseudoS2Engagement') setTimeout(renderPseudoS2Engagement, 50);
   if (content.onOpen === 'renderGraphsS3') setTimeout(renderGraphsS3, 50);
+  if (content.onOpen === 'initBesselVideo') setTimeout(initBesselVideo, 50);
 
   // Track card read — gated cards not marked until engagement/input complete
-  const gated = new Set([currentScene().gatedCard, 'methods_s1', 'pseudocode_s2', 'graphs_s3']);
+  const gated = new Set([currentScene().gatedCard, 'methods_s1', 'pseudocode_s2', 'graphs_s3', 'bsc_text_s2']);
   if (!gated.has(card.slug)) markCardRead(card.slug);
 }
 
@@ -2231,7 +2255,30 @@ function submitEngagement() {
   // Legacy stub — replaced by renderEngagementChoices
 }
 
+function initBesselVideo() {
+  // Prevent body scroll so video fills space cleanly
+  const body = document.getElementById('card-panel-body');
+  if (body) body.style.overflow = 'hidden';
+  markCardRead('bsc_text_s2');
+}
+
+function beginBesselVideo() {
+  const overlay = document.getElementById('bessel-begin');
+  const video = document.getElementById('bessel-video');
+  if (!overlay || !video) return;
+  overlay.style.opacity = '0';
+  overlay.style.pointerEvents = 'none';
+  setTimeout(() => { overlay.style.display = 'none'; }, 600);
+  video.play().catch(() => {});
+}
+
 function closeCardPanel() {
+  // Pause any playing video
+  const video = document.getElementById('bessel-video');
+  if (video) video.pause();
+  // Restore card body scroll
+  const body = document.getElementById('card-panel-body');
+  if (body) body.style.overflow = '';
   document.getElementById('card-panel').classList.remove('open');
   currentCard = null;
 }
