@@ -247,6 +247,76 @@ footer { background: var(--dark); border-top: 1px solid rgba(28,58,56,.5); paddi
 .foot-wm .sq { color: var(--gold); }
 .foot-copy { font-family: 'Special Elite', monospace; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--md); text-align: right; }
 
+/* =============================================
+   PDF MODAL — Aldermast & Cross
+   ============================================= */
+.pdf-modal {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.82);
+  display: flex; align-items: center; justify-content: center;
+  padding: clamp(20px, 4vh, 48px);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.45s ease;
+}
+.pdf-modal.open { opacity: 1; pointer-events: auto; }
+.pdf-frame {
+  position: relative;
+  width: min(960px, 94vw);
+  height: 90vh;
+  border-radius: 4px;
+  box-shadow: 0 12px 60px rgba(0,0,0,0.7), 0 0 36px rgba(0,0,0,0.4);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  background: var(--ink);
+  border: 1px solid rgba(184, 134, 11, 0.35);
+}
+.pdf-header {
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 18px;
+  border-bottom: 1px solid rgba(184, 134, 11, 0.25);
+  background: rgba(0,0,0,0.5);
+  gap: 16px;
+}
+.pdf-titlewrap { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.pdf-title {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: clamp(15px, 1.2vw, 18px);
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: var(--w);
+  line-height: 1.2;
+}
+.pdf-sub {
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.pdf-close {
+  font-family: 'Special Elite', monospace;
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--md);
+  background: transparent;
+  border: 1px solid var(--md);
+  cursor: pointer;
+  padding: 6px 14px;
+  flex-shrink: 0;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.pdf-close:hover {
+  color: var(--w);
+  border-color: var(--w);
+  background: rgba(255,255,255,0.06);
+}
+.pdf-iframe {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: rgba(0,0,0,0.3);
+}
+
 @media (max-width: 860px) { .worlds-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) {
   .h-light { display: none; } .h-dark { right: 0; } .h-divide { display: none; } .h-chevron { display: none; }
@@ -328,7 +398,7 @@ footer { background: var(--dark); border-top: 1px solid rgba(28,58,56,.5); paddi
     </div>
     <div class="worlds-grid">
 
-      <a class="wcard available rv" href="aldermastcross.html">
+      <a class="wcard available rv" href="#" onclick="openPdfModal(event)">
         <div class="wcard-bg aldermast"></div>
         <div class="wcard-overlay"></div>
         <div class="wcard-badge">Microeconomics</div>
@@ -427,6 +497,22 @@ footer { background: var(--dark); border-top: 1px solid rgba(28,58,56,.5); paddi
   <div class="foot-copy rv">Copyright &copy; 2026 &ensp; Ragvir Sabharwal. All rights reserved.</div>
 </footer>
 
+<!-- =============================================
+     PDF MODAL — Aldermast & Cross
+     ============================================= -->
+<div class="pdf-modal" id="pdf-modal" onclick="if(event.target.id==='pdf-modal') closePdfModal()">
+  <div class="pdf-frame">
+    <div class="pdf-header">
+      <div class="pdf-titlewrap">
+        <div class="pdf-title">Aldermast &amp; Cross</div>
+        <div class="pdf-sub">Consumer Theory &mdash; Microeconomics</div>
+      </div>
+      <button class="pdf-close" onclick="closePdfModal()">Close</button>
+    </div>
+    <iframe class="pdf-iframe" id="pdf-iframe" title="Aldermast and Cross"></iframe>
+  </div>
+</div>
+
 <script>
 const hero = document.querySelector('.hero');
 hero.addEventListener('mousemove', e => {
@@ -447,6 +533,24 @@ const io = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.06 });
 document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+// PDF modal — Aldermast & Cross
+function openPdfModal(e) {
+  if (e) e.preventDefault();
+  const modal = document.getElementById('pdf-modal');
+  const iframe = document.getElementById('pdf-iframe');
+  // Only set src on open so it doesn't load until needed
+  if (!iframe.src) iframe.src = './aldermastcross.pdf';
+  modal.classList.add('open');
+  document.addEventListener('keydown', pdfModalEsc);
+}
+function closePdfModal() {
+  document.getElementById('pdf-modal').classList.remove('open');
+  document.removeEventListener('keydown', pdfModalEsc);
+}
+function pdfModalEsc(e) {
+  if (e.key === 'Escape') closePdfModal();
+}
 </script>
 
 </body>
