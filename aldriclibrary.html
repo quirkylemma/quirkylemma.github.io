@@ -412,6 +412,22 @@ body {
   background:rgba(50,200,50,0.1);
 }
 
+#anscombe-hotspot {
+  position:absolute;
+  left:48.6%;
+  top:42.7%;
+  width:12%;
+  height:35%;
+  cursor:pointer;
+  z-index:210;
+  border-radius:4px;
+  display:none;
+}
+#anscombe-hotspot.debug {
+  outline:3px solid rgba(220,180,80,0.8);
+  background:rgba(220,180,80,0.12);
+}
+
 /* ── CARD PANEL ── */
 #card-panel {
   position:fixed;
@@ -991,6 +1007,7 @@ body {
 <div id="window-overlay">
   <img id="window-overlay-img" src="./aldricimages/isolderain.png" alt="Outside view">
   <div id="isolde-hotspot" onclick="admitStudent()"></div>
+  <div id="anscombe-hotspot" onclick="openAnscombeParchment()"></div>
   <button id="window-close" onclick="closeWindowView()">Close</button>
   <button id="window-toggle" onclick="toggleWindowImage()" style="display:none;">Switch View</button>
 </div>
@@ -1158,10 +1175,10 @@ const SCENES = [
   {
     sceneIndex: 2,
     student: 'Isolde Fenn',
-    answerLabel: 'I have tried everything I can compute. What am I missing?',
+    answerLabel: '',
     winTitle: 'She sees it.',
-    winText: 'Four datasets. Identical means, variances, correlations, regression lines.<br><br>Completely different shapes when drawn.<br><br>Francis Anscombe built them by hand in 1973. Three shelves have unlocked.',
-    winCardReveal: "Three shelves have unlocked — Graphs, Ragvir's Notes, and A Note on Method.",
+    winText: 'Four datasets. Identical means. Identical variances.<br><br>Completely different shapes when drawn.<br><br>Francis Anscombe built them by hand in 1973.',
+    winCardReveal: '',
     betweenText: '',
     outsideImg: './aldricimages/isolderain.png',
     portraitImg: './aldricimages/isoldefenn.png',
@@ -1174,30 +1191,12 @@ const SCENES = [
       "I have four datasets. My supervisor says the analysis is fine — my formulas all check out. But every summary I compute gives me the same number. That cannot be right. Can it?"
     ],
     cards: [
-      { number: 1,  slug: 'data',            title: 'Data',             condition: 'intact'  },
-      { number: 3,  slug: 'journal_article', title: 'Journal Article',  condition: 'damaged' },
-      { number: 5,  slug: 'bsc_textbook',    title: 'BSc Textbook',     condition: 'damaged' },
-      null,
-      { number: 6,  slug: 'humour',          title: 'A Note on Method', condition: 'cursed'  },
-      { number: 9,  slug: 'ragvirs_notes',   title: "Ragvir's Notes",   condition: 'locked'  },
-      { number: 2,  slug: 'methods',         title: 'Methods',          condition: 'intact'  },
-      { number: 10, slug: 'graphs',          title: 'Graphs',           condition: 'locked'  },
-      null, null,
+      { number: 1, slug: 'anscombe_data', title: 'Data', condition: 'intact' },
+      null, null, null, null, null, null, null, null, null,
     ],
-    investigable: new Set(['data','bsc_textbook','journal_article','methods']),
-    gatedCard: 'methods',
-    answerOptions: [
-      { text: 'The supervisor was right all along.', correct: false,
-        response: "<stage>She is quiet for a moment.</stage>I told myself that too. He is careful and experienced. But you computed the statistics yourself — and something is still wrong." },
-      { text: 'Check the correlation coefficient.', correct: false,
-        response: "You entered 0.816 for all four. You computed it yourself.<stage>A pause.</stage>It is the same number. Everything computed gives the same number. That is the problem, not the solution." },
-      { text: 'Draw the data.', correct: true,
-        response: "<stage>She is still for a moment.</stage>Draw it.<stage>She opens her notebook slowly.</stage>I never — in two weeks I never once drew it. I just kept computing.<stage>She sketches quietly.</stage>They are completely different. Same numbers. Completely different shapes.<stage>She sets down her pen.</stage>The mean cannot see this. Nothing I computed could see this. It was always there.<stage>She closes the notebook.</stage>I need to go back. Thank you." },
-      { text: 'Report the results as-is.', correct: false,
-        response: "I did. Then I sat here.<stage>She looks at the folder.</stage>The Journal Article is troubling me — the author says graphs are not suspect. But the rest of the pages are gone." },
-      { text: 'The sample size is too small.', correct: false,
-        response: "Eleven observations. You can see them — you copied the data yourself.<stage>She pauses.</stage>The BSc Textbook cuts off at exactly the wrong moment. The sentence that matters is the one that is obscured." },
-    ],
+    investigable: new Set(['anscombe_data']),
+    gatedCard: null,
+    answerOptions: [],
   },
 ];
 
@@ -1231,6 +1230,8 @@ const SLUG_TO_IMG = {
   'humour':          '12_humour',
   'ragvirs_notes':   '09_ragvirs_notes',
   'graphs':          '10_graphs',
+  // Scene 2 (Anscombe)
+  'anscombe_data':   '01_data',
   // Scene 0
   'data_s1':         '01_data',
   'bsc_text_s1':     '05_bsc_textbook',
@@ -1383,6 +1384,7 @@ function devSkipIntro() {
 }
 
 let sceneState = 'waiting'; // waiting | active | resolved
+let isoldeWindowReady = false;
 
 function openWindowView() {
   const overlay = document.getElementById('window-overlay');
@@ -1392,11 +1394,13 @@ function openWindowView() {
   // Hide image immediately to prevent ghost of previous image showing during fade
   img.style.opacity = '0';
 
-  const newSrc = sceneState === 'waiting'
-    ? currentScene().outsideImg
-    : './aldricimages/emptystreet.png';
+  const newSrc = isoldeWindowReady
+    ? './aldricimages/anscombe.png'
+    : sceneState === 'waiting'
+      ? currentScene().outsideImg
+      : './aldricimages/emptystreet.png';
 
-  isoldeHotspot.style.display = sceneState === 'waiting' ? 'block' : 'none';
+  isoldeHotspot.style.display = (sceneState === 'waiting' && !isoldeWindowReady) ? 'block' : 'none';
 
   img.onload = () => {
     img.style.transition = 'opacity 0.4s';
@@ -1404,6 +1408,11 @@ function openWindowView() {
   };
 
   img.src = newSrc;
+
+  // Show the Anscombe hotspot only when the quartet image is being displayed
+  const anscombeHotspot = document.getElementById('anscombe-hotspot');
+  anscombeHotspot.style.display = newSrc.includes('anscombe.png') ? 'block' : 'none';
+
   overlay.classList.add('visible');
 }
 
@@ -1413,6 +1422,29 @@ function toggleWindowImage() {
 
 function closeWindowView() {
   document.getElementById('window-overlay').classList.remove('visible');
+  // If Isolde's scene is resolved and player has just seen anscombe.png, show Continue
+  if (isoldeWindowReady && currentScene().sceneIndex === 2) {
+    isoldeWindowReady = false; // prevent showing twice
+    setTimeout(() => {
+      const continueBtn = document.createElement('button');
+      continueBtn.id = 'continue-btn';
+      continueBtn.textContent = 'Continue';
+      continueBtn.style.cssText = `
+        position:fixed; bottom:16px; left:50%; transform:translateX(-50%);
+        z-index:999; font-family:'Cinzel',serif; font-size:14px;
+        letter-spacing:0.2em; text-transform:uppercase;
+        color:rgba(220,190,130,0.85); background:rgba(10,6,2,0.7);
+        border:1px solid rgba(180,140,60,0.4); padding:8px 22px;
+        border-radius:3px; cursor:pointer; opacity:0; transition:opacity 0.4s;
+        white-space:nowrap;
+      `;
+      continueBtn.onmouseover = () => { continueBtn.style.background='rgba(180,140,60,0.15)'; continueBtn.style.borderColor='rgba(180,140,60,0.8)'; };
+      continueBtn.onmouseout  = () => { continueBtn.style.background='rgba(10,6,2,0.7)'; continueBtn.style.borderColor='rgba(180,140,60,0.4)'; };
+      continueBtn.onclick = () => { continueBtn.remove(); triggerWin(); };
+      document.body.appendChild(continueBtn);
+      requestAnimationFrame(() => requestAnimationFrame(() => { continueBtn.style.opacity = '1'; }));
+    }, 400);
+  }
 }
 
 function admitIsolde() { admitStudent(); } // legacy alias
@@ -1428,9 +1460,7 @@ function admitStudent() {
   const portraitImg = portrait.querySelector('img');
   const portraitName = document.getElementById('portrait-name');
   portraitImg.src = scene.portraitImg;
-  // Only apply silhouette filter if using placeholder portrait
-  const isPlaceholder = scene.portraitImg.includes('isoldefenn') && scene.sceneIndex !== 3;
-  portraitImg.style.filter = isPlaceholder ? 'brightness(0) opacity(0.35)' : '';
+  portraitImg.style.filter = '';
   portraitName.textContent = scene.student;
 
   // Blank speech while narration plays
@@ -1562,6 +1592,14 @@ const CARD_CONTENT = {
     subtitle: 'Four datasets. Identical statistics. Different shapes.',
     body: `<div id="anscombe-plots-container"></div>`,
     onOpen: 'renderAnscombeGraphs',
+  },
+
+  // ── SCENE 2 cards (Anscombe) ─────────────────────────────────────────────
+  anscombe_data: {
+    title: 'Data — Four Datasets',
+    subtitle: 'Eleven observations each. Two variables.',
+    body: `<div id="anscombe-data-body"></div>`,
+    onOpen: 'renderAnscombeDataCard',
   },
 
   // ── SCENE 0 cards ──────────────────────────────────────────────────────────
@@ -1706,7 +1744,7 @@ const CARD_CONTENT = {
         SET sum_sq ← 0<br>
         FOR each xᵢ in x:<br>
         &nbsp;&nbsp;&nbsp;&nbsp;sum_sq ← sum_sq + (xᵢ − mean)²<br>
-        SET variance ← sum_sq / <strong style="color:rgba(160,40,10,0.9);text-decoration:underline;">n</strong><br>
+        SET variance ← sum_sq / <strong style="color:rgba(40,20,5,0.85);text-decoration:underline;">n</strong><br>
         RETURN variance
       </div>
       <div class="tb-damaged">Note: This procedure was found loose in the collection. The algorithm is structurally correct but may contain an error. Verify against a primary source before use.</div>
@@ -1820,13 +1858,14 @@ function openCard(card) {
   // Call any onOpen renderer — delay ensures DOM settled after innerHTML + KaTeX
   if (content.onOpen === 'renderMethodsStats') setTimeout(renderMethodsStats, 50);
   if (content.onOpen === 'renderAnscombeGraphs') setTimeout(renderAnscombeGraphs, 50);
+  if (content.onOpen === 'renderAnscombeDataCard') setTimeout(renderAnscombeDataCard, 50);
   if (content.onOpen === 'renderMscTextS1Engagement') setTimeout(renderMscTextS1Engagement, 50);
   if (content.onOpen === 'renderPseudoS2Engagement') setTimeout(renderPseudoS2Engagement, 50);
   if (content.onOpen === 'renderMysteryS2') setTimeout(renderMysteryS2, 50);
   if (content.onOpen === 'initBesselVideo') setTimeout(initBesselVideo, 50);
 
   // Track card read — gated cards not marked until engagement/input complete
-  const gated = new Set([currentScene().gatedCard, 'pseudocode_s2', 'bsc_text_s2', 'mystery_s2']);
+  const gated = new Set([currentScene().gatedCard, 'pseudocode_s2', 'bsc_text_s2', 'mystery_s2', 'anscombe_data']);
   if (!gated.has(card.slug)) markCardRead(card.slug);
 }
 
@@ -2194,7 +2233,7 @@ function advanceDialogue() {
 function showCheckBookshelves() {
   const btn = document.createElement('button');
   btn.id = 'bookshelves-btn';
-  btn.textContent = 'Check bookshelves';
+  btn.textContent = currentScene().sceneIndex === 2 ? 'Show her the data' : 'Check bookshelves';
   btn.style.cssText = `
     position:fixed;
     bottom:16px;
@@ -2290,7 +2329,7 @@ function showCardToast(title) {
     toast.style.opacity = '1';
     clearTimeout(toast._hideTimer);
     toast._hideTimer = setTimeout(() => { toast.style.opacity = '0'; }, 2600);
-    showAnswerInput();
+    if (currentScene().answerOptions.length > 0) showAnswerInput();
   }
 }
 
@@ -2509,6 +2548,9 @@ function loadScene() {
 
   // Reset all state
   sceneState = 'waiting';
+  isoldeWindowReady = false;
+  anscombeStatsComputed = false;
+  anscombeDrawn = false;
   sceneDialogue = [...scene.dialogue];
   dialogueIndex = 0;
   dialogueFinished = false;
@@ -2535,6 +2577,10 @@ function loadScene() {
   if (oldBtn) oldBtn.remove();
   const oldContinue = document.getElementById('continue-btn');
   if (oldContinue) oldContinue.remove();
+  const oldPlots = document.getElementById('anscombe-plot-area');
+  if (oldPlots) oldPlots.remove();
+  const oldOverlay = document.getElementById('anscombe-graph-overlay');
+  if (oldOverlay) oldOverlay.remove();
 
   // Hide portrait — blank until student admitted
   const portrait = document.getElementById('portrait');
@@ -2544,7 +2590,6 @@ function loadScene() {
   document.getElementById('portrait-name').textContent = '';
   portrait.style.opacity = '0';
   portrait.style.transition = 'opacity 0.8s';
-
   // Re-enable window hotspot
   document.getElementById('isolde-hotspot').style.display = 'block';
 
@@ -2552,14 +2597,15 @@ function loadScene() {
   renderShelves();
 }
 
-// Show candle when bookshelves opened
 function revealCards() {
   const btn = document.getElementById('bookshelves-btn');
   if (btn) btn.remove();
   shelvesRevealed = true;
   document.getElementById('shelf-svg').style.pointerEvents = 'auto';
-  document.getElementById('candle-wrap').classList.add('visible');
-  updateCandle();
+  if (currentScene().sceneIndex !== 2) {
+    document.getElementById('candle-wrap').classList.add('visible');
+    updateCandle();
+  }
   renderShelves();
 }
 
@@ -2911,6 +2957,404 @@ function renderMysteryS2() {
 }
 
 
+// ── SCENE 2 — Anscombe data card ────────────────────────────────────────────
+const ANSCOMBE_DATA = {
+  I:   { x:[10,8,13,9,11,14,6,4,12,7,5],   y:[8.04,6.95,7.58,8.81,8.33,9.96,7.24,4.26,10.84,4.82,5.68] },
+  II:  { x:[10,8,13,9,11,14,6,4,12,7,5],   y:[9.14,8.14,8.74,8.77,9.26,8.10,6.13,3.10,9.13,7.26,4.74] },
+  III: { x:[10,8,13,9,11,14,6,4,12,7,5],   y:[7.46,6.77,12.74,7.11,7.81,8.84,6.08,5.39,8.15,6.42,5.73] },
+  IV:  { x:[8,8,8,8,8,8,8,19,8,8,8],       y:[6.58,5.76,7.71,8.84,8.47,7.04,5.25,12.50,5.56,7.91,6.89] },
+};
+
+let anscombeStatsComputed = false;
+let anscombeDrawn = false;
+
+function renderAnscombeDataCard() {
+  const body = document.getElementById('anscombe-data-body');
+  if (!body) return;
+
+  const ds = ['I','II','III','IV'];
+
+  // Build four-column data table
+  const rows = ANSCOMBE_DATA.I.x.map((_,i) =>
+    `<tr>${ds.map(d => `<td>${ANSCOMBE_DATA[d].x[i]}</td><td>${ANSCOMBE_DATA[d].y[i]}</td><td class="sep"></td>`).join('')}</tr>`
+  ).join('');
+
+  body.innerHTML = `
+    <table class="parchment-table" style="margin-bottom:14px;">
+      <thead>
+        <tr>
+          ${ds.map(d => `<th class="ds-header" colspan="2">Dataset ${d}</th><td class="sep"></td>`).join('')}
+        </tr>
+        <tr>
+          ${ds.map(() => `<th>x</th><th>y</th><td class="sep"></td>`).join('')}
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div id="anscombe-stats-display" style="
+      font-family:'IM Fell English',serif;
+      font-size:clamp(16px,1.3vw,19px);
+      color:rgba(40,20,5,0.85);
+      line-height:2;
+      min-height:2.4em;
+      margin-top:4px;
+    "></div>
+  `;
+
+  if (anscombeStatsComputed) {
+    showAnscombeStats();
+    renderAnscombeDataFooter();
+  } else {
+    renderAnscombeDataFooter();
+  }
+}
+
+function renderAnscombeDataFooter() {
+  const footer = document.getElementById('card-panel-footer');
+  if (!footer) return;
+  footer.innerHTML = '';
+
+  if (!anscombeStatsComputed) {
+    const btn = document.createElement('button');
+    btn.className = 'parchment-btn primary';
+    btn.textContent = 'Compute summary statistics';
+    btn.onclick = () => {
+      anscombeStatsComputed = true;
+      showAnscombeStats();
+      renderAnscombeDataFooter();
+      // Show Isolde's reaction after a beat
+      setTimeout(() => {
+        showIsoldeResponse(
+          "Every summary I have is the same. My supervisor said so. The numbers say so. " +
+          "You have just confirmed it yourself.<stage>She looks at the folder.</stage>" +
+          "So why does something still feel wrong?"
+        );
+      }, 800);
+    };
+    footer.appendChild(btn);
+  } else if (!anscombeDrawn) {
+    const btn = document.createElement('button');
+    btn.className = 'parchment-btn primary';
+    btn.textContent = 'Draw the data';
+    btn.onclick = () => {
+      anscombeDrawn = true;
+      closeCardPanel();
+      showAnscombeGraphs();
+    };
+    footer.appendChild(btn);
+  }
+}
+
+function showAnscombeStats() {
+  const el = document.getElementById('anscombe-stats-display');
+  if (!el) return;
+  const ds = ['I','II','III','IV'];
+  const stats = ds.map(d => {
+    const x = ANSCOMBE_DATA[d].x, y = ANSCOMBE_DATA[d].y;
+    const mx = x.reduce((a,b)=>a+b,0)/x.length;
+    const my = y.reduce((a,b)=>a+b,0)/y.length;
+    const vx = x.reduce((s,v)=>s+(v-mx)**2,0)/(x.length-1);
+    const vy = y.reduce((s,v)=>s+(v-my)**2,0)/(y.length-1);
+    return `<td style="text-align:center;padding:2px 10px;">
+      mean x = ${mx.toFixed(1)}<br>mean y = ${my.toFixed(1)}<br>
+      var x = ${vx.toFixed(1)}<br>var y = ${vy.toFixed(1)}
+    </td>`;
+  });
+  el.innerHTML = `<table style="width:100%;font-family:'IM Fell English',serif;font-size:clamp(16px,1.3vw,19px);color:rgba(40,20,5,0.85);line-height:1.9;">
+    <thead><tr>${ds.map(d=>`<th style="text-align:center;font-family:'Cinzel',serif;font-size:14px;letter-spacing:0.1em;color:rgba(60,15,10,0.6);padding-bottom:4px;">Dataset ${d}</th>`).join('')}</tr></thead>
+    <tbody><tr>${stats.join('')}</tr></tbody>
+  </table>`;
+}
+
+function showAnscombeGraphs() {
+  // Create overlay above the bg but leaving the dialogue bar (portrait + speech) visible
+  let overlay = document.getElementById('anscombe-graph-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'anscombe-graph-overlay';
+    overlay.style.cssText = `
+      position:absolute;
+      inset:0;
+      z-index:12;
+      background:rgba(8,5,2,0.92);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:clamp(6px,1.2vh,14px);
+      padding:clamp(40px,5vh,60px) clamp(20px,2.5vw,40px) clamp(16px,2vh,24px);
+      opacity:0;
+      transition:opacity 0.8s;
+    `;
+    document.getElementById('bg').appendChild(overlay);
+  }
+
+  // Close button — top right
+  const closeBtn = document.createElement('button');
+  closeBtn.textContent = '×';
+  closeBtn.setAttribute('aria-label','Close');
+  closeBtn.style.cssText = `
+    position:absolute;top:14px;right:18px;
+    background:transparent;border:1px solid rgba(220,190,130,0.35);
+    color:rgba(220,190,130,0.85);
+    width:36px;height:36px;border-radius:50%;
+    font-family:'Cinzel',serif;font-size:22px;line-height:1;
+    cursor:pointer;transition:all 0.3s;
+    display:flex;align-items:center;justify-content:center;
+    padding:0;
+  `;
+  closeBtn.onmouseenter = () => { closeBtn.style.background='rgba(180,140,60,0.18)'; closeBtn.style.color='rgba(245,215,150,1)'; };
+  closeBtn.onmouseleave = () => { closeBtn.style.background='transparent'; closeBtn.style.color='rgba(220,190,130,0.85)'; };
+  closeBtn.onclick = () => {
+    overlay.style.opacity = '0';
+    setTimeout(() => { overlay.remove(); }, 800);
+    // Re-state the cue so the player can act on it
+    showIsoldeResponse(
+      "<stage>She looks toward the window.</stage>" +
+      "There it is again. Someone is outside."
+    );
+  };
+  overlay.appendChild(closeBtn);
+
+  // Hint strip — sits just under the close button, subtle
+  const hint = document.createElement('div');
+  hint.style.cssText = `
+    position:absolute;top:18px;left:50%;transform:translateX(-50%);
+    font-family:'IM Fell English',serif;font-style:italic;
+    font-size:clamp(14px,1.1vw,16px);
+    color:rgba(220,190,130,0.55);
+    letter-spacing:0.04em;
+    pointer-events:none;
+  `;
+  hint.textContent = 'Close when ready — she hears something outside.';
+  overlay.appendChild(hint);
+
+  const ds = ['I','II','III','IV'];
+  const plotRow = document.createElement('div');
+  plotRow.style.cssText = 'display:flex;flex-direction:row;gap:clamp(4px,0.8vw,10px);align-items:flex-start;justify-content:center;width:100%;max-width:1400px;';
+
+  ds.forEach(label => {
+    const d = ANSCOMBE_DATA[label];
+    // Larger plot — fills more of the overlay
+    const W = 280, H = 220, PAD = 28;
+    const xMin=Math.min(...d.x)-1, xMax=Math.max(...d.x)+1;
+    const yMin=Math.min(...d.y)-1, yMax=Math.max(...d.y)+1;
+    const sx = v => PAD + (v-xMin)/(xMax-xMin)*(W-PAD*2);
+    const sy = v => H-PAD - (v-yMin)/(yMax-yMin)*(H-PAD*2);
+    const reg = aReg(d.x, d.y);
+
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;flex:1;min-width:0;';
+
+    const title = document.createElement('div');
+    title.style.cssText = `font-family:'Cinzel',serif;font-size:clamp(13px,1vw,15px);letter-spacing:0.15em;color:rgba(220,190,130,0.75);margin-bottom:6px;`;
+    title.textContent = `Dataset ${label}`;
+
+    const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+    svg.setAttribute('preserveAspectRatio','xMidYMid meet');
+    svg.style.cssText = `width:100%;max-width:${W}px;height:auto;background:rgba(10,6,2,0.4);border-radius:4px;border:1px solid rgba(180,140,60,0.2);display:block;`;
+
+    // Regression line
+    const rx1=xMin, ry1=reg.slope*rx1+reg.intercept;
+    const rx2=xMax, ry2=reg.slope*rx2+reg.intercept;
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',sx(rx1).toFixed(1)); line.setAttribute('y1',sy(ry1).toFixed(1));
+    line.setAttribute('x2',sx(rx2).toFixed(1)); line.setAttribute('y2',sy(ry2).toFixed(1));
+    line.setAttribute('stroke','rgba(180,140,60,0.35)');
+    line.setAttribute('stroke-width','1.5');
+    line.setAttribute('stroke-dasharray','4 3');
+    svg.appendChild(line);
+
+    // Points
+    d.x.forEach((x,i) => {
+      const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      circle.setAttribute('cx', sx(x).toFixed(1));
+      circle.setAttribute('cy', sy(d.y[i]).toFixed(1));
+      circle.setAttribute('r','4.5');
+      circle.setAttribute('fill','rgba(220,180,80,0.85)');
+      circle.setAttribute('stroke','rgba(255,220,120,0.5)');
+      circle.setAttribute('stroke-width','1');
+      svg.appendChild(circle);
+    });
+
+    // Axis labels
+    const xl = document.createElementNS('http://www.w3.org/2000/svg','text');
+    xl.setAttribute('x',W/2); xl.setAttribute('y',H-6);
+    xl.setAttribute('text-anchor','middle');
+    xl.setAttribute('font-size','11'); xl.setAttribute('font-family','Cinzel,serif');
+    xl.setAttribute('fill','rgba(220,190,130,0.35)');
+    xl.textContent = 'x';
+    svg.appendChild(xl);
+
+    const yl = document.createElementNS('http://www.w3.org/2000/svg','text');
+    yl.setAttribute('x',10); yl.setAttribute('y',H/2);
+    yl.setAttribute('text-anchor','middle');
+    yl.setAttribute('font-size','11'); yl.setAttribute('font-family','Cinzel,serif');
+    yl.setAttribute('fill','rgba(220,190,130,0.35)');
+    yl.setAttribute('transform',`rotate(-90,10,${H/2})`);
+    yl.textContent = 'y';
+    svg.appendChild(yl);
+
+    // Stats block under each plot — means, variances, correlation
+    const mx = aMean(d.x), my = aMean(d.y);
+    const vx = aVar(d.x),  vy = aVar(d.y);
+    const r  = aCor(d.x, d.y);
+    const stats = document.createElement('div');
+    stats.style.cssText = `
+      margin-top:10px;
+      font-family:'IM Fell English',serif;
+      font-size:clamp(17px,1.35vw,20px);
+      color:rgba(220,190,130,0.82);
+      line-height:1.6;
+      text-align:center;
+      width:100%;
+    `;
+    stats.innerHTML = `
+      mean(x) = ${mx.toFixed(1)}<br>
+      mean(y) = ${my.toFixed(1)}<br>
+      var(x) &nbsp;= ${vx.toFixed(1)}<br>
+      var(y) &nbsp;= ${vy.toFixed(1)}<br>
+      corr(x,y) = ${r.toFixed(1)}
+    `;
+
+    wrap.appendChild(title);
+    wrap.appendChild(svg);
+    wrap.appendChild(stats);
+    plotRow.appendChild(wrap);
+  });
+
+  overlay.appendChild(plotRow);
+  requestAnimationFrame(() => requestAnimationFrame(() => { overlay.style.opacity = '1'; }));
+
+  // Isolde's realisation — staggered, lands in the speech bubble (portrait remains visible)
+  setTimeout(() => {
+    showIsoldeResponse(
+      "<stage>She looks at all four.</stage>" +
+      "They are not the same.<stage>A long silence.</stage>" +
+      "The numbers were right. Every one of them. And they told me nothing.<stage>She sets down her folder.</stage>" +
+      "I need to go back.<stage>She pauses, listening.</stage>" +
+      "I think I hear something outside."
+    );
+    isoldeWindowReady = true;
+  }, 1200);
+}
+
+// Anscombe's Quartet — parchment popup with background context
+function openAnscombeParchment() {
+  // Avoid duplicates
+  if (document.getElementById('anscombe-parchment-overlay')) return;
+
+  const wrap = document.createElement('div');
+  wrap.id = 'anscombe-parchment-overlay';
+  wrap.style.cssText = `
+    position:fixed;inset:0;z-index:9990;
+    background:rgba(8,5,2,0.78);
+    display:flex;align-items:center;justify-content:center;
+    padding:clamp(20px,4vh,48px);
+    opacity:0;transition:opacity 0.45s;
+  `;
+
+  // Click outside parchment to dismiss
+  wrap.onclick = (e) => { if (e.target === wrap) closeAnscombeParchment(); };
+
+  const parchment = document.createElement('div');
+  parchment.style.cssText = `
+    position:relative;
+    width:min(960px,94vw);
+    height:90vh;
+    border-radius:6px;
+    box-shadow:0 12px 60px rgba(0,0,0,0.7),0 0 36px rgba(0,0,0,0.4);
+    overflow:hidden;
+    display:flex;flex-direction:column;
+    background:rgba(20,14,6,0.96);
+    border:1px solid rgba(180,140,60,0.35);
+  `;
+
+  // Header strip — title + close, kept narrow so the paper gets the space
+  const header = document.createElement('div');
+  header.style.cssText = `
+    flex-shrink:0;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 16px;
+    border-bottom:1px solid rgba(180,140,60,0.25);
+    background:rgba(10,6,2,0.55);
+  `;
+
+  const titleWrap = document.createElement('div');
+  titleWrap.style.cssText = 'display:flex;flex-direction:column;gap:2px;';
+
+  const title = document.createElement('div');
+  title.style.cssText = `
+    font-family:'Cinzel',serif;
+    font-size:clamp(14px,1.1vw,17px);
+    letter-spacing:0.2em;text-transform:uppercase;
+    color:rgba(220,190,130,0.9);
+  `;
+  title.textContent = "Anscombe's Quartet";
+  titleWrap.appendChild(title);
+
+  const subtitle = document.createElement('div');
+  subtitle.style.cssText = `
+    font-family:'IM Fell English',serif;font-style:italic;
+    font-size:clamp(13px,0.95vw,15px);
+    color:rgba(220,190,130,0.55);
+  `;
+  subtitle.textContent = "Anscombe, F. J. (1973). Graphs in Statistical Analysis. The American Statistician, 27(1).";
+  titleWrap.appendChild(subtitle);
+
+  header.appendChild(titleWrap);
+
+  // Close button
+  const close = document.createElement('button');
+  close.textContent = 'CLOSE';
+  close.style.cssText = `
+    font-family:'Cinzel',serif;
+    font-size:14px;letter-spacing:0.15em;text-transform:uppercase;
+    color:rgba(220,190,130,0.85);
+    background:transparent;
+    border:1px solid rgba(180,140,60,0.4);
+    cursor:pointer;
+    padding:5px 12px;border-radius:3px;
+    flex-shrink:0;margin-left:14px;
+  `;
+  close.onmouseenter = () => { close.style.color='rgba(245,215,150,1)'; close.style.background='rgba(180,140,60,0.18)'; };
+  close.onmouseleave = () => { close.style.color='rgba(220,190,130,0.85)'; close.style.background='transparent'; };
+  close.onclick = closeAnscombeParchment;
+  header.appendChild(close);
+
+  // PDF iframe — browser default viewer
+  const iframe = document.createElement('iframe');
+  iframe.src = './aldricimages/anscombe1973.pdf';
+  iframe.style.cssText = `
+    flex:1;width:100%;border:none;
+    background:rgba(40,30,18,0.4);
+  `;
+  iframe.title = "Anscombe (1973) — Graphs in Statistical Analysis";
+
+  parchment.appendChild(header);
+  parchment.appendChild(iframe);
+  wrap.appendChild(parchment);
+  document.body.appendChild(wrap);
+
+  requestAnimationFrame(() => requestAnimationFrame(() => { wrap.style.opacity = '1'; }));
+
+  // ESC dismisses
+  document.addEventListener('keydown', anscombeParchmentEsc);
+}
+
+function anscombeParchmentEsc(e) {
+  if (e.key === 'Escape') closeAnscombeParchment();
+}
+
+function closeAnscombeParchment() {
+  const wrap = document.getElementById('anscombe-parchment-overlay');
+  if (!wrap) return;
+  wrap.style.opacity = '0';
+  setTimeout(() => { wrap.remove(); }, 450);
+  document.removeEventListener('keydown', anscombeParchmentEsc);
+}
+
 // Generic card engagement handler
 function handleCardEngagement(opt, engEl, responseId, slug) {
   engEl.querySelectorAll('button').forEach(b => { b.disabled=true; b.style.opacity='0.4'; });
@@ -2942,6 +3386,7 @@ document.getElementById('portrait-name').textContent = SCENES[0].student;
 
 
 bindTip(document.getElementById('window-hotspot'), 'Look outside');
+bindTip(document.getElementById('anscombe-hotspot'), "Anscombe's Quartet");
 document.getElementById('isolde-hotspot').addEventListener('mouseenter', e => {
   const student = currentScene().student.split(' ')[0];
   const scene = currentScene();
